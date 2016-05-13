@@ -12,7 +12,6 @@ function SMBasic_Init() {
     SMBasic_Start();
     
     register_action("add_nav_element", "SMBasic_navLogReg", "5");
-    register_action("add_script", "SMBasic_Script", "5");
     
     register_uniq_action("login_page", "SMBasic_loginPage");
     register_uniq_action("register_page", "SMBasic_regPage");   
@@ -21,8 +20,6 @@ function SMBasic_Init() {
 
 
 function SMBasic_Start () {
-
-    
     session_start();
     
     $session_id = session_id();
@@ -45,6 +42,8 @@ function SMBasic_loginPage () {
        do_action("common_web_structure");
        register_action("add_link", "SMBasic_CSS","5");
        register_action("add_to_body", "get_login_page", "5");
+       register_action("add_script", "SMBasic_Script", "5");   
+       
     }
 }
 
@@ -76,8 +75,8 @@ function SMBasic_checkLogin() {
 }
 function SMBasic_navLogReg() {
 
-    $elements = "<li class=\"\"><a href=\"login.php\">Login</a></li>\n";
-    $elements .= "<li class=\"\"><a href=\"register.php\">Register</a></li>\n";
+    $elements = "<li class=\"nav_right\"><a href=\"login.php\">Login</a></li>\n";
+    $elements .= "<li class=\"nav_right\"><a href=\"register.php\">Register</a></li>\n";
     return $elements;
 }
 function get_login_page() {
@@ -105,7 +104,7 @@ function SMBasic_CSS() {
 
 
 function SMBasic_Script() {
-
+    //TODO: Plugin for provided common scripts "need_jquery() and asured its included only one time if its called from other modules";
     $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/login.js\"></script>\n";
            
