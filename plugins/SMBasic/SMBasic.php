@@ -24,7 +24,7 @@ function SMBasic_Start () {
 
     
     session_start();
-    //echo SMBasic_encrypt_password("knack123pw");
+    
     $session_id = session_id();
     require_once("SMBasic.config.php");
     //session_regenerate_id();
