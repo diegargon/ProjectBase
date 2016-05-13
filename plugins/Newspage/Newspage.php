@@ -114,7 +114,7 @@ function news_body_2() {
 function news_layout_switcher($value) {
         
     $data = "<form method=\"post\"><div class=\"\">";
-    $data .= "<input type=\"submit\" alt=\"Cambiar\" value=\"\" class=\"button_switch\" />";
+    $data .= "<input type=\"submit\"  value=\"\" class=\"button_switch\" />";
     $data .= "<input type=\"hidden\" value=\"$value\" name=\"news_switch\"/>";
     $data .= "</div></form>";
     return $data;
