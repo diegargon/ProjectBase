@@ -1,0 +1,219 @@
+/*
+ Copyright @ 2016 Diego Garcia
+*/
+
+
+html, body {
+    position:relative;
+    margin:0;
+    padding:0;
+    font-size:13px;
+    height:100%;
+    /* font-family:Georgia,"Times New Roman",Times,serif;color:#919191;background-color:#232323; */
+    font: 13px/16.999999992px "Guardian Sans", Tahoma, Trebuchet MS, TrebuchetMS, sans-serif;
+    background-color: #e5e5e5;
+}
+
+.container {
+    border: 0px solid blue;
+    margin: 0 auto;
+    max-width: 960px;
+    
+}
+
+.main_container {
+    width:100%;
+    margin: 0 auto;
+    border: 0px solid red;
+    float:left;
+}
+.bodysize {
+    display:block;
+/*    width:960px; */
+    margin:0 auto;
+}
+
+#col1, #col2, #col3{
+    border: 0px solid red;
+    width: 30%;
+    padding-top: 10px;
+    float:left;
+    margin-left: 10px;
+
+}
+#col2 {
+    margin-left: 20px;
+}
+#col3 {
+    margin-left: 20px;
+}
+
+
+.fl_left{
+    float:left;
+    margin-left: 5px;
+}
+
+.fl_right{
+    float:right;
+    margin-right: 5px;
+}
+
+
+.clear:after {
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+    line-height:0;
+}
+
+#header,#footer{
+    display:block;
+    margin:0 auto;
+
+}
+
+#footer {
+    border: 0px solid green;
+    width: 100%;
+    background-color: #333;
+}
+
+
+
+.page {
+    padding:10px 0; 
+    background-color:#f5f5f5;
+    box-shadow: 0px 10px 10px #ccc;
+}
+
+
+figure {
+    display:block;
+    margin:0;
+    padding:0;
+}
+
+
+
+/* ///////////////////////////*/
+#header{
+    padding:20px 0;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+#header  h1{
+    font-size:36px;
+    font-weight:normal;
+    text-transform:none;
+    
+}
+
+#header  h2{
+    font-size:13px;
+    font-weight:normal;
+    text-transform:none;
+}
+
+
+
+#header #hgroup{
+    float:left;
+    margin:0 0 20px 0;
+    border: 0px solid blue;
+}
+
+
+.row1, .row3 {
+    margin: 0 auto;    
+
+}
+
+
+.row1, .row1 a{
+    color:#C0BAB6;
+    background-color:#333333;
+    border: 0px solid red;
+
+}
+
+.row2{
+    color:#979797;
+    /* background-color:#FFFFFF; */
+    background-color: #e5e5e5;
+}
+
+.row2 a{
+    color:#FF9900;
+    background-color:#FFFFFF;
+}
+
+.row3,.row3 a{
+    color:#919191;
+
+}
+
+
+
+
+
+
+/*//////////////////////////////////*/
+
+
+
+nav ul{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+h1,h2,h3,h4,h5,h6{
+    margin:0;
+    padding:0;
+    font-size:16px;
+    font-weight:bold;
+    font-style:normal;
+    line-height:normal;
+    text-transform:uppercase;
+}
+
+.lastbox{
+    margin-right:0;
+}
+
+
+#header nav{
+    display:block;
+    float:right;
+    margin:10px 0 0 0;
+    padding:20px 0;
+    color:#C0BAB6;
+    background-color:#232323;
+}
+
+#header nav ul{
+    padding:0 20px;
+}
+
+#header nav li{
+    display:inline;
+    margin-right:25px;
+    text-transform:uppercase;
+}
+
+#header nav li.last{
+    margin-right:0;
+}
+
+#header nav li a{
+    color:#C0BAB6;
+    background-color:#232323;
+}
+#header nav li a:hover{
+    color:#FF9900;
+    background-color:#232323;
+}

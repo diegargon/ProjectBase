@@ -1,0 +1,11 @@
+{
+    "plugin_name": "Newspage",
+    "enabled": "1",
+    "main_file" : "Newspage.php",
+    "function_init": "Newspage_init",
+    "function_install": "",
+    "provided": "",
+    "depends" : "SQL1 tplbasic1 multilang1",
+    "autostart": "0",
+    "priority" : "5"   
+}

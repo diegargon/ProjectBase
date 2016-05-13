@@ -1,0 +1,17 @@
+/*
+ Copyright @ 2016 Diego Garcia
+*/
+
+@media only screen and (max-width: 500px) {
+    #col1, #col2, #col3 {
+        width:94%;
+        margin-left: 0px;
+    }
+    #header nav {
+        float:left;
+    }
+    .page {
+        padding: 5px 0;
+    }
+}
+

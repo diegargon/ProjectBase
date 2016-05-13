@@ -1,0 +1,11 @@
+{
+    "plugin_name": "tplBasic",
+    "enabled": "1",
+    "main_file" : "tplBasic.php",
+    "function_init": "tplBasic_init",
+    "function_install": "",
+    "provided": "tplbasic1",
+    "depends" : "",
+    "autostart": "1",
+    "priority" : "5"   
+}

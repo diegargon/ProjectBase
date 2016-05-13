@@ -1,0 +1,11 @@
+{
+    "plugin_name": "SMBasic",
+    "enabled": "1",
+    "main_file" : "SMBasic.php",
+    "function_init": "SMBasic_init",
+    "function_install": "",
+    "provided": "sessions",
+    "depends" : "SQL1",
+    "autostart": "1",
+    "priority" : "1"   
+}

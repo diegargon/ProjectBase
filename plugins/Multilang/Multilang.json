@@ -1,0 +1,11 @@
+{
+    "plugin_name": "Multilang",
+    "enabled": "1",
+    "main_file" : "Multilang.php",
+    "function_init": "Multilang_init",
+    "function_install": "",
+    "provided": "multilang1",
+    "depends" : "",
+    "autostart": "0",
+    "priority" : "5"   
+}

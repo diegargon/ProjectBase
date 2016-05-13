@@ -1,0 +1,18 @@
+/*
+ Copyright @ 2016 Diego Garcia
+*/
+/* 
+    Created on : 09-may-2016, 14:21:38
+    Author     : melmoth
+*/
+
+
+@media only screen and (max-width: 500px) {
+    #featured {
+        margin-left: 5px;
+    }
+    .newsbox {
+        margin-left: 2px;
+    }
+
+}

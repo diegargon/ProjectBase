@@ -1,0 +1,11 @@
+{
+    "plugin_name": "MysqlDB",
+    "enabled": "1",
+    "main_file" : "MysqlDB.php",
+    "function_init": "MysqlDB_Init",
+    "function_install": "",
+    "provided": "SQL1",
+    "depends" : "",
+    "autostart": "1",
+    "priority" : "5"   
+}

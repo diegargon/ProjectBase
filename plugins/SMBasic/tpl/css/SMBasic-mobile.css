@@ -1,0 +1,16 @@
+/*
+ Copyright @ 2016 Diego Garcia
+*/
+
+@media only screen and (max-width: 500px) {
+    .loginbox h1 {
+        font-size: 18px;
+    }
+    .loginbox {
+        padding-left: 5px;
+        padding-bottom: 2px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    
+}
