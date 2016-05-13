@@ -4,6 +4,10 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
+/*
+ * do_action("encrypt_password") // Override/set for change default one
+ */
+
 function SMBasic_Init() {
     print_debug("SMBasic initialice<br/>");
     require("includes/SMBasic.inc.php");
@@ -37,7 +41,7 @@ function SMBasic_regPage() {
 function SMBasic_loginPage () {
 
     if (isset($_POST['email1']) && isset($_POST['password1'])) {
-        SMBasic_checkLogin();
+            SMBasic_checkLogin();        
     } else {
        do_action("common_web_structure");
        register_action("add_link", "SMBasic_CSS","5");
@@ -54,9 +58,15 @@ function SMBasic_checkLogin() {
         (($email = s_char($_POST['email1'], $config['smbasic_max_email'])) != false) && 
         (($password = s_char($_POST['password1'], $config['smbasic_max_password']))!= false))
     {
-        
-       $password = SMBasic_encrypt_password($password);
-       
+        if(action_isset("encrypt_password") == false) {           
+           $password = SMBasic_encrypt_password($password);
+        } else {
+            $password = do_action("encrypt_password");
+        }
+        if(!isset($password)) {
+            print "Internal Error password mechanism";
+            exit(0);
+        }
        $response = [];
        
         $q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password'";
@@ -74,8 +84,8 @@ function SMBasic_checkLogin() {
     echo json_encode($response, JSON_UNESCAPED_SLASHES);
 }
 function SMBasic_navLogReg() {
-
-    $elements = "<li class=\"nav_right\"><a href=\"login.php\">Login</a></li>\n";
+    $elements = "<li class=\"nav_right\"><a href=\"profile.php\">Anonimo</a></li>\n";
+    $elements .= "<li class=\"nav_right\"><a href=\"login.php\">Login</a></li>\n";
     $elements .= "<li class=\"nav_right\"><a href=\"register.php\">Register</a></li>\n";
     return $elements;
 }
