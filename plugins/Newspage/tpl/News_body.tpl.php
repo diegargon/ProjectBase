@@ -12,15 +12,18 @@ global $tpldata;
             <?php isset($tpldata['ADD_TOP_NEWS']) ? print $tpldata['ADD_TOP_NEWS']:false ?>
             
              <?php echo $tpldata['FEATURED'] ?> 
-            <div id="col1">
+            <section id="col1">
+                <h2>Col1Title:Fixme</h2>
                <?php   echo $tpldata['COL1_ARTICLES'] ?>
-            </div>
-            <div id="col2">
+            </section>
+            <section id="col2">
+               <h2>Col1Title:Fixme</h2>
                <?php   echo $tpldata['COL2_ARTICLES'] ?>
-            </div>
-            <div id="col3">
+            </section>
+            <section id="col3">
+               <h2>Col1Title:Fixme</h2>
                <?php   echo $tpldata['COL3_ARTICLES'] ?>
-            </div>            
+            </section>            
             <?php isset($tpldata['ADD_BOTTOM_NEWS']) ? print $tpldata['ADD_BOTTOM_NEWS']:false ?>            
         </div>
     

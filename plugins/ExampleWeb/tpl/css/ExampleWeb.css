@@ -35,15 +35,12 @@ html, body {
     width: 30%;
     padding-top: 10px;
     float:left;
-    margin-left: 10px;
+    margin-left: 20px;
 
 }
-#col2 {
-    margin-left: 20px;
-}
-#col3 {
-    margin-left: 20px;
-}
+
+
+#col1, col2, #col3 h1 {}
 
 .fl_left{
     float:left;

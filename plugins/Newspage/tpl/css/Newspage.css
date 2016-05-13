@@ -6,12 +6,12 @@
     Author     : melmoth
 */ 
 
-
+/* NEWS */
 .newsbox {
     display:block;
     float:left;
-    margin:0 10px 10px 10px;
-    width: 100%;
+    margin:0 0px 10px 0px;
+    /* width: 100%; */
     /* border: 1px solid #dcdcdc; */
     text-decoration: none;
     color: gray;
@@ -41,6 +41,7 @@
     border:0px solid #DEDEDE;
 }
 
+/* FEATURED */
 
 #featured {
    display:table;
@@ -62,6 +63,10 @@
     height:300px;
 */
     box-shadow: 0 0 10px #ccc;
+}
+
+#featured h2 {
+    color: #989898;
 }
 .feature_image{
     display: table-cell;
@@ -90,9 +95,11 @@
     opacity: 0.8; 
 }
 
-#featured:hover h1 {
+#featured:hover h2 {
     color: blue;
 }
+
+/* BUTTON */
 
 .button_switch {
     background:url(../../images/newsswitch.png) no-repeat;
@@ -101,6 +108,8 @@
     border: 0px solid red;
 }
 
+
+/* ARTICLE */
 
 .article_body {
     float:left;

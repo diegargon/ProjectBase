@@ -1,7 +1,7 @@
 <?php
 
 ?>
-<section  class="">
+
 <a href="<?php echo $data['URL'];?>">
 <article class="newsbox">
     <h2><?php echo $data['TITLE'];?></h2>
@@ -9,4 +9,3 @@
     <p><?php echo $data['LEAD'] ?></p>
 </article>
 </a>
-</section>
