@@ -30,6 +30,8 @@ function s_char($char, $size) {
 
     if (strlen($char) <= $size) {
         return input_filter($char);
+    } else if ($size == 0) { // 0 disable size
+        return input_filter($char); 
     }
     return false;
 }
@@ -38,7 +40,11 @@ function s_num($num, $size) {
     if(is_numeric($num) && (strlen($num) <= $size)) {
         return $num;
     }
-    return 0;
+    return false;
+}
+
+function s_bool($bool) {
+    return filter_var($bool, FILTER_VALIDATE_BOOLEAN);
 }
 
 function getserverload() {

@@ -10,97 +10,90 @@
 
 function SMBasic_Init() {
     print_debug("SMBasic initialice<br/>");
-    require("includes/SMBasic.inc.php");
-    require("SMBasic.config.php");
+    require_once("includes/SMBasic.inc.php");
+    require_once("SMBasic.config.php");
     
-    SMBasic_Start();
+    global $config;
+    session_start();
+
+    if (
+         (isset($_SESSION['uid']) && isset($_SESSION['sid'])) &&
+          ($_SESSION['uid'] != 0)
+        ){
+        if(SMBasic_checkSession() == false) {
+            SMBasic_unset_session();
+
+        }
+    } else {
+       if($config['smbasic_session_persistence']) {
+           SMBasic_checkCookies();
+       }    
+    }
     
     register_action("add_nav_element", "SMBasic_navLogReg", "5");
     
     register_uniq_action("login_page", "SMBasic_loginPage");
     register_uniq_action("register_page", "SMBasic_regPage");   
-    
+    register_uniq_action("logout_page", "SMBasic_logoutPage");
+    register_uniq_action("profile_page", "SMBasic_profilePage");
 }
 
-
-function SMBasic_Start () {
-    session_start();
-    
-    $session_id = session_id();
-    require_once("SMBasic.config.php");
-    //session_regenerate_id();
-    //echo "$session_id";
-    
-}
 
 function SMBasic_regPage() {
     do_action("common_web_structure");    
     register_action("add_link", "SMBasic_CSS","5");
-    register_action("add_to_body", "get_register_page", "5");  
+    register_action("add_to_body", "SMBasic_get_register_page", "5");  
 }
+
+function SMBasic_profilePage() {
+    do_action("common_web_structure");    
+    register_action("add_link", "SMBasic_CSS","5");
+    register_action("add_to_body", "SMBasic_profile_page", "5");  
+}
+
 function SMBasic_loginPage () {
 
     if (isset($_POST['email1']) && isset($_POST['password1'])) {
-            SMBasic_checkLogin();        
+            SMBasic_Login();        
     } else {
        do_action("common_web_structure");
        register_action("add_link", "SMBasic_CSS","5");
-       register_action("add_to_body", "get_login_page", "5");
+       register_action("add_to_body", "SMBasic_get_login_page", "5");
        register_action("add_script", "SMBasic_Script", "5");   
        
     }
 }
 
-function SMBasic_checkLogin() {
-    global $config;
-    
-    if ( 
-        (($email = s_char($_POST['email1'], $config['smbasic_max_email'])) != false) && 
-        (($password = s_char($_POST['password1'], $config['smbasic_max_password']))!= false))
-    {
-        if(action_isset("encrypt_password") == false) {           
-           $password = SMBasic_encrypt_password($password);
-        } else {
-            $password = do_action("encrypt_password");
-        }
-        if(!isset($password)) {
-            print "Internal Error password mechanism";
-            exit(0);
-        }
-       $response = [];
-       
-        $q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password'";
-       
-        $query = db_query($q);
-        if ($result = db_fetch($query)) {
-            $response[] = array("status" => "ok", "msg" => $config['WEBURL']);
-        } else {
-            $response[] = array("status" => "error", "msg" => "Email o contraseña incorrectos");
-        }
-        db_free_result($query);
-    } else {
-            $response[] = array("status" => "error", "msg" => "Email o contraseña incorrectos");
-    }
-    echo json_encode($response, JSON_UNESCAPED_SLASHES);
-}
 function SMBasic_navLogReg() {
-    $elements = "<li class=\"nav_right\"><a href=\"profile.php\">Anonimo</a></li>\n";
-    $elements .= "<li class=\"nav_right\"><a href=\"login.php\">Login</a></li>\n";
-    $elements .= "<li class=\"nav_right\"><a href=\"register.php\">Register</a></li>\n";
+    $elements = "";
+    if (isset($_SESSION['username']) && $_SESSION['username'] != "anononimo") {
+        $elements .= "<li class=\"nav_right\"><a href=\"logout.php\">Logout</a></li>\n";
+        $elements .= "<li class=\"nav_right\"><a href=\"profile.php\">". $_SESSION['username']. "</a></li>\n";
+    } else {
+       $elements .= "<li class=\"nav_right\"><a href=\"login.php\">Login</a></li>\n";
+       $elements .= "<li class=\"nav_right\"><a href=\"register.php\">Register</a></li>\n";
+    }
     return $elements;
 }
-function get_login_page() {
+function SMBasic_get_login_page() {
 
     if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "login")) {
         return codetovar($TPLPATH, "");
     }   
 }
 
-function get_register_page() {
+function SMBasic_get_register_page() {
     if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "register")) {
         return codetovar($TPLPATH, "");
     }   
 }
+
+function SMBasic_profile_page() {
+    if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "profile")) {
+        return codetovar($TPLPATH, "");
+    }   
+}
+
 
 function SMBasic_CSS() {
     if($CSSPATH = tpl_get_path("css", "SMBasic", "")) {
@@ -120,4 +113,9 @@ function SMBasic_Script() {
            
     
     return $script;
+}
+
+function SMBasic_logoutPage() {
+    SMBasic_sessionDestroy();
+    header('Location: ./');
 }

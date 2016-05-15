@@ -19,18 +19,15 @@
     padding-bottom: 30px;
     margin-top: 100px;
     margin-bottom: 100px;
+
 }
 
 .loginbox h1{
 	font-size: 38px;
-	color: rgb(6, 106, 117);
-	padding: 2px 0 10px 0;
+	color: rgb(6, 106, 117);	
 	font-family: 'FranchiseRegular','Arial Narrow',Arial,sans-serif;
 	padding-bottom: 30px;
-}
-
-.loginbox label {
-
+        text-align: center;
 }
 
 .loginbox input {
@@ -58,4 +55,32 @@
 }
 .rememberme input {
     width: 0px;
+}
+
+
+.profilebox {
+    margin:auto;
+    width: 50%;
+/*    height: 300px; */
+    background-color: #919191;
+    background: rgb(247, 247, 247);
+    border: 1px solid rgba(147, 184, 189,0.8);
+    box-shadow:	
+		0pt 2px 5px rgba(105, 108, 109,  0.7),	
+		0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
+    border-radius: 5px;
+    text-align:left;
+    padding: 10px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.profilebox h1{
+	font-size: 28px;
+	color: rgb(6, 106, 117);
+	font-family: 'FranchiseRegular','Arial Narrow',Arial,sans-serif;
+	padding-bottom: 30px;
+        text-align: center;
 }

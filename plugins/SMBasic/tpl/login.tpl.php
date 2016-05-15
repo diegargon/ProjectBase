@@ -1,4 +1,5 @@
 <?php
+global $config;
 global $tpldata;
 /* 
  *  Copyright @ 2016 Diego Garcia
@@ -16,15 +17,16 @@ global $tpldata;
 					<label for="password"> Contraseña </label>
                                         <input id="password" name="password" required="required" type="password" autocomplete="off" placeholder="eg. X8df!90EO" /> 
 				</p>
-<!--
+
                                 <p class="rememberme"> 
-					<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> 
-					<label for="loginkeeping">Recuerdame</label>
+					<input type="checkbox" name="rememberme" id="rememberme" value="2" /> 
+					<label for="rememberme">Recuerdame</label>
 				</p>
--->
+                                <?php if($config['smbasic_session_persistence']) {?>                                    
 				<p class="login button"> 
                                     <input type="submit" id="login" name="login" class="btnLogin" value="Login" /> 
 				</p>
+                                <?php } ?>
 				<p class="change_link">
 					¿no eres miembro?
 					<a href="register.php" class="to_register">Registrate</a>
