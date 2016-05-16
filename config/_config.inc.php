@@ -7,13 +7,13 @@
 global $config;
 
 $config['CHARSET'] = "UTF-8";
-$config['WEBDESC'] = "Noticias";
+$config['WEB_DESC'] = "Noticias";
 $config['TITLE'] = "Project Base";
 $config['THEME'] = "default";
 $config['DB_PREFIX'] = "pb_";
-$config['WEBURL'] = "http://envigo.net/ProjectBase";
-$config['web_lang'] = "es";
-$config['web_dir'] = "ltr";
-$config['web_keywords'] = "test";
-$config['web_viewport'] = "width=device-width, initial-scale=1.0";
+$config['WEB_URL'] = "/";
+$config['WEB_LANG'] = "es";
+$config['WEB_DIR'] = "ltr";
+$config['WEB_KEYWORDS'] = "test";
+$config['WEB_VIEWPORT'] = "width=device-width, initial-scale=1.0";
 //$config['']
