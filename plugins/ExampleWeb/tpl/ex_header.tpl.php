@@ -15,8 +15,8 @@ global $tpldata;
         <?php isset($tpldata['ADD_HEADER_BEGIN']) ? print $tpldata['ADD_HEADER_BEGIN'] : false ?>
             
         <div id="logo">
-            <h1><a href="<?php echo $config['WEBURL']?>"><?php echo $config['TITLE']?></a></h1>
-            <h2><?php echo $config['WEBDESC']?></h2>
+            <h1><a href="<?php echo $config['WEB_URL']?>"><?php echo $config['TITLE']?></a></h1>
+            <h2><?php echo $config['WEB_DESC']?></h2>
         </div>
 
         <?php isset($tpldata['NAV']) ? print $tpldata['NAV'] :false ?>

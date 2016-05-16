@@ -9,13 +9,13 @@ global $tpldata;
 <!DOCTYPE html>
 
 
-<html dir="<?php print $config['web_dir']?>" lang="<?php print $config['web_lang']?>">
+<html dir="<?php print $config['WEB_DIR']?>" lang="<?php print $config['WEB_LANG']?>">
     <head>
         <title><?php echo $config['TITLE']?></title>
         <meta charset="<?php echo $config['CHARSET']?>">
-        <meta name="viewport" content="<?php print $config['web_viewport']?>">
-        <meta name="keywords" content="<?php print $config['web_keywords']?>">        
-        <meta name="description" content="<?php echo $config['WEBDESC'] ?>">
+        <meta name="viewport" content="<?php print $config['WEB_VIEWPORT']?>">
+        <meta name="keywords" content="<?php print $config['WEB_KEYWORDS']?>">        
+        <meta name="description" content="<?php echo $config['WEB_DESC'] ?>">
         <?php
         
         isset($tpldata['HEAD']) ? print $tpldata['HEAD'] : false;
