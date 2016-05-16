@@ -21,7 +21,7 @@ function MysqlDB_Init() {
    
    
     
-    db_connect($dbcfg);
+    db_connect();
 }
 
 function MysqlDB_Close() {

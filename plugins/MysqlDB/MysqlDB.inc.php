@@ -1,11 +1,11 @@
 <?php
 
 
-function db_connect($dbcfg) {
+function db_connect() {
     global $dblink;
-    $dblink = mysqli_connect("$dbcfg[database_host]","$dbcfg[database_user]","$dbcfg[database_password]", "$dbcfg[database]");
-
-    db_query("SET NAMES '$dbcfg[dbcharset]'");
+    $dblink = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB);
+    
+    db_query("SET NAMES ". DB_CHARSET ."");
     
     if (mysqli_connect_errno($dblink)) {
         echo "Failed to connect to MySQL: " . db_connect_error();
