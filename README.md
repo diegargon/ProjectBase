@@ -9,5 +9,5 @@ and sometimes must change the general behavior. This is because i haven't experi
  CMS
 
 
-Early example  http://envigo.net/ProjectBase (sometimes not work since its the production web)
+Early example  http://projectbase.envigo.net (sometimes not work since its the production web)
 
