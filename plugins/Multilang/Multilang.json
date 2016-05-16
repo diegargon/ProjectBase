@@ -7,5 +7,5 @@
     "provided": "multilang1",
     "depends" : "",
     "autostart": "0",
-    "priority" : "5"   
+    "priority" : "2"   
 }
