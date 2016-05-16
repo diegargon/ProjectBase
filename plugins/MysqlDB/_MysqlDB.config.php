@@ -4,9 +4,9 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
-$config['database'] = "ProjectBase";
-$config['database_host'] = "localhost";
-$config['database_password'] = "";
-$config['database_user'] = "";
-$config['dbtype'] = "mysql";
-
+$dbcfg['database'] = "ProjectBase";
+$dbcfg['database_host'] = "localhost";
+$dbcfg['database_password'] = "";
+$dbcfg['database_user'] = "";
+$dbcfg['dbtype'] = "mysql";
+$dbcfg['dbcharset'] = "utf8";

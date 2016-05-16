@@ -8,7 +8,7 @@ global $dblink;
 
 
 function MysqlDB_Init() {
-    global $config;
+    //global $config;
     
     
     print_debug("MysqlDB Initialice<br/>");
@@ -21,7 +21,7 @@ function MysqlDB_Init() {
    
    
     
-    db_connect();
+    db_connect($dbcfg);
 }
 
 function MysqlDB_Close() {
