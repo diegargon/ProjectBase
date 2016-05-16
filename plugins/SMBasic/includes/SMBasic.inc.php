@@ -190,7 +190,7 @@ function SMBasic_Login() {
         $query = db_query($q);
         if ($user = db_fetch($query)) {
             SMBasic_setSession($user);
-            $response[] = array("status" => "ok", "msg" => $config['WEBURL']);
+            $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);
         } else {
             $response[] = array("status" => "error", "msg" => "Email o contraseña incorrectos");
         }
