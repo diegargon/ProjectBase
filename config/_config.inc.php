@@ -7,7 +7,6 @@
 global $config;
 
 $config['CHARSET'] = "UTF-8";
-$config['DB_CHARSET'] = "utf8";
 $config['WEBDESC'] = "Noticias";
 $config['TITLE'] = "Project Base";
 $config['THEME'] = "default";

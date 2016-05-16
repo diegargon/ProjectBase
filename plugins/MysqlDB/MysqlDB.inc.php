@@ -4,11 +4,11 @@
 function db_connect() {
     global $dblink;
     $dblink = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB);
-    
+
     db_query("SET NAMES ". DB_CHARSET ."");
     
     if (mysqli_connect_errno($dblink)) {
-        echo "Failed to connect to MySQL: " . db_connect_error();
+        echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
     return true;
 }
@@ -29,12 +29,6 @@ function db_escape_string($var) {
 	return mysqli_real_escape_string($dblink, $var);
 }
 
-
-
-function db_connect_error() {
-	mysqli_connect_error();
-}
-
 function db_num_rows($query) {
 	return mysqli_num_rows($query);
 }
@@ -42,7 +36,7 @@ function db_num_rows($query) {
 function db_close() {
     global $dblink;
 	if (!$dblink) {
-	    die('Could not connect: ' . db_error());
+	    die('Could not connect: ' . mysql_error());
 	}
 	mysqli_close($dblink);
 }
