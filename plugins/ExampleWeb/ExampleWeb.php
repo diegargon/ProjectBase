@@ -8,7 +8,7 @@
 function ExampleWeb_init(){
     
     print_debug ("ExampleWeb initialized<br>");
-    
+
     
     register_uniq_action("index_page", "ex_index_page");
     register_uniq_action("news_page", "ex_news_page");
@@ -19,7 +19,7 @@ function ExampleWeb_init(){
 }
 
 function ex_common_web_structure() {
-//    plugin_manual_start("DebugWindow");      
+ //   plugin_manual_start("DebugWindow");      
     register_action("add_to_body", "ex_header","4");
     register_action("add_link", "ex_main_link","5");    
     register_uniq_action("get_footer", "ex_footer");    
@@ -54,10 +54,10 @@ function ex_index_page(){
 function ex_main_link (){
     
     if($CSSPATH = tpl_get_path("css", "ExampleWeb", "")) {
-        $link = "<link rel='stylesheet' href='$CSSPATH'>\n";
+        $link = "<link rel='stylesheet' href='/$CSSPATH'>\n";
     }
     if($CSSPATH = tpl_get_path("css", "ExampleWeb", "ExampleWeb-mobile")) {
-        $link .= "<link rel='stylesheet' href='$CSSPATH'>\n";
+        $link .= "<link rel='stylesheet' href='/$CSSPATH'>\n";
     }
     
     return $link;

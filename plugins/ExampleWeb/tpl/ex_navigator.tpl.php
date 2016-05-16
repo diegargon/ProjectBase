@@ -19,6 +19,6 @@ global $tpldata;
                 <li><a href="">Text Link</a></li>
                 <li><a href="">Text Link</a></li>
                 -->
-                <li class=""><a href="./">Inicio</a></li>
+                <li class=""><a href="/">Inicio</a></li>
             </ul>
         </nav>

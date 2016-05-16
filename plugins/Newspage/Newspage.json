@@ -5,7 +5,7 @@
     "function_init": "Newspage_init",
     "function_install": "",
     "provided": "",
-    "depends" : "SQL1 tplbasic1 multilang1",
+    "depends" : "SQL1 tplbasic1",
     "autostart": "0",
     "priority" : "5"   
 }

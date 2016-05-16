@@ -2,7 +2,10 @@ RewriteEngine On
 RewriteBase /
 
 
+
+
+
 RewriteRule ^(es|en)(.*)$  $2?lang=$1 [L,QSA]
 RewriteRule ^(es|en)/(.*)$  $2?lang=$1 [L,QSA]
-#RewriteRule ^(.*)$ $1?lang=es [L,QSA]
 
+RewriteRule  ^noticias/([0-9]+)/(.*)$   news.php?nid=$1 [NC,L]

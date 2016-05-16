@@ -14,10 +14,10 @@ function Newspage_init(){
 
 function news_add_link (){
     if($CSSPATH = tpl_get_path("css", "Newspage", "")) {
-        $link = "<link rel='stylesheet' href='$CSSPATH'>\n";
+        $link = "<link rel='stylesheet' href='/$CSSPATH'>\n";
     }
     if($CSSPATH = tpl_get_path("css", "Newspage", "Newspage-mobile")) {
-       $link .= "<link rel='stylesheet' href='$CSSPATH'>\n";
+       $link .= "<link rel='stylesheet' href='/$CSSPATH'>\n";
     }
     return $link;
 }

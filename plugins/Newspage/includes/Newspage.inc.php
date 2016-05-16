@@ -42,8 +42,13 @@ function get_news($category, $limit, $preview, $featured) {
             $data['NID'] = $row['nid'];
             $data['TITLE'] = $row['title'];
             $data['LEAD'] = $row['lead'];
-            $data['URL'] = "news.php?nid=$row[nid]";
-
+            
+            if ($config['FRIENDLY_URL']) {
+                $friendly_url = str_replace(' ', "_", $row['title']);
+                $data['URL'] = "noticias/{$row['nid']}/$friendly_url";
+            } else {
+                  $data['URL'] = "news.php?nid={$row['nid']}";
+            }
             if (!$preview) {
                 $data['TEXT'] = $row['text'];
             }
