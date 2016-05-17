@@ -1,8 +1,19 @@
 RewriteEngine On
 RewriteBase /
 
+#RewriteRule ^(es|en)  $2?lang=$1 [QSA]
+#RewriteRule ^(es|en)/  $2?lang=$1 [QSA]
+
+#RewriteRule  ^news/([0-9]+)/(.*)$   newspage.php?lang=en&nid=$1 [NC]
+#RewriteRule  ^noticias/([0-9]+)/(.*)$   newspage.php?lang=es&nid=$1 [NC]
+
+
 RewriteRule  ^es\/news/([0-9]+)/(.*)$   newspage.php?lang=es&nid=$1 [NC]
 RewriteRule  ^en\/news/([0-9]+)/(.*)$   newspage.php?lang=en&nid=$1 [NC]
 
-RewriteRule ^(es|en)  $2?lang=$1 [QSA]
-RewriteRule ^(es|en)/  $2?lang=$1 [QSA]
+#RewriteRule ^(es|en)  $2?lang=$1 [QSA]
+#RewriteRule ^(es|en)/  $2?lang=$1 [QSA]
+
+
+RewriteRule ^(es|en)(.*)$  $2?lang=$1 [QSA]
+
