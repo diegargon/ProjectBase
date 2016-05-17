@@ -9,11 +9,13 @@
  */
 
 function SMBasic_Init() {
+    global $config;
+    
     print_debug("SMBasic initialice<br/>");
     require_once("includes/SMBasic.inc.php");
     require_once("SMBasic.config.php");
-    
-    global $config;
+    include_once("lang/" . $config['WEB_LANG'] . "/SMBasic.lang.php" ); 
+
     session_start();
 
     if (
@@ -66,13 +68,15 @@ function SMBasic_loginPage () {
 
 function SMBasic_navLogReg() {
     global $config;
+    global $LANGDATA;
+    
     $elements = "";
     if (isset($_SESSION['username']) && $_SESSION['username'] != "anononimo") {
-        $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/logout.php'>Logout</a></li>\n";
+        $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/logout.php'>{$LANGDATA['L_LOGOUT']}</a></li>\n";
         $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/profile.php'>". $_SESSION['username']. "</a></li>\n";
     } else {
-       $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/login.php'>Login</a></li>\n";
-       $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/register.php'>Register</a></li>\n";
+       $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/login.php'>{$LANGDATA['L_LOGIN']}</a></li>\n";
+       $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/register.php'>{$LANGDATA['L_REGISTER']}</a></li>\n";
     }
     return $elements;
 }

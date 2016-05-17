@@ -6,13 +6,15 @@
 //global $tpldata;
 
 function ExampleWeb_init(){
+    global $config;
     
     print_debug ("ExampleWeb initialized<br>");
-
+    include_once("lang/" . $config['WEB_LANG'] . "/ExampleWeb.lang.php" );
+    
   //  echo $_GET['lang'];
    // echo $_SERVER['REQUEST_URI'] ."<br>"; 
     register_uniq_action("index_page", "ex_index_page");
-    register_uniq_action("news_page", "ex_news_page");
+    register_uniq_action("news_page", "ex_news_page"); 
     register_action("common_web_structure", "ex_common_web_structure", "5");
 
 }
@@ -47,9 +49,6 @@ function ex_index_page(){
 
 }
 
-
-
-
 function ex_main_link (){
     
     if($CSSPATH = tpl_get_path("css", "ExampleWeb", "")) {
@@ -77,7 +76,3 @@ function ex_nav() {
         return codetovar($TPLPATH, "");
     }        
 }
-
-
-
-

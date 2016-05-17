@@ -1,6 +1,8 @@
 <?php
 global $config;
 global $tpldata;
+global $LANGDATA;
+
 ?>
 
         <nav>
@@ -20,6 +22,6 @@ global $tpldata;
                 <li><a href="">Text Link</a></li>
                 <li><a href="">Text Link</a></li>
                 -->
-                <li class="left"><a href="/<?php echo $config['WEB_LANG']?>">Inicio</a></li>
+                <li class="left"><a href="/<?php echo $config['WEB_LANG']?>"><?php print $LANGDATA['L_HOME']?></a></li>
             </ul>
         </nav>

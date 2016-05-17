@@ -177,7 +177,7 @@ h1,h2,h3,h4,h5,h6{
   display: inline-block;
   text-align: center;
   text-decoration: none;
-  padding: 10px 12px;
+  padding: 8px 4px;
   transition: 0.3s;
   font-size: 17px;
   border: 0px solid red;
@@ -211,7 +211,7 @@ h1,h2,h3,h4,h5,h6{
     color: inherit;
     border: 1px solid #888;
     cursor:pointer;
-    margin-top: 7px;
+    margin-top: 5px;
     overflow: hidden;
 }
 

@@ -6,6 +6,6 @@
     "function_install": "",
     "provided": "multilang1",
     "depends" : "",
-    "autostart": "0",
+    "autostart": "1",
     "priority" : "2"   
 }

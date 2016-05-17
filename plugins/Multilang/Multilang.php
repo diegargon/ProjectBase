@@ -71,9 +71,9 @@ function ML_nav() {
         $mlnav .= "<option value='es'>Español</option>";
     }
     if ($config['WEB_LANG'] == "en") {
-        $mlnav .= "<option selected value='en' >Ingles</option>";
+        $mlnav .= "<option selected value='en' >English</option>";
     } else {
-        $mlnav .= "<option value='en'>Ingles</option>";
+        $mlnav .= "<option value='en'>English</option>";
     }
 
 
