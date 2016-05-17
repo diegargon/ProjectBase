@@ -13,23 +13,17 @@ function get_news($category, $limit, $preview, $featured) {
     if (isset($config['multilang']) && $config['multilang'] == 1) {
         $q .= " AND lang = '{$config['WEB_LANG']}'";
     }
-    if ((empty($category)) || ($category == 0 )) {
-            
-        if ($limit > 0) {
-            $q .= " LIMIT $limit";
-        }
-        $query = db_query($q);    
-        
-    } else {
+    if ((!empty($category)) && ($category != 0 )) {
         $q .= " AND category = $category";
-
+    }
         if ($limit > 0) {
             $q .= " LIMIT $limit";
         }
-        $query = db_query($q);
-    }
-    
-    if (!$query) {
+
+    $query = db_query($q);
+   
+    if (db_num_rows($query) <= 0) {
+        db_free_result($query);
         return false;
     }
     
@@ -48,9 +42,7 @@ function get_news($category, $limit, $preview, $featured) {
             
             if ($config['FRIENDLY_URL']) {
                 $friendly_url = str_replace(' ', "_", $row['title']);
-
-                    $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";
-
+                $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";
 //                    $data['URL'] = "/en/news_/{$row['nid']}/$friendly_url";
 //                }   
             } else {
@@ -68,9 +60,10 @@ function get_news($category, $limit, $preview, $featured) {
             } else {
                 $content = codetovar($TPLPATH, $data);
             }
+            db_free_result($query2);
         }
         db_free_result($query);
-        db_free_result($query2);
+        
         return $content;
     }
     db_free_result($query);
