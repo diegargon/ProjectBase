@@ -65,6 +65,8 @@ function codetovar($path, $data) {
 }
 
 function input_filter($data) {
+    global $config;
+    
     if (is_array($data)) {
         foreach ($data as $key => $element) {
             $data[$key] = input_filter($element);
@@ -74,7 +76,9 @@ function input_filter($data) {
         $data = trim(htmlentities(strip_tags($data)));        
         if(get_magic_quotes_gpc()) $data = stripslashes($data);
         
-        $data = db_escape_string($data);
+        if (isset($config['SQL_DB']) && $config['SQL_DB']) {
+            $data = db_escape_string($data);
+        }
         
     }
     
