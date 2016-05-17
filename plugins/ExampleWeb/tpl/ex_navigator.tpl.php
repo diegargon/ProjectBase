@@ -1,4 +1,5 @@
 <?php
+global $config;
 global $tpldata;
 ?>
 
@@ -19,6 +20,6 @@ global $tpldata;
                 <li><a href="">Text Link</a></li>
                 <li><a href="">Text Link</a></li>
                 -->
-                <li class=""><a href="/">Inicio</a></li>
+                <li class="left"><a href="/<?php echo $config['WEB_LANG']?>">Inicio</a></li>
             </ul>
         </nav>

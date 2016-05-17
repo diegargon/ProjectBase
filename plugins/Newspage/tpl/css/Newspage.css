@@ -154,12 +154,10 @@
 }
 
 .article_main_media img {
-/*    width: 400px;
-    height: 300px;
-    
-    */
-    width: 100%;
-    height: 100%;
+    width: 400px;
+   /* height: 300px; */    
+/*    width: 100%;
+    height: 100%; */
     padding: 10px;
 }
 

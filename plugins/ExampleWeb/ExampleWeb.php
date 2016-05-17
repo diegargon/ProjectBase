@@ -9,12 +9,11 @@ function ExampleWeb_init(){
     
     print_debug ("ExampleWeb initialized<br>");
 
-    
+  //  echo $_GET['lang'];
+   // echo $_SERVER['REQUEST_URI'] ."<br>"; 
     register_uniq_action("index_page", "ex_index_page");
     register_uniq_action("news_page", "ex_news_page");
     register_action("common_web_structure", "ex_common_web_structure", "5");
-
-
 
 }
 

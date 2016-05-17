@@ -65,13 +65,14 @@ function SMBasic_loginPage () {
 }
 
 function SMBasic_navLogReg() {
+    global $config;
     $elements = "";
     if (isset($_SESSION['username']) && $_SESSION['username'] != "anononimo") {
-        $elements .= "<li class=\"nav_right\"><a href=\"/logout.php\">Logout</a></li>\n";
-        $elements .= "<li class=\"nav_right\"><a href=\"/profile.php\">". $_SESSION['username']. "</a></li>\n";
+        $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/logout.php'>Logout</a></li>\n";
+        $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/profile.php'>". $_SESSION['username']. "</a></li>\n";
     } else {
-       $elements .= "<li class=\"nav_right\"><a href=\"/login.php\">Login</a></li>\n";
-       $elements .= "<li class=\"nav_right\"><a href=\"/register.php\">Register</a></li>\n";
+       $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/login.php'>Login</a></li>\n";
+       $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/register.php'>Register</a></li>\n";
     }
     return $elements;
 }

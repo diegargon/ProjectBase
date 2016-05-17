@@ -8,7 +8,7 @@ function Newspage_init(){
     print_debug("Newspage Inititated<br/>");
     require("includes/Newspage.inc.php");
 
-    
+    //echo $_SERVER['REQUEST_URI'] ."<br>";
 }
 
 

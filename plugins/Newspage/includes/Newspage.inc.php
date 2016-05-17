@@ -9,7 +9,10 @@ function get_news($category, $limit, $preview, $featured) {
     global $config;
     
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = $featured";
-               
+
+    if (isset($config['multilang']) && $config['multilang'] == 1) {
+        $q .= " AND lang = '{$config['WEB_LANG']}'";
+    }
     if ((empty($category)) || ($category == 0 )) {
             
         if ($limit > 0) {
@@ -45,9 +48,13 @@ function get_news($category, $limit, $preview, $featured) {
             
             if ($config['FRIENDLY_URL']) {
                 $friendly_url = str_replace(' ', "_", $row['title']);
-                $data['URL'] = "noticias/{$row['nid']}/$friendly_url";
+
+                    $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";
+
+//                    $data['URL'] = "/en/news_/{$row['nid']}/$friendly_url";
+//                }   
             } else {
-                  $data['URL'] = "news.php?nid={$row['nid']}";
+                  $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
             }
             if (!$preview) {
                 $data['TEXT'] = $row['text'];
