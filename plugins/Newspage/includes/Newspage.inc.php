@@ -4,7 +4,6 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
-
 function get_news($category, $limit, $preview, $featured) {
     global $config;
     
@@ -72,12 +71,12 @@ function get_news($category, $limit, $preview, $featured) {
 
 function get_news_byId($id){
     global $config;
+    
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id LIMIT 1";
     $query = db_query($q);
     $row = db_fetch($query);
-
-
     db_free_result($query);
+
     return $row;
 }
 
@@ -90,5 +89,6 @@ function get_news_media_byID($id) {
         $media[] = array ("mediaid" => $row['mediaid'], "mediatype" => $row['mediatype'], "medialink" => $row['medialink'], "itsmain" => $row['itsmain']);        
     }
     db_free_result($query);
+
     return $media;
 }
