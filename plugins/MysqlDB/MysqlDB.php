@@ -12,7 +12,7 @@ function MysqlDB_Init() {
     
     
     print_debug("MysqlDB Initialice<br/>");
-    
+    $config['SQL_DB'] = 1;
     
     require_once("MysqlDB.config.php");
     require_once("MysqlDB.inc.php");
