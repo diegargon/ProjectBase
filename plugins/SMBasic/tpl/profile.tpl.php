@@ -6,7 +6,7 @@ global $tpldata;
 ?>
 
 <div  class="clear bodysize page">   
-    <div class="profilebox">
+    <div class="profile_box">
         <form  action="" autocomplete="off" method="post"> 
             <h1>Profile page</h1> 
             <p>UserID: <?php print $_SESSION['uid']?></p>
