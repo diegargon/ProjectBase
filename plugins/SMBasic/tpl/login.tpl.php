@@ -8,7 +8,7 @@ global $LANGDATA;
  */
 ?>
     <div  class="clear bodysize page">   
-        <div class="loginbox">
+        <div class="login_box">
             <form  action="" autocomplete="off" method="post"> 
 				<h1><?php print $LANGDATA['L_LOGIN']?></h1> 
 				<p> 
@@ -19,16 +19,16 @@ global $LANGDATA;
 					<label for="password"><?php print $LANGDATA['L_PASSWORD']?></label>
                                         <input id="password" name="password" required="required" type="password" autocomplete="off" placeholder="<?php print $LANGDATA['L_PASSWORD_EXAMPLE']?>" /> 
 				</p>
-
+                                <?php if($config['smbasic_session_persistence']) {?>
                                 <p class="rememberme"> 
 					<input type="checkbox" name="rememberme" id="rememberme" value="2" /> 
 					<label for="rememberme"><?php print $LANGDATA['L_REMEMBERME']?></label>
 				</p>
-                                <?php if($config['smbasic_session_persistence']) {?>                                    
+                                <?php } ?>
 				<p class="login button"> 
                                     <input type="submit" id="login" name="login" class="btnLogin" value="<?php print $LANGDATA['L_LOGIN']?>" /> 
 				</p>
-                                <?php } ?>
+                                
 				<p class="change_link">
 					<?php print $LANGDATA['L_REGISTER_MSG']?>
 					<a href="register.php" class="to_register"><?php print $LANGDATA['L_REGISTER']?></a>
