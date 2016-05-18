@@ -36,7 +36,7 @@ function do_action($event)
     
 
     
-    $return = ""; 
+    //$return = ""; 
     if(isset($actions[$event]))
     {
         
@@ -48,11 +48,17 @@ function do_action($event)
         foreach($actions[$event] as $func)
         {
             if(function_exists($func['function_name'])) {
-                $return .= call_user_func($func['function_name']);
+                if (isset($return)) {
+                   $return .= call_user_func($func['function_name']);
+                } else {
+                   $return = call_user_func($func['function_name']); 
+                }
             }
         }
     } 
-    return $return;
+    if (isset($return)) {
+        return $return;
+    }
 }
 
 function action_isset($this_event) {
