@@ -12,7 +12,7 @@ function Multilang_init(){
     
     $config['multilang'] = 1;
     
-    //MUST PRIOTIZE MYSQL Plugin load before multilang for use from_db
+    //MUST PRIOTIZE MYSQL Plugin load before starting multilang for use from_db
     if (isset($config['SQL_DB']) && $config['SQL_DB'] == 1 && $config['ML_USE_JSON_LANGS'] == 0) {
         register_uniq_action("get_site_langs", "ML_get_langs_from_db");
     } else {
