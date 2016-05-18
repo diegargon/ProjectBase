@@ -54,8 +54,12 @@ function SMBasic_profilePage() {
 }
 
 function SMBasic_loginPage () {
-
-    if (isset($_POST['email1']) && isset($_POST['password1'])) {
+    
+    if (
+            isset($_POST['email1']) && 
+            isset($_POST['password1']) &&
+            isset($_POST['login1'])
+            ) {
             SMBasic_Login();        
     } else {
        do_action("common_web_structure");
