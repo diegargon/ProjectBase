@@ -10,8 +10,15 @@ function get_news($category, $limit, $preview, $featured) {
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = $featured";
 
     if (isset($config['multilang']) && $config['multilang'] == 1) {
-        $q .= " AND lang = '{$config['WEB_LANG']}'";
+        $LANGS = do_action("get_site_langs");
+        
+        foreach ($LANGS as $lang) {
+            if ($lang->iso_code == $config['WEB_LANG']) {
+                $q .= " AND lang_id = $lang->lang_id";
+            } 
+        }
     }
+    
     if ((!empty($category)) && ($category != 0 )) {
         $q .= " AND category = $category";
     }
@@ -41,9 +48,7 @@ function get_news($category, $limit, $preview, $featured) {
             
             if ($config['FRIENDLY_URL']) {
                 $friendly_url = str_replace(' ', "_", $row['title']);
-                $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";
-//                    $data['URL'] = "/en/news_/{$row['nid']}/$friendly_url";
-//                }   
+                $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";  
             } else {
                   $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
             }
@@ -66,13 +71,23 @@ function get_news($category, $limit, $preview, $featured) {
         return $content;
     }
     db_free_result($query);
+    
     return false;
 }
 
 function get_news_byId($id){
     global $config;
     
-    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id LIMIT 1";
+    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
+    if ($config['multilang'] == 1) {
+        //FIX check agains pb_lang
+        if ($config['WEB_LANG'] == "es") {
+            $q .= "AND lang_id='1'";
+        } else if ($config['WEB_LANG'] == "en") {
+            $q .= "AND lang_id='2'";
+        }
+    }
+    $q . " LIMIT 1";
     $query = db_query($q);
     $row = db_fetch($query);
     db_free_result($query);

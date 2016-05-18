@@ -20,7 +20,7 @@ function ExampleWeb_init(){
 }
 
 function ex_common_web_structure() {
- //   plugin_manual_start("DebugWindow");      
+//   plugin_manual_start("DebugWindow");      
     register_action("add_to_body", "ex_header","4");
     register_action("add_link", "ex_main_link","5");    
     register_uniq_action("get_footer", "ex_footer");    
