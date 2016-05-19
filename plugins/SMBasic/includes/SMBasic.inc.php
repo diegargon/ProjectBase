@@ -250,7 +250,6 @@ function SMBasic_Register() {
         db_free_result($query);
         return false;                        
     }    
-    $register_message =""; //DEL
     
     db_free_result($query);
 
