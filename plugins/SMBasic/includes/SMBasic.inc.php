@@ -38,8 +38,6 @@ function SMBasic_validate_password($password) {
     return s_char($password, $config['smbasic_max_password']);
 }
 
-
-
 function SMBasic_sessionDestroy() {
     // TODO 
     $_SESSION = [];
@@ -193,9 +191,8 @@ function SMBasic_Login() {
             } else {
                 $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
             }
-        } else {
-            $response[] = array("status" => "error", "msg" => $password );
-            //$response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD'] );
+        } else {            
+            $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD'] );
         }
         db_free_result($query);
     } else {
@@ -292,20 +289,15 @@ function SMBasic_Register() {
 
 function SMBasic_create_reg_mail($active) {
     global $LANGDATA;
-    //$mail = [];
-   // $mail = "";
     
     if ($active > 1) {        
         $URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" . "?active=$active";
         $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL"; 
-        //$mail[] = array("msg", $msg);
         
     } else {
         $register_message = $LANGDATA['L_REGISTER_OKMSG'];
         $URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
-
-//        $mail[] = array("", $msg);
     }  
     
     return $msg;
