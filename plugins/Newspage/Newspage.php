@@ -44,7 +44,7 @@ function news_show_body_1() {
     $tpldata['NEWS_TITLE'] = $row['title'];    
     $tpldata['NEWS_LEAD'] = $row['lead'];    
     $tpldata['NEWS_URL'] = "news.php?nid=$row[nid]";
-    $tpldata['NEWS_DATE'] = $row['date'];
+    $tpldata['NEWS_DATE'] = format_date($row['date']);
     $tpldata['NEWS_AUTHOR'] = $row['author'];
     $tpldata['NEWS_TEXT']  = $row['text'];
 
@@ -55,11 +55,7 @@ function news_show_body_1() {
             $tpldata['NEWS_MAIN_MEDIA'] = $media['medialink'];
         }
     }
-    
-/*  
-    $media_debug = print_r($media, true);
-    print_debug("<pre>".$media_debug."</pre>");
-*/    
+      
      if ($TPLPATH = tpl_get_path("tpl", "Newspage", "news_show_body")) {
         return codetovar($TPLPATH, "");
     }     
@@ -89,14 +85,12 @@ function news_body_switcher (){
 }
 function news_body_1() {
     global $tpldata;
-
     
-    $tpldata['COL1_ARTICLES'] = get_news(0,0,1,0);
-    $tpldata['COL2_ARTICLES'] = get_news(0,0,1,0);
-    $tpldata['COL3_ARTICLES'] = get_news(0,0,1,0);
-    $tpldata['FEATURED'] = get_news(0,1,1,1);
-
-    
+    $tpldata['COL1_ARTICLES'] = get_news(1,0,1,0);
+    $tpldata['COL2_ARTICLES'] = get_news(1,0,1,0);
+    $tpldata['COL3_ARTICLES'] = get_news(1,0,1,0);
+    $tpldata['FEATURED'] = get_news(1,1,1,1);
+   
     if ($TPLPATH = tpl_get_path("tpl", "Newspage", "News_body")) {
         return codetovar($TPLPATH, "");
     }        
@@ -104,13 +98,11 @@ function news_body_1() {
 
 function news_body_2() {
     global $tpldata;
-
-    
-    $tpldata['COL1_ARTICLES'] = get_news(0,0,1,0);
-    $tpldata['COL2_ARTICLES'] = get_news(0,0,1,0);
-    $tpldata['COL3_ARTICLES'] = get_news(0,0,1,0);
-    $tpldata['FEATURED'] = get_news(0,1,1,1);
-
+   
+    $tpldata['COL1_ARTICLES'] = get_news(1,0,1,0);
+    $tpldata['COL2_ARTICLES'] = get_news(1,0,1,0);
+    $tpldata['COL3_ARTICLES'] = get_news(1,0,1,0);
+    $tpldata['FEATURED'] = get_news(1,1,1,1);
     
     if ($TPLPATH = tpl_get_path("tpl", "Newspage", "News_body_2")) {
         return codetovar($TPLPATH, "");
@@ -118,8 +110,7 @@ function news_body_2() {
 }
 
 
-function news_layout_switcher($value) {
-        
+function news_layout_switcher($value) {        
     $data = "<form method=\"post\"><div class=\"\">";
     $data .= "<input type=\"submit\"  value=\"\" class=\"button_switch\" />";
     $data .= "<input type=\"hidden\" value=\"$value\" name=\"news_switch\"/>";

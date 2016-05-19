@@ -13,10 +13,10 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
 <?php } ?>
             <div class="article_body">
                 <?php isset($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
-                
                 <div class="article_title">
                     <?php isset($tpldata['NEWS_TITLE']) ? print $tpldata['NEWS_TITLE']:false ?>
                 </div>
+                <div class="extra-small"><?php print($tpldata['NEWS_DATE'])?> | <?php print $tpldata['NEWS_AUTHOR'] ?></div>                
                 <div class="article_lead">
                     <?php isset($tpldata['NEWSLEAD']) ? print $tpldata['NEWS_LEAD']:false ?>
                 </div>                                

@@ -21,10 +21,11 @@ function print_debug($msg) {
     
     $debug .= $msg;
 }
-
+/* for remove
 function text_echo($text) {
     return htmlspecialchars($text); 
 }
+*/
 
 function s_char($char, $size) {
 
@@ -83,6 +84,11 @@ function input_filter($data) {
     }
     
     return $data;
+}
+
+function format_date($date) {
+    global $config;
+    return date($config['DEFAULT_DATEFORMAT'], strtotime($date));
 }
 
 /* BORRAR

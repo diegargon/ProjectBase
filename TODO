@@ -5,7 +5,6 @@ by priority order
 
 #PRIORITY
  
-Newspage:Fix News categories and display categories name in columns
 New:Admin basic Plugin
 New:Admin News 
 New:Fix duplicate standard scripts like jquery (plugin "common_scripts" or other way)

@@ -95,7 +95,7 @@
     opacity: 0.8; 
 }
 
-#featured:hover h2 {
+#featured article:hover h2 {
     color: blue;
 }
 
@@ -166,4 +166,20 @@
     font-weight: bold;
     color: red;
     text-align: center;
+}
+
+.p-extra-small {
+    font-size: 10px;
+    margin:0 auto;
+}
+
+.extra-small {
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.category_name {
+    color: #FFFFFF;
+    background-color: black; 
+    margin-bottom: 8px;
 }

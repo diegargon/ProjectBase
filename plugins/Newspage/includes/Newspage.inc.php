@@ -14,7 +14,8 @@ function get_news($category, $limit, $preview, $featured) {
         
         foreach ($LANGS as $lang) {
             if ($lang->iso_code == $config['WEB_LANG']) {
-                $q .= " AND lang_id = $lang->lang_id";
+                $lang_id = $lang->lang_id;
+                $q .= " AND lang_id = $lang_id";
             } 
         }
     }
@@ -32,20 +33,37 @@ function get_news($category, $limit, $preview, $featured) {
         db_free_result($query);
         return false;
     }
+
+        $q = "SELECT name FROM {$config['DB_PREFIX']}categories WHERE cid = '$category'";
+
+        if (isset($config['multilang']) && $config['multilang'] == 1) {
+            $q .= " AND lang_id = $lang_id";
+        }
+        $q .= " LIMIT 1";
+        $query2 = db_query($q);
+        $category = db_fetch($query2);
+        db_free_result($query2);
     
     if ($featured) {
+        //NEWS FEATURE
         $TPLPATH = tpl_get_path("tpl", "Newspage", "NewsFeatured");
+        $data['FEATURED_CAT'] = "Featured " . $category['name'];
     } else {
+        //NEWS
         $TPLPATH = tpl_get_path("tpl", "Newspage", "News");
+        $content = "<h2 class=\"category_name\">{$category['name']}</h2>";        
     }
     
     if ($TPLPATH != "0") {
-       
+
         while ($row = db_fetch($query)) {
             $data['NID'] = $row['nid'];
             $data['TITLE'] = $row['title'];
             $data['LEAD'] = $row['lead'];
-            
+            //FIX: Better... str_replace
+            $data['date'] = format_date($row['date']);
+            $date['ALT_TITLE'] = str_replace(' ', "-", $row['title']);
+            $date['ALT_TITLE'] = str_replace('"', "", $date['ALT_TITLE']);
             if ($config['FRIENDLY_URL']) {
                 $friendly_url = str_replace(' ', "-", $row['title']);
                 $friendly_url = str_replace('"', "", $friendly_url);
@@ -53,6 +71,7 @@ function get_news($category, $limit, $preview, $featured) {
             } else {
                   $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
             }
+            
             if (!$preview) {
                 $data['TEXT'] = $row['text'];
             }
@@ -107,7 +126,11 @@ function get_news_media_byID($id) {
     $query = db_query("SELECT * FROM $config[DB_PREFIX]media WHERE nid = $id");
     $media = [];
     while ($row = db_fetch($query)) {
-        $media[] = array ("mediaid" => $row['mediaid'], "mediatype" => $row['mediatype'], "medialink" => $row['medialink'], "itsmain" => $row['itsmain']);        
+        $media[] = array (
+            "mediaid" => $row['mediaid'], 
+            "mediatype" => $row['mediatype'], 
+            "medialink" => $row['medialink'], 
+            "itsmain" => $row['itsmain']);        
     }
     db_free_result($query);
 
