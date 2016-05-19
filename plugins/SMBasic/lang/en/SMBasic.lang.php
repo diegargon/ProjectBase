@@ -16,6 +16,7 @@ $LANGDATA['L_LOGOUT'] = "Logout";
 $LANGDATA['L_EMAIL'] = "Email";
 $LANGDATA['L_EMAIL_EXAMPLE'] = "my@email.com";
 $LANGDATA['L_PASSWORD'] = "Password";
+$LANGDATA['L_RPASSWORD'] = "Password again";
 $LANGDATA['L_PASSWORD_EXAMPLE'] = "eg. y8df!99e7";
 $LANGDATA['L_REMEMBERME'] = "Remember me";
 $LANGDATA['L_USERNAME'] = "Username";
