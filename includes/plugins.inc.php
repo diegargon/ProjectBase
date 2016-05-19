@@ -30,7 +30,7 @@ function register_uniq_action($event, $func, $priority = 0) {
     
 } 
 
-function do_action($event)
+function do_action($event, $params=null)
 {
     global $actions;
     
@@ -49,9 +49,9 @@ function do_action($event)
         {
             if(function_exists($func['function_name'])) {
                 if (isset($return)) {
-                   $return .= call_user_func($func['function_name']);
+                   $return .= call_user_func($func['function_name'], $params);
                 } else {
-                   $return = call_user_func($func['function_name']); 
+                   $return = call_user_func($func['function_name'], $params); 
                 }
             }
         }
