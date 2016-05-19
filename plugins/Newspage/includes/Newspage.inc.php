@@ -75,20 +75,25 @@ function get_news($category, $limit, $preview, $featured) {
     return false;
 }
 
-function get_news_byId($id){
+function get_news_byId($id, $lang){
     global $config;
     
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
-    if ($config['multilang'] == 1) {
-        //FIX check agains pb_lang
-        if ($config['WEB_LANG'] == "es") {
-            $q .= "AND lang_id='1'";
-        } else if ($config['WEB_LANG'] == "en") {
-            $q .= "AND lang_id='2'";
+    if ($config['multilang'] == 1 && !empty($lang)) { 
+        $LANGS = do_action("get_site_langs");
+        foreach ($LANGS as $content) {
+            if($content->iso_code == $lang) {
+                $q .= "AND lang_id = '$content->lang_id'";
+                break;
+            }
         }
-    }
-    $q . " LIMIT 1";
+    }        
+        
+    $q .= " LIMIT 1";
     $query = db_query($q);
+    if(db_num_rows($query) == 0 ) {        
+        return false;
+    }
     $row = db_fetch($query);
     db_free_result($query);
 

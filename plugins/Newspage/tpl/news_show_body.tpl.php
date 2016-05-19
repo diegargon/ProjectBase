@@ -1,16 +1,16 @@
 <?php
 global $tpldata;
- 
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-
-
 ?>
-
-
     <div id="news_container" class="newsrow">
-        <div  class="clear bodysize page">   
+        <div  class="clear bodysize page">
+<?php
+if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
+?>
+            <div class="news_msg"><p><?php print $tpldata['NEWS_MSG']?></p></div>
+<?php } ?>
             <div class="article_body">
                 <?php isset($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
                 

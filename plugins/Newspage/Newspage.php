@@ -30,11 +30,16 @@ function news_show() {
 
 function news_show_body_1() {
     global $tpldata;
+    global $config;
+    global $LANGDATA;
     
     if(($nid = s_num($_GET['nid'], 8)) == 0) {
         return 0;
     }
-    $row = get_news_byId($nid);
+    if (($row = get_news_byId($nid, $config['WEB_LANG'])) == false) {
+        $row = get_news_byId($nid, "");
+        $tpldata['NEWS_MSG'] = $LANGDATA['L_NEWS_WARN_NOLANG'];
+    }
     $tpldata['NID'] = $row['nid'];    
     $tpldata['NEWS_TITLE'] = $row['title'];    
     $tpldata['NEWS_LEAD'] = $row['lead'];    
@@ -42,7 +47,7 @@ function news_show_body_1() {
     $tpldata['NEWS_DATE'] = $row['date'];
     $tpldata['NEWS_AUTHOR'] = $row['author'];
     $tpldata['NEWS_TEXT']  = $row['text'];
-    //$tpldata['MEDIA'] = $row['media'];
+
     $allmedia = get_news_media_byID($nid);
     
     foreach ($allmedia as $media) {

@@ -6,8 +6,6 @@ by priority order
 #PRIORITY
  
 Newspage:Fix News categories and display categories name in columns
-Newspage:Add Error msg when that news not exist in certain language
-Newspage:News rich data, add bar for show (time/creator and extra addons)
 New:Admin basic Plugin
 New:Admin News 
 New:Fix duplicate standard scripts like jquery (plugin "common_scripts" or other way)
@@ -19,6 +17,7 @@ New:admin comments for resources
 Newspage:fix switch body layout and add switcher to navmenu
 SMBasic:clean session table on logout, and after expire.
 Core: Core ErrorMsg for display users
+Newspage:News rich data, add bar for show (time/creator and extra addons)
 ...
 
 
