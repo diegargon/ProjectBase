@@ -71,7 +71,7 @@ function ML_nav() {
     global $config;
 
     $mlnav = "<li class='nav_right'>"
-    . "<form action='' method='post'>"
+    . "<form action='?' method='post'>"
     . "<select name='choose_lang' id='choose_lang'>";
 
     $LANGS = do_action("get_site_langs");
