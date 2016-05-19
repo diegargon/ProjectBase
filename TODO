@@ -1,0 +1,31 @@
+Lots...
+
+by priority order
+
+
+#PRIORITY
+
+Check if the account its active on login
+Register->Activate account 
+Fix News categories and display categories name in columns
+Core ErrorMsg for display users
+Add Error msg when that news not exist in certain language
+News rich data, add bar for show (time/creator and extra addons)
+Admin basic Plugin
+Admin News 
+Fix duplicate standard scripts like jquery (plugin "common_scripts" or other way)
+Profile Display Page
+Profile Change details Page
+Admin users
+comments for resources plugin
+admin comments for resources
+fix switch body layout and add switcher to navmenu
+...
+
+
+#BACKLOG
+User private message plugin
+Forum plugin
+Shop plugin
+Social plugin
+
