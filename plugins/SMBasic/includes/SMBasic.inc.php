@@ -174,11 +174,9 @@ function SMBasic_Login() {
         ($password != null)
         )
     {
-        if(action_isset("encrypt_password") == false) {           
-           $password = SMBasic_encrypt_password($password);
-        } else {
-            $password = do_action("encrypt_password");
-        }
+
+        $password = do_action("encrypt_password", $password);
+
         if(!isset($password)) {
             echo " {$LANGDATA['L_ERROR_INTERNAL']}: 001";
             exit(0);
@@ -256,11 +254,7 @@ function SMBasic_Register() {
     
     db_free_result($query);
 
-    if(action_isset("encrypt_password") == false) {           
-        $password = SMBasic_encrypt_password($password);
-    } else {
-        $password = do_action("encrypt_password");
-    }    
+    $password = do_action("encrypt_password");
    
     if ($config['smbasic_email_confirmation']) {
         $active = mt_rand(9999999, 999999999999);
