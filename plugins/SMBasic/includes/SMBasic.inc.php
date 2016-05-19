@@ -190,6 +190,10 @@ function SMBasic_Login() {
                 $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);
             } else {
                 $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
+                if($user['active'] < 0) { //-1 disable by admin not send email
+                    $mail_msg = SMBasic_create_reg_mail($user['active']);
+                    mail($user['email'], $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg); 
+                }
             }
         } else {            
             $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD'] );
