@@ -46,7 +46,6 @@ function SMBasic_Init() {
 
 function SMBasic_regPage() {
     global $config;
-    $OkRegister = true;
     
     if ( 
             (($config['smbasic_need_email'] == 1) && !isset($_POST['email1'])  ||
@@ -57,7 +56,7 @@ function SMBasic_regPage() {
         do_action("common_web_structure");    
         register_action("add_link", "SMBasic_CSS","5");
         register_action("add_to_body", "SMBasic_get_register_page", "5");  
-        register_action("add_script", "SMBasic_RegisterScript", "5");                          
+        register_action("add_script", "SMBasic_RegisterScript", "5");                                 
     } else {
         SMBasic_Register();   
     }
@@ -70,19 +69,20 @@ function SMBasic_profilePage() {
 }
 
 function SMBasic_loginPage () {
-    
+    if (isset($_GET['active'])) {
+       SMBasic_user_activate_account();
+    }
     if (
             isset($_POST['email1']) && 
             isset($_POST['password1']) &&
             isset($_POST['login1'])
             ) {
-            SMBasic_Login();        
+            SMBasic_Login(); 
     } else {
        do_action("common_web_structure");
        register_action("add_link", "SMBasic_CSS","5");
        register_action("add_to_body", "SMBasic_get_login_page", "5");
-       register_action("add_script", "SMBasic_LoginScript", "5");   
-       
+       register_action("add_script", "SMBasic_LoginScript", "5");          
     }
 }
 

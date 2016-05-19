@@ -62,7 +62,6 @@ $(document).ready(function(){
                     $("form")[0].reset();                
                     $(location).attr('href', json[0].url);
                 } else {
-                    $('input[type="text"],input[type="password"]').css({"border":"2px solid red","box-shadow":"0 0 3px red"});
                     alert(json[0].msg);
                     return false;
                 }

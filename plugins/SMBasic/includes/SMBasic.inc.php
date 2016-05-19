@@ -190,7 +190,7 @@ function SMBasic_Login() {
                 $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);
             } else {
                 $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
-                if($user['active'] < 0) { //-1 disable by admin not send email
+                if($user['active'] > 0) { //-1 disable by admin not send email
                     $mail_msg = SMBasic_create_reg_mail($user['active']);
                     mail($user['email'], $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg); 
                 }
@@ -262,7 +262,7 @@ function SMBasic_Register() {
     $password = do_action("encrypt_password", $password);
 
     if ($config['smbasic_email_confirmation']) {
-        $active = mt_rand(9999999, 999999999999);
+        $active = mt_rand(11111111, 2147483647); //Largest mysql init
         $register_message = $LANGDATA['L_REGISTER_OKMSG_CONFIRMATION'];
     } else {
         $active = 1;
@@ -280,7 +280,7 @@ function SMBasic_Register() {
     
     if($query) {       
        mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg);       
-       $response[] = array("status" => "ok", "msg" => $register_message, "url" => $config['WEB_URL']);
+       $response[] = array("status" => "ok", "msg" => $register_message, "url" => $config['WEB_URL']);       
        echo json_encode($response, JSON_UNESCAPED_SLASHES); 
     } else {
        $response[] = array("status" => "7", "msg" => $LANGDATA['L_REG_ERROR_WHILE']);
@@ -293,16 +293,34 @@ function SMBasic_Register() {
 
 function SMBasic_create_reg_mail($active) {
     global $LANGDATA;
+    global $config;
     
     if ($active > 1) {        
-        $URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" . "?active=$active";
+        $URL = "http://$_SERVER[HTTP_HOST]". "/{$config['WEB_LANG']}/". "login.php" . "?active=$active";
         $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL"; 
         
     } else {
         $register_message = $LANGDATA['L_REGISTER_OKMSG'];
-        $URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $URL = "http://$_SERVER[HTTP_HOST]". "/{$config['WEB_LANG']}/" . "login.php";
         $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
     }  
     
     return $msg;
+}
+
+function SMBasic_user_activate_account() {
+    global $config;
+    if ( ($active = s_num($_GET['active'], 12)) == false) {
+        return false;
+    }
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE active = '$active'";
+    $query = db_query($q);
+    if(!$query || ($row = db_num_rows($query)) <= 0) {
+        return false;
+    } else {
+        $q = "UPDATE {$config['DB_PREFIX']}users SET active = '0' WHERE active='$active'";
+        $query = db_query($q);
+    }
+    
+    return true;
 }
