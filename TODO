@@ -4,28 +4,27 @@ by priority order
 
 
 #PRIORITY
-
-Check if the account its active on login
-Register->Activate account 
-Fix News categories and display categories name in columns
-Core ErrorMsg for display users
-Add Error msg when that news not exist in certain language
-News rich data, add bar for show (time/creator and extra addons)
-Admin basic Plugin
-Admin News 
-Fix duplicate standard scripts like jquery (plugin "common_scripts" or other way)
-Profile Display Page
-Profile Change details Page
-Admin users
-comments for resources plugin
-admin comments for resources
-fix switch body layout and add switcher to navmenu
+ 
+Newspage:Fix News categories and display categories name in columns
+Newspage:Add Error msg when that news not exist in certain language
+Newspage:News rich data, add bar for show (time/creator and extra addons)
+New:Admin basic Plugin
+New:Admin News 
+New:Fix duplicate standard scripts like jquery (plugin "common_scripts" or other way)
+SMBasic:Profile Display Page
+SMBasic:Profile Change details Page
+New:Admin users plugin
+New:comments plugin for resources
+New:admin comments for resources
+Newspage:fix switch body layout and add switcher to navmenu
+SMBasic:clean session table on logout, and after expire.
+Core: Core ErrorMsg for display users
 ...
 
 
 #BACKLOG
-User private message plugin
-Forum plugin
-Shop plugin
-Social plugin
+New:User private message plugin
+New:Forum plugin
+New:Shop plugin
+New:Social plugin
 
