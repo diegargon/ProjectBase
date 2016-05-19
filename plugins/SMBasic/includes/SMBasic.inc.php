@@ -166,7 +166,7 @@ function SMBasic_unset_session() {
 
 function SMBasic_Login() {
     global $config;
-    
+    global $LANGDATA;
     if ( 
         (($email = SMBasic_validate_email($_POST['email1'])) != false) &&
         ($email != null) &&
@@ -180,7 +180,7 @@ function SMBasic_Login() {
             $password = do_action("encrypt_password");
         }
         if(!isset($password)) {
-            print "Internal Error password mechanism";
+            echo " {$LANGDATA['L_ERROR_INTERNAL']}: 001";
             exit(0);
         }
        $response = [];
@@ -192,11 +192,103 @@ function SMBasic_Login() {
             SMBasic_setSession($user);
             $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);
         } else {
-            $response[] = array("status" => "error", "msg" => "Email o contraseña incorrectos");
+            $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD']);
         }
         db_free_result($query);
     } else {
-            $response[] = array("status" => "error", "msg" => "Email o contraseña incorrectos");
+            $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD']);
     }
     echo json_encode($response, JSON_UNESCAPED_SLASHES);
+}
+
+function SMBasic_Register() {
+    global $config;
+    global $LANGDATA;
+    
+    if( 
+        ($config['smbasic_need_email'] == 1)  && 
+        (($email = SMBasic_validate_email($_POST['email1'])) == false)) {
+        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false; 
+    }
+    
+    if(
+        ($config['smbasic_need_username'] == 1) && 
+        (($username = s_char($_POST['username1'], $config['smbasic_max_username'])) == false)) {
+        $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_USERNAME']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    
+    if(
+        ($password = s_char($_POST['password1'], $config['smbasic_max_password'])) == false ) {
+        $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    
+    if (strlen($_POST['password1']) < 8) {
+        $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_PASSWORD_MIN']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'"; 
+    $query = db_query($q);
+     
+    if (($rows  = db_num_rows($query)) > 0) {
+        $response[] = array("status" => "5", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        db_free_result($query);
+        return false;                
+    }
+
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'"; 
+    $query = db_query($q);    
+    if (($rows  = db_num_rows($query)) > 0) {
+        $response[] = array("status" => "6", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        db_free_result($query);
+        return false;                        
+    }    
+    $register_message =""; //DEL
+    
+    db_free_result($query);
+
+    if(action_isset("encrypt_password") == false) {           
+        $password = SMBasic_encrypt_password($password);
+    } else {
+        $password = do_action("encrypt_password");
+    }    
+   
+    if ($config['smbasic_email_confirmation']) {
+        $active = mt_rand(9999999, 999999999999);
+        $register_message = $LANGDATA['L_REGISTER_OKMSG_CONFIRMATION'];
+        $URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" . "?active=$active";
+        $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL"; 
+    } else {
+        $active = 1;
+        $register_message = $LANGDATA['L_REGISTER_OKMSG'];
+        $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n";
+    }    
+
+    $q = "INSERT INTO {$config['DB_PREFIX']}users ("
+        . "username, password, email, active"
+        . ") VALUES ("
+        . "'$username', '$password', '$email', '$active');";   
+
+    $query = db_query($q);
+    
+    if($query) {
+       mail($email,$LANGDATA['L_REG_EMAIL_SUBJECT'],$msg);
+       $response[] = array("status" => "ok", "msg" => $register_message, "url" => $config['WEB_URL']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+    } else {
+       $response[] = array("status" => "7", "msg" => $LANGDATA['L_REG_ERROR_WHILE']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES); 
+       return false;
+    }
+    return true;   
+    
 }

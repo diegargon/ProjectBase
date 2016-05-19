@@ -2,7 +2,7 @@
  Copyright @ 2016 Diego Garcia
 */
 
-.loginbox {
+.login_box, .register_box {
     margin:auto;
     width: 50%;
 /*    height: 300px; */
@@ -22,7 +22,7 @@
 
 }
 
-.loginbox h1{
+.login_box h1, .register_box h1 {
 	font-size: 38px;
 	color: rgb(6, 106, 117);	
 	font-family: 'FranchiseRegular','Arial Narrow',Arial,sans-serif;
@@ -30,20 +30,21 @@
         text-align: center;
 }
 
-.loginbox input {
+.login_box input, .register_box input {
     outline:none;
     color: rgb(190, 188, 188); 
     font-style: italic;
     width: 94%;
     
 }
-.btnLogin {
+.btnLogin, .btnRegister {
+    margin-top: 5px;
     width: 100px !important;
     margin-left: 35%;
 }
 
 
-.loginbox p {
+.login_box p, .register_box p {
     margin: 0;
     padding: 0;
 }
@@ -57,8 +58,7 @@
     width: 0px;
 }
 
-
-.profilebox {
+.profile_box {
     margin:auto;
     width: 50%;
 /*    height: 300px; */
