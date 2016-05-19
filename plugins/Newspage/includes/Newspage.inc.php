@@ -47,7 +47,8 @@ function get_news($category, $limit, $preview, $featured) {
             $data['LEAD'] = $row['lead'];
             
             if ($config['FRIENDLY_URL']) {
-                $friendly_url = str_replace(' ', "_", $row['title']);
+                $friendly_url = str_replace(' ', "-", $row['title']);
+                $friendly_url = str_replace('"', "", $friendly_url);
                 $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";  
             } else {
                   $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
