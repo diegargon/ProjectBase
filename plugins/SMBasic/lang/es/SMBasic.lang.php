@@ -38,4 +38,7 @@ $LANGDATA['L_REG_EMAIL_SUBJECT'] = "Registro de usuario";
 $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] = "Su cuenta a sido creada, para activar por favor pulse en el siguiente enlace:";
 $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] = "Bienvenido...";
 
+
+$LANGDATA['L_ACCOUNT_INACTIVE'] = "Su cuenta no esta activa, si es un nuevo registro activela con el correo que le hemos enviado, si no pongase en contacto con la administracion";
+
 //$LANGDATA['L_'] = "";

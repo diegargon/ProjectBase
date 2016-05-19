@@ -187,10 +187,15 @@ function SMBasic_Login() {
        
         $query = db_query($q);
         if ($user = db_fetch($query)) {
-            SMBasic_setSession($user);
-            $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);
+            if($user['active'] == 0) {
+                SMBasic_setSession($user);
+                $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);
+            } else {
+                $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
+            }
         } else {
-            $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD']);
+            $response[] = array("status" => "error", "msg" => $password );
+            //$response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD'] );
         }
         db_free_result($query);
     } else {
@@ -253,19 +258,18 @@ function SMBasic_Register() {
     
     db_free_result($query);
 
-    $password = do_action("encrypt_password");
-   
+    $password = do_action("encrypt_password", $password);
+
     if ($config['smbasic_email_confirmation']) {
         $active = mt_rand(9999999, 999999999999);
         $register_message = $LANGDATA['L_REGISTER_OKMSG_CONFIRMATION'];
-        $URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" . "?active=$active";
-        $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL"; 
     } else {
         $active = 1;
-        $register_message = $LANGDATA['L_REGISTER_OKMSG'];
-        $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n";
-    }    
-
+        $register_message = $LANGDATA['L_REGISTER_OKMSG'];        
+    }
+    
+    $mail_msg = SMBasic_create_reg_mail($active);
+    
     $q = "INSERT INTO {$config['DB_PREFIX']}users ("
         . "username, password, email, active"
         . ") VALUES ("
@@ -273,15 +277,36 @@ function SMBasic_Register() {
 
     $query = db_query($q);
     
-    if($query) {
-       mail($email,$LANGDATA['L_REG_EMAIL_SUBJECT'],$msg);
+    if($query) {       
+       mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg);       
        $response[] = array("status" => "ok", "msg" => $register_message, "url" => $config['WEB_URL']);
-       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES); 
     } else {
        $response[] = array("status" => "7", "msg" => $LANGDATA['L_REG_ERROR_WHILE']);
-       echo json_encode($response, JSON_UNESCAPED_SLASHES); 
-       return false;
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
     }
+    
     return true;   
     
+}
+
+function SMBasic_create_reg_mail($active) {
+    global $LANGDATA;
+    //$mail = [];
+   // $mail = "";
+    
+    if ($active > 1) {        
+        $URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" . "?active=$active";
+        $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL"; 
+        //$mail[] = array("msg", $msg);
+        
+    } else {
+        $register_message = $LANGDATA['L_REGISTER_OKMSG'];
+        $URL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
+
+//        $mail[] = array("", $msg);
+    }  
+    
+    return $msg;
 }

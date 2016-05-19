@@ -16,6 +16,9 @@ function SMBasic_Init() {
     require_once("SMBasic.config.php");
     include_once("lang/" . $config['WEB_LANG'] . "/SMBasic.lang.php" ); 
 
+    if (action_isset("encrypt_password") == false) {
+        register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
+    }
     session_start();
 
     if (
