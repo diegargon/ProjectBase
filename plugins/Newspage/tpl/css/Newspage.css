@@ -71,7 +71,7 @@
 .feature_image{
     display: table-cell;
     border:0px solid blue;
-    width:50%;
+    width:55%;
 }
 
 .feature_article {
@@ -179,7 +179,11 @@
 }
 
 .category_name {
-    color: #FFFFFF;
-    background-color: black; 
-    margin-bottom: 8px;
+    color:#919191;
+    background-color:#232323;
+    margin-bottom: 4px;
+    box-shadow: 0 0 10px #ccc; 
+    border-bottom: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;    
+    padding-left: 4px;
 }
