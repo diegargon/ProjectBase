@@ -114,9 +114,18 @@ function SMBasic_get_register_page() {
 }
 
 function SMBasic_profile_page() {
-    if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "profile")) {
-        return codetovar($TPLPATH, "");
-    }   
+    global $config;
+
+    //TODO: ACL/ ONLY REGISTER USERS
+    if(!$user = SMBasic_get_user_session_data()) {
+        //TODO
+        echo "Error: 3242";
+        exit(0);        
+    } else {
+       if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "profile")) {
+            return codetovar($TPLPATH, $user);
+        }   
+    }
 }
 
 

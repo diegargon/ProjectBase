@@ -324,3 +324,14 @@ function SMBasic_user_activate_account() {
     
     return true;
 }
+
+function SMBasic_get_user_session_data() {
+    global $config;
+    
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE uid = {$_SESSION['uid']} LIMIT 1";
+    $query = db_query($q);
+    if(db_num_rows($query) > 0) {
+        return $user = db_fetch($query);            
+    }
+    return false;
+}
