@@ -1,11 +1,8 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  *  EN
  */
-
-
 global $LANGDATA;
 
 $LANGDATA['L_LOGIN'] = "Login";
@@ -20,8 +17,6 @@ $LANGDATA['L_RPASSWORD'] = "Password again";
 $LANGDATA['L_PASSWORD_EXAMPLE'] = "eg. y8df!99e7";
 $LANGDATA['L_REMEMBERME'] = "Remember me";
 $LANGDATA['L_USERNAME'] = "Username";
-
-
 $LANGDATA['L_ERROR_INTERNAL'] = "Internal error";
 $LANGDATA['L_ERROR_EMAILPASSWORD'] = "Wrong email or password";
 $LANGDATA['L_ERROR_EMAIL'] = "Email incorrect";
@@ -31,12 +26,16 @@ $LANGDATA['L_ERROR_PASSWORD_MIN'] = "Password too short";
 $LANGDATA['L_ERROR_USERNAME_EXISTS'] = "Username exists";
 $LANGDATA['L_ERROR_EMAIL_EXISTS'] = "Email exists";
 $LANGDATA['L_REG_ERROR_WHILE'] = "Register Error, please try again";
-
 $LANGDATA['L_REGISTER_OKMSG'] = "Register sucessfull";
 $LANGDATA['L_REGISTER_OKMSG_CONFIRMATION'] = "Register sucessfull. We send a confirmation email to your adress";
-
 $LANGDATA['L_REG_EMAIL_SUBJECT'] = "Your registration";
 $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] = "You acount has been created, to active please click in this link:";
 $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] = "Welcome...";
-
-//$LANGDATA['L_'] = "";
+$LANGDATA['L_ACCOUNT_INACTIVE'] = "Su cuenta no esta activa, si es un nuevo registro activela con el correo que le hemos enviado, si no pongase en contacto con la administracion";
+$LANGDATA['L_NEW_PASSWORD'] = "Nueva contraseña";
+$LANGDATA['L_CUR_PASSWORD'] = "Contraseña actual";
+$LANGDATA['L_NEW_PASSWORD_H'] = "Nueva contraseña en caso de querer cambiarla";
+$LANGDATA['L_R_PASSWORD_H'] = "Repita la contraseña nueva en caso de querer cambiarla";
+$LANGDATA['L_CUR_PASSWORD_H'] = "Para realizar cualquier cambio debe introducir la contraseña actual";
+$LANGDATA['L_USERNAME_H'] = "Usuario, entre X y X caracteres";
+$LANGDATA['L_EMAIL_H'] = "Email valido";
