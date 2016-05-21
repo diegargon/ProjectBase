@@ -23,7 +23,7 @@ SMBasic: Check sessions agains IP/Browser
 SMBasic: hash ¿user cookie ids? ¿email hash optional?
 SMBasic: Recordatorio o reset password.
 X: Local user time VS Server Time
-
+Core: Filter correctly vars 
 ...
 
 

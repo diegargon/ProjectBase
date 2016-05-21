@@ -25,14 +25,18 @@ function SMBasic_Init() {
     if (
          (isset($_SESSION['uid']) && isset($_SESSION['sid'])) &&
           ($_SESSION['uid'] != 0)
-        ){                     
+       )
+        {
             SMBasic_checkSession();           
         } else {
            if($config['smbasic_session_persistence']) {
               SMBasic_checkCookies();
             }
         }
-    
+        if(SMB_DEBUG && isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
+            SMBasic_sessionDebugDetails();
+        }
+
     register_action("add_nav_element", "SMBasic_navLogReg", "5");
     
     register_uniq_action("login_page", "SMBasic_loginPage");

@@ -4,6 +4,9 @@
  *  Copyright @ 2016 Diego Garcia
  */
 global $config;
+
+define('SMB_DEBUG', true);
+
 $config['smbasic_session_persistence'] = 1;
 $config['smbasic_max_email'] = 60;
 $config['smbasic_max_password'] = 60;

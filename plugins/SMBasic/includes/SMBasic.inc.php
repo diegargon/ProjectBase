@@ -335,3 +335,35 @@ function SMBasic_get_user_session_data() {
     }
     return false;
 }
+
+function SMBasic_sessionDebugDetails() {
+    global $config;
+    
+    print_debug("<hr><br/><h2>Session Details</h2><br/>");
+    $now = time();
+    print_debug("Time Now: ". format_date(time(),true) ."<br/>");
+    print_debug("Session VAR ID: {$_SESSION['uid']}<br/>");
+    print_debug("Session VAR Username: {$_SESSION['username']}<br/>");
+    print_debug("Session VAR SID:  {$_SESSION['sid']}<br/>");
+    $q = "SELECT * FROM {$config['DB_PREFIX']}sessions WHERE session_uid = '{$_SESSION['uid']}' AND  session_id = '{$_SESSION['sid']}' LIMIT 1";
+    $query = db_query($q);
+    $session = db_fetch($query);    
+    print_debug("Session DB IP: {$session['session_ip']} <br/>");
+    print_debug("Session DB Browser: {$session['session_browser']} <br/>");
+    print_debug("Session DB Create: {$session['session_created']} <br/>");
+    print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) ."<br/>");
+    print_debug("Session DB Admin: {$session['session_admin']} <br/>");
+    
+    print_debug("Cookie State:");
+    if ( isset($_COOKIE) ) {
+        print_debug(" is set<br/>");
+    } else {
+        print_debug(" not set<br/>");        
+    }
+    print_debug("Cookie Array:<br/>");
+    foreach ($_COOKIE as $key=>$val)
+    {
+        print_debug("Cookie $key -> $val <br/>");
+    }   
+    print_debug("<hr><br/>");
+}

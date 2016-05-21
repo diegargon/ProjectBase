@@ -80,9 +80,13 @@ function input_filter($data) {
     return $data;
 }
 
-function format_date($date) {
+function format_date($date, $timestamp = false) {
     global $config;
-    return date($config['DEFAULT_DATEFORMAT'], strtotime($date));
+    if ($timestamp) {
+       return date($config['DEFAULT_DATEFORMAT'], $date);        
+    } else {
+       return date($config['DEFAULT_DATEFORMAT'], strtotime($date));
+    }
 }
 
 /* BORRAR
