@@ -6,6 +6,7 @@
 
 global $debug;
 global $external_scripts;
+$debug = [];
 $external_scripts =[];
 
 //global $htmllink;
@@ -19,7 +20,7 @@ do_action("core_action");
 function print_debug($msg) {
     global $debug;
     
-    $debug .= $msg;
+    $debug[] = $msg;
 }
 
 function s_char($char, $size) {

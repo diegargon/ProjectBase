@@ -101,17 +101,17 @@ function SMBasic_checkSession() {
         db_free_result($query);
         if ($config['smbasic_check_ip'] == 1) {
             if(!SMBasic_check_IP($session['session_ip'])) {
-                print_debug("SMBasic:IP validated FALSE<br/>");
+                print_debug("SMBasic:IP validated FALSE");
                 return false;
             }
-            print_debug("SMBasic:IP validated OK<br/>");
+            print_debug("SMBasic:IP validated OK");
         }
         if ($config['smbasic_check_user_agent'] == 1) {
             if(!SMBasic_check_user_agent($session['session_browser'])) {
-                print_debug("SMBasic:UserAgent validated FALSE<br/>");                
+                print_debug("SMBasic:UserAgent validated FALSE");                
                 return false;
             }
-            print_debug("SMBasic:UserAgent validated OK<br/>");
+            print_debug("SMBasic:UserAgent validated OK");
         }
         if ($session['session_expire'] < $now) {             
             return false;
@@ -341,32 +341,32 @@ function SMBasic_get_user_session_data() {
 function SMBasic_sessionDebugDetails() {
     global $config;
     
-    print_debug("<hr><br/><h2>Session Details</h2><br/>");
-    print_debug("Time Now: ". format_date(time(),true) ."<br/>");
-    print_debug("Session VAR ID: {$_SESSION['uid']}<br/>");
-    print_debug("Session VAR Username: {$_SESSION['username']}<br/>");
-    print_debug("Session VAR SID:  {$_SESSION['sid']}<br/>");
+    print_debug("<hr><br/><h2>Session Details</h2>");
+    print_debug("Time Now: ". format_date(time(),true) ."");
+    print_debug("Session VAR ID: {$_SESSION['uid']}");
+    print_debug("Session VAR Username: {$_SESSION['username']}");
+    print_debug("Session VAR SID:  {$_SESSION['sid']}");
     $q = "SELECT * FROM {$config['DB_PREFIX']}sessions WHERE session_uid = '{$_SESSION['uid']}' AND  session_id = '{$_SESSION['sid']}' LIMIT 1";
     $query = db_query($q);
     $session = db_fetch($query);    
-    print_debug("Session DB IP: {$session['session_ip']} <br/>");
-    print_debug("Session DB Browser: {$session['session_browser']} <br/>");
-    print_debug("Session DB Create: {$session['session_created']} <br/>");
-    print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) ."<br/>");
-    print_debug("Session DB Admin: {$session['session_admin']} <br/>");
+    print_debug("Session DB IP: {$session['session_ip']}");
+    print_debug("Session DB Browser: {$session['session_browser']}");
+    print_debug("Session DB Create: {$session['session_created']}");
+    print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) ."");
+    print_debug("Session DB Admin: {$session['session_admin']} ");
     
     print_debug("Cookie State:");
     if ( isset($_COOKIE) ) {
-        print_debug(" is set<br/>");
+        print_debug(" is set");
     } else {
-        print_debug(" not set<br/>");        
+        print_debug(" not set");        
     }
-    print_debug("Cookie Array:<br/>");
+    print_debug("Cookie Array:");
     foreach ($_COOKIE as $key=>$val)
     {
-        print_debug("Cookie $key -> $val <br/>");
+        print_debug("Cookie $key -> $val");
     }   
-    print_debug("<hr><br/>");
+    print_debug("<hr>");
 }
 
 function SMBasic_check_IP($db_session_ip) {
