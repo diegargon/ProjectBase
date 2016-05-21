@@ -10,7 +10,7 @@ function tplBasic_init(){
     global $tpldata;
     global $config;
     
-    print_debug ("tplBasic initialized<br>");
+    if (DEBUG_PLUGINS_LOAD) { print_debug ("tplBasic initialized<br>"); }
     require_once("includes/tplBasic.inc.php");
 /*
     $tpldata['TITLE'] = $config['TITLE'];

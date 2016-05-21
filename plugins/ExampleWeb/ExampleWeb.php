@@ -8,7 +8,8 @@
 function ExampleWeb_init(){
     global $config;
     
-    print_debug ("ExampleWeb initialized<br>");
+    if (DEBUG_PLUGINS_LOAD) { print_debug ("ExampleWeb initialized<br>"); }
+    
     include_once("lang/" . $config['WEB_LANG'] . "/ExampleWeb.lang.php" );
      
     register_uniq_action("index_page", "ex_index_page");
@@ -17,7 +18,7 @@ function ExampleWeb_init(){
 }
 
 function ex_common_web_structure() {
-//   plugin_manual_start("DebugWindow");      
+    plugin_manual_start("DebugWindow");      
     register_action("add_to_body", "ex_header","4");
     register_action("add_link", "ex_main_link","5");    
     register_uniq_action("get_footer", "ex_footer");    

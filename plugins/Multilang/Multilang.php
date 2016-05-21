@@ -7,7 +7,7 @@
 
 function Multilang_init(){
     global $config;
-    print_debug("Multilang Inititated<br/>");
+    if (DEBUG_PLUGINS_LOAD) { print_debug("Multilang Inititated<br/>"); }
     include_once("Multilang.config.php");
     
     $config['multilang'] = 1;

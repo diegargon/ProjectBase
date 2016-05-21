@@ -11,7 +11,8 @@
 function SMBasic_Init() {
     global $config;
     
-    print_debug("SMBasic initialice<br/>");
+    if (DEBUG_PLUGINS_LOAD) { print_debug("SMBasic initialice<br/>"); }
+    
     require_once("includes/SMBasic.inc.php");
     require_once("SMBasic.config.php");
     include_once("lang/" . $config['WEB_LANG'] . "/SMBasic.lang.php" ); 

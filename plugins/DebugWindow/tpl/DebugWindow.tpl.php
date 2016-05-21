@@ -1,10 +1,8 @@
 <?php
-//global $tpldata;
 global $debug;
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-
 ?>
 
 <div class="DebugContainer"><strong>Debug Window</strong>

@@ -5,7 +5,7 @@
  */
 
 function Admin_init(){
-    print_debug("Admin Inititated<br/>");
+    if (DEBUG_PLUGINS_LOAD) { print_debug("Admin Inititated<br/>"); }
     //require("includes/Admin.inc.php");
 }
 

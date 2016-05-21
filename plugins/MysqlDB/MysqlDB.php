@@ -11,7 +11,7 @@ function MysqlDB_Init() {
     //global $config;
     
     
-    print_debug("MysqlDB Initialice<br/>");
+    if (DEBUG_PLUGINS_LOAD) { print_debug("MysqlDB Initialice<br/>"); }
 
     
     require_once("MysqlDB.config.php");

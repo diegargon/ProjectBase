@@ -3,6 +3,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+
 global $debug;
 
 
@@ -14,18 +15,11 @@ require_once "includes/plugins.check.php";
 
 do_action("core_action");
 
-
-
 function print_debug($msg) {
     global $debug;
     
     $debug .= $msg;
 }
-/* for remove
-function text_echo($text) {
-    return htmlspecialchars($text); 
-}
-*/
 
 function s_char($char, $size) {
 
