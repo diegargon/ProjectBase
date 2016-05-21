@@ -2,33 +2,32 @@ Lots...
 
 by priority order
 
-#PRIORITY
+#Priority
 
 * SMBasic:Profile form work
-SMBasic: fix cookie  expire and session expire problem
-New:Admin basic Plugin
-New:Admin News 
-New:Fix duplicate standard scripts like jquery (plugin "common_scripts" or other way)
 SMBasic:Profile Change details Page
 New:Admin users plugin
 New:comments plugin for resources
 New:admin comments for resources
+New:Admin basic Plugin
+New:Admin News 
 Newspage:fix switch body layout and add switcher to navmenu
 SMBasic:clean session table on logout, and after expire. when?
 Core: Core ErrorMsg for display users
-Newspage:News rich data, add bar for show (time/creator and extra addons)
-SMBasic: hash ¿user cookie ids? ¿email hash optional?
 SMBasic: Recordatorio o reset password.
 X: Local user time VS Server Time
-Core: Filter correctly vars 
 SMBasic: ?When log with cookie change sid and update cookie sid.?
-...
+Core: Filter vars correctly 
+SMBasic: fix cookie  expire and session expire problem
 
 
 #BACKLOG
+Newspage: Extra functions for addons
 New:User private message plugin
 New:Forum plugin
 New:Shop plugin
 New:Social plugin
 New:ACL Plugin
+core: Better method for avoid duplicate standard scripts like jquery
 DebugWindow: improved debug and debug window with filters, print_debug ($msg, FILTER_PLUGIN_LOAD) ?¿?¿?¿
+SMBasic:  ¿email hash optional?

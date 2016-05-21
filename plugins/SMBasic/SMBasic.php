@@ -9,7 +9,7 @@
 
 function SMBasic_Init() {
     global $config;
-    
+
     if (DEBUG_PLUGINS_LOAD) { print_debug("SMBasic initialice<br/>"); }
     
     require_once("includes/SMBasic.inc.php");
@@ -146,7 +146,6 @@ function SMBasic_profile_page() {
     }
 }
 
-
 function SMBasic_CSS() {
     if($CSSPATH = tpl_get_path("css", "SMBasic", "")) {
         $link = "<link rel='stylesheet' href='$CSSPATH'>\n";
@@ -157,21 +156,29 @@ function SMBasic_CSS() {
     return $link;
 }
 
-
 function SMBasic_LoginScript() {
-    //TODO: Plugin for provided common scripts "need_jquery() and asured its included only one time if its called from other modules";
-    $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/login.js\"></script>\n";
-           
+    $script = "";
     
+    if (!check_jsScript("jquery.min.js")) 
+    {
+        global $external_scripts;
+        $external_scripts[] = "jquery.min.js";
+        $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
+    }      
+    $script = $script . "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/login.js\"></script>\n";
+           
     return $script;
 }
 
 function SMBasic_RegisterScript() {
-    //TODO: Plugin for provided common scripts "need_jquery() and asured its included only one time if its called from other modules";
-    $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/register.js\"></script>\n";
-           
+    $script = "";
+    if (!check_jsScript("jquery.min.js")) 
+    {
+        global $external_scripts;
+        $external_scripts[] = "jquery.min.js";
+        $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
+    }           
+    $script = $script . "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/register.js\"></script>\n";
     
     return $script;
 }

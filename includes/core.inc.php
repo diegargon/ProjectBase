@@ -5,7 +5,8 @@
  */
 
 global $debug;
-
+global $external_scripts;
+$external_scripts =[];
 
 //global $htmllink;
 
@@ -22,7 +23,6 @@ function print_debug($msg) {
 }
 
 function s_char($char, $size) {
-
     if (strlen($char) <= $size) {
         return input_filter($char);
     } else if ($size == 0) { // 0 disable size
@@ -89,6 +89,19 @@ function format_date($date, $timestamp = false) {
     }
 }
 
+function check_jsScript($script) {
+    global $external_scripts;
+        
+    foreach ($external_scripts as $value) {
+
+      if ($value == $script) {
+            return true;
+        }
+
+    }
+ 
+    return false;
+}
 /* BORRAR
 function sort_array_asc(&$thearray) {
     

@@ -1,9 +1,7 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-
 
 function Multilang_init(){
     global $config;
@@ -52,22 +50,26 @@ function Multilang_init(){
 }
 
 function ML_Script() {
-    //TODO: Plugin for provided common scripts "need_jquery() and asured its included only one time if its called from other modules";
-    //TODO: jquery ATM its duplicated on login.
-    $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    $script .= "<script type='text/javascript'>\n"
+    $script = "";
+    
+    if (!check_jsScript("jquery.min.js")) 
+    {
+        global $external_scripts;
+        $external_scripts[] = "jquery.min.js";
+        $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
+    }    
+   
+    $script = $script . "<script type='text/javascript'>\n"
             . "jQuery(function() {\n"
             . "jQuery('#choose_lang').change(function() {\n"
             . "this.form.submit();\n"
             . "});\n"
             . "});\n"
             . "</script>\n";
-           
-    
+               
     return $script;
 }
-function ML_nav() {
-    
+function ML_nav() { 
     global $config;
 
     $mlnav = "<li class='nav_right'>"
@@ -75,8 +77,7 @@ function ML_nav() {
     . "<select name='choose_lang' id='choose_lang'>";
 
     $LANGS = do_action("get_site_langs");
-
-    
+  
     foreach ($LANGS as $content) {
         if($content->iso_code == $config['WEB_LANG']) {
             $mlnav .= "<option selected value='$content->iso_code'>$content->lang_name</option>";
@@ -88,6 +89,7 @@ function ML_nav() {
     $mlnav .= "</select>"
            . "</form>"
            . "</li>";
+    
     return $mlnav;
 }
 
@@ -102,8 +104,7 @@ function ML_get_langs_from_json() {
 }
 
 function ML_get_langs_from_db() {
-    global $config;
-    
+    global $config;    
     
     $q = "SELECT * FROM {$config['DB_PREFIX']}lang";
     $query = db_query($q);
