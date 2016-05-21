@@ -1,5 +1,4 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
@@ -20,7 +19,7 @@ $config['smbasic_session_expire'] = 10800;
 $config['smbasic_cookie_expire'] = 10800;
 $config['smbasic_cookie_prefixname'] = "projectbase_";
 $config['smbasic_check_user_agent'] = 1;
-$config['smbasic_check_ip'] = 1;    
+$config['smbasic_check_ip'] = 1;
 $config['smbasic_need_email'] = 1;
 $config['smbasic_need_username'] = 1;
 $config['smbasic_email_confirmation'] = 1;

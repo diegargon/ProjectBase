@@ -1,5 +1,4 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
@@ -27,7 +26,9 @@ function SMBasic_Init() {
           ($_SESSION['uid'] != 0)
        )
         {
-            SMBasic_checkSession();           
+            if(!SMBasic_checkSession()) {
+                SMBasic_sessionDestroy();
+            }           
         } else {
            if($config['smbasic_session_persistence']) {
               SMBasic_checkCookies();

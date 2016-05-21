@@ -1,5 +1,4 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
@@ -25,7 +24,7 @@ function SMBasic_validate_email($email) {
     return $email;
 }
 
-function SMBasic_validate_user_agent($user_agent) {
+function SMBasic_filter_user_agent($user_agent) {
     return s_char($user_agent, 0);
 }
 
@@ -54,17 +53,15 @@ function SMBasic_setSession($user) {
     $_SESSION['sid'] = SMBasic_sessionToken();
     $_SESSION['isLogged'] = 1;
     $ip = SMBasic_validate_ip($_SERVER['REMOTE_ADDR']);
-    $user_agent = SMBasic_validate_user_agent($_SERVER['HTTP_USER_AGENT']);
+    $user_agent = SMBasic_filter_user_agent($_SERVER['HTTP_USER_AGENT']);
     $q = "DELETE FROM {$config['DB_PREFIX']}sessions WHERE session_uid = {$user['uid']}";
     db_query($q);
     $q = "INSERT INTO $config[DB_PREFIX]sessions ("
      . "session_id, session_uid, session_ip, session_browser, session_expire"
      . ")VALUES("
      . "'{$_SESSION['sid']}', '{$user['uid']}', '$ip', '$user_agent', '$session_expire'"
-     . ");";
-     
+     . ");";     
      db_query($q);
-
 }
 
 function SMBasic_setCookies($sid, $uid) {
@@ -96,15 +93,27 @@ function SMBasic_checkSession() {
         . " WHERE session_id = '{$_SESSION['sid']}' AND session_uid = '{$_SESSION['uid']}' LIMIT 1";
     $query = db_query($q);
     
-    if (db_num_rows($query) <= 0) {
-        SMBasic_sessionDestroy();
+    if (db_num_rows($query) <= 0) {        
         db_free_result($query);
         return false;
     } else {
         $session = db_fetch($query);
-        if ($session['session_expire'] < $now) {
-            SMBasic_sessionDestroy();             
-            db_free_result($query);
+        db_free_result($query);
+        if ($config['smbasic_check_ip'] == 1) {
+            if(!SMBasic_check_IP($session['session_ip'])) {
+                print_debug("SMBasic:IP validated FALSE<br/>");
+                return false;
+            }
+            print_debug("SMBasic:IP validated OK<br/>");
+        }
+        if ($config['smbasic_check_user_agent'] == 1) {
+            if(!SMBasic_check_user_agent($session['session_browser'])) {
+                print_debug("SMBasic:UserAgent validated FALSE<br/>");                
+                return false;
+            }
+            print_debug("SMBasic:UserAgent validated OK<br/>");
+        }
+        if ($session['session_expire'] < $now) {             
             return false;
         } else {
             $q = "UPDATE {$config['DB_PREFIX']}sessions"
@@ -113,7 +122,6 @@ function SMBasic_checkSession() {
             db_query($q);
         }
     }
-    db_free_result($query);
     return true;
 }
 
@@ -144,7 +152,6 @@ function SMBasic_checkCookies() {
     return true;
 }
 
-
 function SMBasic_getUserbyID($uid) {
     global $config;
    
@@ -167,7 +174,6 @@ function SMBasic_Login() {
         ($password != null)
         )
     {
-
         $password = do_action("encrypt_password", $password);
 
         if(!isset($password)) {
@@ -285,10 +291,8 @@ function SMBasic_Register() {
     } else {
        $response[] = array("status" => "7", "msg" => $LANGDATA['L_REG_ERROR_WHILE']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-    }
-    
-    return true;   
-    
+    }    
+    return true;      
 }
 
 function SMBasic_create_reg_mail($active) {
@@ -297,14 +301,12 @@ function SMBasic_create_reg_mail($active) {
     
     if ($active > 1) {        
         $URL = "http://$_SERVER[HTTP_HOST]". "/{$config['WEB_LANG']}/". "login.php" . "?active=$active";
-        $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL"; 
-        
+        $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL";         
     } else {
         $register_message = $LANGDATA['L_REGISTER_OKMSG'];
         $URL = "http://$_SERVER[HTTP_HOST]". "/{$config['WEB_LANG']}/" . "login.php";
         $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
-    }  
-    
+    }      
     return $msg;
 }
 
@@ -340,7 +342,6 @@ function SMBasic_sessionDebugDetails() {
     global $config;
     
     print_debug("<hr><br/><h2>Session Details</h2><br/>");
-    $now = time();
     print_debug("Time Now: ". format_date(time(),true) ."<br/>");
     print_debug("Session VAR ID: {$_SESSION['uid']}<br/>");
     print_debug("Session VAR Username: {$_SESSION['username']}<br/>");
@@ -366,4 +367,20 @@ function SMBasic_sessionDebugDetails() {
         print_debug("Cookie $key -> $val <br/>");
     }   
     print_debug("<hr><br/>");
+}
+
+function SMBasic_check_IP($db_session_ip) {
+    $ip = SMBasic_validate_ip($_SERVER['REMOTE_ADDR']);
+    if($ip == $db_session_ip) {
+        return true;
+    } 
+    return false;    
+}
+
+function SMBasic_check_user_agent($db_user_agent) {
+    $user_agent = SMBasic_filter_user_agent($_SERVER['HTTP_USER_AGENT']);
+    if ($user_agent == $db_user_agent) {        
+        return true;
+    }
+    return false;
 }
