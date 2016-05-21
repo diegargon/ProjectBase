@@ -117,7 +117,6 @@ function SMBasic_checkSession() {
     return true;
 }
 
-
 function SMBasic_checkCookies() {
     global $config;
     $cookie_uid = $config['smbasic_cookie_prefixname']."uid";
