@@ -46,7 +46,14 @@ if ($config['smbasic_can_change_email']) {
 ?>                
                 </dd>
             </dl>
-            
+                <dl>
+                    <dt><label><?php print $LANGDATA['L_PASSWORD']?></label><br/>
+                        <span><?php print $LANGDATA['L_CUR_PASSWORD_H']?> </span>
+                    </dt>
+                    <dd>
+                        <input type="password" name="cur_password" id="cur_password" title="<?php print $LANGDATA['L_CUR_PASSWORD_H']?>" autocomplete="off"/>
+                    </dd>
+                </dl>             
                 <dl>
                     <dt><label><?php print $LANGDATA['L_NEW_PASSWORD']?> :</label><br/>
                         <span><?php print $LANGDATA['L_NEW_PASSWORD_H']?> </span>
@@ -62,15 +69,7 @@ if ($config['smbasic_can_change_email']) {
                     <dd>
                         <input type="password" name="r_password" id="r_password" title="<?php print $LANGDATA['L_R_PASSWORD_H']?>" autocomplete="off"/>
                     </dd>
-                </dl>
-                <dl>
-                    <dt><label><?php print $LANGDATA['L_PASSWORD']?></label><br/>
-                        <span><?php print $LANGDATA['L_CUR_PASSWORD_H']?> </span>
-                    </dt>
-                    <dd>
-                        <input type="password" name="cur_password" id="cur_password" title="<?php print $LANGDATA['L_CUR_PASSWORD_H']?>" autocomplete="off"/>
-                    </dd>
-                </dl>  
+                </dl> 
                 <p><input name="submit" value="Enviar" class="" type="submit"></p>                                    
         </form>        
     </div>

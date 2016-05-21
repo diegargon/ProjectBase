@@ -11,6 +11,7 @@ $config['smbasic_min_password'] = 8;
 $config['smbasic_max_username'] = 32;
 $config['smbasic_use_salt'] = 1;
 $config['smbasic_salt'] = "5565";
+$config['smbasic_public_salt'] = "4455";
 //$config['smbasic_cookie_domain'] = "envigo.net";
 $config['smbasic_session_expire'] = 10800;
 $config['smbasic_cookie_expire'] = 10800;

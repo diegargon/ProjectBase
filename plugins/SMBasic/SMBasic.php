@@ -20,20 +20,17 @@ function SMBasic_Init() {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }
     session_start();
-
+        
     if (
          (isset($_SESSION['uid']) && isset($_SESSION['sid'])) &&
           ($_SESSION['uid'] != 0)
-        ){
-        if(SMBasic_checkSession() == false) {
-            SMBasic_unset_session();
-
+        ){                     
+            SMBasic_checkSession();           
+        } else {
+           if($config['smbasic_session_persistence']) {
+              SMBasic_checkCookies();
+            }
         }
-    } else {
-       if($config['smbasic_session_persistence']) {
-           SMBasic_checkCookies();
-       }    
-    }
     
     register_action("add_nav_element", "SMBasic_navLogReg", "5");
     
@@ -46,6 +43,11 @@ function SMBasic_Init() {
 
 function SMBasic_regPage() {
     global $config;
+
+    if( (isset($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
+        echo "<p>Error, already logged<p>"; //TODO better Error msg
+        exit(0);
+    }
     
     if ( 
             (($config['smbasic_need_email'] == 1) && !isset($_POST['email1'])  ||
@@ -63,12 +65,22 @@ function SMBasic_regPage() {
 }
 
 function SMBasic_profilePage() {
-    do_action("common_web_structure");    
-    register_action("add_link", "SMBasic_CSS","5");
-    register_action("add_to_body", "SMBasic_profile_page", "5");  
+    if(isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
+        do_action("common_web_structure");    
+        register_action("add_link", "SMBasic_CSS","5");
+        register_action("add_to_body", "SMBasic_profile_page", "5");  
+    } else {
+        //TODO: better Error msg
+        echo "<p>Error, not logged<p>";
+    }
 }
 
 function SMBasic_loginPage () {
+    if( (isset($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
+        echo "<p>Error, already logged<p>"; //TODO better Error msg
+        exit(0);
+    }
+    
     if (isset($_GET['active'])) {
        SMBasic_user_activate_account();
     }

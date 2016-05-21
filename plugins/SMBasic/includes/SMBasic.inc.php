@@ -51,7 +51,8 @@ function SMBasic_setSession($user) {
     $session_expire = time() + $config['smbasic_session_expire'];
     $_SESSION['username'] = $user['username'];
     $_SESSION['uid']  = $user['uid'];
-    $_SESSION['sid'] = SMBasic_sessionToken();            
+    $_SESSION['sid'] = SMBasic_sessionToken();
+    $_SESSION['isLogged'] = 1;
     $ip = SMBasic_validate_ip($_SERVER['REMOTE_ADDR']);
     $user_agent = SMBasic_validate_user_agent($_SERVER['HTTP_USER_AGENT']);
     $q = "DELETE FROM {$config['DB_PREFIX']}sessions WHERE session_uid = {$user['uid']}";
@@ -64,16 +65,7 @@ function SMBasic_setSession($user) {
      
      db_query($q);
 
-     if (
-             ($config['smbasic_session_persistence']) && 
-             ($rememberme = s_bool($_POST['rememberme1']))
-             ){
-  
-         SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']);
-     }
-        
 }
- 
 
 function SMBasic_setCookies($sid, $uid) {
     global $config;
@@ -101,23 +93,23 @@ function SMBasic_checkSession() {
     $next_expire = time() + $config['smbasic_session_expire'];
     
     $q = "SELECT * FROM {$config['DB_PREFIX']}sessions"
-        . " WHERE session_id = '{$_SESSION['sid']}' AND session_uid = '{$_SESSION['uid']}'";
+        . " WHERE session_id = '{$_SESSION['sid']}' AND session_uid = '{$_SESSION['uid']}' LIMIT 1";
     $query = db_query($q);
     
-    if (!$query) {
+    if (db_num_rows($query) <= 0) {
         SMBasic_sessionDestroy();
         db_free_result($query);
         return false;
     } else {
-        $row = db_fetch($query);
-        if ($row['session_expire'] < $now) {
-            SMBasic_sessionDestroy(); 
+        $session = db_fetch($query);
+        if ($session['session_expire'] < $now) {
+            SMBasic_sessionDestroy();             
             db_free_result($query);
             return false;
         } else {
             $q = "UPDATE {$config['DB_PREFIX']}sessions"
             . " SET session_expire = '$next_expire'"
-            . " WHERE session_uid = '{$_SESSION['uid']}'";
+            . " WHERE session_uid = '{$session['session_uid']}'";
             db_query($q);
         }
     }
@@ -131,17 +123,26 @@ function SMBasic_checkCookies() {
     $cookie_uid = $config['smbasic_cookie_prefixname']."uid";
     $cookie_sid = $config['smbasic_cookie_prefixname']."sid";
     if (isset($_COOKIE[$cookie_uid]) && isset($_COOKIE[$cookie_sid])) {
-        $_SESSION['uid'] = s_num($_COOKIE[$cookie_uid], 11);
-        $_SESSION['sid'] = s_char($_COOKIE[$cookie_sid], 32);
-        if(SMBasic_checkSession()) {
-            SMBasic_getUserbyID($_SESSION['uid']);
-            return true;
-        } else {
-            SMBasic_unset_session();
+        $cookie_uid =  s_num($_COOKIE[$cookie_uid], 11);
+        $cookie_sid = s_char($_COOKIE[$cookie_sid], 32);
+        $q = "SELECT * FROM {$config['DB_PREFIX']}sessions"
+            . " WHERE session_id = '$cookie_sid' AND session_uid = '$cookie_uid' LIMIT 1";
+        $query = db_query($q);
+
+        if (db_num_rows($query) <= 0) {           
+            SMBasic_sessionDestroy();
+            db_free_result($query);
             return false;
+        } else { 
+            if( ($user = SMBasic_getUserbyID($cookie_uid)) != false ) {
+                SMBasic_setSession($user);
+                SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']); 
+            } else { return false; }
         }
+    } else {
+        return false;
     }
-    return false;
+    return true;
 }
 
 
@@ -150,17 +151,12 @@ function SMBasic_getUserbyID($uid) {
    
     $q = "SELECT * FROM $config[DB_PREFIX]users WHERE uid = '$uid'";
     $query = db_query($q);
-    if ($user = db_fetch($query)) {
-
-        $_SESSION['username'] = $user['username'];
+    if (db_num_rows($query) <= 0) {
+        return false;        
     }
-    
+    $user = db_fetch($query);
+    return $user;
 }
-
-function SMBasic_unset_session() {
-    unset($_SESSION);
-}
-
 
 function SMBasic_Login() {
     global $config;
@@ -176,18 +172,23 @@ function SMBasic_Login() {
         $password = do_action("encrypt_password", $password);
 
         if(!isset($password)) {
+            //TODO BETTER ERROR MSG
             echo " {$LANGDATA['L_ERROR_INTERNAL']}: 001";
             exit(0);
         }
        $response = [];
        
-        $q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password'";
+        $q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password' LIMIT 1";
        
         $query = db_query($q);
         if ($user = db_fetch($query)) {
             if($user['active'] == 0) {
-                SMBasic_setSession($user);
-                $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);
+                    SMBasic_setSession($user);
+                    if ( ($config['smbasic_session_persistence']) && ($_POST['rememberme1'] == "true") //true without "" not work (javascript true) 
+                    ){         
+                        SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']);
+                    }                    
+                    $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);                
             } else {
                 $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
                 if($user['active'] > 0) { //-1 disable by admin not send email
@@ -238,19 +239,19 @@ function SMBasic_Register() {
         return false;        
     }
     
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'"; 
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'";  //FIX SELECT username or/and mixed with email
     $query = db_query($q);
      
-    if (($rows  = db_num_rows($query)) > 0) {
+    if ((db_num_rows($query)) > 0) {
         $response[] = array("status" => "5", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         db_free_result($query);
         return false;                
     }
 
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'"; 
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'";  //FIX SELECT email or/and mixed with email
     $query = db_query($q);    
-    if (($rows  = db_num_rows($query)) > 0) {
+    if ((db_num_rows($query)) > 0) {
         $response[] = array("status" => "6", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         db_free_result($query);
@@ -315,7 +316,7 @@ function SMBasic_user_activate_account() {
     }
     $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE active = '$active'";
     $query = db_query($q);
-    if(!$query || ($row = db_num_rows($query)) <= 0) {
+    if(db_num_rows($query) <= 0) {
         return false;
     } else {
         $q = "UPDATE {$config['DB_PREFIX']}users SET active = '0' WHERE active='$active'";
