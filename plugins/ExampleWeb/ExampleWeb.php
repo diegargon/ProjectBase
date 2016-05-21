@@ -10,13 +10,10 @@ function ExampleWeb_init(){
     
     print_debug ("ExampleWeb initialized<br>");
     include_once("lang/" . $config['WEB_LANG'] . "/ExampleWeb.lang.php" );
-    
-  //  echo $_GET['lang'];
-   // echo $_SERVER['REQUEST_URI'] ."<br>"; 
+     
     register_uniq_action("index_page", "ex_index_page");
     register_uniq_action("news_page", "ex_news_page"); 
     register_action("common_web_structure", "ex_common_web_structure", "5");
-
 }
 
 function ex_common_web_structure() {
@@ -33,9 +30,7 @@ function ex_news_page() {
     plugin_manual_start("Newspage");
     register_action("add_link", "news_add_link", "5");
     
-    news_show();
-    
-    
+    news_show();   
 }
 function ex_index_page(){
     do_action("common_web_structure");
@@ -43,14 +38,10 @@ function ex_index_page(){
     plugin_manual_start("Newspage");
     register_action("add_link", "news_add_link", "5");
 
-    //print_r($_POST);
     news_body_switcher();
-    
-
 }
 
-function ex_main_link (){
-    
+function ex_main_link (){ 
     if($CSSPATH = tpl_get_path("css", "ExampleWeb", "")) {
         $link = "<link rel='stylesheet' href='/$CSSPATH'>\n";
     }
