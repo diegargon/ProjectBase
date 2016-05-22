@@ -229,6 +229,14 @@ function SMBasic_Register() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }
+    if(
+        ($config['smbasic_need_username'] == 1) && 
+        (strlen($username) < $config['smbasic_min_username']) 
+            ) {
+        $response[] = array("status" => "2", "msg" => $LANGDATA['L_USERNAME_SHORT'] );    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
     
     if(
         ($password = s_char($_POST['password1'], $config['smbasic_max_password'])) == false ) {
@@ -552,8 +560,7 @@ function SMBasic_ProfileChange() {
     $need_coma = 0; // huh!
     
     $q = "UPDATE {$config['DB_PREFIX']}users SET ";
-
-    //if isset username then ins't equal since unset before in case of
+   
     if (( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) && ( !empty($username) )) {
         $q .= "username = '$username'";
         $need_coma = 1;

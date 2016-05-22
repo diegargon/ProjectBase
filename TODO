@@ -16,8 +16,7 @@ SMBasic: Recordatorio o reset password.
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core: Filter vars correctly 
-SMBasic: fix cookie  expire and session expire problem
-SMBASIC Register: min username
+SMBasic: session expire problem (server VS custom)
 
 #BACKLOG
 Newspage: Extra functions for addons
