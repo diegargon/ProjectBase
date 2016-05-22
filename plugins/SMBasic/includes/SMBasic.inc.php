@@ -135,20 +135,19 @@ function SMBasic_checkCookies() {
             . " WHERE session_id = '$cookie_sid' AND session_uid = '$cookie_uid' LIMIT 1";
         $query = db_query($q);
 
-        if (db_num_rows($query) <= 0) {           
-            SMBasic_sessionDestroy();
-            db_free_result($query);
-            return false;
-        } else { 
+        if (db_num_rows($query) > 0) {           
             if( ($user = SMBasic_getUserbyID($cookie_uid)) != false ) {
                 SMBasic_setSession($user);
                 SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']); 
-            } else { return false; }
+                return true;
+            }
+        } else { 
+            SMBasic_sessionDestroy();
+            db_free_result($query);
         }
-    } else {
-        return false;
     }
-    return true;
+    
+    return false;
 }
 
 function SMBasic_getUserbyID($uid) {
@@ -334,17 +333,6 @@ function SMBasic_user_activate_account() {
     return true;
 }
 
-function SMBasic_get_user_session_data() {
-    global $config;
-    
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE uid = {$_SESSION['uid']} LIMIT 1";
-    $query = db_query($q);
-    if(db_num_rows($query) > 0) {
-        return $user = db_fetch($query);            
-    }
-    return false;
-}
-
 function SMBasic_sessionDebugDetails() {
     global $config;
     
@@ -361,7 +349,7 @@ function SMBasic_sessionDebugDetails() {
     print_debug("Session DB Create: {$session['session_created']}");
     print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) ."");
     print_debug("Session DB Admin: {$session['session_admin']} ");
-    
+    print_debug("PHP Session expire: " . ini_get('session.gc_maxlifetime'));
     print_debug("Cookies State:");
     if ( isset($_COOKIE) ) {
         print_debug(" is set");

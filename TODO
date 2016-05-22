@@ -9,15 +9,16 @@ New:comments plugin for resources
 New:admin comments for resources
 New:Admin basic Plugin
 New:Admin News 
-Newspage:fix switch body layout and add switcher to navmenu
-SMBasic:clean session table on logout, and after expire. when?
-Core: Core ErrorMsg for display users
-SMBasic: Recordatorio o reset password.
+Newspage:fix switch body layout and ?add switcher to navmenu?
+Core: Core ErrorMsg for display users do_action("error_dialog", array);
+SMBasic: Recordatorio/reset password.
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core: Filter vars correctly 
+{
 SMBasic: session expire problem (server VS custom)
-
+SMBasic:clean session table on logout, and after expire. when?
+}
 #BACKLOG
 Newspage: Extra functions for addons
 New:User private message plugin

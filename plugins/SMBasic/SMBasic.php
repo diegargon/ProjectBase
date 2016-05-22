@@ -17,11 +17,13 @@ function SMBasic_Init() {
     if (action_isset("encrypt_password") == false) {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }
+    
+    ini_set('session.gc_maxlifetime', $config['smbasic_session_expire']);
     session_start();
         
     if (
          (!empty($_SESSION['uid']) && !empty($_SESSION['sid'])) &&
-          ($_SESSION['uid'] != 0)
+          ($_SESSION['uid'] != 0) // use 0 for anon? if not remove
        )
         {
             if(!SMBasic_checkSession()) {
@@ -32,12 +34,11 @@ function SMBasic_Init() {
               SMBasic_checkCookies();
             }
         }
-        if(SMB_DEBUG && !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
-            SMBasic_sessionDebugDetails();
-        }
+    if(SMB_DEBUG && !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
+        SMBasic_sessionDebugDetails();
+    }
 
-    register_action("add_nav_element", "SMBasic_navLogReg", "5");
-    
+    register_action("add_nav_element", "SMBasic_navLogReg", "5");    
     register_uniq_action("login_page", "SMBasic_loginPage");
     register_uniq_action("register_page", "SMBasic_regPage");   
     register_uniq_action("logout_page", "SMBasic_logoutPage");
@@ -92,6 +93,7 @@ function SMBasic_loginPage () {
     
     if (isset($_GET['active'])) {
        SMBasic_user_activate_account();
+       //TODO error msg on return false;
     }
     if (
             isset($_POST['email1']) && 
@@ -137,8 +139,8 @@ function SMBasic_get_register_page() {
 function SMBasic_profile_page() {
     global $config;
     //TODO: ACL/ ONLY REGISTER USERS 
-    if(!$user = SMBasic_get_user_session_data()) {
-        //TODO
+    if( ($user = SMBasic_getUserbyID($_SESSION['uid'])) == false ) {
+        //TODO error manager
         echo "Error: 3242";
         exit(0);        
     } else {
@@ -149,8 +151,10 @@ function SMBasic_profile_page() {
 }
 
 function SMBasic_CSS() {
+    $link  = "";
+    
     if($CSSPATH = tpl_get_path("css", "SMBasic", "")) {
-        $link = "<link rel='stylesheet' href='$CSSPATH'>\n";
+        $link .= "<link rel='stylesheet' href='$CSSPATH'>\n";
     }
     if($CSSPATH = tpl_get_path("css", "SMBasic", "SMBasic-mobile")) {
         $link .= "<link rel='stylesheet' href='$CSSPATH'>\n";
@@ -165,22 +169,23 @@ function SMBasic_LoginScript() {
     {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
-        $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
+        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }      
-    $script = $script . "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/login.js\"></script>\n";
+    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/login.js\"></script>\n";
            
     return $script;
 }
 
 function SMBasic_RegisterScript() {
     $script = "";
+    
     if (!check_jsScript("jquery.min.js")) 
     {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
-        $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
+        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }           
-    $script = $script . "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/register.js\"></script>\n";
+    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/register.js\"></script>\n";
     
     return $script;
 }
@@ -191,9 +196,9 @@ function SMBasic_ProfileScript() {
     {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
-        $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
+        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }           
-    $script = $script . "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/profile.js\"></script>\n";
+    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/profile.js\"></script>\n";
     
     return $script;
 }
