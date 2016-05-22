@@ -1,7 +1,6 @@
 /*
  Copyright @ 2016 Diego Garcia
 */
-
 .login_box, .register_box {
     margin:auto;
     width: 50%;
@@ -20,7 +19,6 @@
     margin-bottom: 100px;
 
 }
-
 .login_box h1, .register_box h1 {
 	font-size: 38px;
 	color: rgb(6, 106, 117);	
@@ -28,7 +26,6 @@
 	padding-bottom: 30px;
         text-align: center;
 }
-
 .login_box input, .register_box input {
     outline:none;
     color: rgb(190, 188, 188); 
@@ -41,12 +38,10 @@
     width: 100px !important;
     margin-left: 35%;
 }
-
 .login_box p, .register_box p {
     margin: 0;
     padding: 0;
 }
-
 .rememberme {
     width: 90%;
     border: 0px solid red;
@@ -55,7 +50,6 @@
 .rememberme input {
     width: 0px;
 }
-
 .profile_box {
     margin:auto;
     width: 50%;
@@ -73,7 +67,6 @@
     margin-top: 100px;
     margin-bottom: 100px;   
 }
-
 .profile_box h1{
 	font-size: 28px;
 	color: rgb(6, 106, 117);
@@ -81,8 +74,7 @@
 	padding-bottom: 30px;
         text-align: center;
 }
-
-.profile_box dt{
+.profile_box dt {
     float: left;
     font-size: 14px;
     color: #000;    
@@ -90,7 +82,6 @@
     border: 0px solid red;
     text-align:left;
 }
-
 .profile_box dd{
     margin-left:45%;
     font-size: 14px;
@@ -99,7 +90,6 @@
     border: 0px solid yellow;
 
 }
-
 .profile_box dl{
     overflow: hidden;
     font-size: 14px;
@@ -107,11 +97,12 @@
     border: 0px solid blue;
     margin-left: 4%;
 }
-
 .profile_box label {
     font-weight: bold;
 }
-
 .profile_box p {
+    margin-top: 0;
+}
+.inputBtnSend {
     text-align: center;
 }

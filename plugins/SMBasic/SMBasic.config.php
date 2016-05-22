@@ -11,6 +11,7 @@ $config['smbasic_max_email'] = 60;
 $config['smbasic_max_password'] = 60;
 $config['smbasic_min_password'] = 8;
 $config['smbasic_max_username'] = 32;
+$config['smbasic_min_username'] = 4;
 $config['smbasic_use_salt'] = 1;
 $config['smbasic_salt'] = "5565";
 $config['smbasic_public_salt'] = "4455";

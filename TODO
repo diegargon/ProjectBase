@@ -4,8 +4,6 @@ by priority order
 
 #Priority
 
-* SMBasic:Profile form work
-SMBasic:Profile Change details Page
 New:Admin users plugin
 New:comments plugin for resources
 New:admin comments for resources
@@ -19,7 +17,7 @@ X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core: Filter vars correctly 
 SMBasic: fix cookie  expire and session expire problem
-
+SMBASIC Register: min username
 
 #BACKLOG
 Newspage: Extra functions for addons
@@ -31,3 +29,4 @@ New:ACL Plugin
 core: Better method for avoid duplicate standard scripts like jquery
 DebugWindow: improved debug and debug window with filters, print_debug ($msg, FILTER_PLUGIN_LOAD) ?¿?¿?¿
 SMBasic:  ¿email hash optional?
+SMBasic: Login/Register  scripts fix language method like profile

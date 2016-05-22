@@ -1,9 +1,7 @@
 <?php
 /* 
  *  Copyright @ 2016 Diego Garcia
- */
-
-/*
+ * 
  * do_action("encrypt_password") // Override/set for change default one
  */
 
@@ -71,14 +69,19 @@ function SMBasic_regPage() {
 }
 
 function SMBasic_profilePage() {
-    if(isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
+    if(!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
+        echo "<p>Error, not logged<p>";
+        return false;
+    }
+    
+    if(!isset($_POST['profile1']) ) {
         do_action("common_web_structure");    
         register_action("add_link", "SMBasic_CSS","5");
-        register_action("add_to_body", "SMBasic_profile_page", "5");  
-    } else {
-        //TODO: better Error msg
-        echo "<p>Error, not logged<p>";
-    }
+        register_action("add_to_body", "SMBasic_profile_page", "5"); 
+        register_action("add_script", "SMBasic_ProfileScript", "5");                  
+    } else if (isset($_POST['profile1']) ) {
+        SMBasic_ProfileChange();
+    } 
 }
 
 function SMBasic_loginPage () {
@@ -133,8 +136,7 @@ function SMBasic_get_register_page() {
 
 function SMBasic_profile_page() {
     global $config;
-
-    //TODO: ACL/ ONLY REGISTER USERS
+    //TODO: ACL/ ONLY REGISTER USERS 
     if(!$user = SMBasic_get_user_session_data()) {
         //TODO
         echo "Error: 3242";
@@ -179,6 +181,19 @@ function SMBasic_RegisterScript() {
         $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }           
     $script = $script . "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/register.js\"></script>\n";
+    
+    return $script;
+}
+
+function SMBasic_ProfileScript() {
+    $script = "";
+    if (!check_jsScript("jquery.min.js")) 
+    {
+        global $external_scripts;
+        $external_scripts[] = "jquery.min.js";
+        $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
+    }           
+    $script = $script . "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/profile.js\"></script>\n";
     
     return $script;
 }

@@ -20,7 +20,6 @@ function SMBasic_sessionToken() {
 function SMBasic_validate_email($email) {
     global $config;
     $email = filter_var($email, FILTER_VALIDATE_EMAIL);    
-    $email = s_char($_POST['email1'], $config['smbasic_max_email']);
     return $email;
 }
 
@@ -129,7 +128,7 @@ function SMBasic_checkCookies() {
     global $config;
     $cookie_uid = $config['smbasic_cookie_prefixname']."uid";
     $cookie_sid = $config['smbasic_cookie_prefixname']."sid";
-    if (isset($_COOKIE[$cookie_uid]) && isset($_COOKIE[$cookie_sid])) {
+    if (!empty($_COOKIE[$cookie_uid]) && !empty($_COOKIE[$cookie_sid])) {
         $cookie_uid =  s_num($_COOKIE[$cookie_uid], 11);
         $cookie_sid = s_char($_COOKIE[$cookie_sid], 32);
         $q = "SELECT * FROM {$config['DB_PREFIX']}sessions"
@@ -176,7 +175,7 @@ function SMBasic_Login() {
     {
         $password = do_action("encrypt_password", $password);
 
-        if(!isset($password)) {
+        if(empty($password)) {
             //TODO BETTER ERROR MSG
             echo " {$LANGDATA['L_ERROR_INTERNAL']}: 001";
             exit(0);
@@ -355,18 +354,18 @@ function SMBasic_sessionDebugDetails() {
     print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) ."");
     print_debug("Session DB Admin: {$session['session_admin']} ");
     
-    print_debug("Cookie State:");
+    print_debug("Cookies State:");
     if ( isset($_COOKIE) ) {
         print_debug(" is set");
+        print_debug("Cookie Array:");
+        foreach ($_COOKIE as $key=>$val)
+        {
+            print_debug("Cookie $key -> $val");
+        }   
+        print_debug("<hr>");        
     } else {
         print_debug(" not set");        
     }
-    print_debug("Cookie Array:");
-    foreach ($_COOKIE as $key=>$val)
-    {
-        print_debug("Cookie $key -> $val");
-    }   
-    print_debug("<hr>");
 }
 
 function SMBasic_check_IP($db_session_ip) {
@@ -382,5 +381,209 @@ function SMBasic_check_user_agent($db_user_agent) {
     if ($user_agent == $db_user_agent) {        
         return true;
     }
+    return false;
+}
+
+function SMBasic_ProfileChange() {
+    global $LANGDATA;
+    global $config; 
+    
+   
+    if( empty($_POST['cur_password1']) ||  strlen ($_POST['cur_password1']) <  $config['smbasic_min_password']) {
+       $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;
+    } 
+   
+    if (!$password = s_char($_POST['cur_password1'], $config['smbasic_max_password'] )) {
+       $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;        
+    }
+    
+    if ( 
+            (!empty($_POST['new_password1']) && empty($_POST['r_password1']) ) ||
+            (!empty($_POST['r_password1']) && empty($_POST['new_password1']) )
+            ) {
+       $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEW_BOTH_PASSWORD']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;        
+        
+    }
+    if ( 
+            (!empty($_POST['new_password1']) && !empty($_POST['r_password1'])) &&
+            ((strlen($_POST['new_password1']) < $config['smbasic_min_password']) ||
+            (strlen($_POST['r_password1']) < $config['smbasic_min_password']))
+            ) {
+       $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEWPASS_TOOSHORT']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;        
+        
+    }   
+
+    if ( $_POST['new_password1'] != $_POST['r_password1']) {
+       $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEW_PASSWORD_NOTMATCH']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;        
+        
+    } 
+     
+    
+    if (
+            ( $config['smbasic_need_username'] == 1) &&
+            ( $config['smbasic_can_change_username'] == 1)
+        ){
+        if(empty($_POST['username1'])) {
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_EMPTY']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+           return false;            
+            
+        } 
+        if (strlen($_POST['username1']) < $config['smbasic_min_username'] ) {
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_SHORT']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+           return false;                        
+        }
+        if (strlen($_POST['username1']) > $config['smbasic_max_username'] ) {
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_LONG']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+           return false;                        
+        }    
+        if ( ($username = s_char($_POST['username1'], $config['smbasic_max_username'])) == false) { //FIX function check allowed chars 
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHAR']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+           return false;                                    
+        }
+    }
+    
+    if (
+            ( $config['smbasic_need_email'] == 1) &&
+            ( $config['smbasic_can_change_email'] == 1)
+        ){
+        if(empty($_POST['email1'])) {
+           $response[] = array("status" => "5", "msg" => $LANGDATA['L_EMAIL_EMPTY']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+           return false;            
+            
+        } 
+
+        if (strlen($_POST['email1']) > $config['smbasic_max_email'] ) {
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_EMAIL_SHORT']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+           return false;                        
+        }
+        if ( 
+                ($email = SMBasic_validate_email($_POST['email1'])) == false
+                ) {
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_EMAIL']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+           return false;                                    
+        } 
+    }
+   
+    
+    $password_encrypted = do_action("encrypt_password", $password);
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE uid = '{$_SESSION['uid']}' AND password = '$password_encrypted' LIMIT 1";
+    $query = db_query($q);
+    if(db_num_rows($query) <= 0) {
+       $response[] = array("status" => "2", "msg" => $LANGDATA['L_WRONG_PASSWORD']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;         
+    } else {
+        $user = db_fetch($query);
+    }
+    
+    
+    if (
+            ( $config['smbasic_need_username'] == 1) &&
+            ( $config['smbasic_can_change_username'] == 1) &&
+            ( $user['username'] != $_POST['username1'])
+        ){
+        
+        $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username='$username' LIMIT 1";
+        $query = db_query($q);
+        if (db_num_rows($query) > 0) {
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;             
+        }
+    }
+        
+    if (
+            ( $config['smbasic_need_email'] == 1) &&
+            ( $config['smbasic_can_change_email'] == 1) &&
+            ( $user['email'] != $_POST['email1'] ) 
+        ){        
+        $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
+        $query = db_query($q);
+        if (db_num_rows($query) > 0) {
+           $response[] = array("status" => "5", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;             
+        }               
+    } 
+    
+    if ( 
+            ($config['smbasic_need_username'] == 0) ||  
+            ($config['smbasic_can_change_username'] == 0) ||
+            ($username == $user['username']) 
+        ) {
+        unset($username);
+    }
+    if ( 
+            ($config['smbasic_need_email'] == 0) ||  
+            ($config['smbasic_can_change_email'] == 0) ||
+            ($email == $user['email']) 
+        ) {
+        unset($email);
+    }    
+    //CHECK if something need change
+    if (    
+            (empty($email)) &&
+            (empty($username)) &&
+            (empty($_POST['new_password1'])) &&
+            (empty($_POST['r_password1']))
+            ) {
+           $response[] = array("status" => "6", "msg" => $LANGDATA['L_NOTHING_CHANGE']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;                     
+    }
+    
+    $need_coma = 0; // huh!
+    
+    $q = "UPDATE {$config['DB_PREFIX']}users SET ";
+
+    //if isset username then ins't equal since unset before in case of
+    if (( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) && ( !empty($username) )) {
+        $q .= "username = '$username'";
+        $need_coma = 1;
+    }    
+    if (( $config['smbasic_need_email'] == 1) && ( $config['smbasic_can_change_email'] == 1) && ( !empty($email) )) {
+        if ($need_coma) {
+            $q .= ", email = '$email'";
+        } else {
+            $q .= "email = '$email'";
+            $need_coma = 1;
+        }
+    }
+        
+    if (!empty($_POST['new_password1'])) {
+        if  ( ($new_password = s_char($_POST['new_password1'], $config['smbasic_max_password'])) != false) { //FIX password validation
+            $new_password_encrypt = do_action("encrypt_password", $new_password);
+            if ($need_coma) {               
+               $q .= ", password = '$new_password_encrypt'";
+           } else {
+               $q .= " password = '$new_password_encrypt'";
+               $need_coma = 1;
+           }
+        }
+    }   
+
+    $q .= " WHERE uid = {$_SESSION['uid']} LIMIT 1";
+    
+    db_query($q);
+    $profile_url = $config['WEB_URL'] . "profile.php";
+    $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] , "url" => "$profile_url");    
+    echo json_encode($response, JSON_UNESCAPED_SLASHES);
     return false;
 }
