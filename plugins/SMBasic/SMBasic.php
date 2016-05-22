@@ -20,7 +20,7 @@ function SMBasic_Init() {
     session_start();
         
     if (
-         (isset($_SESSION['uid']) && isset($_SESSION['sid'])) &&
+         (!empty($_SESSION['uid']) && !empty($_SESSION['sid'])) &&
           ($_SESSION['uid'] != 0)
        )
         {
@@ -32,7 +32,7 @@ function SMBasic_Init() {
               SMBasic_checkCookies();
             }
         }
-        if(SMB_DEBUG && isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
+        if(SMB_DEBUG && !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
             SMBasic_sessionDebugDetails();
         }
 
@@ -48,7 +48,7 @@ function SMBasic_Init() {
 function SMBasic_regPage() {
     global $config;
 
-    if( (isset($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
+    if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
         echo "<p>Error, already logged<p>"; //TODO better Error msg
         exit(0);
     }
@@ -69,7 +69,7 @@ function SMBasic_regPage() {
 }
 
 function SMBasic_profilePage() {
-    if(!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
+    if(empty($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
         echo "<p>Error, not logged<p>";
         return false;
     }
@@ -85,7 +85,7 @@ function SMBasic_profilePage() {
 }
 
 function SMBasic_loginPage () {
-    if( (isset($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
+    if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
         echo "<p>Error, already logged<p>"; //TODO better Error msg
         exit(0);
     }
@@ -112,7 +112,7 @@ function SMBasic_navLogReg() {
     global $LANGDATA;
     
     $elements = "";
-    if (isset($_SESSION['username']) && $_SESSION['username'] != "anononimo") {
+    if (!empty($_SESSION['username']) && !empty($_SESSION['uid'])) { //&& $_SESSION['username'] != "anononimo") { 
         $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/logout.php'>{$LANGDATA['L_LOGOUT']}</a></li>\n";
         $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/profile.php'>". $_SESSION['username']. "</a></li>\n";
     } else {
