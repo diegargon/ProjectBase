@@ -5,13 +5,11 @@
  */
 
 function Newspage_init(){
-    global $config;
-    
+  
     if (DEBUG_PLUGINS_LOAD) { print_debug("Newspage Inititated<br/>");}
     
     require("includes/Newspage.inc.php");
-    include_once("lang/" . $config['WEB_LANG'] . "/Newspage.lang.php" );
-    //echo $_SERVER['REQUEST_URI'] ."<br>";
+    includeLang("Newspage");    
 }
 
 

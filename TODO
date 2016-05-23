@@ -11,8 +11,6 @@ New:Admin basic Plugin
 New:Admin News 
 Newspage:fix switch body layout and ?add switcher to navmenu?
 Core?: Core? ErrorMsg for display users do_action("error_dialog", array);
-Core: includeLang() core;
-
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core: Filter vars correctly 
@@ -20,6 +18,7 @@ Core: Filter vars correctly
 SMBasic: session expire problem (server VS custom)
 SMBasic:clean  all users expired sessions  on each user logout or when?
 }
+
 #BACKLOG
 Newspage: Extra functions for addons
 New:User private message plugin

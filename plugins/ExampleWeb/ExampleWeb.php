@@ -4,11 +4,10 @@
  */
 
 function ExampleWeb_init(){
-    global $config;
         
     if (DEBUG_PLUGINS_LOAD) { print_debug ("ExampleWeb initialized<br>"); }
     
-    include_once("lang/" . $config['WEB_LANG'] . "/ExampleWeb.lang.php" );
+    includeLang("ExampleWeb");    
      
     register_uniq_action("index_page", "ex_index_page");
     register_uniq_action("news_page", "ex_news_page"); 

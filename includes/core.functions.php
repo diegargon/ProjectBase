@@ -63,6 +63,14 @@ function includeConfig($plugin) {
     }
 }
 
+function includeLang($plugin) {
+    global $config;
+    global $LANGDATA;
+    $lang_file = "plugins/$plugin/lang/" . $config['WEB_LANG'] . "/$plugin.lang.php";
+    if (file_exists($lang_file)) {
+        include_once($lang_file);
+    }       
+}
 /* BORRAR
 function sort_array_asc(&$thearray) {
     

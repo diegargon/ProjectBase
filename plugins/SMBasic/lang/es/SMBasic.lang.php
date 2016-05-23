@@ -3,8 +3,6 @@
  *  Copyright @ 2016 Diego Garcia
  * ES
  */
-global $LANGDATA;
-
 $LANGDATA['L_LOGIN'] = "Identificarse";
 $LANGDATA['L_REGISTER'] = "Registrarse";
 $LANGDATA['L_REGISTER_MSG'] = "¿no eres miembro?";
