@@ -27,10 +27,12 @@ function SMBasic_Init() {
        )
         {
             if(!SMBasic_checkSession()) {
+                print_debug("Check session failed on SMBasic_Init destroy session");
                 SMBasic_sessionDestroy();
             }           
         } else {
            if($config['smbasic_session_persistence']) {
+              print_debug("Checkcookies trigged");
               SMBasic_checkCookies();
             }
         }

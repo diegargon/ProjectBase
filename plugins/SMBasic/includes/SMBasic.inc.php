@@ -99,7 +99,8 @@ function SMBasic_checkSession() {
             }
             print_debug("SMBasic:UserAgent validated OK");
         }
-        if ($session['session_expire'] < $now) {             
+        if ($session['session_expire'] < $now) { 
+            print_debug("SMBasic: db session expired at $now");
             return false;
         } else {
             $q = "UPDATE {$config['DB_PREFIX']}sessions"
