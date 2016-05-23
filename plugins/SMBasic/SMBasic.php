@@ -7,7 +7,7 @@
 
 function SMBasic_Init() {
     global $config;
-
+    
     if (DEBUG_PLUGINS_LOAD) { print_debug("SMBasic initialice<br/>"); }
     
     require_once("includes/SMBasic.inc.php");
@@ -95,12 +95,18 @@ function SMBasic_loginPage () {
        SMBasic_user_activate_account();
        //TODO error msg on return false;
     }
+    if (isset($_GET['reset'])) {
+       SMBasic_user_reset_account();
+       //TODO error msg on return false;
+    }
     if (
-            isset($_POST['email1']) && 
-            isset($_POST['password1']) &&
-            isset($_POST['login1'])
-            ) {
-            SMBasic_Login(); 
+        isset($_POST['email1']) && 
+        isset($_POST['password1']) &&
+        isset($_POST['login1'])
+    ) {
+        SMBasic_Login(); 
+    } else if (!empty($_POST['reset1'])){  
+        SMBasic_RequestResetOrActivation();
     } else {
        do_action("common_web_structure");
        register_action("add_link", "SMBasic_CSS","5");
@@ -123,8 +129,8 @@ function SMBasic_navLogReg() {
     }
     return $elements;
 }
-function SMBasic_get_login_page() {
 
+function SMBasic_get_login_page() {
     if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "login")) {
         return codetovar($TPLPATH, "");
     }   

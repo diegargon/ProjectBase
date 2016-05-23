@@ -11,13 +11,14 @@ New:Admin basic Plugin
 New:Admin News 
 Newspage:fix switch body layout and ?add switcher to navmenu?
 Core: Core ErrorMsg for display users do_action("error_dialog", array);
-SMBasic: Recordatorio/reset password.
+
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
+SMBasic/Core: Filter $_SERVER and add filter to core
 Core: Filter vars correctly 
 {
 SMBasic: session expire problem (server VS custom)
-SMBasic:clean session table on logout, and after expire. when?
+SMBasic:clean  all users expired sessions  on each user logout or when?
 }
 #BACKLOG
 Newspage: Extra functions for addons
@@ -30,3 +31,4 @@ core: Better method for avoid duplicate standard scripts like jquery
 DebugWindow: improved debug and debug window with filters, print_debug ($msg, FILTER_PLUGIN_LOAD) ?¿?¿?¿
 SMBasic:  ¿email hash optional?
 SMBasic: Login/Register  scripts fix language method like profile
+SMBasic: Remove need_email since its necessary always

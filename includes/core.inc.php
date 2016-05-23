@@ -81,6 +81,19 @@ function input_filter($data) {
     return $data;
 }
 
+function S_GET_INT($var) {
+    if(empty($_GET[$var])) {
+       return false;
+    }
+    return filter_input(INPUT_GET, $var, FILTER_VALIDATE_INT);
+}
+function S_GET_EMAIL($var) {
+    if(empty($_GET[$var])) {
+       return false;
+    }    
+    return filter_input(INPUT_GET, $var, FILTER_VALIDATE_EMAIL);
+}
+
 function format_date($date, $timestamp = false) {
     global $config;
     if ($timestamp) {

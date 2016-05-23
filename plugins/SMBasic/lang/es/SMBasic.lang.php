@@ -54,4 +54,15 @@ $LANGDATA['L_EMAIL_EMPTY'] = "El campo email no puede estar vacio";
 $LANGDATA['L_EMAIL_LONG'] = "El campo email es demasiado largo";
 $LANGDATA['L_NOTHING_CHANGE'] = "Ningun cambio";
 $LANGDATA['L_UPDATE_SUCCESSFUL'] = "Actualizado con exito";
+$LANGDATA['L_RESET_PASSWORD'] = "Solicitar contraseña o activación";
+$LANGDATA['L_RESET_PASSWORD_BTN'] = "Solicitar";
+$LANGDATA['L_ERROR_EMAIL_NOEXISTS'] = "Email no existe";
+$LANGDATA['L_ACTIVATION_EMAIL'] = "Cuenta no activada todavía, le hemos enviado el correo de activación";
+$LANGDATA['L_RESET_EMAIL_SUBJECT'] = "Solicitud de una nueva contraseña";
+$LANGDATA['L_RESET_EMAIL_MSG'] = "Usted o alguien a solicitado una nueva contraseña, si no fue usted ignore el mensaje, si no pulse el siguiente enlace de confirmación y le enviaremos una nueva";
+$LANGDATA['L_RESET_EMAIL'] = "Le hemos enviado un correo con los pasos a seguir para obtener una nueva contraseña";
+$LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'] = "Su nueva contraseña";
+$LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] = "Como ha solicitado le hemos creado la siguiente nueva contraseña:";
+$LANGDATA['L_RESET_PASSWORD_SUCCESS'] = "Su contraseña a sido generada correctamente y enviada a su correo electronico.";
+        
 //$LANGDATA['L_'] = "";
