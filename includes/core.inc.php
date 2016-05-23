@@ -12,6 +12,7 @@ $external_scripts =[];
 //global $htmllink;
 
 require_once "config/config.inc.php";
+require_once "includes/valfilters.inc.php";
 require_once "includes/plugins.inc.php";
 require_once "includes/plugins.check.php";
 
@@ -23,25 +24,6 @@ function print_debug($msg) {
     $debug[] = $msg;
 }
 
-function s_char($char, $size) {
-    if (strlen($char) <= $size) {
-        return input_filter($char);
-    } else if ($size == 0) { // 0 disable size
-        return input_filter($char); 
-    }
-    return false;
-}
-
-function s_num($num, $size) {
-    if(is_numeric($num) && (strlen($num) <= $size)) {
-        return $num;
-    }
-    return false;
-}
-
-function s_bool($bool) {
-    return filter_var($bool, FILTER_VALIDATE_BOOLEAN);
-}
 
 function getserverload() {
   if(file_exists("/proc/loadavg")) {
@@ -58,40 +40,6 @@ function codetovar($path, $data) {
     $content = ob_get_contents();
     ob_end_clean();
     return $content;
-}
-
-function input_filter($data) {
-    global $config;
-    
-    if (is_array($data)) {
-        foreach ($data as $key => $element) {
-            $data[$key] = input_filter($element);
-        }
-    } else {
-        
-        $data = trim(htmlentities(strip_tags($data)));        
-        if(get_magic_quotes_gpc()) $data = stripslashes($data);
-        
-        if (isset($config['SQL_DB']) && $config['SQL_DB']) {
-            $data = db_escape_string($data);
-        }
-        
-    }
-    
-    return $data;
-}
-
-function S_GET_INT($var) {
-    if(empty($_GET[$var])) {
-       return false;
-    }
-    return filter_input(INPUT_GET, $var, FILTER_VALIDATE_INT);
-}
-function S_GET_EMAIL($var) {
-    if(empty($_GET[$var])) {
-       return false;
-    }    
-    return filter_input(INPUT_GET, $var, FILTER_VALIDATE_EMAIL);
 }
 
 function format_date($date, $timestamp = false) {

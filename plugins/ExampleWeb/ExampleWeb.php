@@ -1,13 +1,11 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-//global $tpldata;
 
 function ExampleWeb_init(){
     global $config;
-    
+        
     if (DEBUG_PLUGINS_LOAD) { print_debug ("ExampleWeb initialized<br>"); }
     
     include_once("lang/" . $config['WEB_LANG'] . "/ExampleWeb.lang.php" );
