@@ -45,6 +45,8 @@ function input_filter($data) {
     return $data;
 }
 
+//$_GET
+
 function S_GET_INT($var) {
     if(empty($_GET[$var])) {
        return false;
@@ -57,7 +59,15 @@ function S_GET_EMAIL($var) {
     }    
     return filter_input(INPUT_GET, $var, FILTER_VALIDATE_EMAIL);
 }
+//$_POST
+function S_POST_EMAIL($var) {
+    if(empty($_POST[$var])) {
+       return false;
+    }    
+    return filter_input(INPUT_POST, $var, FILTER_VALIDATE_EMAIL);
+}
 
+//$_SERVER
 function S_SERVER_USER_AGENT () {
     if(empty($_SERVER['HTTP_USER_AGENT'])) {
         return false;
@@ -71,3 +81,4 @@ function S_SERVER_REMOTE_ADDR () {
     }
     return filter_input(INPUT_SERVER, 'REMOTE_ADDR',FILTER_VALIDATE_IP);
 }
+

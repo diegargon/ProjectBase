@@ -17,12 +17,6 @@ function SMBasic_sessionToken() {
     return  md5(uniqid(rand(), true));
 }
 
-function SMBasic_validate_email($email) {
-    global $config;
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);    
-    return $email;
-}
-
 function SMBasic_validate_password($password) {
     global $config;
     return s_char($password, $config['smbasic_max_password']);
@@ -159,7 +153,7 @@ function SMBasic_Login() {
     global $config;
     global $LANGDATA;
     if ( 
-        (($email = SMBasic_validate_email($_POST['email1'])) != false) &&
+        (($email = S_POST_EMAIL("email1")) != false) &&
         ($email != null) &&
         (($password = SMBasic_validate_password($_POST['password1']))!= false) &&
         ($password != null)
@@ -208,7 +202,7 @@ function SMBasic_Register() {
     
     if( 
         ($config['smbasic_need_email'] == 1)  && 
-        (($email = SMBasic_validate_email($_POST['email1'])) == false)) {
+        (($email = S_POST_EMAIL("email1")) == false)) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false; 
@@ -451,25 +445,27 @@ function SMBasic_ProfileChange() {
             ( $config['smbasic_need_email'] == 1) &&
             ( $config['smbasic_can_change_email'] == 1)
         ){
+        if ( 
+                ($email = S_POST_EMAIL("email1")) == false
+                ) {
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_EMAIL']);
+           echo json_encode($response, JSON_UNESCAPED_SLASHES);
+           return false;                                    
+        } 
+/* S_POST_EMAIL already check for empty        
         if(empty($_POST['email1'])) {
            $response[] = array("status" => "5", "msg" => $LANGDATA['L_EMAIL_EMPTY']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;            
             
         } 
-
-        if (strlen($_POST['email1']) > $config['smbasic_max_email'] ) {
+*/
+        if (strlen($email) > $config['smbasic_max_email'] ) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_EMAIL_LONG']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                        
         }
-        if ( 
-                ($email = SMBasic_validate_email($_POST['email1'])) == false
-                ) {
-           $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_EMAIL']);
-           echo json_encode($response, JSON_UNESCAPED_SLASHES);
-           return false;                                    
-        } 
+
     }
    
     
@@ -583,23 +579,27 @@ function SMBasic_RequestResetOrActivation() {
     global $LANGDATA;
     global $config;
 
-    if(empty($_POST['email1'])) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_EMAIL_EMPTY']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;            
-    } 
-    if (strlen($_POST['email1']) > $config['smbasic_max_email'] ) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_EMAIL_LONG']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                        
-    }
     if ( 
-        ($email = SMBasic_validate_email($_POST['email1'])) == false
+        ($email = S_POST_EMAIL("email1")) == false
     ) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                                    
     } 
+    
+/* S_POST_EMAIL Already check form empty   REMOVE LATER
+    if(empty($_POST['email1'])) {
+        $response[] = array("status" => "1", "msg" => $LANGDATA['L_EMAIL_EMPTY']);
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;            
+    }
+ * 
+ */ 
+    if (strlen($email) > $config['smbasic_max_email'] ) {
+        $response[] = array("status" => "1", "msg" => $LANGDATA['L_EMAIL_LONG']);
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;                        
+    }
     
     $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
     $query = db_query($q);

@@ -93,7 +93,7 @@ function SMBasic_loginPage () {
     
     if (isset($_GET['active'])) {
        SMBasic_user_activate_account();
-       //TODO error msg on return false;
+       //TODO error msg on return false; and confirmation on true
     }
     if (isset($_GET['reset'])) {
        SMBasic_user_reset_account();
