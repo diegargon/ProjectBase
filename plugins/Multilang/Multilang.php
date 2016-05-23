@@ -6,8 +6,9 @@
 function Multilang_init(){
     global $config;
     if (DEBUG_PLUGINS_LOAD) { print_debug("Multilang Inititated<br/>"); }
-    include_once("Multilang.config.php");
-    
+
+    includeConfig("Multilang");
+
     $config['multilang'] = 1;
     
     //MUST PRIOTIZE MYSQL Plugin load before starting multilang for use from_db

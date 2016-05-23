@@ -3,8 +3,6 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
-$actions = []; 
-
 function register_action($event, $func, $priority)
 {
     global $actions;

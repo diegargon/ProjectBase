@@ -1,9 +1,4 @@
 <?php
-$registered_plugins = [];
-$started_plugins = [];
-
-get_all_enabled_plugins();
-start_registered_plugins ();
 
 function get_all_enabled_plugins() {
     global $registered_plugins;

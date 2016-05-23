@@ -11,7 +11,7 @@ function SMBasic_Init() {
     if (DEBUG_PLUGINS_LOAD) { print_debug("SMBasic initialice<br/>"); }
     
     require_once("includes/SMBasic.inc.php");
-    require_once("SMBasic.config.php");
+    includeConfig("SMBasic");
     include_once("lang/" . $config['WEB_LANG'] . "/SMBasic.lang.php" ); 
 
     if (action_isset("encrypt_password") == false) {

@@ -10,11 +10,11 @@ New:admin comments for resources
 New:Admin basic Plugin
 New:Admin News 
 Newspage:fix switch body layout and ?add switcher to navmenu?
-Core: Core ErrorMsg for display users do_action("error_dialog", array);
+Core?: Core? ErrorMsg for display users do_action("error_dialog", array);
+Core: includeLang() core;
 
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
-SMBasic/Core: Filter $_SERVER and add filter to core
 Core: Filter vars correctly 
 {
 SMBasic: session expire problem (server VS custom)
@@ -32,3 +32,6 @@ DebugWindow: improved debug and debug window with filters, print_debug ($msg, FI
 SMBasic:  ¿email hash optional?
 SMBasic: Login/Register  scripts fix language method like profile
 SMBasic: Remove need_email since its necessary always
+Plugins: avoid the need of root files for plugins.
+tplbasic: Improved
+

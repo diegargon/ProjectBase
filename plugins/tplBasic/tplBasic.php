@@ -1,14 +1,10 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
 global $tpldata;
 
 function tplBasic_init(){   
-    global $tpldata;
-    global $config;
-    
     if (DEBUG_PLUGINS_LOAD) { print_debug ("tplBasic initialized<br>"); }
 
     require_once("includes/tplBasic.inc.php");

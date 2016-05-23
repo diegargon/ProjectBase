@@ -5,26 +5,17 @@
  */
 global $dblink;
 
-
-
 function MysqlDB_Init() {
-    //global $config;
-    
-    
+
     if (DEBUG_PLUGINS_LOAD) { print_debug("MysqlDB Initialice<br/>"); }
 
-    
-    require_once("MysqlDB.config.php");
+    includeConfig("MysqlDB");
     require_once("MysqlDB.inc.php");
 
     register_action("close_plugin", "MysqlDB_Close", "5");
-   
-   
-    
     db_connect();
 }
 
 function MysqlDB_Close() {
-    db_close();
-    
+    db_close();    
 }
