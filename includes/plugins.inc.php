@@ -1,13 +1,9 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
 
 $actions = []; 
-$actions_uniq = [];
-
-
 
 function register_action($event, $func, $priority)
 {
