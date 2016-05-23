@@ -75,5 +75,3 @@ function tpl_get_path($type, $plugin, $page) {
     
     return 0;
 }
-
-

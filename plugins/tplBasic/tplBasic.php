@@ -5,24 +5,17 @@
  */
 global $tpldata;
 
-function tplBasic_init(){
-    
+function tplBasic_init(){   
     global $tpldata;
     global $config;
     
     if (DEBUG_PLUGINS_LOAD) { print_debug ("tplBasic initialized<br>"); }
-    require_once("includes/tplBasic.inc.php");
-/*
-    $tpldata['TITLE'] = $config['TITLE'];
-    $tpldata['WEBDESC'] = $config['WEBDESC'];
-    $tpldata['CHARSET'] = $config['CHARSET'];
-    $tpldata['WEBURL']  = $config['WEBURL'];
- * 
- */
-    register_action("common_web_structure", "tplBasic_web_structure", "0");
-    
 
-//    echo "$tpldata[DEBUG]";
+    require_once("includes/tplBasic.inc.php");
+    //require_once("includes/tplbasic.actions.php");
+    
+    register_action("common_web_structure", "tplBasic_web_structure", "0");
+
 }
 
 function tplBasic_web_structure() {
