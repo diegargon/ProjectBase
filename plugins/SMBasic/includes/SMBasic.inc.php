@@ -23,14 +23,6 @@ function SMBasic_validate_email($email) {
     return $email;
 }
 
-function SMBasic_filter_user_agent($user_agent) {
-    return s_char($user_agent, 0);
-}
-
-function SMBasic_validate_ip($ip) {
-    return filter_var($ip, FILTER_VALIDATE_IP);
-}
-
 function SMBasic_validate_password($password) {
     global $config;
     return s_char($password, $config['smbasic_max_password']);
@@ -51,8 +43,9 @@ function SMBasic_setSession($user) {
     $_SESSION['uid']  = $user['uid'];
     $_SESSION['sid'] = SMBasic_sessionToken();
     $_SESSION['isLogged'] = 1;
-    $ip = SMBasic_validate_ip($_SERVER['REMOTE_ADDR']);
-    $user_agent = SMBasic_filter_user_agent($_SERVER['HTTP_USER_AGENT']);
+    $ip = S_SERVER_REMOTE_ADDR();    
+    $user_agent = S_SERVER_USER_AGENT();
+    
     $q = "DELETE FROM {$config['DB_PREFIX']}sessions WHERE session_uid = {$user['uid']}";
     db_query($q);
     $q = "INSERT INTO $config[DB_PREFIX]sessions ("
@@ -365,7 +358,7 @@ function SMBasic_sessionDebugDetails() {
 }
 
 function SMBasic_check_IP($db_session_ip) {
-    $ip = SMBasic_validate_ip($_SERVER['REMOTE_ADDR']);
+    $ip = S_SERVER_REMOTE_ADDR();
     if($ip == $db_session_ip) {
         return true;
     }
@@ -374,7 +367,7 @@ function SMBasic_check_IP($db_session_ip) {
 }
 
 function SMBasic_check_user_agent($db_user_agent) {
-    $user_agent = SMBasic_filter_user_agent($_SERVER['HTTP_USER_AGENT']);
+    $user_agent = S_SERVER_USER_AGENT();
     if ($user_agent == $db_user_agent) {        
         return true;
     }
