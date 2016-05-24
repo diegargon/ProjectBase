@@ -1,0 +1,11 @@
+{
+    "plugin_name": "SimpleACL",
+    "enabled": "1",
+    "main_file" : "SimpleACL.php",
+    "function_init": "SimpleACL_init",
+    "function_install": "",
+    "provided": "SimpleACL1",
+    "depends" : "sessions multilang1 SQL1",
+    "autostart": "1",
+    "priority" : "4"   
+}

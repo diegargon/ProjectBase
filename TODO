@@ -19,7 +19,7 @@ SMBasic: session expire problem (server VS custom)
 SMBasic:clean  all users expired sessions  on each user logout or when?
 }
 ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL
-
+Newspage: newspage.php error message on access without id or wrong id
 
 #BACKLOG
 Newspage: Extra functions for addons
