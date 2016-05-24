@@ -1,4 +1,5 @@
 <?php
+if (!defined('IN_WEB')) { exit; }
 /* 
  *  Copyright @ 2016 Diego Garcia
  */

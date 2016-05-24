@@ -4,6 +4,7 @@
  * 
  * do_action("encrypt_password") // Override/set for change default one
  */
+if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_Init() {
     global $config;
@@ -17,10 +18,10 @@ function SMBasic_Init() {
     if (action_isset("encrypt_password") == false) {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }
-    
-    ini_set('session.gc_maxlifetime', $config['smbasic_session_expire']);
+
+    //ini_set('session.gc_maxlifetime', $config['smbasic_session_expire']);       
     session_start();
-        
+    
     if (
          (!empty($_SESSION['uid']) && !empty($_SESSION['sid'])) &&
           ($_SESSION['uid'] != 0) // use 0 for anon? if not remove

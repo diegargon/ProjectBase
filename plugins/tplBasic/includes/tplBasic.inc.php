@@ -1,9 +1,8 @@
 <?php
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-
+if (!defined('IN_WEB')) { exit; }
 
 function tpl_build_page() {
     global $tpldata;

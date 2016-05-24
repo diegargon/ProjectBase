@@ -1,9 +1,11 @@
 <?php
-global $config;
-global $tpldata;
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+if (!defined('IN_WEB')) { exit; }
+
+global $config, $tpldata;
+
 ?>
 
 

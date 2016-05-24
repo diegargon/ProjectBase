@@ -2,6 +2,7 @@
 /*
 	
 */
+define('IN_WEB', TRUE);
 
 require_once "includes/core.inc.php";
 

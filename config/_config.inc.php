@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/* not update
  *  Copyright @ 2016 Diego Garcia
  */
 

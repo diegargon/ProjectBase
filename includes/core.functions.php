@@ -2,6 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+if (!defined('IN_WEB')) { exit; }
 
 function print_debug($msg) {
     global $debug;

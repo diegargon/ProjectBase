@@ -3,6 +3,8 @@
  *  Copyright @ 2016 Diego Garcia
  * ES
  */
+if (!defined('IN_WEB')) { exit; }
+
 $LANGDATA['L_LOGIN'] = "Identificarse";
 $LANGDATA['L_REGISTER'] = "Registrarse";
 $LANGDATA['L_REGISTER_MSG'] = "¿no eres miembro?";

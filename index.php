@@ -2,8 +2,8 @@
 /*
 	File: index.php
 */
+define('IN_WEB', TRUE);
 
-//include files for adding plugin functionality
 require_once "includes/core.inc.php";
 
     

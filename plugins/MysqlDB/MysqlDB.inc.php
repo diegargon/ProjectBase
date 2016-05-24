@@ -1,5 +1,5 @@
 <?php
-
+if (!defined('IN_WEB')) { exit; }
 
 function db_connect() {
     global $dblink;

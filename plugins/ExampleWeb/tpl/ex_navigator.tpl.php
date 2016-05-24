@@ -1,7 +1,7 @@
 <?php
-global $config;
-global $tpldata;
-global $LANGDATA;
+if (!defined('IN_WEB')) { exit; }
+
+global $config, $tpldata, $LANGDATA;
 
 ?>
 

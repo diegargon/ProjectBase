@@ -1,6 +1,7 @@
 <?php
-global $config;
-global $tpldata;
+if (!defined('IN_WEB')) { exit; }
+
+global $config, $tpldata;
 
 /* 
  *  Copyright @ 2016 Diego Garcia

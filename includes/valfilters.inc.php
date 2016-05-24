@@ -2,6 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+if (!defined('IN_WEB')) { exit; }
 
 function s_char($char, $size) {
     if (strlen($char) <= $size) {

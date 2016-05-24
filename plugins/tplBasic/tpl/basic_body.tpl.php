@@ -1,4 +1,6 @@
 <?php
+if (!defined('IN_WEB')) { exit; }
+
 global $tpldata;
 
 ?>
