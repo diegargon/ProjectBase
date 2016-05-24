@@ -6,6 +6,6 @@
     "function_install": "",
     "provided": "Admin1",
     "depends" : "sessions tplbasic1 multilang1 SQL1",
-    "autostart": "0",
-    "priority" : "5"   
+    "autostart": "1",
+    "priority" : "6"   
 }

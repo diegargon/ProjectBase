@@ -82,3 +82,11 @@ function S_SERVER_REMOTE_ADDR () {
     return filter_input(INPUT_SERVER, 'REMOTE_ADDR',FILTER_VALIDATE_IP);
 }
 
+//VAR
+function S_VAR_INTEGER($var) {
+    if(empty($var)) {
+        return false;
+    }
+    return filter_var($var, FILTER_VALIDATE_INT);
+    
+}

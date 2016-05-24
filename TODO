@@ -18,6 +18,7 @@ Core: Filter vars correctly
 SMBasic: session expire problem (server VS custom)
 SMBasic:clean  all users expired sessions  on each user logout or when?
 }
+ALL: Change all isLogged to S_SESSION_INTEGER("isLogged")
 
 #BACKLOG
 Newspage: Extra functions for addons
@@ -33,4 +34,3 @@ SMBasic: Login/Register  scripts fix language method like profile
 SMBasic: Remove need_email since its necessary always
 Plugins: avoid the need of root files for plugins.
 tplbasic: Improved
-
