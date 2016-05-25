@@ -11,12 +11,16 @@ class ACL {
     private $roles;
     private $user_roles;
     
-    function __construct() {
-        $this->getRoles();
-        $this->getUserRoles();        
+    function __construct() {     
    }
     
     function acl_ask($role, $resource = "ALL") {
+        if (!isset($_SESSION['isLogged'])) {
+            return false;
+        }
+        $this->getRoles();
+        $this->getUserRoles();   
+                
         list($role_group, $role_type) = preg_split("/_/", $role);                        
         $return = $this->checkUserPerms($role_group, $role_type, $resource);
         return $return;
