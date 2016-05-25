@@ -50,7 +50,7 @@ function tpl_get_path($type, $plugin, $page) {
         if (file_exists($PATH)) {
             return $PATH; 
         }
-        return 0;
+        return false;
     }
     
     if ($type == "tpl") {
@@ -63,8 +63,8 @@ function tpl_get_path($type, $plugin, $page) {
         if (file_exists($PATH)) {
             return $PATH;
         }
-        return 0;
+        return false;
     }
     
-    return 0;
+    return false;
 }
