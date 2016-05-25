@@ -8,21 +8,19 @@ New:Admin users plugin
 New:comments plugin for resources
 New:admin comments for resources
 New:Admin basic Plugin
-New:Admin News 
+Newspage->Admin: Submit news admin/user submit options
 Newspage:fix switch body layout and ?add switcher to navmenu?
-Core?: Core? ErrorMsg for display users do_action("error_dialog", array);
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core/ALL: Filter vars correctly 
 {
-SMBasic: session expire problem (server VS custom)
+SMBasic: session expire problem (server VS custom) use session_start or custom session
 SMBasic:clean  all users expired sessions  on each user logout or when?
 }
 ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL
 Newspage: newspage.php error message on access without id or wrong id
 
 #BACKLOG
-Newspage: Extra functions for addons
 New:User private message plugin
 New:Forum plugin
 New:Shop plugin
@@ -34,6 +32,8 @@ SMBasic:  ¿email hash optional? if hash we can't contact.
 SMBasic: Login/Register  scripts fix language method like profile
 SMBasic: Remove need_email since its necessary always
 Plugins: avoid the need of root files for plugins.
-tplbasic: Improve
+tplbasic: Improve/rewrite
 ALL: track number db querys for stats
 New or DebugWindow: Debug to file
+Newspage: Extra functions for addons
+Newspage: Optional ACL support

@@ -19,7 +19,11 @@ function Admin_main_page() {
     do_action("common_web_structure");
     
     if (!$auth->acl_ask("admin_read")) {
-        echo "Haven't permiss";
-        exit(0); //TODO EROR MSG HAVENT PERMISS
+        global $tpldata; 
+        $tpldata['ERROR_TITLE'] = "Error"; //TODO LANGDATA
+        $tpldata['ERROR_MSG'] = "Haven't permiss";
+        $tpldata['ERROR_BACKLINK'] = "./";
+        $tpldata['ERROR_BACKLINK_TITLE'] = "Back home";
+        do_action("error_message");
     }    
 }

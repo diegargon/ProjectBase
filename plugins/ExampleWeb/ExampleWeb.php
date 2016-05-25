@@ -11,8 +11,9 @@ function ExampleWeb_init(){
     includeLang("ExampleWeb");    
      
     register_uniq_action("index_page", "ex_index_page");
-    register_uniq_action("news_page", "ex_news_page"); 
+    register_uniq_action("news_page", "ex_news_page");    
     register_action("common_web_structure", "ex_common_web_structure", "5");
+    register_uniq_action("error_message", "ex_error_page");
 }
 
 function ex_common_web_structure() {
@@ -31,6 +32,7 @@ function ex_news_page() {
     
     news_show();   
 }
+
 function ex_index_page(){
     do_action("common_web_structure");
     
@@ -38,6 +40,10 @@ function ex_index_page(){
     register_action("add_link", "news_add_link", "5");
 
     news_body_switcher();
+}
+
+function ex_error_page() {    
+    register_action("add_to_body", "ex_basic_error","5");
 }
 
 function ex_main_link (){ 
@@ -56,13 +62,21 @@ function ex_footer() {
         return codetovar($TPLPATH, "");
     }        
 }
+
 function ex_header() {    
     if ($TPLPATH = tpl_get_path("tpl", "ExampleWeb", "ex_header")) {
         return codetovar($TPLPATH, "");
     }        
 }
+
 function ex_nav() {    
     if ($TPLPATH = tpl_get_path("tpl", "ExampleWeb", "ex_navigator")) {
+        return codetovar($TPLPATH, "");
+    }        
+}
+
+function ex_basic_error() {    
+    if ($TPLPATH = tpl_get_path("tpl", "ExampleWeb", "ex_basic_error")) {
         return codetovar($TPLPATH, "");
     }        
 }
