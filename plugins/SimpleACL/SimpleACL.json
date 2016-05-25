@@ -4,7 +4,7 @@
     "main_file" : "SimpleACL.php",
     "function_init": "SimpleACL_init",
     "function_install": "",
-    "provided": "SimpleACL1",
+    "provided": "acl1",
     "depends" : "sessions multilang1 SQL1",
     "autostart": "1",
     "priority" : "4"   

@@ -13,7 +13,7 @@ Newspage:fix switch body layout and ?add switcher to navmenu?
 Core?: Core? ErrorMsg for display users do_action("error_dialog", array);
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
-Core: Filter vars correctly 
+Core/ALL: Filter vars correctly 
 {
 SMBasic: session expire problem (server VS custom)
 SMBasic:clean  all users expired sessions  on each user logout or when?
@@ -27,11 +27,13 @@ New:User private message plugin
 New:Forum plugin
 New:Shop plugin
 New:Social plugin
-New:ACL Plugin
+SimpleACL: Improve
 core: Better method for avoid duplicate standard scripts like jquery
 DebugWindow: improved debug and debug window with filters, print_debug ($msg, FILTER_PLUGIN_LOAD) ?¿?¿?¿
-SMBasic:  ¿email hash optional?
+SMBasic:  ¿email hash optional? if hash we can't contact.
 SMBasic: Login/Register  scripts fix language method like profile
 SMBasic: Remove need_email since its necessary always
 Plugins: avoid the need of root files for plugins.
-tplbasic: Improved
+tplbasic: Improve
+ALL: track number db querys for stats
+New or DebugWindow: Debug to file
