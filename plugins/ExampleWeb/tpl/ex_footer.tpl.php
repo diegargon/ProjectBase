@@ -4,8 +4,8 @@ if (!defined('IN_WEB')) { exit; }
     <div class="row3">
         <footer id="footer" class="clear">
 <?php
-if (isset($tpldata['FOOTER'])) {
-    echo $tpldata['FOOTER'];
+if (isset($tpldata['ADD_TO_FOOTER'])) {
+    echo $tpldata['ADD_TO_FOOTER'];
 }  
 ?>
             <p class="fl_left">Copyright &copy; 2016 - 2016 Diego García All Rights Reserved</p>

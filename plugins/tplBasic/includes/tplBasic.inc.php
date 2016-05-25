@@ -12,7 +12,7 @@ function tpl_build_page() {
     $tpldata['NAV_ELEMENT'] = "";
     $tpldata['NAV'] = "";
     $tpldata['ADD_TO_BODY'] = "";
-    $tpldata['FOOTER'] = "";
+    $tpldata['ADD_TO_FOOTER'] = "";
     
     // BEGIN HEAD
     $tpldata['META'] .= do_action("add_meta");  
@@ -30,7 +30,7 @@ function tpl_build_page() {
     //END BODY
     
     //BEGIN FOOTER    
-    $tpldata['FOOTER'] .= do_action("add_footer");
+    $tpldata['ADD_TO_FOOTER'] .= do_action("add_to_footer");
     echo do_action("get_footer");
     //END FOOTER
     
