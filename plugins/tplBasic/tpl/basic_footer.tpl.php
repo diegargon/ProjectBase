@@ -1,9 +1,6 @@
 <?php
 if (!defined('IN_WEB')) { exit; }
-
-global $tpldata;
 ?>
-
 <footer>
 <?php 
     if (!empty($tpldata['FOOTER'])) {
