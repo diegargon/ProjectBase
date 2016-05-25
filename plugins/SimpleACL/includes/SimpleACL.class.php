@@ -15,12 +15,16 @@ class ACL {
    }
     
     function acl_ask($role, $resource = "ALL") {
-        if (!isset($_SESSION['isLogged'])) {
+        if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
             return false;
         }
         $this->getRoles();
         $this->getUserRoles();   
-                
+        
+        if($this->roles == false || $this->user_roles == false) {
+            return false;
+        }
+        
         list($role_group, $role_type) = preg_split("/_/", $role);                        
         $return = $this->checkUserPerms($role_group, $role_type, $resource);
         return $return;
@@ -30,12 +34,11 @@ class ACL {
         if(!$asked_role = $this->getRoleDataByName($role_group, $role_type)) {
             return false;
         }        
-        if ($this->user_roles == false) {
-            return false;
-        }                
-        
+                     
         foreach ($this->user_roles as $user_role) {
-            $user_role_data = $this->getRoleByID($user_role['role_id']);
+            if(!$user_role_data = $this->getRoleByID($user_role['role_id'])) {
+                return false;
+            }
             if (
                     ($user_role_data['role_id'] ==  $asked_role['role_id']) &&
                     ($user_role_data['resource'] == $resource) //Used later for specific resources                    
@@ -61,7 +64,7 @@ class ACL {
                         return $rol;
                     }
         }
-        return 0;
+        return false;
     }    
     
     private function getRoleByID($role_id) {
@@ -72,7 +75,7 @@ class ACL {
                         return $role;
                     }
         }
-        
+        return false;
     }
     
     private function getRoles() {
@@ -87,7 +90,7 @@ class ACL {
         } else {
             $this->roles = false;
         }
-        db_free_result($query);
+        db_free_result($query);        
     }
 
     private function getUserRoles() {
