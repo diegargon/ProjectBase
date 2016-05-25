@@ -21,6 +21,8 @@ function getserverload() {
 }
 
 function codetovar($path, $data) {
+    global $config, $tpldata, $LANGDATA;
+    
     ob_start();
     include ($path);
     $content = ob_get_contents();
