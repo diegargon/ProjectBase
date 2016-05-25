@@ -42,9 +42,10 @@ function ex_index_page(){
     news_body_switcher();
 }
 
-function ex_error_page() {    
+function ex_error_page() {
+    do_action("common_web_structure");  
     register_action("add_to_body", "ex_basic_error","5");
-}
+ }
 
 function ex_main_link (){ 
     if($CSSPATH = tpl_get_path("css", "ExampleWeb", "")) {

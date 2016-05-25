@@ -16,14 +16,18 @@ function Admin_main_page() {
     includeConfig("Admin");
     includeLang("Admin"); 
     
-    do_action("common_web_structure");
+    
     
     if (!$auth->acl_ask("admin_read")) {
-        global $tpldata; 
-        $tpldata['ERROR_TITLE'] = "Error"; //TODO LANGDATA
-        $tpldata['ERROR_MSG'] = "Haven't permiss";
+        global $tpldata, $LANGDATA;
+        
+        $tpldata['ERROR_TITLE'] = $LANGDATA['L_ERROR'];
+        $tpldata['ERROR_MSG'] = $LANGDATA['L_ERROR_NOACCESS'];
         $tpldata['ERROR_BACKLINK'] = "./";
         $tpldata['ERROR_BACKLINK_TITLE'] = "Back home";
         do_action("error_message");
+        return false;
     }    
+    
+    do_action("common_web_structure");
 }
