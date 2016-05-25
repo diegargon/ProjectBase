@@ -24,18 +24,12 @@ function tpl_build_page() {
     //BEGIN BODY
     
     $tpldata['NAV_ELEMENT'] .= do_action("add_nav_element");
-    $tpldata['NAV'] .= do_action("add_nav");
-    
-    //print_debug("(tplBasic.inc.php) - Entro <pre>$tpldata[nav]</pre>");
+    $tpldata['NAV'] .= do_action("add_nav");        
     $tpldata['ADD_TO_BODY'] .= do_action("add_to_body");
     echo do_action("get_body");
-    //ENDBODY
+    //END BODY
     
-    //BEGIN FOOTER
-    global $actions;
-    $myarray = print_r($actions, true);
-    //print_debug("<pre>$myarray</pre>");
-    
+    //BEGIN FOOTER    
     $tpldata['FOOTER'] .= do_action("add_footer");
     echo do_action("get_footer");
     //END FOOTER
