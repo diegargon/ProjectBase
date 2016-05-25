@@ -1,6 +1,4 @@
 <?php
-global $config;
-global $LANGDATA;
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
@@ -35,9 +33,7 @@ global $LANGDATA;
 					<?php print $LANGDATA['L_REGISTER_MSG']?>
 					<a href="register.php" class="to_register"><?php print $LANGDATA['L_REGISTER']?></a>
 				</p>
-			</form>
-            
-            
+			</form>            
         </div>
     </div>
     

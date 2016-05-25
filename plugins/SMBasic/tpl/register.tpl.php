@@ -1,13 +1,8 @@
 <?php
-global $config;
-global $tpldata;
-global $LANGDATA;
-
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
 ?>
-
 <div  class="clear bodysize page">   
     <div class="register_box">
         <form  action="" autocomplete="off" method="post"> 
@@ -42,8 +37,6 @@ if($config['smbasic_need_email']) {
             <p class="register button"> 
                 <input type="submit" id="register" name="register" class="btnRegister" value="<?php print $LANGDATA['L_REGISTER']?>" /> 
             </p>
-        </form>
-            
-            
+        </form>          
     </div>
 </div>

@@ -1,8 +1,5 @@
 <?php
 if (!defined('IN_WEB')) { exit; }
-
-global $config, $tpldata;
-
 ?>
     <div class="row3">
         <footer id="footer" class="clear">

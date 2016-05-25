@@ -1,5 +1,7 @@
 <?php
-
+/* 
+ *  Copyright @ 2016 Diego Garcia
+ */
 ?>
 <a href="<?php echo $data['URL']?>">
 <article class="newsbox">

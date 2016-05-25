@@ -1,10 +1,8 @@
 <?php
-global $tpldata;
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
 ?>
-
         <div  class="clear bodysize page">   
             <?php isset($tpldata['ADD_TOP_NEWS']) ? print $tpldata['ADD_TOP_NEWS']:false ?>
             
@@ -20,6 +18,3 @@ global $tpldata;
             </section>            
             <?php isset($tpldata['ADD_BOTTOM_NEWS']) ? print $tpldata['ADD_BOTTOM_NEWS']:false ?>            
         </div>
-    
-
-

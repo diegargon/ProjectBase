@@ -1,5 +1,4 @@
 <?php
-global $tpldata;
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
@@ -23,12 +22,10 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 <hr/>
                 <div class="article_main_media">
                     <img src="<?php isset($tpldata['NEWS_MAIN_MEDIA']) ? print $tpldata['NEWS_MAIN_MEDIA']:false ?>"/>
-                </div>
-                
+                </div>                
                 <div class="article_text">
                     <?php isset($tpldata['NEWS_TEXT']) ? print $tpldata['NEWS_TEXT']:false ?>
                 </div>      
-
                 <?php isset($tpldata['ADD_TO_NEWSHOW']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
             </div>
             <div class="article_side">

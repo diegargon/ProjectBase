@@ -1,9 +1,9 @@
-
-<!--
+<?php
+/*
  Copyright @ 2016 Diego Garcia
--->
+*/
+?>
 <a href="<?php print $data['URL'];?>">
-
 <section id="featured">
     <h2 class="category_name"><?php print $data['FEATURED_CAT'] ?></h2>
     <article>
@@ -17,5 +17,4 @@
         </div>
     </article>
 </section>
-
 </a>

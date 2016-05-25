@@ -1,6 +1,4 @@
 <?php
-global $LANGDATA;
-global $config;
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
