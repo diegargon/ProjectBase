@@ -19,12 +19,7 @@ function Admin_main_page() {
     
     
     if (!$auth->acl_ask("admin_read")) {
-        global $tpldata, $LANGDATA;
-        
-        $tpldata['ERROR_TITLE'] = $LANGDATA['L_ERROR'];
-        $tpldata['ERROR_MSG'] = $LANGDATA['L_ERROR_NOACCESS'];
-        $tpldata['ERROR_BACKLINK'] = "./";
-        $tpldata['ERROR_BACKLINK_TITLE'] = "Back home";
+        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
         do_action("error_message");
         return false;
     }    

@@ -50,13 +50,10 @@ function SMBasic_Init() {
 
 
 function SMBasic_regPage() {
-    global $config, $LANGDATA, $tpldata;
+    global $config;
 
-    if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {        
-        $tpldata['ERROR_TITLE'] = $LANGDATA['L_ERROR']; 
-        $tpldata['ERROR_MSG'] = $LANGDATA['L_ERROR_ALREADY_LOGGED'];
-        $tpldata['ERROR_BACKLINK'] = "./";
-        $tpldata['ERROR_BACKLINK_TITLE'] = $LANGDATA['L_BACKHOME'];
+    if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
+        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];                
         do_action("error_message");
         return false;
     }
@@ -78,7 +75,8 @@ function SMBasic_regPage() {
 
 function SMBasic_profilePage() {
     if(empty($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
-        echo "<p>Error, not logged<p>";
+        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOT_LOGGED'];
+        do_action("error_message");
         return false;
     }
     
@@ -93,14 +91,9 @@ function SMBasic_profilePage() {
 }
 
 function SMBasic_loginPage () {
-    global $tpldata, $LANGDATA;
     
     if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
-        do_action("common_web_structure");
-        $tpldata['ERROR_TITLE'] = $LANGDATA['L_ERROR']; 
-        $tpldata['ERROR_MSG'] = $LANGDATA['L_ERROR_ALREADY_LOGGED'];
-        $tpldata['ERROR_BACKLINK'] = "./";
-        $tpldata['ERROR_BACKLINK_TITLE'] = $LANGDATA['L_BACKHOME'];
+        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];        
         do_action("error_message");
         return false;
     }

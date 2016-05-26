@@ -8,8 +8,8 @@ function ExampleWeb_init(){
         
     if (DEBUG_PLUGINS_LOAD) { print_debug ("ExampleWeb initialized<br>"); }
     
-    includeLang("ExampleWeb");    
-     
+    includeLang("ExampleWeb");        
+    
     register_uniq_action("index_page", "ex_index_page");
     register_uniq_action("news_page", "ex_news_page");    
     register_action("common_web_structure", "ex_common_web_structure", "5");
@@ -42,8 +42,16 @@ function ex_index_page(){
     news_body_switcher();
 }
 
-function ex_error_page() {
-    do_action("common_web_structure");  
+function ex_error_page() {        
+    global $tpldata, $LANGDATA;
+    
+    if(empty($tpldata['E_TITLE'])) {
+        $tpldata['E_TITLE'] = $LANGDATA['L_E_ERROR'];
+    }
+    if(empty($tpldata['E_BACKLINK_TITLE'])) {
+        $tpldata['E_BACKLINK_TITLE'] = $LANGDATA['L_E_BACKLINK_TITLE'];       
+    }    
+    do_action("common_web_structure");    
     register_action("add_to_body", "ex_basic_error","5");
  }
 
