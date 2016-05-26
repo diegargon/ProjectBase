@@ -5,20 +5,22 @@ function db_connect() {
     global $dblink;
     
     $dblink = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB);
-
+    
+    if (!$dblink) {
+        die ('Failed to connect to MySQL: ' . mysqli_connect_errno());
+        exit();
+    }   
     db_query("SET NAMES ". DB_CHARSET ."");
     
-    if (mysqli_connect_errno($dblink)) {
-        echo "Failed to connect to MySQL: " . mysqli_connect_error();
-    }
     return true;
 }
 
 function db_query($string) {
-	global $dblink;
+    global $dblink;
         
-	$query = mysqli_query($dblink, $string) or db_die($query);
-	return $query;
+    $query = mysqli_query($dblink, $string) or db_die($query);
+
+    return $query;
 }
 
 function db_fetch($query) {
@@ -40,7 +42,7 @@ function db_close() {
     global $dblink;
     
 	if (!$dblink) {
-	    die('Could not connect: ' . mysql_error());
+	    die('Could not connect: ' . mysqli_error($dblink));
 	}
 	mysqli_close($dblink);
 }
@@ -51,19 +53,23 @@ function db_die($query) {
    echo "\n<b>Error: Unable to retrieve information.</b>";
    echo "\n<br>$query";
    echo "\n<br>reported: ".mysqli_error($dblink);
+   db_close();
    exit;
 }
 
 function db_insert_id() {
     global $dblink;
     
-	if (!$dblink) {
-	    die('Could not connect: ' . mysql_error());
-	}
-	return mysqli_insert_id($dblink);
+     if(!($id = mysqli_insert_id($dblink)) ) {
+        die('Could not connect: ' . mysqli_error($dblink));
+        db_close();
+        exit;
+     }
+
+    return $id;
 }
 
-function db_free_result($query) {
+function db_free_result(& $query) {
     mysqli_free_result($query);
 }
 
