@@ -23,7 +23,7 @@ function Multilang_init(){
 
     if (
        (isset($_GET['lang'])) &&
-       (($lang = s_char($_GET['lang'], 2)) != false)
+       (($lang = S_VAR_CHAR_AZ($_GET['lang'], 2, 2) ) != false)
         ) {
             $config['WEB_URL'] = $config['WEB_URL'] . "$lang/";
             $config['WEB_LANG'] = $lang;
@@ -41,7 +41,7 @@ function Multilang_init(){
 
     if( //TODO: check lang agains pb_lang
             isset($_POST['choose_lang']) &&
-            (($choose_lang = s_char($_POST['choose_lang'], 3)) != false)
+            (($choose_lang =  S_VAR_CHAR_AZ($_POST['choose_lang'], 2, 2)) != false)
             ) {
             $request_uri = str_replace($config['WEB_LANG'], $choose_lang, $request_uri);
             header('Location:' .$request_uri);
