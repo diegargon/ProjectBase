@@ -85,9 +85,7 @@ function tpl_get_file($type, $plugin, $page, $data = null) {
             return  "<link rel='stylesheet' href='/$USER_PATH'>\n";
         } else if (file_exists($DEFAULT_PATH)) {
             return  "<link rel='stylesheet' href='/$DEFAULT_PATH'>\n";
-        } else {
-            return false;
-        }
+        } 
     }
     
     if ($type == "tpl") {
@@ -97,10 +95,6 @@ function tpl_get_file($type, $plugin, $page, $data = null) {
             return codetovar($USER_PATH, $data);
         } else if (file_exists($DEFAULT_PATH)) {
             return codetovar($DEFAULT_PATH, $data);
-        } else {
-            return false;
-        }        
+        }       
     }
-    
-    return false;
 }
