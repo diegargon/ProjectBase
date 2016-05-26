@@ -8,8 +8,8 @@ function SimpleACL_init(){
     global $auth; 
     if (DEBUG_PLUGINS_LOAD) { print_debug("SimpleACL Inititated<br/>"); }
 
-    require("includes/SimpleACL.class.php");
-
+    require("includes/SimpleACL.class.php"); //Add *class* to includePluginFiles?
+    
     includePluginFiles("Admin"); 
     
     if(!isset($auth)) {

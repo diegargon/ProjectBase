@@ -71,5 +71,12 @@ function includePluginFiles($plugin) {
     $lang_file = "plugins/$plugin/lang/" . $config['WEB_LANG'] . "/$plugin.lang.php";
     if (file_exists($lang_file)) {
         include_once($lang_file);
-    }         
+    }     
+
+    //INC FILE
+    $inc_file = "plugins/$plugin/includes/$plugin.inc.php";
+    if (file_exists($inc_file)) {
+        include_once($inc_file);
+    }     
+    
 }

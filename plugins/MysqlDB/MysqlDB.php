@@ -10,9 +10,7 @@ function MysqlDB_Init() {
 
     if (DEBUG_PLUGINS_LOAD) { print_debug("MysqlDB Initialice<br/>"); }
 
-    includePluginFiles("MysqlDB");
-    
-    require_once("MysqlDB.inc.php");
+    includePluginFiles("MysqlDB");    
 
     register_action("finalize", "MysqlDB_Close", "5");
     db_connect();

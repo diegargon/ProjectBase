@@ -8,9 +8,9 @@ global $tpldata;
 
 function tplBasic_init(){   
     if (DEBUG_PLUGINS_LOAD) { print_debug ("tplBasic initialized<br>"); }
-
-    require_once("includes/tplBasic.inc.php");
-
+    
+    includePluginFiles("tplBasic");
+    
     register_action("common_web_structure", "tplBasic_web_structure", "0");
     register_uniq_action("index_page", "tplBasic_index_page", "5");
     register_uniq_action("error_message_page", "tplBasic_error_page");

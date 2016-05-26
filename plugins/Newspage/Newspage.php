@@ -9,8 +9,6 @@ function Newspage_init(){
     if (DEBUG_PLUGINS_LOAD) { print_debug("Newspage Inititated<br/>");}
     
     includePluginFiles("Newspage");
-
-    require("includes/Newspage.inc.php");
      
 }
 

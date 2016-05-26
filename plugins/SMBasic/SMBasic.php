@@ -10,8 +10,6 @@ function SMBasic_Init() {
     global $config;
     
     if (DEBUG_PLUGINS_LOAD) { print_debug("SMBasic initialice<br/>"); }
-    
-    require_once("includes/SMBasic.inc.php");
 
     includePluginFiles("SMBasic");
 
