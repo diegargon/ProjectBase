@@ -102,3 +102,51 @@ function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
     
     return filter_var($var, FILTER_VALIDATE_INT);    
 }
+
+function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
+    if(empty($var)) {
+        return false;        
+    }
+
+    if (!empty($max_size)) {
+        if (strlen($var) > $max_size) {
+            return false;
+        }
+    }
+    if (!empty($min_size)) {
+        if (strlen($var) < $min_size) {
+            return false;
+        }
+    }
+
+    if (preg_match("/[^A-Za-z]/", $var))
+    {
+        return false;
+    }
+    
+    return $var;
+
+}
+
+function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
+    if(empty($var)) {
+        return false;        
+    }
+
+    if (!empty($max_size)) {
+        if (strlen($var) > $max_size) {
+            return false;
+        }
+    }
+    if (!empty($min_size)) {
+        if (strlen($var) < $min_size) {
+            return false;
+        }
+    }
+
+    if (preg_match('/[^A-Za-z0-9.#\\-$]/', $var)) {
+        return false;
+    }
+    return $var;
+
+}
