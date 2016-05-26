@@ -4,7 +4,6 @@
  * 
  * Fast Implementation, need some basic ACL now,  work on this later
  */
-
 if (!defined('IN_WEB')) { exit; }
 
 class ACL {
@@ -16,18 +15,28 @@ class ACL {
     
     function acl_ask($role, $resource = "ALL") {
         if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
+            $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
+            do_action("error_message_page");            
             return false;
         }
-        $this->getRoles();
-        $this->getUserRoles();   
-        
-        if($this->roles == false || $this->user_roles == false) {
-            return false;
+        if (empty($this->roles) || empty($this->user_roles)) {
+            $this->getRoles();
+            $this->getUserRoles();   
+        } else if ($this->roles == false || $this->$user_roles == false) {
+            $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ROLES_DB'];        
+            do_action("error_message_page");            
+            return false;            
         }
-        
+
         list($role_group, $role_type) = preg_split("/_/", $role);                        
-        $return = $this->checkUserPerms($role_group, $role_type, $resource);
-        return $return;
+
+        if (!$this->checkUserPerms($role_group, $role_type, $resource) ) {
+            $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
+            do_action("error_message_page");            
+            return false;            
+        } else {
+            return true;
+        }
     }
     
     private function checkUserPerms($role_group, $role_type, $resource) {
@@ -96,7 +105,7 @@ class ACL {
     private function getUserRoles() {
         global $config;
 
-        if(!$uid = S_VAR_INTEGER($_SESSION['uid'])) { //TODO change to a global user variable?        
+        if(!$uid = S_VAR_INTEGER($_SESSION['uid'], 11, 0)) { //TODO change to a global user variable?                                
             return false;
         }
         $q = "SELECT * FROM {$config['DB_PREFIX']}acl_users WHERE uid = '$uid'";
