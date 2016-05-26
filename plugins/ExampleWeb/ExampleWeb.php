@@ -13,7 +13,8 @@ function ExampleWeb_init(){
     register_uniq_action("index_page", "ex_index_page");
     register_uniq_action("news_page", "ex_news_page");    
     register_action("common_web_structure", "ex_common_web_structure", "5");
-    register_uniq_action("error_message", "ex_error_page");
+    register_uniq_action("error_message_page", "ex_error_page");
+    register_uniq_action("error_message_box", "ex_error_box");
 }
 
 function ex_common_web_structure() {
@@ -29,8 +30,7 @@ function ex_news_page() {
     do_action("common_web_structure");
     plugin_manual_start("Newspage");
     register_action("add_link", "news_add_link", "5");
-    
-    news_show();   
+    register_action("add_to_body", "news_get_full_news", "5");
 }
 
 function ex_index_page(){
@@ -39,7 +39,7 @@ function ex_index_page(){
     plugin_manual_start("Newspage");
     register_action("add_link", "news_add_link", "5");
 
-    news_body_switcher();
+    news_main_body_select();
 }
 
 function ex_error_page() {        
@@ -55,6 +55,18 @@ function ex_error_page() {
     register_action("add_to_body", "ex_basic_error","5");
  }
 
+ function ex_error_box () {
+    global $tpldata, $LANGDATA;
+    
+    if(empty($tpldata['E_TITLE'])) {
+        $tpldata['E_TITLE'] = $LANGDATA['L_E_ERROR'];
+    }
+    if(empty($tpldata['E_BACKLINK_TITLE'])) {
+        $tpldata['E_BACKLINK_TITLE'] = $LANGDATA['L_E_BACKLINK_TITLE'];       
+    }   
+    return ex_basic_error();
+ }
+ 
 function ex_main_link (){ 
     $link = "";
     $link .= tpl_get_file("css", "ExampleWeb", "");

@@ -26,7 +26,7 @@
 .newsbox:hover {
     box-shadow: 0 0 10px #000;
 }
-.newsbox:hover h2 {
+.newsbox:hover h3 {
     color: blue;
 }
 .newsbox:hover img {
@@ -65,7 +65,7 @@
     box-shadow: 0 0 10px #ccc;
 }
 
-#featured h2 {
+#featured h3 {
     color: #989898;
 }
 .feature_image{
@@ -95,8 +95,18 @@
     opacity: 0.8; 
 }
 
-#featured article:hover h2 {
+#featured article:hover h3 {
     color: blue;
+}
+
+#featured h2 {
+    color:#919191;
+    background-color:#232323;
+    margin-bottom: 4px;
+    box-shadow: 0 0 10px #ccc; 
+    border-bottom: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;    
+    padding-left: 4px;
 }
 
 /* BUTTON */
@@ -178,7 +188,7 @@
     margin-top: 10px;
 }
 
-.category_name {
+#col1 h2, #col2 h2, #col3 h2 {
     color:#919191;
     background-color:#232323;
     margin-bottom: 4px;
