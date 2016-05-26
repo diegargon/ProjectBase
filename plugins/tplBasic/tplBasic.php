@@ -31,7 +31,7 @@ function tplBasic_error_page() {
     register_action("add_to_body", "tpl_basic_error","5");
 }
 
- function ex_error_box () {
+ function tplBasic_error_box () {
     return tpl_basic_error();
  }
 
