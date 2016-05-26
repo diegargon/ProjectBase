@@ -5,6 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function s_char($char, $size) {
+    print_debug("Deprecated: $char");
     if (strlen($char) <= $size) {
         return input_filter($char);
     } else if ($size == 0) { // 0 disable size
@@ -23,7 +24,6 @@ function s_num($num, $size) {
 function s_bool($bool) {
     return filter_var($bool, FILTER_VALIDATE_BOOLEAN);
 }
-
 
 function input_filter($data) {
     global $config;
@@ -84,10 +84,20 @@ function S_SERVER_REMOTE_ADDR () {
 }
 
 //VAR
-function S_VAR_INTEGER($var) {
+function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
         return false;
     }
-    return filter_var($var, FILTER_VALIDATE_INT);
+    if (!empty($max_size)) {
+        if (strlen($var) > $max_size) {
+            return false;
+        }
+    }
+    if (!empty($min_size)) {
+        if (strlen($var) < $min_size) {
+            return false;
+        }
+    }
     
+    return filter_var($var, FILTER_VALIDATE_INT);    
 }
