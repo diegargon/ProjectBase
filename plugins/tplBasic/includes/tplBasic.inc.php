@@ -37,6 +37,7 @@ function tpl_build_page() {
     echo $web_head . $web_body . $web_footer;
 }
 
+/* UNUSED
 function tpl_get_path($type, $plugin, $page) {
     global $config;
     
@@ -71,7 +72,7 @@ function tpl_get_path($type, $plugin, $page) {
     
     return false;
 }
-
+*/
 function tpl_get_file($type, $plugin, $page, $data = null) {
     global $config;
     if(empty($page)) {
