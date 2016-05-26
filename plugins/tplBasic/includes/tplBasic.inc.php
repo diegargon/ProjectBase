@@ -18,7 +18,7 @@ function tpl_build_page() {
     $tpldata['META'] .= do_action("add_meta");  
     $tpldata['LINK'] .= do_action("add_link");  
     $tpldata['SCRIPTS'] .= do_action("add_script");  
-    echo do_action("get_head");
+    $web_head = do_action("get_head");
     //END HEAD
     
     //BEGIN BODY
@@ -26,18 +26,21 @@ function tpl_build_page() {
     $tpldata['NAV_ELEMENT'] .= do_action("add_nav_element");
     $tpldata['NAV'] .= do_action("add_nav");        
     $tpldata['ADD_TO_BODY'] .= do_action("add_to_body");
-    echo do_action("get_body");
+    $web_body = do_action("get_body");
     //END BODY
     
     //BEGIN FOOTER    
     $tpldata['ADD_TO_FOOTER'] .= do_action("add_to_footer");
-    echo do_action("get_footer");
+    $web_footer = do_action("get_footer");
     //END FOOTER
-    
+        
+    echo $web_head . $web_body . $web_footer;
 }
 
 function tpl_get_path($type, $plugin, $page) {
     global $config;
+    
+    print_debug("tpl_get_path deprected $type, $plugin, $page, use tpl_get_file");
     if(empty($page)) {
         $page = $plugin;
     }
@@ -64,6 +67,39 @@ function tpl_get_path($type, $plugin, $page) {
             return $PATH;
         }
         return false;
+    }
+    
+    return false;
+}
+
+function tpl_get_file($type, $plugin, $page, $data = null) {
+    global $config;
+    if(empty($page)) {
+        $page = $plugin;
+    }
+    if($type == "css") {
+        $USER_PATH = "tpl/{$config['THEME']}/css/$page.css";
+        $DEFAULT_PATH = "plugins/$plugin/tpl/css/$page.css";
+        
+        if (file_exists($USER_PATH))  {
+            return  "<link rel='stylesheet' href='/$USER_PATH'>\n";
+        } else if (file_exists($DEFAULT_PATH)) {
+            return  "<link rel='stylesheet' href='/$DEFAULT_PATH'>\n";
+        } else {
+            return false;
+        }
+    }
+    
+    if ($type == "tpl") {
+        $USER_PATH = "tpl/$config[THEME]/$page.tpl.php";
+        $DEFAULT_PATH = "plugins/$plugin/tpl/$page.tpl.php";
+        if (file_exists($USER_PATH)) {
+            return codetovar($USER_PATH, $data);
+        } else if (file_exists($DEFAULT_PATH)) {
+            return codetovar($DEFAULT_PATH, $data);
+        } else {
+            return false;
+        }        
     }
     
     return false;

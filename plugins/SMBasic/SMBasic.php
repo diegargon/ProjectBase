@@ -83,6 +83,7 @@ function SMBasic_profilePage() {
     }
     
     if(!isset($_POST['profile1']) ) {          
+        do_action("common_web_structure"); 
         register_action("add_link", "SMBasic_CSS","5");
         register_action("add_to_body", "SMBasic_profile_page", "5"); 
         register_action("add_script", "SMBasic_ProfileScript", "5");                  
@@ -144,15 +145,11 @@ function SMBasic_navLogReg() {
 }
 
 function SMBasic_get_login_page() {
-    if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "login")) {
-        return codetovar($TPLPATH, "");
-    }   
+    return tpl_get_file("tpl", "SMBasic", "login");
 }
 
 function SMBasic_get_register_page() {
-    if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "register")) {
-        return codetovar($TPLPATH, "");
-    }   
+    return tpl_get_file("tpl", "SMBasic", "register");
 }
 
 function SMBasic_profile_page() {
@@ -163,21 +160,15 @@ function SMBasic_profile_page() {
         echo "Error: 3242";
         exit(0);        
     } else {
-       if ($TPLPATH = tpl_get_path("tpl", "SMBasic", "profile")) {
-            return codetovar($TPLPATH, $user);
-        }   
+       return tpl_get_file("tpl", "SMBasic", "profile");
     }
 }
 
 function SMBasic_CSS() {
     $link  = "";
-    
-    if($CSSPATH = tpl_get_path("css", "SMBasic", "")) {
-        $link .= "<link rel='stylesheet' href='$CSSPATH'>\n";
-    }
-    if($CSSPATH = tpl_get_path("css", "SMBasic", "SMBasic-mobile")) {
-        $link .= "<link rel='stylesheet' href='$CSSPATH'>\n";
-    }    
+    $link .= tpl_get_file("css", "SMBasic", "");
+    $link .= tpl_get_file("css", "SMBasic", "SMBasic-mobile");
+
     return $link;
 }
 

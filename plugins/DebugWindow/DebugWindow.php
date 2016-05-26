@@ -13,16 +13,9 @@ function DebugWindow_init() {
 }
 
 function add_dw_link() {
-
-    if($CSSPATH = tpl_get_path("css", "DebugWindow", "")) {
-        return "<link rel='stylesheet' href='$CSSPATH'>\n";
-    }
+    return  tpl_get_file("css", "DebugWindow", "");
 }
 
 function get_dw_tpl() {
-    global $debug;
-    if ($TPLPATH = tpl_get_path("tpl", "DebugWindow", "")) {
-        return codetovar($TPLPATH, $debug);
-
-    }       
+    return tpl_get_file("tpl", "DebugWindow", "", $GLOBALS['debug']);   
 }

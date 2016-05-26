@@ -20,7 +20,7 @@ function getserverload() {
 	return 0;
 }
 
-function codetovar($path, $data) {
+function codetovar($path, $data = null) {
     global $config, $tpldata, $LANGDATA;
     
     ob_start();

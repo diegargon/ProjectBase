@@ -32,26 +32,17 @@ function tplBasic_error_page() {
 }
 
 function tpl_basic_head() {
-    if ($TPLPATH = tpl_get_path("tpl", "tplBasic", "basic_head")) {
-        return codetovar($TPLPATH, "");
-    }
+    return tpl_get_file("tpl", "tplBasic", "basic_head");
 }
 
 function tpl_basic_body() {
-    if ($TPLPATH = tpl_get_path("tpl", "tplBasic", "basic_body")) {
-        return codetovar($TPLPATH, "");
-    }
+    return tpl_get_file("tpl", "tplBasic", "basic_body");
 }
 
 function tpl_basic_footer() {
-    if ($TPLPATH = tpl_get_path("tpl", "tplBasic", "basic_footer")) {
-        return codetovar($TPLPATH, "");
-    }
+    return tpl_get_file("tpl", "tplBasic", "basic_footer");
 }
 
 function tpl_basic_error() {
-    if ($TPLPATH = tpl_get_path("tpl", "tplBasic", "basic_error")) {
-        return codetovar($TPLPATH, "");
-    }
+    return tpl_get_file("tpl", "tplBasic", "basic_error");
 }
-

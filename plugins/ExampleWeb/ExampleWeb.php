@@ -48,36 +48,24 @@ function ex_error_page() {
  }
 
 function ex_main_link (){ 
-    if($CSSPATH = tpl_get_path("css", "ExampleWeb", "")) {
-        $link = "<link rel='stylesheet' href='/$CSSPATH'>\n";
-    }
-    if($CSSPATH = tpl_get_path("css", "ExampleWeb", "ExampleWeb-mobile")) {
-        $link .= "<link rel='stylesheet' href='/$CSSPATH'>\n";
-    }
-    
+    $link = "";
+    $link .= tpl_get_file("css", "ExampleWeb", "");
+    $link .= tpl_get_file("css", "ExampleWeb", "ExampleWeb-mobile");           
     return $link;
 }
 
 function ex_footer() {    
-    if ($TPLPATH = tpl_get_path("tpl", "ExampleWeb", "ex_footer")) {
-        return codetovar($TPLPATH, "");
-    }        
+   return  tpl_get_file("tpl", "ExampleWeb", "ex_footer");
 }
 
 function ex_header() {    
-    if ($TPLPATH = tpl_get_path("tpl", "ExampleWeb", "ex_header")) {
-        return codetovar($TPLPATH, "");
-    }        
+   return  tpl_get_file("tpl", "ExampleWeb", "ex_header");   
 }
 
 function ex_nav() {    
-    if ($TPLPATH = tpl_get_path("tpl", "ExampleWeb", "ex_navigator")) {
-        return codetovar($TPLPATH, "");
-    }        
+    return tpl_get_file("tpl", "ExampleWeb", "ex_navigator");
 }
 
 function ex_basic_error() {    
-    if ($TPLPATH = tpl_get_path("tpl", "ExampleWeb", "ex_basic_error")) {
-        return codetovar($TPLPATH, "");
-    }        
+    return tpl_get_file("tpl", "ExampleWeb", "ex_basic_error");
 }
