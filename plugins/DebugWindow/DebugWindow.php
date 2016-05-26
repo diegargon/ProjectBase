@@ -17,5 +17,5 @@ function add_dw_link() {
 }
 
 function get_dw_tpl() {
-    return tpl_get_file("tpl", "DebugWindow", "", $GLOBALS['debug']);   
+    return tpl_get_file("tpl", "DebugWindow", null, $GLOBALS['debug']);   
 }
