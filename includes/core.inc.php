@@ -14,4 +14,4 @@ require_once "includes/valfilters.inc.php";
 require_once "includes/core.functions.php";
 require_once "includes/plugins.php";
 
-do_action("core_action");
+do_action("init_core");
