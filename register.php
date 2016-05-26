@@ -6,12 +6,7 @@ define('IN_WEB', TRUE);
 
 require_once "includes/core.inc.php";
 
-    
-
 do_action("register_page");
 
- 
-
 tpl_build_page();
-
-do_action("close_plugin"); 
+do_action("finalize"); 

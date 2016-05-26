@@ -13,7 +13,7 @@ function MysqlDB_Init() {
     includeConfig("MysqlDB");
     require_once("MysqlDB.inc.php");
 
-    register_action("close_plugin", "MysqlDB_Close", "5");
+    register_action("finalize", "MysqlDB_Close", "5");
     db_connect();
 }
 
