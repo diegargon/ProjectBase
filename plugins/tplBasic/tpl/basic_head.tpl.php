@@ -5,8 +5,6 @@ if (!defined('IN_WEB')) { exit; }
  */
 ?>
 <!DOCTYPE html>
-
-
 <html dir="<?php print $config['WEB_DIR']?>" lang="<?php print $config['WEB_LANG']?>">
     <head>
         <title><?php echo $config['TITLE']?></title>
