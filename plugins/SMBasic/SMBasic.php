@@ -54,7 +54,7 @@ function SMBasic_regPage() {
 
     if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];                
-        do_action("error_message");
+        do_action("error_message_page");
         return false;
     }
     
@@ -76,7 +76,7 @@ function SMBasic_regPage() {
 function SMBasic_profilePage() {
     if(empty($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOT_LOGGED'];
-        do_action("error_message");
+        do_action("error_message_page");
         return false;
     }
     
@@ -94,7 +94,7 @@ function SMBasic_loginPage () {
     
     if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];        
-        do_action("error_message");
+        do_action("error_message_page");
         return false;
     }
     

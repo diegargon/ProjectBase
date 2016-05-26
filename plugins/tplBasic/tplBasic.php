@@ -13,7 +13,8 @@ function tplBasic_init(){
 
     register_action("common_web_structure", "tplBasic_web_structure", "0");
     register_uniq_action("index_page", "tplBasic_index_page", "5");
-    register_uniq_action("error_message", "tplBasic_error_page");
+    register_uniq_action("error_message_page", "tplBasic_error_page");
+    register_uniq_action("error_message_box", "tplBasic_error_box");
 }
 
 function tplBasic_web_structure() {
@@ -27,9 +28,12 @@ function tplBasic_index_page() {
 }
 
 function tplBasic_error_page() {    
-
     register_action("add_to_body", "tpl_basic_error","5");
 }
+
+ function ex_error_box () {
+    return tpl_basic_error();
+ }
 
 function tpl_basic_head() {
     return tpl_get_file("tpl", "tplBasic", "basic_head");

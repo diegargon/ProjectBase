@@ -20,7 +20,7 @@ function Admin_main_page() {
     
     if (!$auth->acl_ask("admin_read")) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
-        do_action("error_message");
+        do_action("error_message_page");
         return false;
     }    
     
