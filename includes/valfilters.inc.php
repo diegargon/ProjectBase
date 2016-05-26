@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function s_char($char, $size) {
-    print_debug("Deprecated: $char");
+    print_debug("Deprecated: schar $char");
     if (strlen($char) <= $size) {
         return input_filter($char);
     } else if ($size == 0) { // 0 disable size
@@ -15,6 +15,7 @@ function s_char($char, $size) {
 }
 
 function s_num($num, $size) {
+    print_debug("Deprecated: snum $num use S_VAR_INTEGER");
     if(is_numeric($num) && (strlen($num) <= $size)) {
         return $num;
     }
