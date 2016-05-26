@@ -13,10 +13,8 @@ function Admin_init(){
 function Admin_main_page() {
     global $auth;
     require("includes/Admin.inc.php");
-    includeConfig("Admin");
-    includeLang("Admin"); 
-    
-    
+
+    includePluginFiles("Admin");
     
     if (!$auth->acl_ask("admin_read")) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        

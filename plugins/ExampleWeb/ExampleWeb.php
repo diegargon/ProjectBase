@@ -7,8 +7,8 @@ if (!defined('IN_WEB')) { exit; }
 function ExampleWeb_init(){
         
     if (DEBUG_PLUGINS_LOAD) { print_debug ("ExampleWeb initialized<br>"); }
-    
-    includeLang("ExampleWeb");        
+            
+    includePluginFiles("ExampleWeb");
     
     register_uniq_action("index_page", "ex_index_page");
     register_uniq_action("news_page", "ex_news_page");    

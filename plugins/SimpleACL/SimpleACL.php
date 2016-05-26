@@ -9,8 +9,8 @@ function SimpleACL_init(){
     if (DEBUG_PLUGINS_LOAD) { print_debug("SimpleACL Inititated<br/>"); }
 
     require("includes/SimpleACL.class.php");
-    includeConfig("Admin");
-    includeLang("Admin"); 
+
+    includePluginFiles("Admin"); 
     
     if(!isset($auth)) {
         $auth = new ACL;

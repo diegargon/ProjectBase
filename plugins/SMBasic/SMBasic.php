@@ -12,9 +12,9 @@ function SMBasic_Init() {
     if (DEBUG_PLUGINS_LOAD) { print_debug("SMBasic initialice<br/>"); }
     
     require_once("includes/SMBasic.inc.php");
-    includeConfig("SMBasic");
-    includeLang("SMBasic");
-    
+
+    includePluginFiles("SMBasic");
+
     if (action_isset("encrypt_password") == false) {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }

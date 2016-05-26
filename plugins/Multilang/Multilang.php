@@ -8,9 +8,9 @@ function Multilang_init(){
     global $config;
     if (DEBUG_PLUGINS_LOAD) { print_debug("Multilang Inititated<br/>"); }
 
-    includeConfig("Multilang");
-
-    $config['multilang'] = 1;
+    includePluginFiles("Multilang");
+    
+    $config['multilang'] = 1; //TODO FIX TO DEFINE
     
     //MUST PRIOTIZE MYSQL Plugin load before starting multilang for use from_db
     if (isset($config['SQL_DB']) && $config['SQL_DB'] == 1 && $config['ML_USE_JSON_LANGS'] == 0) {

@@ -53,8 +53,10 @@ function check_jsScript($script) {
     return false;
 }
 
-function includeConfig($plugin) {
-    global $config;
+function includePluginFiles($plugin) {
+    global $config, $LANGDATA; 
+    
+    //CONFIG FILES
     $config_plugin = "plugins/$plugin/$plugin.config.php";
     $config_plugin_user = "config/$plugin.config.php";
     if (file_exists($config_plugin)) {
@@ -64,32 +66,10 @@ function includeConfig($plugin) {
     if (file_exists($config_plugin_user)) { //User Overdrive
         require_once($config_plugin_user); 
     }
-}
-
-function includeLang($plugin) {
-    global $config;
-    global $LANGDATA;
+    
+    //LANG FILES;
     $lang_file = "plugins/$plugin/lang/" . $config['WEB_LANG'] . "/$plugin.lang.php";
     if (file_exists($lang_file)) {
         include_once($lang_file);
-    }       
+    }         
 }
-/* BORRAR
-function sort_array_asc(&$thearray) {
-    
-    
-    usort($thearray, function($a, $b) {
-        return $a->priority - $b->priority;
-    });    
-}
-
-function sort_array_desc(&$thearray) {
-    
-    
-    usort($thearray, function($a, $b) {
-        return $b->priority - $a->priority;
-    });    
-}
- * 
- * //
- */
