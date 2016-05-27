@@ -7,10 +7,6 @@ function Newspage_AdminInit() {
     register_action("add_admin_menu", "Newspage_AdminMenu", "5"); 
 }
 
-function Newspage_AdminContent() {
-    return "<p>Hello from Newspage</p>";
-}
-
 function Newspage_AdminMenu($params) {
     $tab_num = 101; //TODO: A WAY TO ASSIGN UNIQ NUMBERS
     if ($params['admtab'] == $tab_num) {
@@ -19,4 +15,8 @@ function Newspage_AdminMenu($params) {
     } else {
         return "<li><a href='?admtab=$tab_num'>Newspage</a></li>";
     }
+}
+
+function Newspage_AdminContent() {
+    return "<p>Hello from Newspage</p>";
 }

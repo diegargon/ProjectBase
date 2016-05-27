@@ -16,14 +16,14 @@ function Admin_main_page() {
     global $auth;
     global $tpldata;
     $tpldata['ADD_ADMIN_MENU'] = $tpldata['ADD_TOP_ADMIN'] = $tpldata['ADD_BOTTOM_ADMIN'] = "";
-      
-    includePluginFiles("Admin");
-
-    admin_load_plugin_files();
-        
+              
     if (!$auth->acl_ask("admin_read")) {
         return false;
     }
+    
+    includePluginFiles("Admin");
+
+    admin_load_plugin_files();    
     
     if (!$admtab = S_GET_INT("admtab")) {
         $admtab = 1;        
