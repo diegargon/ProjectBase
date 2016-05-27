@@ -5,7 +5,7 @@
     "function_init": "Multilang_init",
     "function_install": "",
     "provided": "multilang1",
-    "depends" : "",
+    "depends" : "tplbasic1",
     "autostart": "1",
     "priority" : "2"   
 }
