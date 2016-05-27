@@ -25,39 +25,24 @@ function SMBasic_Init() {
        )
         {
             if(!SMBasic_checkSession()) {
-                print_debug("Check session failed on SMBasic_Init destroy session");
+                if(SM_DEBUG) { print_debug("Check session failed on SMBasic_Init destroy session"); }
                 SMBasic_sessionDestroy();
             }           
         } else {
            if($config['smbasic_session_persistence']) {
-              print_debug("Checkcookies trigged");
+              if (SM_DEBUG) { print_debug("Checkcookies trigged");  }
               SMBasic_checkCookies();
             }
         }
-    if(SMB_DEBUG && !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
+    if(SM_DEBUG && !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
         SMBasic_sessionDebugDetails();
     }
 
-    register_action("add_nav_element", "SMBasic_navLogReg", "5");
-    register_action("add_admin_menu", "SMBasic_AdminMenu", "5");        
+    register_action("add_nav_element", "SMBasic_navLogReg", "5");       
     register_uniq_action("login_page", "SMBasic_loginPage");
     register_uniq_action("register_page", "SMBasic_regPage");   
     register_uniq_action("logout_page", "SMBasic_logoutPage");
     register_uniq_action("profile_page", "SMBasic_profilePage");
-}
-
-function SMBasic_AdminMenu($params) {
-    $tab_num = 100; //TODO: A WAY TO ASSIGN UNIQ NUMBERS
-    if ($params['admtab'] == $tab_num) {
-        register_uniq_action("admin_get_content", "SMBasic_AdminContent");        
-        return "<li class='tab_active'><a href='?admtab=$tab_num'>SMBasic</a></li>";
-    } else {
-        return "<li><a href='?admtab=$tab_num'>SMBasic</a></li>";
-    }
-}
-
-function SMBasic_AdminContent() {
-    return "<p>Hello from SMBasic</p>";
 }
 
 function SMBasic_regPage() {

@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 
 global $config;
 
-define('SMB_DEBUG', true);
+define('SM_DEBUG', false);
 
 $config['smbasic_session_persistence'] = 1;
 $config['smbasic_max_email'] = 60;
@@ -26,7 +26,6 @@ $config['smbasic_check_ip'] = 1;
 $config['smbasic_need_email'] = 1;
 $config['smbasic_need_username'] = 1;
 $config['smbasic_email_confirmation'] = 1;
-
 // Profile
 $config['smbasic_can_change_username'] = 1;
 $config['smbasic_can_change_email'] = 1;

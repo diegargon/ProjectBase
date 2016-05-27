@@ -88,20 +88,20 @@ function SMBasic_checkSession() {
         db_free_result($query);
         if ($config['smbasic_check_ip'] == 1) {
             if(!SMBasic_check_IP($session['session_ip'])) {
-                print_debug("SMBasic:IP validated FALSE");
+                if (SM_DEBUG) { print_debug("SMBasic:IP validated FALSE"); }
                 return false;
             }
-            print_debug("SMBasic:IP validated OK");
+            if (SM_DEBUG) { print_debug("SMBasic:IP validated OK"); }
         }
         if ($config['smbasic_check_user_agent'] == 1) {
             if(!SMBasic_check_user_agent($session['session_browser'])) {
-                print_debug("SMBasic:UserAgent validated FALSE");                
+                if (SM_DEBUG) { print_debug("SMBasic:UserAgent validated FALSE"); }            
                 return false;
             }
-            print_debug("SMBasic:UserAgent validated OK");
+            if (SM_DEBUG) { print_debug("SMBasic:UserAgent validated OK"); }
         }
         if ($session['session_expire'] < $now) { 
-            print_debug("SMBasic: db session expired at $now");
+            if (SM_DEBUG) { print_debug("SMBasic: db session expired at $now"); }
             return false;
         } else {
             $q = "UPDATE {$config['DB_PREFIX']}sessions"
@@ -110,6 +110,7 @@ function SMBasic_checkSession() {
             db_query($q);
         }
     }
+    
     return true;
 }
 
@@ -123,7 +124,6 @@ function SMBasic_checkCookies() {
         $q = "SELECT * FROM {$config['DB_PREFIX']}sessions"
             . " WHERE session_id = '$cookie_sid' AND session_uid = '$cookie_uid' LIMIT 1";
         $query = db_query($q);
-
         if (db_num_rows($query) > 0) {           
             if( ($user = SMBasic_getUserbyID($cookie_uid)) != false ) {
                 SMBasic_setSession($user);
@@ -162,16 +162,13 @@ function SMBasic_Login() {
         )
     {
         $password = do_action("encrypt_password", $password);
-
         if(empty($password)) {
             //TODO BETTER ERROR MSG
             echo " {$LANGDATA['L_ERROR_INTERNAL']}: 001";
             exit(0);
         }
-       $response = [];
-       
-        $q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password' LIMIT 1";
-       
+        $response = [];       
+        $q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password' LIMIT 1";       
         $query = db_query($q);
         if ($user = db_fetch($query)) {
             if($user['active'] == 0) {
@@ -207,8 +204,7 @@ function SMBasic_Register() {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false; 
-    }
-    
+    }    
     if(
         ($config['smbasic_need_username'] == 1) && 
         (($username = s_char($_POST['username1'], $config['smbasic_max_username'])) == false)) {
@@ -223,31 +219,26 @@ function SMBasic_Register() {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_USERNAME_SHORT'] );    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
-    }
-    
+    }    
     if(
         ($password = s_char($_POST['password1'], $config['smbasic_max_password'])) == false ) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
-    }
-    
+    }    
     if (strlen($_POST['password1']) < 8) {
         $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_PASSWORD_MIN']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
-    }
-    
+    }    
     $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'";  //FIX SELECT username or/and mixed with email
-    $query = db_query($q);
-     
+    $query = db_query($q);     
     if ((db_num_rows($query)) > 0) {
         $response[] = array("status" => "5", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         db_free_result($query);
         return false;                
     }
-
     $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'";  //FIX SELECT email or/and mixed with email
     $query = db_query($q);    
     if ((db_num_rows($query)) > 0) {
@@ -255,29 +246,22 @@ function SMBasic_Register() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         db_free_result($query);
         return false;                        
-    }    
-    
+    }        
     db_free_result($query);
-
     $password = do_action("encrypt_password", $password);
-
     if ($config['smbasic_email_confirmation']) {
         $active = mt_rand(11111111, 2147483647); //Largest mysql init
         $register_message = $LANGDATA['L_REGISTER_OKMSG_CONFIRMATION'];
     } else {
         $active = 1;
         $register_message = $LANGDATA['L_REGISTER_OKMSG'];        
-    }
-    
-    $mail_msg = SMBasic_create_reg_mail($active);
-    
+    }    
+    $mail_msg = SMBasic_create_reg_mail($active);    
     $q = "INSERT INTO {$config['DB_PREFIX']}users ("
         . "username, password, email, active"
         . ") VALUES ("
         . "'$username', '$password', '$email', '$active');";   
-
-    $query = db_query($q);
-    
+    $query = db_query($q);    
     if($query) {       
        mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg);       
        $response[] = array("status" => "ok", "msg" => $register_message, "url" => $config['WEB_URL']);       
@@ -285,7 +269,8 @@ function SMBasic_Register() {
     } else {
        $response[] = array("status" => "7", "msg" => $LANGDATA['L_REG_ERROR_WHILE']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-    }    
+    }
+    
     return true;      
 }
 
@@ -373,19 +358,16 @@ function SMBasic_check_user_agent($db_user_agent) {
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config; 
     
-   
     if( empty($_POST['cur_password1']) ||  strlen ($_POST['cur_password1']) <  $config['smbasic_min_password']) {
        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;
-    } 
-   
+    }    
     if (!$password = s_char($_POST['cur_password1'], $config['smbasic_max_password'] )) {
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;        
-    }
-    
+    }   
     if ( 
             (!empty($_POST['new_password1']) && empty($_POST['r_password1']) ) ||
             (!empty($_POST['r_password1']) && empty($_POST['new_password1']) )
@@ -405,15 +387,12 @@ function SMBasic_ProfileChange() {
        return false;        
         
     }   
-
     if ( $_POST['new_password1'] != $_POST['r_password1']) {
        $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEW_PASSWORD_NOTMATCH']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;        
         
     } 
-     
-    
     if (
             ( $config['smbasic_need_username'] == 1) &&
             ( $config['smbasic_can_change_username'] == 1)
@@ -439,8 +418,7 @@ function SMBasic_ProfileChange() {
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                                    
         }
-    }
-    
+    }   
     if (
             ( $config['smbasic_need_email'] == 1) &&
             ( $config['smbasic_can_change_email'] == 1)
@@ -452,23 +430,13 @@ function SMBasic_ProfileChange() {
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                                    
         } 
-/* S_POST_EMAIL already check for empty        
-        if(empty($_POST['email1'])) {
-           $response[] = array("status" => "5", "msg" => $LANGDATA['L_EMAIL_EMPTY']);
-           echo json_encode($response, JSON_UNESCAPED_SLASHES);
-           return false;            
-            
-        } 
-*/
         if (strlen($email) > $config['smbasic_max_email'] ) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_EMAIL_LONG']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                        
         }
-
     }
-   
-    
+       
     $password_encrypted = do_action("encrypt_password", $password);
     $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE uid = '{$_SESSION['uid']}' AND password = '$password_encrypted' LIMIT 1";
     $query = db_query($q);
@@ -478,9 +446,7 @@ function SMBasic_ProfileChange() {
        return false;         
     } else {
         $user = db_fetch($query);
-    }
-    
-    
+    }        
     if (
             ( $config['smbasic_need_username'] == 1) &&
             ( $config['smbasic_can_change_username'] == 1) &&
@@ -494,8 +460,7 @@ function SMBasic_ProfileChange() {
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
             return false;             
         }
-    }
-        
+    }        
     if (
             ( $config['smbasic_need_email'] == 1) &&
             ( $config['smbasic_can_change_email'] == 1) &&
@@ -508,8 +473,7 @@ function SMBasic_ProfileChange() {
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
             return false;             
         }               
-    } 
-    
+    }     
     if ( 
             ($config['smbasic_need_username'] == 0) ||  
             ($config['smbasic_can_change_username'] == 0) ||
@@ -551,8 +515,7 @@ function SMBasic_ProfileChange() {
             $q .= "email = '$email'";
             $need_coma = 1;
         }
-    }
-        
+    }       
     if (!empty($_POST['new_password1'])) {
         if  ( ($new_password = s_char($_POST['new_password1'], $config['smbasic_max_password'])) != false) { //FIX password validation
             $new_password_encrypt = do_action("encrypt_password", $new_password);
@@ -565,8 +528,7 @@ function SMBasic_ProfileChange() {
         }
     }   
 
-    $q .= " WHERE uid = {$_SESSION['uid']} LIMIT 1";
-    
+    $q .= " WHERE uid = {$_SESSION['uid']} LIMIT 1";    
     db_query($q);
     $profile_url = $config['WEB_URL'] . "profile.php";
     $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] , "url" => "$profile_url");    
@@ -585,21 +547,11 @@ function SMBasic_RequestResetOrActivation() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                                    
     } 
-    
-/* S_POST_EMAIL Already check form empty   REMOVE LATER
-    if(empty($_POST['email1'])) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_EMAIL_EMPTY']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;            
-    }
- * 
- */ 
     if (strlen($email) > $config['smbasic_max_email'] ) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_EMAIL_LONG']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                        
-    }
-    
+    }  
     $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
     $query = db_query($q);
     if (db_num_rows($query) <= 0) {
@@ -625,8 +577,7 @@ function SMBasic_RequestResetOrActivation() {
             echo json_encode($response, JSON_UNESCAPED_SLASHES);
             return false;  
         }
-    }
-    
+    }    
     $response[] = array("status" => "1", "msg" => $email);
     echo json_encode($response, JSON_UNESCAPED_SLASHES);
 

@@ -11,7 +11,7 @@ function get_all_enabled_plugins() {
             $jsondata = file_get_contents ("$full_json_filename");
             $plugin_data = json_decode($jsondata);
             if ($plugin_data->enabled){
-                //print_debug("Plugin $plugin_data->plugin_name added to the registered");
+                if (DEBUG_PLUGINS_LOAD) { print_debug("Plugin $plugin_data->plugin_name added to the registered"); }
                 array_push($registered_plugins, $plugin_data);                
             } else {
                 if (DEBUG_PLUGINS_LOAD) { print_debug("Plugin $plugin_data->plugin_name dropped by disable"); }

@@ -21,7 +21,7 @@ ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL
 Newspage: newspage.php error message on access without id or wrong id
 *: Track  config['BACKLINK'] with the last backlink;
 ALL: Not need do_action for lots of things, re-check and re-work general behaviour
-
+CORE: Plugins.check  re-check  functions calls in core exist and manage errors (some check missed)
 #BACKLOG
 New:User private message plugin
 New:Forum plugin
@@ -39,3 +39,4 @@ ALL: track number db querys for stats
 New or DebugWindow: Debug to file
 Newspage: Extra functions for addons
 Newspage: Optional ACL support
+SMBasic: Check if can reduce some big fuctions
