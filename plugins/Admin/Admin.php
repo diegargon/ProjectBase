@@ -23,11 +23,27 @@ function Admin_main_page() {
         return false;
     }
     
-    tpl_addto_var("LINK", "tpl_get_file", "css", "Admin");
-        
-    $tpldata['ADD_ADMIN_MENU'] .= do_action("add_admin_menu");
+    if (!$admtab = S_GET_INT("admtab")) {
+        $admtab = 1;        
+    }
+    $tpldata['ADMIN_TAB_ACTIVE'] = $admtab;
+    
+    tpl_addto_var("LINK", "tpl_get_file", "css", "Admin");    
+    $params['admtab'] = $admtab;
+    $tpldata['ADD_ADMIN_MENU'] .= do_action("add_admin_menu", $params);
     $tpldata['ADD_TOP_ADMIN'] .= do_action("add_top_admin");
-    $tpldata['ADD_BOTTOM_ADMIN'] .= do_action("add_bottom_admin");    
-    tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "Admin", "admin_main_body");
+    $tpldata['ADD_BOTTOM_ADMIN'] .= do_action("add_bottom_admin");
+
+    if($admtab == 1) {
+        $tpldata['ADD_ADMIN_CONTENT'] = Admin_generalContent();
+    } else {
+        $tpldata['ADD_ADMIN_CONTENT'] = do_action("admin_get_content") ;
+    }
+    
+    tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "Admin", "admin_main_body");    
     do_action("common_web_structure");
+}
+
+function Admin_generalContent() {
+    return "<p>Admin General</p>";
 }

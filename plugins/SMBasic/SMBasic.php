@@ -39,13 +39,27 @@ function SMBasic_Init() {
         SMBasic_sessionDebugDetails();
     }
 
-    register_action("add_nav_element", "SMBasic_navLogReg", "5");    
+    register_action("add_nav_element", "SMBasic_navLogReg", "5");
+    register_action("add_admin_menu", "SMBasic_AdminMenu", "5");        
     register_uniq_action("login_page", "SMBasic_loginPage");
     register_uniq_action("register_page", "SMBasic_regPage");   
     register_uniq_action("logout_page", "SMBasic_logoutPage");
     register_uniq_action("profile_page", "SMBasic_profilePage");
 }
 
+function SMBasic_AdminMenu($params) {
+    $tab_num = 100; //TODO: A WAY TO ASSIGN UNIQ NUMBERS
+    if ($params['admtab'] == $tab_num) {
+        register_uniq_action("admin_get_content", "SMBasic_AdminContent");        
+        return "<li class='tab_active'><a href='?admtab=$tab_num'>SMBasic</a></li>";
+    } else {
+        return "<li><a href='?admtab=$tab_num'>SMBasic</a></li>";
+    }
+}
+
+function SMBasic_AdminContent() {
+    return "<p>Hello from SMBasic</p>";
+}
 
 function SMBasic_regPage() {
     global $config;

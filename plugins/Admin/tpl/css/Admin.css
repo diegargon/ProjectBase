@@ -31,10 +31,16 @@ text-transform: uppercase;
 white-space: nowrap;
 }
 #admin_content {
+        border: 1px solid #BBB;    
         float:left;
         background: linear-gradient(to bottom, #CACBCF 0%, #D4D6DA 100%);
 	border-radius: 0 .25em .25em .25em;
 	min-height: 20em;
 	margin-top: -2px;
 	width: 100%;
+        position:relative;
+}
+.tab_active {
+    z-index: 5;
+    position:relative;
 }
