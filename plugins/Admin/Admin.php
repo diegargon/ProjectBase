@@ -13,9 +13,7 @@ function Admin_init(){
 function Admin_main_page() {
     global $auth;
     global $tpldata;
-    $tpldata['ADD_ADMIN_MENU'] = "";
-    $tpldata['ADD_TOP_ADMIN'] = "";
-    $tpldata['ADD_BOTTOM_ADMIN'] = "";
+    $tpldata['ADD_ADMIN_MENU'] = $tpldata['ADD_TOP_ADMIN'] = $tpldata['ADD_BOTTOM_ADMIN'] = "";
     
     includePluginFiles("Admin");
     

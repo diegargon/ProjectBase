@@ -152,8 +152,8 @@ function SMBasic_getUserbyID($uid) {
 }
 
 function SMBasic_Login() {
-    global $config;
-    global $LANGDATA;
+    global $config, $LANGDATA;
+    
     if ( 
         (($email = S_POST_EMAIL("email1")) != false) &&
         ($email != null) &&
@@ -199,8 +199,7 @@ function SMBasic_Login() {
 }
 
 function SMBasic_Register() {
-    global $config;
-    global $LANGDATA;
+    global $config, $LANGDATA;
     
     if( 
         ($config['smbasic_need_email'] == 1)  && 
@@ -291,8 +290,7 @@ function SMBasic_Register() {
 }
 
 function SMBasic_create_reg_mail($active) {
-    global $LANGDATA;
-    global $config;
+    global $LANGDATA, $config;
     
     if ($active > 1) {        
         $URL = "http://$_SERVER[HTTP_HOST]". "/{$config['WEB_LANG']}/". "login.php" . "?active=$active";
@@ -307,6 +305,7 @@ function SMBasic_create_reg_mail($active) {
 
 function SMBasic_user_activate_account() {
     global $config;
+    
     if ( ($active = s_num($_GET['active'], 12)) == false) {
         return false;
     }
@@ -372,8 +371,7 @@ function SMBasic_check_user_agent($db_user_agent) {
 }
 
 function SMBasic_ProfileChange() {
-    global $LANGDATA;
-    global $config; 
+    global $LANGDATA, $config; 
     
    
     if( empty($_POST['cur_password1']) ||  strlen ($_POST['cur_password1']) <  $config['smbasic_min_password']) {
@@ -578,8 +576,7 @@ function SMBasic_ProfileChange() {
 }
 
 function SMBasic_RequestResetOrActivation() {
-    global $LANGDATA;
-    global $config;
+    global $LANGDATA, $config;
 
     if ( 
         ($email = S_POST_EMAIL("email1")) == false
@@ -639,8 +636,7 @@ function SMBasic_RequestResetOrActivation() {
 
 
 function SMBasic_user_reset_account() {
-    global $config;
-    global $LANGDATA;
+    global $config, $LANGDATA;
     
     $reset = S_GET_INT('reset');
     $email = S_GET_EMAIL('email');

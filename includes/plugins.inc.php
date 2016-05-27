@@ -25,20 +25,15 @@ function register_uniq_action($event, $func, $priority = 0) {
     
 } 
 
-function do_action($event, $params=null)
-{
+function do_action($event, $params=null) {
     global $actions;
-    
 
-    
-    //$return = ""; 
     if(isset($actions[$event]))
     {
         
         usort($actions[$event], function($a, $b) {
              return $a['priority'] - $b['priority'];
         });
-
         
         foreach($actions[$event] as $func)
         {

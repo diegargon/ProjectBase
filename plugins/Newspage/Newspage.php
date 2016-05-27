@@ -4,12 +4,10 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function Newspage_init(){
-  
+function Newspage_init(){  
     if (DEBUG_PLUGINS_LOAD) { print_debug("Newspage Inititated<br/>");}
     
-    includePluginFiles("Newspage");
-     
+    includePluginFiles("Newspage");     
 }
 
 function news_add_link (){

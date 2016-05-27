@@ -7,7 +7,6 @@ if (!defined('IN_WEB')) { exit; }
 global $dblink;
 
 function MysqlDB_Init() {
-
     if (DEBUG_PLUGINS_LOAD) { print_debug("MysqlDB Initialice<br/>"); }
 
     includePluginFiles("MysqlDB");    

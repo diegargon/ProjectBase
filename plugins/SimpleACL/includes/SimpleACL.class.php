@@ -7,8 +7,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 class ACL {
-    private $roles;
-    private $user_roles;
+    private $roles, $user_roles;
     
     function __construct() {     
    }

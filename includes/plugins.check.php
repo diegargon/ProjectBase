@@ -23,13 +23,10 @@ function get_all_enabled_plugins() {
 function start_registered_plugins() {
     global $registered_plugins;
     
-
     usort($registered_plugins, function($a, $b) {
         return $a->priority - $b->priority;
     });
 
-
-    
     foreach ($registered_plugins as $plugin ) {
         if (DEBUG_PLUGINS_LOAD) { print_debug("Info: Checking $plugin->plugin_name ..."); }
         if (!$plugin->autostart) {
@@ -94,9 +91,7 @@ function check_if_already_started($plugin) {
     }
     return false;
 }
-function check_provided_conflicts ($plugin){
-
-    
+function check_provided_conflicts ($plugin){ 
     $allprovided = preg_split('/\s+/', $plugin->provided);
     foreach ($allprovided as $provided) {
         //echo "$plugin->plugin_name ($provided)";
@@ -121,22 +116,18 @@ function check_duplicated_provider($provided) {
             }
         }
     }
-    return false;
-    
+    return false;    
 }
 
 function init_plugin($plugin) {
     global $started_plugins;
     
-
     if (DEBUG_PLUGINS_LOAD) { print_debug("Info: All checks OK: Starting $plugin->plugin_name "); }
     require_once("plugins/$plugin->plugin_name/$plugin->main_file");
-    
-    
+        
     $init_function = $plugin->function_init;
     if(function_exists($init_function)){
-        $init_function();
-        
+        $init_function();        
     } else {
         if (DEBUG_PLUGINS_LOAD) { print_debug("<b>Error:</b>Function init on $plugin->plugin_name no exist"); }
         return false;
@@ -146,8 +137,7 @@ function init_plugin($plugin) {
 }
 
 function plugin_resolve_depends($plugin) {
-    $alldepends = preg_split('/\s+/', $plugin->depends);
-    
+    $alldepends = preg_split('/\s+/', $plugin->depends);    
     $meet_deps = true;
     if ($plugin->depends == "") {
         return $meet_deps;
@@ -166,7 +156,7 @@ function plugin_resolve_depends($plugin) {
             }
         }
     }
-
+    
     return $meet_deps;
 }
 
@@ -184,6 +174,7 @@ function check_if_depedencie_started($depends) {
         }
     }
     if (DEBUG_PLUGINS_LOAD) { print_debug("Info:No plugins already started to solve the dependence we need: $depends"); }
+    
     return false;
 }
 

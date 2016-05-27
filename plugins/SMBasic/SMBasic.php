@@ -17,7 +17,6 @@ function SMBasic_Init() {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }
 
-    //ini_set('session.gc_maxlifetime', $config['smbasic_session_expire']);       
     session_start();
     
     if (
