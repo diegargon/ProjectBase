@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function tpl_addto_var($tplvar, $func, $param1 = null, $param2 = null, $param3 = null, $param4 = null ) {
-    global $tpldata; 
+    global $tpldata;
     $return = call_user_func($func, $param1, $param2, $param3, $param4);
     if (!isset($tpldata[$tplvar])) {
         $tpldata[$tplvar] = $return;
@@ -47,7 +47,6 @@ function tpl_build_page() {
         
     echo $web_head . $web_body . $web_footer;
 }
-
 /* UNUSED
 function tpl_get_path($type, $plugin, $page) {
     global $config;
@@ -89,7 +88,7 @@ function tpl_get_file($type, $plugin, $page = null, $data = null) {
     if(empty($page)) {
         $page = $plugin;
     }
-    
+    if(TPL_DEBUG) { print_debug("Called by: $plugin :$type:$page"); }
     if($type == "css") {
         $USER_PATH = "tpl/{$config['THEME']}/css/$page.css";
         $DEFAULT_PATH = "plugins/$plugin/tpl/css/$page.css";        
