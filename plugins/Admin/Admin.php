@@ -7,6 +7,8 @@ if (!defined('IN_WEB')) { exit; }
 function Admin_init(){
     if (DEBUG_PLUGINS_LOAD) { print_debug("Admin Inititated<br/>"); }
     
+    includePluginFiles("Admin");
+    
     register_uniq_action("admin_page", "Admin_main_page");
 }
 
@@ -14,9 +16,11 @@ function Admin_main_page() {
     global $auth;
     global $tpldata;
     $tpldata['ADD_ADMIN_MENU'] = $tpldata['ADD_TOP_ADMIN'] = $tpldata['ADD_BOTTOM_ADMIN'] = "";
-    
+      
     includePluginFiles("Admin");
-    
+
+    admin_load_plugin_files();
+        
     if (!$auth->acl_ask("admin_read")) {
         return false;
     }
@@ -25,7 +29,7 @@ function Admin_main_page() {
         $admtab = 1;        
     }
     $tpldata['ADMIN_TAB_ACTIVE'] = $admtab;
-    
+
     tpl_addto_var("LINK", "tpl_get_file", "css", "Admin");    
     $params['admtab'] = $admtab;
     $tpldata['ADD_ADMIN_MENU'] .= do_action("add_admin_menu", $params);
@@ -43,5 +47,6 @@ function Admin_main_page() {
 }
 
 function Admin_generalContent() {
-    return "<p>Admin General</p>";
+    $content = "<p>Admin General</p>";  
+    return $content;
 }

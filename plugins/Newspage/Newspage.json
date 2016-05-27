@@ -3,6 +3,7 @@
     "enabled": "1",
     "main_file" : "Newspage.php",
     "function_init": "Newspage_init",
+    "function_admin_init": "Newspage_AdminInit",    
     "function_install": "",
     "provided": "",
     "depends" : "SQL1 tplbasic1",

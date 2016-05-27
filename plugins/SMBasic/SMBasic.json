@@ -3,6 +3,7 @@
     "enabled": "1",
     "main_file" : "SMBasic.php",
     "function_init": "SMBasic_init",
+    "function_admin_init": "SMBasic_AdminInit",
     "function_install": "",
     "provided": "sessions",
     "depends" : "SQL1",
