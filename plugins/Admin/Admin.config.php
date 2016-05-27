@@ -4,4 +4,4 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-define('ACL_DEBUG', true);
+define('ADMIN_DEBUG', true);
