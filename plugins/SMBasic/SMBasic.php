@@ -62,10 +62,14 @@ function SMBasic_regPage() {
             !isset($_POST['password1']) &&
             !isset($_POST['register1'])
                     ) {
-        do_action("common_web_structure");    
-        register_action("add_link", "SMBasic_CSS","5");
-        register_action("add_to_body", "SMBasic_get_register_page", "5");  
-        register_action("add_script", "SMBasic_RegisterScript", "5");                                 
+        do_action("common_web_structure"); 
+        tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic");
+        tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic", "SMBasic-mobile");       
+        tpl_addto_var("SCRIPTS", "SMBasic_RegisterScript");
+        tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "SMBasic", "register");
+//        register_action("add_link", "SMBasic_CSS","5");
+//        register_action("add_to_body", "SMBasic_get_register_page", "5");  
+//        register_action("add_script", "SMBasic_RegisterScript", "5");                                 
     } else {
         SMBasic_Register();   
     }
@@ -78,14 +82,25 @@ function SMBasic_profilePage() {
         return false;
     }
     
-    if(!isset($_POST['profile1']) ) {          
-        do_action("common_web_structure"); 
-        register_action("add_link", "SMBasic_CSS","5");
-        register_action("add_to_body", "SMBasic_profile_page", "5"); 
-        register_action("add_script", "SMBasic_ProfileScript", "5");                  
-    } else if (isset($_POST['profile1']) ) {
-        SMBasic_ProfileChange();
+    if(isset($_POST['profile1']) ) {          
+        SMBasic_ProfileChange();       
     } 
+    if (!isset($_POST['profile1']) ) {
+        if( ($user = SMBasic_getUserbyID($_SESSION['uid'])) == false ) {
+            //TODO error manager
+            echo "Error: 3242";
+            exit(0);        
+        } else {        
+            do_action("common_web_structure"); 
+            tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic");
+            tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic", "SMBasic-mobile");       
+            tpl_addto_var("SCRIPTS", "SMBasic_ProfileScript");
+            tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "SMBasic", "profile", $user);
+//        register_action("add_link", "SMBasic_CSS","5");
+//        register_action("add_to_body", "SMBasic_profile_page", "5"); 
+//        register_action("add_script", "SMBasic_ProfileScript", "5");           
+        }    
+    }
 }
 
 function SMBasic_loginPage () {
@@ -112,11 +127,15 @@ function SMBasic_loginPage () {
         SMBasic_Login(); 
     } else if (!empty($_POST['reset1'])){  
         SMBasic_RequestResetOrActivation();
-    } else {
+    } else {        
        do_action("common_web_structure");
-       register_action("add_link", "SMBasic_CSS","5");
-       register_action("add_to_body", "SMBasic_get_login_page", "5");
-       register_action("add_script", "SMBasic_LoginScript", "5");          
+       tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic");
+       tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic", "SMBasic-mobile");       
+       tpl_addto_var("SCRIPTS", "SMBasic_LoginScript");
+       tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "SMBasic", "login");       
+       //register_action("add_link", "SMBasic_CSS","5");
+       //register_action("add_to_body", "SMBasic_get_login_page", "5");
+       //register_action("add_script", "SMBasic_LoginScript", "5");          
     }
 }
 
@@ -134,14 +153,16 @@ function SMBasic_navLogReg() {
     }
     return $elements;
 }
-
+/* NOW UNUSED
 function SMBasic_get_login_page() {
     return tpl_get_file("tpl", "SMBasic", "login");
 }
 
+
 function SMBasic_get_register_page() {
     return tpl_get_file("tpl", "SMBasic", "register");
 }
+
 
 function SMBasic_profile_page() {
     global $config;
@@ -157,11 +178,12 @@ function SMBasic_profile_page() {
 
 function SMBasic_CSS() {
     $link  = "";
-    $link .= tpl_get_file("css", "SMBasic", "");
+    $link .= tpl_get_file("css", "SMBasic");
     $link .= tpl_get_file("css", "SMBasic", "SMBasic-mobile");
 
     return $link;
 }
+*/
 
 function SMBasic_LoginScript() {
     $script = "";

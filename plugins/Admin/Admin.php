@@ -22,11 +22,12 @@ function Admin_main_page() {
     if (!$auth->acl_ask("admin_read")) {
         return false;
     }
-   
-    $tpldata['LINK'] = tpl_get_file("css", "Admin");
+    
+    tpl_addto_var("LINK", "tpl_get_file", "css", "Admin");
+        
     $tpldata['ADD_ADMIN_MENU'] .= do_action("add_admin_menu");
     $tpldata['ADD_TOP_ADMIN'] .= do_action("add_top_admin");
     $tpldata['ADD_BOTTOM_ADMIN'] .= do_action("add_bottom_admin");    
-    $tpldata['POST_ACTION_ADD_TO_BODY'] = tpl_get_file("tpl", "Admin", "admin_main_body");
+    tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "Admin", "admin_main_body");
     do_action("common_web_structure");
 }

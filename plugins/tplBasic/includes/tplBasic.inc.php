@@ -4,6 +4,16 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
+function tpl_addto_var($tplvar, $func, $param1 = null, $param2 = null, $param3 = null, $param4 = null ) {
+    global $tpldata; 
+    $return = call_user_func($func, $param1, $param2, $param3, $param4);
+    if (!isset($tpldata[$tplvar])) {
+        $tpldata[$tplvar] = $return;
+    } else {
+        $tpldata[$tplvar] .= $return;            
+    }    
+}
+
 function tpl_build_page() {
     global $tpldata;
     
