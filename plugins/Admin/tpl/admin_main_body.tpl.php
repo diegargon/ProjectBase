@@ -4,18 +4,19 @@
  */
 ?>
     <div  class="clear bodysize page">   
-        <?php isset($tpldata['ADD_TOP_ADMIN']) ? print $tpldata['ADD_TOP_ADMIN']:false ?>		
+        <?php !empty($tpldata['ADD_TOP_ADMIN']) ? print $tpldata['ADD_TOP_ADMIN']:false ?>		
         <div id="admin_container">
             <div class="tabs_container">
             <ul>
-                <li class="admin_tabs"><a href="">General</a></li>
-                <li class="admin_tabs"><a href="">Opcion 1</a></li>
-                <li class="admin_tabs"><a href="">Opcion 2</a></li>
-                <li class="admin_tabs"><a href="">Opcion 3</a></li>            	    
+                <li><a href="?admtab=1" >General</a></li>
+                <li><a href="">Opcion 1</a></li>
+                <li><a href="">Opcion 2</a></li>
+                <li><a href="">Opcion 3</a></li>            	    
+                <?php !empty($tpldata['ADD_ADMIN_MENU']) ? print $tpldata['ADD_ADMIN_MENU']:false ?>		
             </ul>
             </div>
-	    <div id="content">
+	    <div id="admin_content">
 	    </div>
         </div>
-        <?php isset($tpldata['ADD_BOTTOM_ADMIN']) ? print $tpldata['ADD_BOTTOM_ADMIN']:false ?>            
+        <?php !empty($tpldata['ADD_BOTTOM_ADMIN']) ? print $tpldata['ADD_BOTTOM_ADMIN']:false ?>            
     </div>

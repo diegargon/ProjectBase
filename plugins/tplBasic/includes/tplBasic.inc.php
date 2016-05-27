@@ -6,13 +6,14 @@ if (!defined('IN_WEB')) { exit; }
 
 function tpl_build_page() {
     global $tpldata;
-    $tpldata['META'] = ""; 
-    $tpldata['LINK'] = "";
-    $tpldata['SCRIPTS'] = "";
+    
+    !isset($tpldata['META']) ? $tpldata['META'] = "" : false;
+    !isset($tpldata['LINK']) ? $tpldata['LINK'] = "" : false;
+    !isset($tpldata['SCRIPTS']) ? $tpldata['SCRIPTS'] = "" : false;
+    !isset($tpldata['NAV']) ? $tpldata['NAV'] = "" : false;   
     $tpldata['NAV_ELEMENT'] = "";
-    $tpldata['NAV'] = "";
-    $tpldata['ADD_TO_BODY'] = "";
     $tpldata['ADD_TO_FOOTER'] = "";
+    $tpldata['ADD_TO_BODY'] = "";
     
     // BEGIN HEAD
     $tpldata['META'] .= do_action("add_meta");  
@@ -73,21 +74,21 @@ function tpl_get_path($type, $plugin, $page) {
     return false;
 }
 */
-function tpl_get_file($type, $plugin, $page, $data = null) {
+function tpl_get_file($type, $plugin, $page = null, $data = null) {
     global $config;
     if(empty($page)) {
         $page = $plugin;
     }
+    
     if($type == "css") {
         $USER_PATH = "tpl/{$config['THEME']}/css/$page.css";
-        $DEFAULT_PATH = "plugins/$plugin/tpl/css/$page.css";
-        
+        $DEFAULT_PATH = "plugins/$plugin/tpl/css/$page.css";        
         if (file_exists($USER_PATH))  {
             return  "<link rel='stylesheet' href='/$USER_PATH'>\n";
         } else if (file_exists($DEFAULT_PATH)) {
             return  "<link rel='stylesheet' href='/$DEFAULT_PATH'>\n";
         } 
-    }
+    }    
     
     if ($type == "tpl") {
         $USER_PATH = "tpl/$config[THEME]/$page.tpl.php";

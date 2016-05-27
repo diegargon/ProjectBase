@@ -20,6 +20,7 @@ SMBasic:clean  all users expired sessions  on each user logout or when?
 ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL
 Newspage: newspage.php error message on access without id or wrong id
 *: Track  config['BACKLINK'] with the last backlink;
+ALL: Not need do_action for lots of things, re-check and re-work general behaviour
 
 #BACKLOG
 New:User private message plugin

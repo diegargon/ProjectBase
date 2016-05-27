@@ -12,15 +12,21 @@ function Admin_init(){
 
 function Admin_main_page() {
     global $auth;
-    require("includes/Admin.inc.php");
-
+    global $tpldata;
+    $tpldata['ADD_ADMIN_MENU'] = "";
+    $tpldata['ADD_TOP_ADMIN'] = "";
+    $tpldata['ADD_BOTTOM_ADMIN'] = "";
+    
     includePluginFiles("Admin");
     
     if (!$auth->acl_ask("admin_read")) {
-        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
-        do_action("error_message_page");
         return false;
-    }    
-    
+    }
+   
+    $tpldata['LINK'] = tpl_get_file("css", "Admin");
+    $tpldata['ADD_ADMIN_MENU'] .= do_action("add_admin_menu");
+    $tpldata['ADD_TOP_ADMIN'] .= do_action("add_top_admin");
+    $tpldata['ADD_BOTTOM_ADMIN'] .= do_action("add_bottom_admin");    
+    $tpldata['POST_ACTION_ADD_TO_BODY'] = tpl_get_file("tpl", "Admin", "admin_main_body");
     do_action("common_web_structure");
 }
