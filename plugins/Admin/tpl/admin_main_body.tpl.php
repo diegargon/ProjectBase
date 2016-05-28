@@ -7,7 +7,7 @@ if (!defined('IN_WEB')) { exit; }
     <div  class="clear bodysize page">   
         <?php !empty($tpldata['ADD_TOP_ADMIN']) ? print $tpldata['ADD_TOP_ADMIN']:false ?>		
         <div id="admin_container">
-            <div class="tabs_container">
+            <div id="admin_tabs">
             <ul>
 <?php
 if ($tpldata['ADMIN_TAB_ACTIVE'] == 1) {

@@ -19,6 +19,5 @@ function SimpleACL_AdminMenu($params) {
 }
 
 function SimpleACL_AdminContent() {
-    return "<p>Hello from SimpleACL";
-//    return getTPL_file("SimpleACL", "acl_admin_main");
+    return getTPL_file("SimpleACL", "acl_admin_main");
 }

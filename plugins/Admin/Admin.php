@@ -20,7 +20,6 @@ function Admin_main_page() {
     }
     
     includePluginFiles("Admin");
-
     admin_load_plugin_files();    
     
     if (!$admtab = S_GET_INT("admtab")) {
@@ -34,15 +33,37 @@ function Admin_main_page() {
     $tpldata['ADD_BOTTOM_ADMIN'] .= do_action("add_bottom_admin");
 
     if($admtab == 1) {
-        addto_tplvar("ADD_ADMIN_CONTENT", Admin_generalContent());
+        addto_tplvar("ADD_ADMIN_CONTENT", Admin_generalContent($params));
     } else {
-        addto_tplvar("ADD_ADMIN_CONTENT", do_action("admin_get_content"));
+        addto_tplvar("ADD_ADMIN_CONTENT", do_action("admin_get_content", $params));
     }
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Admin", "admin_main_body"));
     do_action("common_web_structure");
 }
 
-function Admin_generalContent() {
-    $content = "<p>Admin General</p>";  
-    return $content;
+function Admin_generalContent($params) {
+    global $tpldata, $LANGDATA;    
+    $tpldata['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n";
+    $tpldata['ADM_ASIDE_OPTION'] .=  "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>Opcion 2</a></li>\n";
+    $tpldata['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_GENERAL_OPT");
+    
+    if ( (!$opt = S_GET_INT("opt")) || $opt == 1 ) {
+        $tpldata['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'];
+        $tpldata['ADM_CONTENT'] = Admin_GetPluginState("Admin");
+    } else {
+        $tpldata['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] .": Other opt";
+        $tpldata['ADM_CONTENT'] = "Content from other opt";
+    }
+    return getTPL_file("Admin", "admin_std_content");
+
+}
+
+function Admin_GetPluginState($plugin) { 
+    global $registered_plugins;
+    
+    foreach ($registered_plugins as $reg_plugin) {
+        if ($reg_plugin->plugin_name == $plugin) { 
+            return getTPL_file("Admin", "plugin_state", (array) $reg_plugin);            
+        }
+    }    
 }
