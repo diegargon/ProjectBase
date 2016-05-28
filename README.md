@@ -1,4 +1,6 @@
-# ProjectBase
+
+ProjectBase 
+===========
 Hello and excuse my english.
 I started this project for learn how to build something like a CMS from scratch, with plugins support, and other things for learning
 more deeply PHP.
@@ -10,5 +12,31 @@ and sometimes i must change the general behavior. This is because i haven't expe
  CMS
 
 
+EXAMPLE SITE
+============
 Early example  http://projectbase.envigo.net (sometimes not work since its the production web)
+
+LICENSING
+=========
+TODO
+
+REQUIREMENTS
+============
+TODO
+
+INSTALLATION
+============
+TODO
+
+DEVELOPEMENT
+============
+
+Author
+------
+
+* Diego Garcia <diego@envigo.ent>
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/diegargon/projectbase/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 
