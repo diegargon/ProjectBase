@@ -27,6 +27,7 @@ function Newspage_AdminContent($params) {
     if ( (!$opt = S_GET_INT("opt")) || $opt == 1 ) {
         $tpldata['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'];
         $tpldata['ADM_CONTENT'] = Admin_GetPluginState("Newspage");
+        $tpldata['ADM_CONTENT'] .= "<hr/><p><pre>" . htmlentities(Admin_GetPluginConfigFiles("Newspage")) . "</pre></p>";        
     } else {
         $tpldata['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] .": Other opt";
         $tpldata['ADM_CONTENT'] = "Content from other opt";
