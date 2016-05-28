@@ -28,3 +28,7 @@ if (!defined('IN_WEB')) { exit; }
     <span><?php print $LANGDATA['L_PL_AUTOSTART'] . $LANGDATA['L_SEP'] ?></span>
     <?php $data['autostart'] ? print $LANGDATA['L_PL_YES'] : print $LANGDATA['L_PL_NO'] ?>    
 </p>
+<p> 
+    <span><?php print $LANGDATA['L_PL_OPTIONAL'] . $LANGDATA['L_SEP'] ?> </span>
+    <?php print $data['optional'] ?>
+</p>

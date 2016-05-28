@@ -7,5 +7,6 @@
     "provided": "SQL1",
     "depends" : "",
     "autostart": "1",
-    "priority" : "4"   
+    "priority" : "4",
+    "optional": ""    
 }

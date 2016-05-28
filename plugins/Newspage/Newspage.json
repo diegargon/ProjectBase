@@ -8,5 +8,6 @@
     "provided": "news1",
     "depends" : "SQL1 tplbasic1",
     "autostart": "0",
-    "priority" : "5"   
+    "priority" : "5",
+    "optional": "multilang1"
 }

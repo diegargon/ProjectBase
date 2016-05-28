@@ -7,5 +7,6 @@
     "provided": "",
     "depends" : "SQL1 tplbasic1",
     "autostart": "1",
-    "priority" : "5"   
+    "priority" : "5",
+    "optional": ""    
 }

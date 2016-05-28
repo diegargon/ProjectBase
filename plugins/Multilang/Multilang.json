@@ -8,5 +8,6 @@
     "provided": "multilang1",
     "depends" : "tplbasic1",
     "autostart": "1",
-    "priority" : "2"   
+    "priority" : "2",
+    "optional": ""    
 }

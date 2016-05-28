@@ -22,4 +22,4 @@ $LANGDATA['L_PL_PRIORITY'] = "Prioridad";
 $LANGDATA['L_PL_AUTOSTART'] = "Inicio automatico";
 $LANGDATA['L_PL_YES'] = "Si";
 $LANGDATA['L_PL_NO'] = "No";
-   
+$LANGDATA['L_PL_OPTIONAL'] = "Opcional";   

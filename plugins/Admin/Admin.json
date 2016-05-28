@@ -7,5 +7,6 @@
     "provided": "Admin1",
     "depends" : "sessions acl1 tplbasic1 multilang1 SQL1",
     "autostart": "1",
-    "priority" : "6"   
+    "priority" : "6", 
+    "optional": ""    
 }

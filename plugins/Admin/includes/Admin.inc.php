@@ -29,3 +29,13 @@ function admin_load_plugin_files() {
         }            
     }
 }
+
+function Admin_GetPluginState($plugin) { 
+    global $registered_plugins;
+    
+    foreach ($registered_plugins as $reg_plugin) {
+        if ($reg_plugin->plugin_name == $plugin) { 
+            return getTPL_file("Admin", "plugin_state", (array) $reg_plugin);            
+        }
+    }    
+}

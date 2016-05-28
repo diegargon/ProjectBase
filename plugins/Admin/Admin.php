@@ -57,13 +57,3 @@ function Admin_generalContent($params) {
     return getTPL_file("Admin", "admin_std_content");
 
 }
-
-function Admin_GetPluginState($plugin) { 
-    global $registered_plugins;
-    
-    foreach ($registered_plugins as $reg_plugin) {
-        if ($reg_plugin->plugin_name == $plugin) { 
-            return getTPL_file("Admin", "plugin_state", (array) $reg_plugin);            
-        }
-    }    
-}
