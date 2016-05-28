@@ -4,7 +4,7 @@ if (!defined('IN_WEB')) { exit; }
  *  Copyright @ 2016 Diego Garcia
  */
 
-function register_action($event, $func, $priority)
+function register_action($event, $func, $priority = 5)
 {
     global $actions;
     $actions[$event][] = array ("function_name" => $func, "priority" => $priority);
@@ -25,7 +25,7 @@ function register_uniq_action($event, $func, $priority = 0) {
     
 } 
 
-function do_action($event, $params=null) {
+function do_action($event, $params = null) {
     global $actions;
 
     if(isset($actions[$event]))
