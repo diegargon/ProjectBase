@@ -40,7 +40,7 @@ function Admin_GetPluginState($plugin) {
     }    
 }
 
-function Admin_GetPluginConfigFiles($plugin) {
+function Admin_GetPluginConfigFiles($plugin) { //TODO BETTER CONFIG VIEW
     $config_plugin = "plugins/$plugin/$plugin.config.php";
     $config_plugin_user = "config/$plugin.config.php";
     $data = "";
