@@ -7,14 +7,12 @@ if (!defined('IN_WEB')) { exit; }
 function Admin_init(){
     if (DEBUG_PLUGINS_LOAD) { print_debug("Admin Inititated<br/>"); }
     
-    includePluginFiles("Admin");
-    
+    includePluginFiles("Admin");    
     register_uniq_action("admin_page", "Admin_main_page");
 }
 
 function Admin_main_page() {
-    global $auth;
-    global $tpldata;
+    global $auth, $tpldata;
     $tpldata['ADD_ADMIN_MENU'] = $tpldata['ADD_TOP_ADMIN'] = $tpldata['ADD_BOTTOM_ADMIN'] = "";
               
     if (!$auth->acl_ask("admin_read")) {
@@ -29,20 +27,18 @@ function Admin_main_page() {
         $admtab = 1;        
     }
     $tpldata['ADMIN_TAB_ACTIVE'] = $admtab;
-
-    tpl_addto_var("LINK", "tpl_get_file", "css", "Admin");    
+    getCSS_file("Admin");   
     $params['admtab'] = $admtab;
     $tpldata['ADD_ADMIN_MENU'] .= do_action("add_admin_menu", $params);
     $tpldata['ADD_TOP_ADMIN'] .= do_action("add_top_admin");
     $tpldata['ADD_BOTTOM_ADMIN'] .= do_action("add_bottom_admin");
 
     if($admtab == 1) {
-        $tpldata['ADD_ADMIN_CONTENT'] = Admin_generalContent();
+        addto_tplvar("ADD_ADMIN_CONTENT", Admin_generalContent());
     } else {
-        $tpldata['ADD_ADMIN_CONTENT'] = do_action("admin_get_content") ;
+        addto_tplvar("ADD_ADMIN_CONTENT", do_action("admin_get_content"));
     }
-    
-    tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "Admin", "admin_main_body");    
+    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Admin", "admin_main_body"));
     do_action("common_web_structure");
 }
 

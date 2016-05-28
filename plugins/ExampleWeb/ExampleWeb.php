@@ -18,9 +18,11 @@ function ExampleWeb_init(){
 }
 
 function ex_common_web_structure() {
-    plugin_manual_start("DebugWindow");      
-    register_action("add_to_body", "ex_header","4");
-    register_action("add_link", "ex_main_link","5");    
+    plugin_manual_start("DebugWindow"); 
+    getCSS_file("ExampleWeb");
+    getCSS_file("ExampleWeb", "ExampleWeb-mobile");
+    //TODO remove and use get file.
+    register_action("add_to_body", "ex_header","4");    
     register_uniq_action("get_footer", "ex_footer");    
     register_action("add_nav", "ex_nav", "5");
     
@@ -28,18 +30,14 @@ function ex_common_web_structure() {
 
 function ex_news_page() {
     do_action("common_web_structure");
-    plugin_manual_start("Newspage");
-    register_action("add_link", "news_add_link", "5");
-    register_action("add_to_body", "news_get_full_news", "5");
+    plugin_manual_start("Newspage");    
+    register_action("add_to_body", "news_news_page", "5");
 }
 
 function ex_index_page(){
-    do_action("common_web_structure");
-    
+    do_action("common_web_structure");   
     plugin_manual_start("Newspage");
-    register_action("add_link", "news_add_link", "5");
-
-    news_main_body_select();
+    news_main_page();
 }
 
 function ex_error_page() {        
@@ -67,25 +65,19 @@ function ex_error_page() {
     return ex_basic_error();
  }
  
-function ex_main_link (){ 
-    $link = "";
-    $link .= tpl_get_file("css", "ExampleWeb", "");
-    $link .= tpl_get_file("css", "ExampleWeb", "ExampleWeb-mobile");           
-    return $link;
+
+function ex_footer() {
+    return getTPL_file("ExampleWeb", "ex_footer");
 }
 
-function ex_footer() {    
-   return  tpl_get_file("tpl", "ExampleWeb", "ex_footer");
-}
-
-function ex_header() {    
-   return  tpl_get_file("tpl", "ExampleWeb", "ex_header");   
+function ex_header() {
+    return getTPL_file("ExampleWeb", "ex_header");
 }
 
 function ex_nav() {    
-    return tpl_get_file("tpl", "ExampleWeb", "ex_navigator");
+    return getTPL_file("ExampleWeb", "ex_navigator");
 }
 
 function ex_basic_error() {    
-    return tpl_get_file("tpl", "ExampleWeb", "ex_basic_error");
+    return getTPL_file("ExampleWeb", "ex_basic_error");    
 }

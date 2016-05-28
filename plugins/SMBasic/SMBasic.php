@@ -60,14 +60,11 @@ function SMBasic_regPage() {
             !isset($_POST['password1']) &&
             !isset($_POST['register1'])
                     ) {
-        do_action("common_web_structure"); 
-        tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic");
-        tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic", "SMBasic-mobile");       
-        tpl_addto_var("SCRIPTS", "SMBasic_RegisterScript");
-        tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "SMBasic", "register");
-//        register_action("add_link", "SMBasic_CSS","5");
-//        register_action("add_to_body", "SMBasic_get_register_page", "5");  
-//        register_action("add_script", "SMBasic_RegisterScript", "5");                                 
+        do_action("common_web_structure");       
+        getCSS_file("SMBasic");
+        getCSS_file("SMBasic", "SMBasic-mobile");
+        addto_tplvar("SCRIPTS", SMBasic_RegisterScript());
+        addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("SMBasic", "register"));                                
     } else {
         SMBasic_Register();   
     }
@@ -89,14 +86,11 @@ function SMBasic_profilePage() {
             echo "Error: 3242";
             exit(0);        
         } else {        
-            do_action("common_web_structure"); 
-            tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic");
-            tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic", "SMBasic-mobile");       
-            tpl_addto_var("SCRIPTS", "SMBasic_ProfileScript");
-            tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "SMBasic", "profile", $user);
-//        register_action("add_link", "SMBasic_CSS","5");
-//        register_action("add_to_body", "SMBasic_profile_page", "5"); 
-//        register_action("add_script", "SMBasic_ProfileScript", "5");           
+            do_action("common_web_structure");       
+            getCSS_file("SMBasic");
+            getCSS_file("SMBasic", "SMBasic-mobile");
+            addto_tplvar("SCRIPTS", SMBasic_ProfileScript()); 
+            addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("SMBasic", "profile", $user));
         }    
     }
 }
@@ -126,20 +120,16 @@ function SMBasic_loginPage () {
     } else if (!empty($_POST['reset1'])){  
         SMBasic_RequestResetOrActivation();
     } else {        
-       do_action("common_web_structure");
-       tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic");
-       tpl_addto_var("LINK", "tpl_get_file", "css", "SMBasic", "SMBasic-mobile");       
-       tpl_addto_var("SCRIPTS", "SMBasic_LoginScript");
-       tpl_addto_var("POST_ACTION_ADD_TO_BODY", "tpl_get_file", "tpl", "SMBasic", "login");       
-       //register_action("add_link", "SMBasic_CSS","5");
-       //register_action("add_to_body", "SMBasic_get_login_page", "5");
-       //register_action("add_script", "SMBasic_LoginScript", "5");          
+       do_action("common_web_structure");       
+        getCSS_file("SMBasic");
+        getCSS_file("SMBasic", "SMBasic-mobile");             
+        addto_tplvar("SCRIPTS", SMBasic_LoginScript()); 
+        addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("SMBasic", "login"));       
     }
 }
 
 function SMBasic_navLogReg() {
-    global $config;
-    global $LANGDATA;
+    global $config, $LANGDATA;
     
     $elements = "";
     if (!empty($_SESSION['username']) && !empty($_SESSION['uid'])) { //&& $_SESSION['username'] != "anononimo") { 
@@ -151,37 +141,6 @@ function SMBasic_navLogReg() {
     }
     return $elements;
 }
-/* NOW UNUSED
-function SMBasic_get_login_page() {
-    return tpl_get_file("tpl", "SMBasic", "login");
-}
-
-
-function SMBasic_get_register_page() {
-    return tpl_get_file("tpl", "SMBasic", "register");
-}
-
-
-function SMBasic_profile_page() {
-    global $config;
-    //TODO: ACL/ ONLY REGISTER USERS 
-    if( ($user = SMBasic_getUserbyID($_SESSION['uid'])) == false ) {
-        //TODO error manager
-        echo "Error: 3242";
-        exit(0);        
-    } else {
-       return tpl_get_file("tpl", "SMBasic", "profile");
-    }
-}
-
-function SMBasic_CSS() {
-    $link  = "";
-    $link .= tpl_get_file("css", "SMBasic");
-    $link .= tpl_get_file("css", "SMBasic", "SMBasic-mobile");
-
-    return $link;
-}
-*/
 
 function SMBasic_LoginScript() {
     $script = "";

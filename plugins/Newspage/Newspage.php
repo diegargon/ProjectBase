@@ -7,61 +7,58 @@ if (!defined('IN_WEB')) { exit; }
 function Newspage_init(){  
     if (DEBUG_PLUGINS_LOAD) { print_debug("Newspage Inititated<br/>");}
     
-    includePluginFiles("Newspage");     
+    includePluginFiles("Newspage"); 
+    getCSS_file("Newspage");
+    getCSS_file("Newspage", "Newspage-mobile");    
 }
 
-function news_add_link (){
-    $link = "";
-    $link .= tpl_get_file("css", "Newspage", "");
-    $link .= tpl_get_file("css", "Newspage", "Newspage-mobile");
-
-    return $link;
-}
-
-function news_main_body_select (){
+function news_main_page (){
     global $tpldata;
-    if(!empty($_POST['news_switch'])) { 
-        $news_switch = S_VAR_INTEGER($_POST['news_switch'],1);
-    } else{
-        $news_switch = 0;
-    }
-    if ($news_switch == 1) {
-        $l_switch = 0;
-        register_action("add_to_body", "news_body_style2", "5");
-    } else {
+ 
+    $news_layout = news_layout_select();
+    $tpldata['FEATURED'] = get_news_featured(1);
+    $tpldata['COL1_ARTICLES'] = get_news(1,0);
+    $tpldata['COL2_ARTICLES'] = get_news(1,0);
+    $tpldata['COL3_ARTICLES'] = get_news(1,0);    
+
+    if ($news_layout == 0 ) {        
         $l_switch = 1;
-        register_action("add_to_body", "news_body_style1", "5");        
-    }
-    if(isset($tpldata['ADD_TOP_NEWS'])) { //FIX: Change switcher to other location ¿nav?
-        $tpldata['ADD_TOP_NEWS'] .= news_layout_switcher($l_switch);
-    } else{
-        $tpldata['ADD_TOP_NEWS'] = news_layout_switcher($l_switch);
+        addto_tplvar('ADD_TOP_NEWS', news_layout_switcher($l_switch));
+        addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "News_body_style1"));                                
+    } else {
+        $l_switch = 0;
+        addto_tplvar('ADD_TOP_NEWS', news_layout_switcher($l_switch));
+        addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "News_body_style2"));                                           
     }    
 }
-function news_body_style1() {
-    global $tpldata;
-    $tpldata['FEATURED'] = get_news_featured(1);
-    $tpldata['COL1_ARTICLES'] = get_news(1,0);
-    $tpldata['COL2_ARTICLES'] = get_news(1,0);
-    $tpldata['COL3_ARTICLES'] = get_news(1,0);
- 
-    return tpl_get_file("tpl", "Newspage", "News_body_style1"); 
-}
 
-function news_body_style2() {
-    global $tpldata;
-    $tpldata['FEATURED'] = get_news_featured(1);
-    $tpldata['COL1_ARTICLES'] = get_news(1,0);
-    $tpldata['COL2_ARTICLES'] = get_news(1,0);
-    $tpldata['COL3_ARTICLES'] = get_news(1,0);
-        
-    return tpl_get_file("tpl", "Newspage", "News_body_style2");
-}
+function news_news_page() {
+    global $tpldata, $config, $LANGDATA;
+    
+    if( ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
+        $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];
+        $config['BACKLINK'] = '/';
+        return do_action("error_message_box");    
+    }
+    if (($row = get_news_byId($nid, $config['WEB_LANG'])) == false) {
+        $row = get_news_byId($nid, "");
+        $tpldata['NEWS_MSG'] = $LANGDATA['L_NEWS_WARN_NOLANG'];
+    }
+    $tpldata['NID'] = $row['nid'];    
+    $tpldata['NEWS_TITLE'] = $row['title'];    
+    $tpldata['NEWS_LEAD'] = $row['lead'];    
+    $tpldata['NEWS_URL'] = "news.php?nid=$row[nid]";
+    $tpldata['NEWS_DATE'] = format_date($row['date']);
+    $tpldata['NEWS_AUTHOR'] = $row['author'];
+    $tpldata['NEWS_TEXT']  = $row['text'];
 
-function news_layout_switcher($value) {        
-    $data = "<form method=\"post\"><div class=\"\">";
-    $data .= "<input type=\"submit\"  value=\"\" class=\"button_switch\" />";
-    $data .= "<input type=\"hidden\" value=\"$value\" name=\"news_switch\"/>";
-    $data .= "</div></form>";
-    return $data;
+    $allmedia = get_news_media_byID($nid);
+    
+    foreach ($allmedia as $media) {
+        if($media['itsmain'] == 1 ) {
+            $tpldata['NEWS_MAIN_MEDIA'] = $media['medialink'];
+        }
+    }
+      
+     return getTPL_file("Newspage", "news_show_body");
 }

@@ -2,6 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_AdminInit() {
     register_action("add_admin_menu", "SMBasic_AdminMenu", "5"); 

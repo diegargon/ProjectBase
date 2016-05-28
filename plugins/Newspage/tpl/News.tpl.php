@@ -2,6 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+if (!defined('IN_WEB')) { exit; }
 ?>
 <a href="<?php echo $data['URL']?>">
 <article class="newsbox">

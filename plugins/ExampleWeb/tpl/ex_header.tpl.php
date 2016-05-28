@@ -5,7 +5,6 @@
 if (!defined('IN_WEB')) { exit; }
 ?>
 
-
 <div class="main_container">
 <div class="container">    
 <div class="row1">        

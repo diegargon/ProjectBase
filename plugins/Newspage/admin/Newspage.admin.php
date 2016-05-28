@@ -2,6 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+if (!defined('IN_WEB')) { exit; }
 
 function Newspage_AdminInit() {
     register_action("add_admin_menu", "Newspage_AdminMenu", "5"); 
@@ -18,5 +19,5 @@ function Newspage_AdminMenu($params) {
 }
 
 function Newspage_AdminContent() {
-    return "<p>Hello from Newspage</p>";
+    return getTPL_file("Newspage", "news_admin_main");
 }

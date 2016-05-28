@@ -2,6 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+if (!defined('IN_WEB')) { exit; }
 ?>
     <div id="news_container" class="newsrow">
         <div  class="clear bodysize page">

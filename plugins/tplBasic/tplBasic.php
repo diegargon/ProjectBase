@@ -36,17 +36,17 @@ function tplBasic_error_page() {
  }
 
 function tpl_basic_head() {
-    return tpl_get_file("tpl", "tplBasic", "basic_head");
+    return getTPL_file("tplBasic", "basic_head");
 }
 
 function tpl_basic_body() {
-    return tpl_get_file("tpl", "tplBasic", "basic_body");
+    return getTPL_file("tplBasic", "basic_body");    
 }
 
 function tpl_basic_footer() {
-    return tpl_get_file("tpl", "tplBasic", "basic_footer");
+    return getTPL_file("tplBasic", "basic_footer");
 }
 
 function tpl_basic_error() {
-    return tpl_get_file("tpl", "tplBasic", "basic_error");
+    return getTPL_file("tplBasic", "basic_error");
 }

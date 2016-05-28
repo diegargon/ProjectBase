@@ -48,8 +48,7 @@ function Multilang_init(){
     }
 
     register_action("add_nav_element", "ML_nav", 6);
-   // register_action("add_script", "ML_Script", 5);   
-    tpl_addto_var("SCRIPTS", "ML_Script");
+    addto_tplvar("SCRIPTS", ML_Script());
 }
 
 function ML_Script() {
