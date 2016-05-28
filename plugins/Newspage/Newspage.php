@@ -8,8 +8,8 @@ function Newspage_init(){
     if (DEBUG_PLUGINS_LOAD) { print_debug("Newspage Inititated<br/>");}
     
     includePluginFiles("Newspage"); 
-    getCSS_file("Newspage");
-    getCSS_file("Newspage", "Newspage-mobile");    
+    getCSS_filePath("Newspage");
+    getCSS_filePath("Newspage", "Newspage-mobile");    
 }
 
 function news_main_page (){
@@ -32,7 +32,7 @@ function news_main_page (){
     }    
 }
 
-function news_news_page() {
+function news_page() {
     global $tpldata, $config, $LANGDATA;
     
     if( ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
@@ -41,7 +41,7 @@ function news_news_page() {
         return do_action("error_message_box");    
     }
     if (($row = get_news_byId($nid, $config['WEB_LANG'])) == false) {
-        $row = get_news_byId($nid, "");
+        $row = get_news_byId($nid);
         $tpldata['NEWS_MSG'] = $LANGDATA['L_NEWS_WARN_NOLANG'];
     }
     $tpldata['NID'] = $row['nid'];    
@@ -59,6 +59,6 @@ function news_news_page() {
             $tpldata['NEWS_MAIN_MEDIA'] = $media['medialink'];
         }
     }
-      
-     return getTPL_file("Newspage", "news_show_body");
+    
+    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_show_body"));                                               
 }

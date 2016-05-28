@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function get_news($category, $limit) {
+function get_news($category, $limit = null) {
     global $config;
     
     $content = "";         

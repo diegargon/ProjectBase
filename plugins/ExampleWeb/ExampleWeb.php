@@ -18,26 +18,25 @@ function ExampleWeb_init(){
 }
 
 function ex_common_web_structure() {
-    plugin_manual_start("DebugWindow"); 
-    getCSS_file("ExampleWeb");
-    getCSS_file("ExampleWeb", "ExampleWeb-mobile");
-    //TODO remove and use get file.
-    register_action("add_to_body", "ex_header","4");    
+//    plugin_manual_start("DebugWindow"); 
+    getCSS_filePath("ExampleWeb");
+    getCSS_filePath("ExampleWeb", "ExampleWeb-mobile");
+    register_action("add_to_body", "ex_header",4);    
     register_uniq_action("get_footer", "ex_footer");    
-    register_action("add_nav", "ex_nav", "5");
+    register_action("add_nav", "ex_nav", 5);
     
-}
-
-function ex_news_page() {
-    do_action("common_web_structure");
-    plugin_manual_start("Newspage");    
-    register_action("add_to_body", "news_news_page", "5");
 }
 
 function ex_index_page(){
     do_action("common_web_structure");   
     plugin_manual_start("Newspage");
     news_main_page();
+}
+
+function ex_news_page() {
+    do_action("common_web_structure");
+    plugin_manual_start("Newspage"); 
+    news_page();   
 }
 
 function ex_error_page() {        
@@ -50,7 +49,7 @@ function ex_error_page() {
         $tpldata['E_BACKLINK_TITLE'] = $LANGDATA['L_E_BACKLINK_TITLE'];       
     }    
     do_action("common_web_structure");    
-    register_action("add_to_body", "ex_basic_error","5");
+    register_action("add_to_body", "ex_basic_error",5);
  }
 
  function ex_error_box () {
@@ -64,11 +63,6 @@ function ex_error_page() {
     }   
     return ex_basic_error();
  }
- 
-
-function ex_footer() {
-    return getTPL_file("ExampleWeb", "ex_footer");
-}
 
 function ex_header() {
     return getTPL_file("ExampleWeb", "ex_header");
@@ -76,6 +70,10 @@ function ex_header() {
 
 function ex_nav() {    
     return getTPL_file("ExampleWeb", "ex_navigator");
+}
+
+function ex_footer() {
+    return getTPL_file("ExampleWeb", "ex_footer");
 }
 
 function ex_basic_error() {    

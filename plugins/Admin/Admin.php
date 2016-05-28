@@ -27,7 +27,7 @@ function Admin_main_page() {
         $admtab = 1;        
     }
     $tpldata['ADMIN_TAB_ACTIVE'] = $admtab;
-    getCSS_file("Admin");   
+    getCSS_filePath("Admin");   
     $params['admtab'] = $admtab;
     $tpldata['ADD_ADMIN_MENU'] .= do_action("add_admin_menu", $params);
     $tpldata['ADD_TOP_ADMIN'] .= do_action("add_top_admin");
