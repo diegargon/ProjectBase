@@ -3,6 +3,7 @@
     "enabled": "1",
     "main_file" : "SimpleACL.php",
     "function_init": "SimpleACL_init",
+    "function_admin_init": "SimpleACL_AdminInit",     
     "function_install": "",
     "provided": "acl1",
     "depends" : "sessions multilang1 SQL1",

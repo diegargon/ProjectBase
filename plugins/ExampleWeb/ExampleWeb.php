@@ -18,7 +18,7 @@ function ExampleWeb_init(){
 }
 
 function ex_common_web_structure() {
-//    plugin_manual_start("DebugWindow"); 
+    plugin_manual_start("DebugWindow"); 
     getCSS_filePath("ExampleWeb");
     getCSS_filePath("ExampleWeb", "ExampleWeb-mobile");
     register_action("add_to_body", "ex_header",4);    
