@@ -12,7 +12,7 @@ function ExampleWeb_init(){
     
     register_uniq_action("index_page", "ex_index_page");
     register_uniq_action("news_page", "ex_news_page");    
-    register_action("common_web_structure", "ex_common_web_structure", "5");
+    register_action("common_web_structure", "ex_common_web_structure", 5);
     register_uniq_action("error_message_page", "ex_error_page");
     register_uniq_action("error_message_box", "ex_error_box");
 }

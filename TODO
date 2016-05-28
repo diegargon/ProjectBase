@@ -8,7 +8,7 @@ New:Admin users plugin
 New:comments plugin for resources
 New:admin comments for resources
 New:Admin basic Plugin
-Newspage->Admin: Submit news admin/user submit options
+Newspage->Submit news admin/user submit options
 Newspage:fix switch body layout and ?add switcher to navmenu?
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
@@ -18,7 +18,6 @@ SMBasic: session expire problem (server VS custom) use session_start or custom s
 SMBasic:clean  all users expired sessions  on each user logout or when?
 }
 ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL
-Newspage: newspage.php error message on access without id or wrong id
 *: Track  config['BACKLINK'] with the last backlink;
 ALL: Not need do_action for lots of things, re-check and re-work general behaviour
 CORE: Plugins.check  re-check  functions calls in core exist and manage errors (some check missed)

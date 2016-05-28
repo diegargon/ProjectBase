@@ -30,14 +30,12 @@ function get_news($category, $limit = null) {
     $query = db_query($q);
    
     if (db_num_rows($query) <= 0) {
-        db_free_result($query);
         return false;
     }
        
     if(!empty($category)) {
         $catname = get_category_name($category, $lang_id);
-        $content .= "<h2>$catname</h2>";
-        
+        $content .= "<h2>$catname</h2>";        
     }     
 
     while($row = db_fetch($query)) {
@@ -74,7 +72,6 @@ function get_news_featured($category = null, $limit = 1) {
     $query = db_query($q);
    
     if (db_num_rows($query) <= 0) {
-        db_free_result($query);
         return false;
     }
     
@@ -133,7 +130,7 @@ function get_category_name($cid, $lang_id) {
     return $category['name'];
 }
 
-function get_news_byId($id, $lang){
+function get_news_byId($id, $lang = null){
     global $config;
     
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
@@ -160,18 +157,24 @@ function get_news_byId($id, $lang){
 function get_news_media_byID($id) {
     global $config;
     
-    $query = db_query("SELECT * FROM $config[DB_PREFIX]media WHERE nid = $id");
-    $media = [];
-    while ($row = db_fetch($query)) {
-        $media[] = array (
-            "mediaid" => $row['mediaid'], 
-            "mediatype" => $row['mediatype'], 
-            "medialink" => $row['medialink'], 
-            "itsmain" => $row['itsmain']);        
-    }
+    $query = db_query("SELECT * FROM $config[DB_PREFIX]media WHERE nid = $id");    
+    if (db_num_rows($query) > 0) {
+        while ($row = db_fetch($query)) {
+            $media[] = array (
+                "mediaid" => $row['mediaid'], 
+                "mediatype" => $row['mediatype'], 
+                "medialink" => $row['medialink'], 
+                "itsmain" => $row['itsmain']);        
+        }
+        
+        
+    } else {
+        $media = false;
+    } 
+    
     db_free_result($query);
-
     return $media;
+    
 }
 
 function news_layout_select() {

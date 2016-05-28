@@ -4,4 +4,4 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-define("TPL_DEBUG", false);
+define("NEWSPAGE_DEBUG", true);
