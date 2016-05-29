@@ -39,8 +39,9 @@ function get_news($category, $limit = null) {
     }     
 
     while($row = db_fetch($query)) {
-        $content_data = fetch_news_data($row);
-        $content .= getTPL_file("Newspage", "News", $content_data);        
+        if ( ($content_data = fetch_news_data($row)) != false) {
+            $content .= getTPL_file("Newspage", "News", $content_data);        
+        }
     }
     db_free_result($query);    
     
@@ -80,9 +81,10 @@ function get_news_featured($category = null, $limit = 1) {
     } 
   
     while($row = db_fetch($query)) {
-        $content_data = fetch_news_data($row);
-        isset($catname) ? $content_data['CATEGORY'] = $catname: false;         
-        $content .= getTPL_file("Newspage", "NewsFeatured", $content_data);
+        if ( ($content_data = fetch_news_data($row)) != false ) {
+            isset($catname) ? $content_data['CATEGORY'] = $catname: false;         
+            $content .= getTPL_file("Newspage", "NewsFeatured", $content_data);
+        }
     }
     
     db_free_result($query);
@@ -91,8 +93,11 @@ function get_news_featured($category = null, $limit = 1) {
 }
 
 function fetch_news_data($row) {
-    global $config;    
+    global $config, $acl_auth;    
 
+    if( 'ACL' && !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
+        return false;
+    }     
     $data['NID'] = $row['nid'];
     $data['TITLE'] = $row['title'];
     $data['LEAD'] = $row['lead'];                
@@ -131,10 +136,7 @@ function get_category_name($cid, $lang_id) {
 }
 
 function get_news_byId($id, $lang = null){
-    global $config;
-    if ('ACL') { 
-        global $acl_auth;         
-    }
+    global $config, $acl_auth;         
     
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
     if ($config['multilang'] == 1 && !empty($lang)) { 
@@ -153,9 +155,10 @@ function get_news_byId($id, $lang = null){
     }
     $row = db_fetch($query);
     
-    if('ACL' && !empty($acl_auth) && !empty($row['acl'])) {
-        $acl_auth->acl_ask($row['acl']);
-        return 403;
+    if( 'ACL' && !empty($acl_auth) && !empty($row['acl'])) {
+        if(!$acl_auth->acl_ask($row['acl'])) {
+            return 403;
+        }
     } 
     db_free_result($query);
 
