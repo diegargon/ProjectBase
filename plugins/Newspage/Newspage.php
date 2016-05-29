@@ -39,24 +39,20 @@ function news_page() {
     
     if( ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
         $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];
-        $config['BACKLINK'] = '/';
         addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
         return false;
     }
     if (($row = get_news_byId($nid, $config['WEB_LANG'])) == 403) {
         $tpldata['E_MSG'] = $LANGDATA['L_ERROR_NOACCESS'];
-        $config['BACKLINK'] = '/';
         addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box")); 
         return false; 
     } else if ($row == false) {
         if( ($row = get_news_byId($nid)) == false) {
             $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];
-            $config['BACKLINK'] = '/';
             addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
             return false;
         } else {
             $tpldata['E_MSG'] = $LANGDATA['L_NEWS_WARN_NOLANG'];
-            $config['BACKLINK'] = '/';
             addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
             return false;
             
