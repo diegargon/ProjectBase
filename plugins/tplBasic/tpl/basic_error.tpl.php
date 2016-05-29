@@ -12,7 +12,7 @@ if (!defined('IN_WEB')) { exit; }
         <?php isset($tpldata['ERROR_MSG']) ? print $tpldata['ERROR_MSG'] : false ?>
     </p>
 <?php        
-if (!empty($tpldata['ERROR_BACKLINK']) && !empty($tpldata['ERROR_BACKLINK_TITLE'])) {
+if (!empty($tpldata['E_BACKLINK_TITLE'])) {
 ?>
     <p class="p_center_medium">
         <a href="<?php !empty($tpldata['ERROR_BACKLINK']) ? print $tpldata['ERROR_BACKLINK'] : false ?>" />
