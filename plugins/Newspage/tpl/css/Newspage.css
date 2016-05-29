@@ -115,6 +115,7 @@
     background:url(../../images/newsswitch.png) no-repeat;
     background-size: 18px 20px;
     cursor:pointer;
+    margin-top: 8px;
     border: 0px solid red;
 }
 
@@ -196,4 +197,10 @@
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;    
     padding-left: 4px;
+}
+
+
+#news_menu {
+    border: 1px solid black;
+    width:95%;
 }

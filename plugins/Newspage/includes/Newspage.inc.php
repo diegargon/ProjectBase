@@ -195,9 +195,9 @@ function news_layout_select() {
 }
 
 function news_layout_switcher($value) {        
-    $data = "<form method=\"post\"><div class=\"\">";
-    $data .= "<input type=\"submit\"  value=\"\" class=\"button_switch\" />";
-    $data .= "<input type=\"hidden\" value=\"$value\" name=\"news_switch\"/>";
-    $data .= "</div></form>";
+    $data = "<li class='nav_left'><form action='' method='post'>";
+    $data .= "<input type='submit'  value='' class='button_switch' />";
+    $data .= "<input type='hidden' value='$value' name='news_switch'/>";
+    $data .= "</form></li>";
     return $data;
 }

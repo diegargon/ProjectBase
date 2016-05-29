@@ -1,18 +1,11 @@
 <?php
 if (!defined('IN_WEB')) { exit; }
 ?>
-
         <nav>
             <ul>
+                <li class="nav_left"><a href="/<?php echo $config['WEB_LANG']?>"><?php print $LANGDATA['L_HOME']?></a></li>                
                 <?php
-                
-                    if(isset($tpldata['NAV_ELEMENT'])) {
-                        echo $tpldata['NAV_ELEMENT'];
-                    } else {
-                        print_debug("tpldata/nav not set<br/>");
-                    }
-                ?>
-
-                <li class="left"><a href="/<?php echo $config['WEB_LANG']?>"><?php print $LANGDATA['L_HOME']?></a></li>
+                    isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false;
+                ?>                
             </ul>
         </nav>

@@ -9,27 +9,29 @@ function Newspage_init(){
     
     includePluginFiles("Newspage"); 
     getCSS_filePath("Newspage");
-    getCSS_filePath("Newspage", "Newspage-mobile");    
+    getCSS_filePath("Newspage", "Newspage-mobile");  
 }
 
 function news_main_page (){
     global $tpldata;
- 
+    
     $news_layout = news_layout_select();
     $tpldata['FEATURED'] = get_news_featured(1);
     $tpldata['COL1_ARTICLES'] = get_news(1,0);
     $tpldata['COL2_ARTICLES'] = get_news(1,0);
-    $tpldata['COL3_ARTICLES'] = get_news(1,0);    
-
+    $tpldata['COL3_ARTICLES'] = get_news(1,0);          
+    
     if ($news_layout == 0 ) {        
         $l_switch = 1;
-        addto_tplvar('ADD_TOP_NEWS', news_layout_switcher($l_switch));
-        addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "News_body_style1"));                                
+        $news_layout_tpl = "News_body_style1";
     } else {
-        $l_switch = 0;
-        addto_tplvar('ADD_TOP_NEWS', news_layout_switcher($l_switch));
-        addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "News_body_style2"));                                           
-    }    
+        $l_switch = 0;        
+        $news_layout_tpl = "News_body_style2";                                           
+    }   
+   
+    addto_tplvar("NAV_ELEMENT", news_layout_switcher($l_switch));        
+    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));                                
+    
 }
 
 function news_page() {
