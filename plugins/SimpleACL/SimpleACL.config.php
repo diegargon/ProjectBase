@@ -5,3 +5,4 @@
 if (!defined('IN_WEB')) { exit; }
 
 define('ACL_DEBUG', true);
+define('ACL', true);

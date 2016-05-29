@@ -132,6 +132,9 @@ function get_category_name($cid, $lang_id) {
 
 function get_news_byId($id, $lang = null){
     global $config;
+    if ('ACL') { 
+        global $acl_auth;         
+    }
     
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
     if ($config['multilang'] == 1 && !empty($lang)) { 
@@ -149,6 +152,11 @@ function get_news_byId($id, $lang = null){
         return false;
     }
     $row = db_fetch($query);
+    
+    if('ACL' && !empty($acl_auth) && !empty($row['acl'])) {
+        $acl_auth->acl_ask($row['acl']);
+        return 403;
+    } 
     db_free_result($query);
 
     return $row;

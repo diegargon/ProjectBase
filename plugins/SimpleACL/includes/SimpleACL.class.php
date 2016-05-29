@@ -13,15 +13,13 @@ class ACL {
    }
     
     function acl_ask($role, $resource = "ALL") {
-        if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
-            $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
-            do_action("error_message_page");            
+        if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {          
             return false;
         }
         if (empty($this->roles) || empty($this->user_roles)) {
             $this->getRoles();
             $this->getUserRoles();   
-        } else if ($this->roles == false || $this->$user_roles == false) {
+        } else if ($this->roles == false || $this->user_roles == false) {
             $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ROLES_DB'];        
             do_action("error_message_page");            
             return false;            
@@ -29,9 +27,7 @@ class ACL {
 
         list($role_group, $role_type) = preg_split("/_/", $role);                        
 
-        if (!$this->checkUserPerms($role_group, $role_type, $resource) ) {
-            $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
-            do_action("error_message_page");            
+        if (!$this->checkUserPerms($role_group, $role_type, $resource) ) {    
             return false;            
         } else {
             return true;

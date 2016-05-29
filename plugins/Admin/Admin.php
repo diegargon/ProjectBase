@@ -12,10 +12,12 @@ function Admin_init(){
 }
 
 function Admin_main_page() {
-    global $auth, $tpldata;
+    global $acl_auth, $tpldata;
     $tpldata['ADD_ADMIN_MENU'] = $tpldata['ADD_TOP_ADMIN'] = $tpldata['ADD_BOTTOM_ADMIN'] = "";
               
-    if (!$auth->acl_ask("admin_read")) {
+    if (!$acl_auth->acl_ask("admin_read")) {
+        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
+        do_action("error_message_page");        
         return false;
     }
     
