@@ -12,7 +12,7 @@ function Newspage_init(){
     getCSS_filePath("Newspage", "Newspage-mobile");  
 }
 
-function news_main_page (){
+function news_index_page (){
     global $tpldata;
     
     $news_layout = news_layout_select();
@@ -28,7 +28,8 @@ function news_main_page (){
         $l_switch = 0;        
         $news_layout_tpl = "News_body_style2";                                           
     }   
-   
+
+    addto_tplvar("NAV_ELEMENT", news_menu_submit_news());
     addto_tplvar("NAV_ELEMENT", news_layout_switcher($l_switch));        
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));                                
     

@@ -184,8 +184,8 @@ function get_news_media_byID($id) {
     } 
     
     db_free_result($query);
-    return $media;
-    
+
+    return $media;   
 }
 
 function news_layout_select() {
@@ -203,4 +203,11 @@ function news_layout_switcher($value) {
     $data .= "<input type='hidden' value='$value' name='news_switch'/>";
     $data .= "</form></li>";
     return $data;
+}
+
+function news_menu_submit_news() {
+    $data = "<li class='nav_left'>";
+    $data .= "<a href=''>Enviar</a>";
+    $data .= "</li>";
+    return $data;    
 }

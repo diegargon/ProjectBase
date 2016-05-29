@@ -30,7 +30,7 @@ function ex_common_web_structure() {
 function ex_index_page(){
     do_action("common_web_structure");   
     plugin_manual_start("Newspage");
-    news_main_page();
+    news_index_page();
 }
 
 function ex_news_page() {
