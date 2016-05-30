@@ -15,18 +15,11 @@ function Newspage_init(){
 function news_index_page (){
     global $tpldata, $config;
 
-    $news_layout = news_layout_select();
-                     
-    if ($news_layout == 0 ) {        
-        $l_switch = 1;
-        $news_layout_tpl = "News_body_style1";
-    } else {
-        $l_switch = 0;        
-        $news_layout_tpl = "News_body_style2";                                           
-    }
-        
+    $news_nLayout = news_layout_select();
+    $news_layout_tpl = "News_body_style" . $news_nLayout++;
+    
     if ($config['LAYOUT_SWITCH']) {           
-        $tpldata['lswitch'] = $l_switch;
+        $tpldata['news_nSwitch'] = $news_nLayout;
         register_action("nav_element", "news_layout_switcher", 6);
     }
 

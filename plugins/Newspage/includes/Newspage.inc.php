@@ -189,10 +189,12 @@ function get_news_media_byID($id) {
 }
 
 function news_layout_select() {
-    if(!empty($_POST['news_switch'])) { 
-        $news_switch = S_VAR_INTEGER($_POST['news_switch'],1);
+    global $config;
+    
+    if(empty($_POST['news_switch']) || $_POST['news_switch'] > $config['NEWS_BODY_STYLES']) {
+        $news_switch = 1;
     } else{
-        $news_switch = 0;
+        $news_switch = S_VAR_INTEGER($_POST['news_switch'],1);        
     }
     return $news_switch;    
 }
@@ -202,7 +204,7 @@ function news_layout_switcher() {
     
     $data = "<li class='nav_left'><form action='' method='post'>";
     $data .= "<input type='submit'  value='' class='button_switch' />";
-    $data .= "<input type='hidden' value=" . $tpldata['lswitch'] ." name='news_switch'/>";
+    $data .= "<input type='hidden' value=" . $tpldata['news_nSwitch'] ." name='news_switch'/>";
     $data .= "</form></li>";
     return $data;
 }
