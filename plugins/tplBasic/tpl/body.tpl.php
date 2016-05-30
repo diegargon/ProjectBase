@@ -18,7 +18,7 @@ if (!defined('IN_WEB')) { exit; }
                 <?php 
                 if ($config['NAV_MENU_HOME']) { 
                   echo "<li class='nav_left'>";
-                  echo "<a href='/'><img src='/plugins/tplBasic/images/home.png' alt='{$LANGDATA['L_HOME']}' />";                        
+                  echo "<a href='/{$config['WEB_LANG']}'><img src='/plugins/tplBasic/images/home.png' alt='{$LANGDATA['L_HOME']}' />";                        
                   echo "</a></li>";           
                 }
                   isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false;

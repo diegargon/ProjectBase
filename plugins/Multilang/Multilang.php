@@ -20,7 +20,7 @@ function Multilang_init(){
     }
     
     $request_uri = $_SERVER['REQUEST_URI'];
-
+    
     if (
        (isset($_GET['lang'])) &&
        (($lang = S_VAR_CHAR_AZ($_GET['lang'], 2, 2) ) != false)
