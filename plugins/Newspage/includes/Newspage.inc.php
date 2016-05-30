@@ -197,10 +197,12 @@ function news_layout_select() {
     return $news_switch;    
 }
 
-function news_layout_switcher($value) {        
+function news_layout_switcher() { 
+    global $tpldata;
+    
     $data = "<li class='nav_left'><form action='' method='post'>";
     $data .= "<input type='submit'  value='' class='button_switch' />";
-    $data .= "<input type='hidden' value='$value' name='news_switch'/>";
+    $data .= "<input type='hidden' value=" . $tpldata['lswitch'] ." name='news_switch'/>";
     $data .= "</form></li>";
     return $data;
 }

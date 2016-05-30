@@ -38,7 +38,7 @@ function SMBasic_Init() {
         SMBasic_sessionDebugDetails();
     }
 
-    addto_tplvar("NAV_ELEMENT", SMBasic_navLogReg());
+    register_action("nav_element", "SMBasic_navLogReg");
     register_uniq_action("login_page", "SMBasic_loginPage");
     register_uniq_action("register_page", "SMBasic_regPage");   
     register_uniq_action("logout_page", "SMBasic_logoutPage");
@@ -132,7 +132,7 @@ function SMBasic_navLogReg() {
     global $config, $LANGDATA;
     
     $elements = "";
-    if (!empty($_SESSION['username']) && !empty($_SESSION['uid'])) { //&& $_SESSION['username'] != "anononimo") { 
+    if (!empty($_SESSION['username']) && !empty($_SESSION['uid'])) { //&& $_SESSION['username'] != "anonimo") { 
         $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/logout.php'>{$LANGDATA['L_LOGOUT']}</a></li>\n";
         $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/profile.php'>". $_SESSION['username']. "</a></li>\n";
     } else {

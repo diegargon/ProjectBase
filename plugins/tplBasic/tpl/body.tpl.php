@@ -11,6 +11,8 @@ if (!defined('IN_WEB')) { exit; }
             <h1><a href="/<?php echo $config['WEB_LANG']?>"><?php echo $config['TITLE']?></a></h1>
             <h2><?php echo $config['WEB_DESC']?></h2>
         </div>
+        <?php 
+        if($config['NAV_MENU']) { ?>
         <nav>
             <ul>
                 <li class="nav_left"><a href="/<?php echo $config['WEB_LANG']?>"><?php print $LANGDATA['L_HOME']?></a></li>                
@@ -18,7 +20,8 @@ if (!defined('IN_WEB')) { exit; }
                     isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false;
                 ?>                
             </ul>
-        </nav>       
+        </nav>            
+        <?php } ?>
         <?php isset($tpldata['ADD_HEADER_END']) ? print $tpldata['ADD_HEADER_END']:false ?>
         </header>
 </div>    

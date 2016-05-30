@@ -5,29 +5,27 @@
 if (!defined('IN_WEB')) { exit; }
 
 function tpl_build_page() {
-    global $tpldata;
+    global $tpldata, $config;
     
-    !isset($tpldata['META']) ? $tpldata['META'] = "" : false;
-    !isset($tpldata['LINK']) ? $tpldata['LINK'] = "" : false;
-    !isset($tpldata['SCRIPTS']) ? $tpldata['SCRIPTS'] = "" : false;
-    !isset($tpldata['NAV']) ? $tpldata['NAV'] = "" : false;   
-    !isset($tpldata['NAV_ELEMENT']) ? $tpldata['NAV_ELEMENT'] = "" : false;
     !isset($tpldata['ADD_TO_FOOTER']) ? $tpldata['ADD_TO_FOOTER'] = "" : false;
     !isset($tpldata['ADD_TO_BODY']) ? $tpldata['ADD_TO_BODY'] = "" : false;
     
     // BEGIN HEAD
-    $tpldata['META'] .= do_action("add_meta");  
-    $tpldata['LINK'] .= do_action("add_link");  
-    $tpldata['SCRIPTS'] .= do_action("add_script");  
+ 
     $web_head = do_action("get_head"); 
     //END HEAD
     
     //BEGIN BODY
+    if ($config['NAV_MENU']) { //use do_action for order 
+        !isset($tpldata['NAV_ELEMENT']) ? $tpldata['NAV_ELEMENT'] = "" : false;
+        $tpldata['NAV_ELEMENT'] .= do_action("nav_element");       
+    }   
+    
     $tpldata['ADD_TO_BODY'] .= do_action("add_to_body");
     $web_body = do_action("get_body");
     //END BODY
     
-    //BEGIN FOOTER    
+    //BEGIN FOOTER 
     $tpldata['ADD_TO_FOOTER'] .= do_action("add_to_footer");
     $web_footer = do_action("get_footer");
     //END FOOTER
@@ -73,12 +71,12 @@ function getCSS_filePath($plugin, $filename = null) {
     addto_tplvar("LINK", $css);
 }
 
-function addto_tplvar ($tplvar, $data) {
+function addto_tplvar ($tplvar, $data, $priority = 5) {
     global $tpldata;
     if (!isset($tpldata[$tplvar])) {
         $tpldata[$tplvar] = $data;
     } else {
-        $tpldata[$tplvar] .= $data;            
+        $tpldata[$tplvar] .= $data;     
     }     
     
 }

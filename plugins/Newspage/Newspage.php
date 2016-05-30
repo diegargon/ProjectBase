@@ -28,9 +28,10 @@ function news_index_page (){
         $l_switch = 0;        
         $news_layout_tpl = "News_body_style2";                                           
     }   
-
-    addto_tplvar("NAV_ELEMENT", news_menu_submit_news());
-    addto_tplvar("NAV_ELEMENT", news_layout_switcher($l_switch));        
+    $tpldata['lswitch'] = $l_switch;
+    register_action("nav_element", "news_menu_submit_news");
+    register_action("nav_element", "news_layout_switcher", 6);
+            
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));                                
     
 }
