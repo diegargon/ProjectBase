@@ -13,25 +13,30 @@ function Newspage_init(){
 }
 
 function news_index_page (){
-    global $tpldata;
-    
+    global $tpldata, $config;
+
     $news_layout = news_layout_select();
-    $tpldata['FEATURED'] = get_news_featured(1);
-    $tpldata['COL1_ARTICLES'] = get_news(1,0);
-    $tpldata['COL2_ARTICLES'] = get_news(1,0);
-    $tpldata['COL3_ARTICLES'] = get_news(1,0);          
-    
+                     
     if ($news_layout == 0 ) {        
         $l_switch = 1;
         $news_layout_tpl = "News_body_style1";
     } else {
         $l_switch = 0;        
         $news_layout_tpl = "News_body_style2";                                           
-    }   
-    $tpldata['lswitch'] = $l_switch;
+    }
+        
+    if ($config['LAYOUT_SWITCH']) {           
+        $tpldata['lswitch'] = $l_switch;
+        register_action("nav_element", "news_layout_switcher", 6);
+    }
+
+    $tpldata['FEATURED'] = get_news_featured(1);
+    $tpldata['COL1_ARTICLES'] = get_news(1,0);
+    $tpldata['COL2_ARTICLES'] = get_news(1,0);
+    $tpldata['COL3_ARTICLES'] = get_news(1,0);          
+
+    
     register_action("nav_element", "news_menu_submit_news");
-    register_action("nav_element", "news_layout_switcher", 6);
-            
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));                                
     
 }
