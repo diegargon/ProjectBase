@@ -9,8 +9,8 @@ function get_news($category, $limit = null) {
     
     $content = "";         
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1' ";
-    
-    if (isset($config['multilang']) && $config['multilang'] == 1) {
+        
+    if (defined('MULTILANG') && 'MULTILANG') {
         $LANGS = do_action("get_site_langs");
         
         foreach ($LANGS as $lang) {
@@ -34,7 +34,11 @@ function get_news($category, $limit = null) {
     }
        
     if(!empty($category)) {
-        $catname = get_category_name($category, $lang_id);
+        if (defined('MULTILANG') && 'MULTILANG') {
+            $catname = get_category_name($category, $lang_id);
+        } else {
+            $catname = get_category_name($category);    
+        }
         $content .= "<h2>$catname</h2>";        
     }     
 
@@ -54,7 +58,7 @@ function get_news_featured($category = null, $limit = 1) {
         
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
 
-    if (isset($config['multilang']) && $config['multilang'] == 1) {
+    if (defined('MULTILANG') && 'MULTILANG') {
         $LANGS = do_action("get_site_langs");
         
         foreach ($LANGS as $lang) {
@@ -77,7 +81,11 @@ function get_news_featured($category = null, $limit = 1) {
     }
     
     if(!empty($category)) {
-        $catname = get_category_name($category, $lang_id);       
+        if (defined('MULTILANG') && 'MULTILANG') {
+            $catname = get_category_name($category, $lang_id);       
+        } else {
+            $catname = get_category_name($category);
+        }
     } 
   
     while($row = db_fetch($query)) {
@@ -116,15 +124,15 @@ function fetch_news_data($row) {
     $media_row = db_fetch($query);
     $data['MEDIA'] = $media_row['medialink'];
     db_free_result($query);
+
     return $data;
 }
 
-function get_category_name($cid, $lang_id) {
+function get_category_name($cid, $lang_id = null) {
     global $config; 
     
-    $q = "SELECT name FROM {$config['DB_PREFIX']}categories WHERE cid = '$cid'";
-
-    if (isset($config['multilang']) && $config['multilang'] == 1) {
+    $q = "SELECT name FROM {$config['DB_PREFIX']}categories WHERE cid = '$cid'";    
+    if (defined('MULTILANG') && 'MULTILANG' && $lang_id != null) {
         $q .= " AND lang_id = $lang_id";
     }
     $q .= " LIMIT 1";
@@ -139,7 +147,7 @@ function get_news_byId($id, $lang = null){
     global $config, $acl_auth;         
     
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
-    if ($config['multilang'] == 1 && !empty($lang)) { 
+    if (defined('MULTILANG') && 'MULTILANG' && $lang != null) {        
         $LANGS = do_action("get_site_langs");
         foreach ($LANGS as $content) {
             if($content->iso_code == $lang) {
@@ -176,13 +184,10 @@ function get_news_media_byID($id) {
                 "mediatype" => $row['mediatype'], 
                 "medialink" => $row['medialink'], 
                 "itsmain" => $row['itsmain']);        
-        }
-        
-        
+        }                
     } else {
         $media = false;
-    } 
-    
+    }   
     db_free_result($query);
 
     return $media;   
