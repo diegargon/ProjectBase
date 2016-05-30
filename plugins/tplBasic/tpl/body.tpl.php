@@ -15,7 +15,7 @@ if (!defined('IN_WEB')) { exit; }
         if($config['NAV_MENU']) { ?>
         <nav>
             <ul>
-                <li class="nav_left"><a href="/<?php echo $config['WEB_LANG']?>"><?php print $LANGDATA['L_HOME']?></a></li>                
+                <li class="nav_left"><a href="/<?php echo $config['WEB_LANG']?>"><img src="plugins/tplBasic/images/home.png" alt="<?php print $LANGDATA['L_HOME']?>" /></a></li>                
                 <?php
                     isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false;
                 ?>                
