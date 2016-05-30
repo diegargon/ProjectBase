@@ -38,7 +38,7 @@ function SMBasic_Init() {
         SMBasic_sessionDebugDetails();
     }
 
-    register_action("add_nav_element", "SMBasic_navLogReg", "5");       
+    addto_tplvar("NAV_ELEMENT", SMBasic_navLogReg());
     register_uniq_action("login_page", "SMBasic_loginPage");
     register_uniq_action("register_page", "SMBasic_regPage");   
     register_uniq_action("logout_page", "SMBasic_logoutPage");
@@ -120,7 +120,7 @@ function SMBasic_loginPage () {
     } else if (!empty($_POST['reset1'])){  
         SMBasic_RequestResetOrActivation();
     } else {        
-       do_action("common_web_structure");       
+        do_action("common_web_structure");       
         getCSS_filePath("SMBasic");
         getCSS_filePath("SMBasic", "SMBasic-mobile");             
         addto_tplvar("SCRIPTS", SMBasic_LoginScript()); 

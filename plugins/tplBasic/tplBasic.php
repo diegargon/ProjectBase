@@ -11,6 +11,9 @@ function tplBasic_init(){
     
     includePluginFiles("tplBasic");
     
+    getCSS_filePath("tplBasic", "basic");
+    getCSS_filePath("tplBasic", "basic-mobile");
+    
     register_action("common_web_structure", "tplBasic_web_structure", "0");
     register_uniq_action("index_page", "tplBasic_index_page", "5");
     register_uniq_action("error_message_page", "tplBasic_error_page");
@@ -27,26 +30,40 @@ function tplBasic_index_page() {
     do_action("common_web_structure");        
 }
 
-function tplBasic_error_page() {    
-    register_action("add_to_body", "tpl_basic_error","5");
-}
-
- function tplBasic_error_box () {
-    return tpl_basic_error();
+function tplBasic_error_page() {        
+    global $tpldata, $LANGDATA;
+            
+    if(empty($tpldata['E_TITLE'])) {
+        $tpldata['E_TITLE'] = $LANGDATA['L_E_ERROR'];
+    }
+    if(empty($tpldata['E_BACKLINK_TITLE'])) {
+        $tpldata['E_BACKLINK_TITLE'] = $LANGDATA['L_E_BACKLINK_TITLE'];       
+    }    
+    do_action("common_web_structure");        
+    addto_tplvar("ADD_TO_BODY", getTPL_file("tplBasic", "error"));
+   
  }
 
+ function tplBasic_error_box () {
+    global $tpldata, $LANGDATA;
+    
+    if(empty($tpldata['E_TITLE'])) {
+        $tpldata['E_TITLE'] = $LANGDATA['L_E_ERROR'];
+    }
+    if(empty($tpldata['E_BACKLINK_TITLE'])) {
+        $tpldata['E_BACKLINK_TITLE'] = $LANGDATA['L_E_BACKLINK_TITLE'];       
+    }   
+    addto_tplvar("ADD_TO_BODY", getTPL_file("tplBasic", "error"));
+ }
+ 
 function tpl_basic_head() {
-    return getTPL_file("tplBasic", "basic_head");
+    return getTPL_file("tplBasic", "head");
 }
 
 function tpl_basic_body() {
-    return getTPL_file("tplBasic", "basic_body");    
+    return getTPL_file("tplBasic", "body");    
 }
 
 function tpl_basic_footer() {
-    return getTPL_file("tplBasic", "basic_footer");
-}
-
-function tpl_basic_error() {
-    return getTPL_file("tplBasic", "basic_error");
+    return getTPL_file("tplBasic", "footer");
 }

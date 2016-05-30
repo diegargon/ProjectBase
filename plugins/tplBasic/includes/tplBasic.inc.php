@@ -3,18 +3,6 @@
  *  Copyright @ 2016 Diego Garcia
  */
 if (!defined('IN_WEB')) { exit; }
-//PARA BORRAR
-/*
-function tpl_addto_var($tplvar, $func, $param1 = null, $param2 = null, $param3 = null, $param4 = null ) {
-    global $tpldata;
-    $return = call_user_func($func, $param1, $param2, $param3, $param4);
-    if (!isset($tpldata[$tplvar])) {
-        $tpldata[$tplvar] = $return;
-    } else {
-        $tpldata[$tplvar] .= $return;            
-    }    
-}
-*/
 
 function tpl_build_page() {
     global $tpldata;
@@ -24,20 +12,17 @@ function tpl_build_page() {
     !isset($tpldata['SCRIPTS']) ? $tpldata['SCRIPTS'] = "" : false;
     !isset($tpldata['NAV']) ? $tpldata['NAV'] = "" : false;   
     !isset($tpldata['NAV_ELEMENT']) ? $tpldata['NAV_ELEMENT'] = "" : false;
-    $tpldata['ADD_TO_FOOTER'] = "";
-    $tpldata['ADD_TO_BODY'] = "";
+    !isset($tpldata['ADD_TO_FOOTER']) ? $tpldata['ADD_TO_FOOTER'] = "" : false;
+    !isset($tpldata['ADD_TO_BODY']) ? $tpldata['ADD_TO_BODY'] = "" : false;
     
     // BEGIN HEAD
     $tpldata['META'] .= do_action("add_meta");  
     $tpldata['LINK'] .= do_action("add_link");  
     $tpldata['SCRIPTS'] .= do_action("add_script");  
-    $web_head = do_action("get_head");
+    $web_head = do_action("get_head"); 
     //END HEAD
     
     //BEGIN BODY
-    
-    $tpldata['NAV_ELEMENT'] .= do_action("add_nav_element");
-    $tpldata['NAV'] .= do_action("add_nav");        
     $tpldata['ADD_TO_BODY'] .= do_action("add_to_body");
     $web_body = do_action("get_body");
     //END BODY
@@ -49,35 +34,7 @@ function tpl_build_page() {
         
     echo $web_head . $web_body . $web_footer;
 }
-/*
-function tpl_get_file($type, $plugin, $page = null, $data = null) {
-    global $config;
-    if(empty($page)) {
-        $page = $plugin;
-    }
-    if(TPL_DEBUG) { print_debug("tpl_get_file called by-> $plugin for get a $type:$page"); }
-    if($type == "css") {
-        $USER_PATH = "tpl/{$config['THEME']}/css/$page.css";
-        $DEFAULT_PATH = "plugins/$plugin/tpl/css/$page.css";        
-        if (file_exists($USER_PATH))  {
-            return  "<link rel='stylesheet' href='/$USER_PATH'>\n";
-        } else if (file_exists($DEFAULT_PATH)) {
-            return  "<link rel='stylesheet' href='/$DEFAULT_PATH'>\n";
-        } 
-    }    
-    
-    if ($type == "tpl") {
-        $USER_PATH = "tpl/$config[THEME]/$page.tpl.php";
-        $DEFAULT_PATH = "plugins/$plugin/tpl/$page.tpl.php";
-        if (file_exists($USER_PATH)) {
-            return codetovar($USER_PATH, $data);
-        } else if (file_exists($DEFAULT_PATH)) {
-            return codetovar($DEFAULT_PATH, $data);
-        }       
-    }
-}
- * 
- */
+
 function getTPL_file($plugin, $filename = null, $data = null) {
     global $config;
     $tpl = "";
