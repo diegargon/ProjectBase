@@ -10,6 +10,8 @@ function Newspage_init(){
     includePluginFiles("Newspage"); 
     getCSS_filePath("Newspage");
     getCSS_filePath("Newspage", "Newspage-mobile");  
+    
+    register_action("nav_element", "news_menu_submit_news");
 }
 
 function news_index_page (){
@@ -27,9 +29,7 @@ function news_index_page (){
     $tpldata['COL1_ARTICLES'] = get_news(1,0);
     $tpldata['COL2_ARTICLES'] = get_news(1,0);
     $tpldata['COL3_ARTICLES'] = get_news(1,0);          
-
-    
-    register_action("nav_element", "news_menu_submit_news");
+        
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));                                
     
 }

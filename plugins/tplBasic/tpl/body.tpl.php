@@ -15,9 +15,13 @@ if (!defined('IN_WEB')) { exit; }
         if($config['NAV_MENU']) { ?>
         <nav>
             <ul>
-                <li class="nav_left"><a href="/<?php echo $config['WEB_LANG']?>"><img src="plugins/tplBasic/images/home.png" alt="<?php print $LANGDATA['L_HOME']?>" /></a></li>                
-                <?php
-                    isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false;
+                <?php 
+                if ($config['NAV_MENU_HOME']) { 
+                  echo "<li class='nav_left'>";
+                  echo "<a href='/'><img src='/plugins/tplBasic/images/home.png' alt='{$LANGDATA['L_HOME']}' />";                        
+                  echo "</a></li>";           
+                }
+                  isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false;
                 ?>                
             </ul>
         </nav>            

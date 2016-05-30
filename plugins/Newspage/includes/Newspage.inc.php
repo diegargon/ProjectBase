@@ -210,8 +210,9 @@ function news_layout_switcher() {
 }
 
 function news_menu_submit_news() {
+    global $LANGDATA;
     $data = "<li class='nav_left'>";
-    $data .= "<a href=''>Enviar</a>";
+    $data .= "<a href=''>". $LANGDATA['L_SEND'] ."</a>";
     $data .= "</li>";
     return $data;    
 }
