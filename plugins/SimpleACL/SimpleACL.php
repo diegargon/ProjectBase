@@ -10,7 +10,7 @@ function SimpleACL_init(){
   
     require("includes/SimpleACL.class.php"); //Add *class* check to includePluginFiles?
     
-    includePluginFiles("Admin"); 
+    includePluginFiles("SimpleACL"); 
     
     if(empty($acl_auth)) {
         $acl_auth = new ACL;
