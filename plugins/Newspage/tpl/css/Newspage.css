@@ -173,7 +173,7 @@
 .submit_box h1 {
     padding-bottom: 15px;
 }
-.submit_box label {
+.submit_box label, .submit_others_label {
     font-size: 16px;
     background-color: #077A75;
     width:94%;
@@ -210,18 +210,12 @@
     width: 500px;
     height: 200px;
 }
-.submit_lang {    
-    width: 500px;
-    height: 200px;
-}
 .news_submit_center_wrapper {    
     border:0px solid black;  
 }
 .submit_buttom {
-    text-align: center;
-    
+    text-align: center;    
 }
 .text_small {
-    font-size: 9px;
-      
+    font-size: 9px;      
 }

@@ -15,6 +15,5 @@ $LANGDATA['L_NEWS_MEDIA'] = "Foto o video principal de la noticia";
 $LANGDATA['L_NEWS_AUTHOR'] = "Autor";
 $LANGDATA['L_NEWS_ANONYMOUS'] = "Anonimo";
 $LANGDATA['L_NEWS_LANG'] = "Idioma";
-$LANGDATA['L'] = "";
-$LANGDATA['L'] = "";
+$LANGDATA['L_NEWS_OTHER_OPTIONS'] = "Otras opciones";
 $LANGDATA['L'] = "";

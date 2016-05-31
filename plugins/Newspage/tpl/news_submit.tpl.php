@@ -13,7 +13,7 @@ if (!defined('IN_WEB')) { exit; }
         <div class="submit_items">
             <p> 
                 <label for="news_author"><?php print $LANGDATA['L_NEWS_AUTHOR'] ?> </label>
-                <input disabled class="submit_author" id="news_author" name="news_author" required="required" type="text"  maxlength="13" placeholder="<?php print $LANGDATA['L_NEWS_ANONYMOUS'] ?>"/>
+                <input <?php print $data['can_change_author'] ?>  class="submit_author" id="news_author" name="news_author" required="required" type="text"  maxlength="13" value="<?php print $data['username'] ?>"/>
             </p>            
         </div>
         <div class="submit_items">
@@ -34,6 +34,19 @@ if (!defined('IN_WEB')) { exit; }
                 <textarea required="required" class="submit_text" minlength=""<?php $config['NEWS_TEXT_MIN_LENGHT']?>"" maxlength="<?php $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text"></textarea>
             </p>
         </div>
+<?php
+if(defined('MULTILANG')) {
+?>
+        <div class="submit_items">
+            <p> 
+                <span class="submit_others_label"><?php print $LANGDATA['L_NEWS_OTHER_OPTIONS'] ?> </span>
+                <span class="lang_label"><?php print $LANGDATA['L_NEWS_LANG']?></span>
+                    <?php print $data['select_langs'] ?>
+            </p>
+        </div>           
+<?php            
+}
+?>            
         <div class="submit_buttom">
             <p> 
                 <input type="submit" id="sendnews" name="sendnews" class="btnSubmitNews" value="<?php print $LANGDATA['L_SEND_NEWS']?>" /> 

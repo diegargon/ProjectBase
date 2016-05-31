@@ -52,7 +52,6 @@ function getTPL_file($plugin, $filename = null, $data = null) {
     return $tpl;
 }
 
-
 function getCSS_filePath($plugin, $filename = null) {
     global $config;
     

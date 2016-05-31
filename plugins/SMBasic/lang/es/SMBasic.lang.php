@@ -68,4 +68,5 @@ $LANGDATA['L_ERROR'] = "Error";
 $LANGDATA['L_ERROR_ALREADY_LOGGED'] = "Ya estas identificado"; 
 $LANGDATA['L_ERROR_NOT_LOGGED'] = "No estas identificado"; 
 $LANGDATA['L_BACKHOME'] = "Volver al inicio";
+$LANGDATA['L_ANONYMOUS'] = "Anonimo";
 //$LANGDATA['L_'] = "";
