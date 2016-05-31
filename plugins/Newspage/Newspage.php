@@ -16,9 +16,18 @@ function Newspage_init(){
         register_action("nav_element", "news_menu_submit_news");
     }
     
+
 }
 
 function news_index_page (){
+    if(!empty($_GET['send'])) {
+        news_display_submit_news();
+    } else {
+        news_portal();
+    }
+}
+
+function news_portal() {
     global $tpldata, $config;
 
     $news_nLayout = news_layout_select();
@@ -34,8 +43,7 @@ function news_index_page (){
     $tpldata['COL2_ARTICLES'] = get_news(1,0);
     $tpldata['COL3_ARTICLES'] = get_news(1,0);          
         
-    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));                                
-    
+    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));     
 }
 
 function news_page() {
@@ -79,4 +87,8 @@ function news_page() {
         }
     }
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_show_body"));                                               
+}
+
+function news_display_submit_news() {
+    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_submit"));     
 }

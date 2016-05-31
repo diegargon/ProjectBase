@@ -1,18 +1,12 @@
 /*
  Copyright @ 2016 Diego Garcia
 */
-/* 
-    Created on : 28-mar-2016, 19:32:23
-    Author     : melmoth
-*/ 
 
 /* NEWS */
 .newsbox {
     display:block;
     float:left;
     margin:0 0px 10px 0px;
-    /* width: 100%; */
-    /* border: 1px solid #dcdcdc; */
     text-decoration: none;
     color: gray;
     background-color: #FFFFFF;
@@ -22,7 +16,6 @@
     padding: 5px;
     box-shadow: 0 0 10px #ccc;
 }
-
 .newsbox:hover {
     box-shadow: 0 0 10px #000;
 }
@@ -48,23 +41,15 @@
    float:left;
    width: 95%;
    border: 0px solid red;
-   margin-left: 20px;
-   
+   margin-left: 20px;   
 }
-
 #featured  img {
-    /* margin-top:10px; */
     margin-right: 5px;
     float:left;
     width: 100%;
     max-height: 300px;
-/*
-    width:550px;
-    height:300px;
-*/
     box-shadow: 0 0 10px #ccc;
 }
-
 #featured h3 {
     color: #989898;
 }
@@ -73,11 +58,9 @@
     border:0px solid blue;
     width:55%;
 }
-
 .feature_article {
     display:table-cell;
-    border: 0px solid red;
-    /* width:100%; */
+    border: 0px solid red;    
     color: #989898;
     background-color: #DEDEDE;
     line-height: 1.6em;
@@ -86,7 +69,6 @@
     vertical-align:top;
     padding:5px;
 }
-
 #featured:hover div{
     box-shadow: 0 0 10px gray;
     
@@ -94,11 +76,9 @@
 #featured:hover img{
     opacity: 0.8; 
 }
-
 #featured article:hover h3 {
     color: blue;
 }
-
 #featured h2 {
     color:#919191;
     background-color:#232323;
@@ -119,20 +99,15 @@
     border: 0px solid red;
 }
 
-
 /* ARTICLE */
 
 .article_body {
     float:left;
     width: 65%;
-    /* margin: 0 auto; */
     margin: 10px 0px 10px 10px;
     border:0px solid red;
-    /* padding-top: 10px; */
-    
     padding-bottom: 10px;
 }
-
 .article_body hr {
     border-top: 1px dotted gray;
 }
@@ -150,45 +125,32 @@
    border:0px solid blue;
    line-height: 40px;
 }
-
 .article_lead {
     font-style: italic; 
     padding: 5px;
 }
-
-.article_text {
-    
-}
-
+.article_text {}
 .article_main_media {
     float:right;
 }
-
 .article_main_media img {
     width: 400px;
-   /* height: 300px; */    
-/*    width: 100%;
-    height: 100%; */
     padding: 10px;
 }
-
 .news_msg {
     font-size:16px;
     font-weight: bold;
     color: red;
     text-align: center;
 }
-
 .p-extra-small {
     font-size: 10px;
     margin:0 auto;
 }
-
 .extra-small {
     font-size: 12px;
     margin-top: 10px;
 }
-
 #col1 h2, #col2 h2, #col3 h2 {
     color:#919191;
     background-color:#232323;
@@ -198,9 +160,68 @@
     border-right: 1px solid #dcdcdc;    
     padding-left: 4px;
 }
-
-
 #news_menu {
     border: 1px solid black;
     width:95%;
+}
+.submit_box {
+    overflow: hidden;
+    padding:20px;
+    width: 80%;
+    margin: 0 auto;         
+}
+.submit_box h1 {
+    padding-bottom: 15px;
+}
+.submit_box label {
+    font-size: 16px;
+    background-color: #077A75;
+    width:94%;
+    display: block;
+    font-weight: bold;
+    border: 0px solid blue;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+.submit_box input {}
+
+.btnSubmitNews {     
+    margin-top: 5px;
+    width: 100px !important;
+    
+}
+.submit_items {
+    margin:0 auto;
+    border:0px solid red;    
+    width:70%;
+}
+
+.submit_author {
+    width: 150px;
+}
+.submit_lead {
+    width: 500px;
+    height: 100px;
+}
+.submit_title {
+    width: 500px;
+}
+.submit_text {
+    width: 500px;
+    height: 200px;
+}
+.submit_lang {    
+    width: 500px;
+    height: 200px;
+}
+.news_submit_center_wrapper {    
+    border:0px solid black;  
+}
+.submit_buttom {
+    text-align: center;
+    
+}
+.text_small {
+    font-size: 9px;
+      
 }
