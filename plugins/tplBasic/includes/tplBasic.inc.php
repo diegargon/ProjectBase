@@ -41,7 +41,7 @@ function getTPL_file($plugin, $filename = null, $data = null) {
     }        
     if(TPL_DEBUG) { print_debug("getTPL_file called by-> $plugin for get a $filename"); }
 
-    $USER_PATH = "tpl/$config[THEME]/$filename.tpl.php";
+    $USER_PATH = "tpl/{$config['THEME']}/$filename.tpl.php";
     $DEFAULT_PATH = "plugins/$plugin/tpl/$filename.tpl.php";
     if (file_exists($USER_PATH)) {
         $tpl = codetovar($USER_PATH, $data);
