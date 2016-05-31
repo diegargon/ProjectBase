@@ -28,6 +28,7 @@ New:Forum plugin
 New:Shop plugin
 New:Social plugin
 SimpleACL: Improve
+SimpleACL support for something like acl_ask("news_submit|admin_all");
 core: Better method for avoid duplicate standard scripts like jquery
 DebugWindow: improved debug and debug window with filters, print_debug ($msg, FILTER_PLUGIN_LOAD) ?¿?¿?¿
 SMBasic: Login/Register  scripts fix language method like profile

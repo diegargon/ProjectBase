@@ -221,3 +221,22 @@ function news_menu_submit_news() {
     $data .= "</li>";
     return $data;    
 }
+
+
+function news_check_display_submit () {
+    global $config, $acl_auth;
+    if(
+            (empty($_SESSION['isLogged'])  && $config['NEWS_SUBMIT_ANON'] == 1) ||  // Anon can send
+            ( !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1 && $config['NEWS_SUBMIT_REGISTERED'] = 1) // Registered can send
+                ){       
+            return true;
+    } else {
+        if(defined('ACL') && 'ACL') {
+            if ( $acl_auth->acl_ask("news_submit") ||
+                 $acl_auth->acl_ask("admin_all")
+                    ) {
+                return true;
+            }
+        }
+    }    
+}

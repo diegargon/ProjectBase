@@ -5,13 +5,16 @@
 if (!defined('IN_WEB')) { exit; }
 
 function Newspage_init(){  
+    
     if (DEBUG_PLUGINS_LOAD) { print_debug("Newspage Inititated<br/>");}
     
     includePluginFiles("Newspage"); 
     getCSS_filePath("Newspage");
     getCSS_filePath("Newspage", "Newspage-mobile");  
-    
-    register_action("nav_element", "news_menu_submit_news");
+
+    if(news_check_display_submit()) {
+        register_action("nav_element", "news_menu_submit_news");
+    }
 }
 
 function news_index_page (){
