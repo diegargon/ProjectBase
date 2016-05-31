@@ -12,9 +12,10 @@ function Newspage_init(){
     getCSS_filePath("Newspage");
     getCSS_filePath("Newspage", "Newspage-mobile");  
 
-    if(news_check_display_submit()) {
+    if (news_check_display_submit()) {
         register_action("nav_element", "news_menu_submit_news");
     }
+    
 }
 
 function news_index_page (){
