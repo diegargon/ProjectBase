@@ -12,6 +12,30 @@ class ACL {
     function __construct() {     
    }
    
+    function acl_ask($role, $resource = "ALL") {
+        if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {          
+            return false;
+        }
+        if (empty($this->roles) || empty($this->user_roles)) {
+            $this->getRoles();
+            $this->getUserRoles();   
+        } else if ($this->roles == false || $this->user_roles == false) {
+            $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ROLES_DB'];        
+            do_action("error_message_page");            
+            return false;            
+        }
+
+        if($this->user_roles == false) { //No user roles in DB
+            return false;
+        }
+        list($role_group, $role_type) = preg_split("/_/", $role);                        
+
+        if (!$this->checkUserPerms($role_group, $role_type, $resource) ) {    
+            return false;            
+        } else {
+            return true;
+        }
+    }
 
     function get_roles_select($acl_group = null) {
         global $LANGDATA;
@@ -26,29 +50,7 @@ class ACL {
         $select .= "</select>";
         return $select;        
     }   
-    
-    function acl_ask($role, $resource = "ALL") {
-        if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {          
-            return false;
-        }
-        if (empty($this->roles) || empty($this->user_roles)) {
-            $this->getRoles();
-            $this->getUserRoles();   
-        } else if ($this->roles == false || $this->user_roles == false) {
-            $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ROLES_DB'];        
-            do_action("error_message_page");            
-            return false;            
-        }
-
-        list($role_group, $role_type) = preg_split("/_/", $role);                        
-
-        if (!$this->checkUserPerms($role_group, $role_type, $resource) ) {    
-            return false;            
-        } else {
-            return true;
-        }
-    }
-    
+        
     private function checkUserPerms($role_group, $role_type, $resource) {
         if(!$asked_role = $this->getRoleDataByName($role_group, $role_type)) {
             return false;
