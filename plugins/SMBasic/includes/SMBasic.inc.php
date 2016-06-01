@@ -620,3 +620,11 @@ function SMBasic_randomPassword() {
     
     return implode($pass);
 }
+
+function SMBasic_getUserID () {
+    if(!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1 ) {
+        return false;
+    } else {
+        return S_VAR_INTEGER($_SESSION['uid'], 11);
+    }
+}

@@ -34,19 +34,22 @@ if (!defined('IN_WEB')) { exit; }
                 <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text"><?php isset($data['post_text']) ? print $data['post_text'] : false ?></textarea>
             </p>
         </div>
-<?php
-if(defined('MULTILANG')) {
-?>
         <div class="submit_items">
             <p> 
                 <span class="submit_others_label"><?php print $LANGDATA['L_NEWS_OTHER_OPTIONS'] ?> </span>
+                <span  class="lang_label"><?php print $LANGDATA['L_NEWS_CATEGORY']?></span>
+                    <?php print $data['select_categories'] ?>
+                
+<?php
+if(defined('MULTILANG')) {
+?>                
                 <span  class="lang_label"><?php print $LANGDATA['L_NEWS_LANG']?></span>
                     <?php print $data['select_langs'] ?>
-            </p>
-        </div>           
 <?php            
 }
-?>            
+?>                        
+            </p>                
+        </div>           
         <div class="submit_buttom">
             <p> 
                 <input type="submit" id="sendnews" name="sendnews" class="btnSubmitNews" value="<?php print $LANGDATA['L_SEND_NEWS']?>" /> 

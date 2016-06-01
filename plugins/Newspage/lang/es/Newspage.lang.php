@@ -24,6 +24,7 @@ $LANGDATA['L_NEWS_LEAD_ERROR'] = "Hay algun error en la entradilla, compruebe qu
 $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR'] = "La entradilla tiene que estar entre maximo de ". $config['NEWS_LEAD_MAX_LENGHT'] ." y un minimo de ". $config['NEWS_LEAD_MIN_LENGHT'] ." caracteres";
 $LANGDATA['L_NEWS_TEXT_ERROR'] = "Hay algun error en el texto de la noticia, compruebe que los caracteres sean correctos o que el campo no este vacio";
 $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR'] = "El texto de la noticia tiene que estar entre maximo de ". $config['NEWS_TEXT_MAX_LENGHT'] ." y un minimo de ". $config['NEWS_TEXT_MIN_LENGHT'] ." caracteres";
+$LANGDATA['L_NEWS_CATEGORY'] = "Categoria";
 $LANGDATA['L'] = "";
 $LANGDATA['L'] = "";
 

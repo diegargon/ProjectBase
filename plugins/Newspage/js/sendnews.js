@@ -8,6 +8,7 @@ $(document).ready(function(){
         var news_lead = $("#news_lead").val();
         var news_text = $("#news_text").val();        
         var news_lang = $("#news_lang").val();
+        var news_category = $("#news_category").val();
         var sendnews = $("#sendnews").val();
         
             $('#news_author').css("border","1px solid black");
@@ -19,7 +20,7 @@ $(document).ready(function(){
             $('#news_text').css("border","1px solid black");
             $('#news_text').css("box-shadow","0 0 3px black");            
            
-            $.post("",{ news_author1: news_author, news_title1: news_title, news_lead1: news_lead, news_text1: news_text, news_lang1: news_lang, sendnews1:sendnews},
+            $.post("",{ news_author1: news_author, news_title1: news_title, news_lead1: news_lead, news_text1: news_text, news_lang1: news_lang, news_category1: news_category, sendnews1:sendnews},
             function(data) {                
                 //alert(data); //DEBUG             
                 var json = $.parseJSON(data);

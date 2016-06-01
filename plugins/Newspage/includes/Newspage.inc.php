@@ -258,11 +258,13 @@ function news_sendnews_getPost($stage = 1) {
         isset($_POST['news_title']) ? $data['post_title'] = S_VAR_TEXT($_POST['news_title']) : false;
         isset($_POST['news_lead']) ? $data['post_lead'] = S_VAR_TEXT($_POST['news_lead']) : false;
         isset($_POST['news_text']) ? $data['post_text'] = S_VAR_TEXT($_POST['news_text']) : false;
+        isset($_POST['news_category']) ? $data['post_category'] = S_VAR_INTEGER($_POST['news_category'], 8) : false;
         isset($_POST['news_lang']) ? $data['post_lang'] = S_VAR_TEXT($_POST['news_lang']) : $data['post_lang'] = $config['WEB_LANG'];
     } else {
         isset($_POST['news_title1']) ? $data['post_title'] = S_VAR_TEXT($_POST['news_title1']) : false;
         isset($_POST['news_lead1']) ? $data['post_lead'] = S_VAR_TEXT($_POST['news_lead1']) : false;
         isset($_POST['news_text1']) ? $data['post_text'] = S_VAR_TEXT($_POST['news_text1']) : false;
+        isset($_POST['news_category1']) ? $data['post_category'] = S_VAR_INTEGER($_POST['news_category1'], 8) : false;
         isset($_POST['news_lang1']) ? $data['post_lang'] = S_VAR_TEXT($_POST['news_lang1']) : $data['post_lang'] = $config['WEB_LANG'];
     }   
     return $data;
@@ -275,7 +277,7 @@ function news_form_submit_process() {
 
     //USERNAME/AUTHOR
     if (empty($news_data['username']) ) {
-        $news_data['username'] = "Anonimous"; //TODO CHECK IF ITS RIGHT THAT PROCEDURE
+        $news_data['username'] = $LANGDATA['L_ANONYMOUS']; //TODO CHECK IF ITS RIGHT THAT PROCEDURE
         //$news_data['username'] = S_VAR_CHAR_AZ_NUM($_SESSION['username']);
     }           
     if ($news_data['username'] == false) {
@@ -332,7 +334,12 @@ function news_form_submit_process() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }
-    
+    //CATEGORY
+    if($news_data['post_category'] == false) {
+        $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
     $return = news_db_submit($news_data);
     
      $response[] = array("status" => "10", "msg" => htmlspecialchars($return));    
@@ -358,12 +365,41 @@ function Newspage_SendNewsScript() {
 function news_db_submit($news_data) {
     global $config;
     
+    $nid = db_get_next_num("nid", $config['DB_PREFIX']."news");    
+    $lang_id = ML_iso_to_id($news_data['post_lang']);
+    if ( ($uid = SMBasic_getUserID()) == false ) {
+        $uid = 0;
+    }
+    
+    $acl =""; //TODO ACL
+    
     $q = "INSERT INTO {$config['DB_PREFIX']}news ("
         . "nid, lang_id, title, lead, text, media, featured, author, author_id, category, lang, acl, moderation"    
         . ") VALUES ("
-        . "'333', '333', '{$news_data['post_title']}', '{$news_data['post_lead']}', '{$news_data['post_text']}', "         
-        . "'333', '{$news_data['username']}', '333', '333', '{$news_data['post_lang']}', '333', '333'"       
+        . "'$nid', '$lang_id', '{$news_data['post_title']}', '{$news_data['post_lead']}', '{$news_data['post_text']}', "         
+        . "'null', '{$news_data['username']}', '$uid', '{$news_data['post_category']}', '{$news_data['post_lang']}', '$acl', '{$config['NEWS_MODERATION']}'"       
         . ");";
-        //TODO SLEEP TIME
+        //TODO finish
     return $q;
+}
+
+function news_get_categories() {
+    global $config;
+    
+    $lang_id = ML_iso_to_id($config['WEB_LANG']);
+    
+    $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'news' AND lang_id = '$lang_id'";
+    $query = db_query($q);
+    return $query;
+}
+
+function news_get_categories_select() {
+    $query = news_get_categories();
+    
+    $select = "<select name='news_category' id='news_category'>";
+    while($row = db_fetch($query)) {
+        $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";        
+    } 
+    $select .= "</select>";
+    return $select;
 }

@@ -38,7 +38,7 @@ function news_index_page (){
 
 function news_portal() {
     global $tpldata, $config;
-
+        
     $news_nLayout = news_layout_select();
     $news_layout_tpl = "News_body_style" . $news_nLayout++;
     
@@ -121,7 +121,9 @@ function news_display_submit_news($post_data = null) {
         $select .= "</select>";
         $data['select_langs'] = $select;
     }    
-        
+
+    $data['select_categories'] = news_get_categories_select();
+    
     if (defined('ACL')) {
         if( 
                 ( $acl_auth->acl_ask('news_admin') ) == true ||
