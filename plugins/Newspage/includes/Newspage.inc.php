@@ -184,7 +184,7 @@ function news_menu_submit_news() {
     global $LANGDATA;
     
     $data = "<li class='nav_left'>";
-    $data .= "<a rel='nofollow' href='?sendnews=1'>". $LANGDATA['L_SEND_NEWS'] ."</a>";
+    $data .= "<a rel='nofollow' href='/?sendnews=1'>". $LANGDATA['L_SEND_NEWS'] ."</a>";
     $data .= "</li>";
     return $data;    
 }
