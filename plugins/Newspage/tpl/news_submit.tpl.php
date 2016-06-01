@@ -51,8 +51,11 @@ if(defined('MULTILANG')) {
 <?php 
 if(!empty($data['select_acl'])) {
 ?>
-                <span  class="lang_label"><?php print $LANGDATA['L_ACL']?></span>
+                <span  class="acl_label"><?php print $LANGDATA['L_ACL']?></span>
                     <?php print $data['select_acl'] ?>
+
+                <span  class="featured_label"><?php print $LANGDATA['L_NEWS_FEATURED']?></span>
+                <input type="checkbox" name="news_featured" id="news_featured" value="1"/>
 
 <?php                
 }

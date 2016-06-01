@@ -32,3 +32,4 @@ $LANGDATA['L_NEWS_COMMENT'] = "Grupo que puede comentar";
 $LANGDATA['L_NEWS_PAYMENT'] = "Grupo de pago";
 $LANGDATA['L_NEWS_READ'] = "Grupo que puede leer noticias";
 $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'] ="Noticia enviada con exito";
+$LANGDATA['L_NEWS_FEATURED'] = "Destacada";

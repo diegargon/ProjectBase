@@ -10,6 +10,7 @@ Newspage->Submit news admin/user submit options
     -> LINK field on submit news,  image url (if not image not display image field on tpl
     -> Link source (optional/config
     -> upload file image/video (later need upload plugin )
+News not display moderation = 1 if we use moderation news
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core/ALL: Filter vars correctly 

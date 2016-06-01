@@ -19,7 +19,7 @@ class ACL {
         $query = $this->get_roles_query($acl_group);
     
         $select = "<select name='{$acl_group}_acl' id='{$acl_group}_acl'>";
-        $select .= "<option selected value='none'>{$LANGDATA['L_ACL_NONE']}</option>";
+        $select .= "<option selected value=''>{$LANGDATA['L_ACL_NONE']}</option>";
         while($row = db_fetch($query)) {
             $select .= "<option value='{$row['role_group']}_{$row['role_type']}'>{$LANGDATA[$row['role_name']]}</option>";        
         } 

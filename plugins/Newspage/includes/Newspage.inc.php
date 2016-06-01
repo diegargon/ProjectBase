@@ -219,19 +219,21 @@ function news_sendnews_getPost($stage = 1) {
         }
     }
     if($stage == 1) {
-        isset($_POST['news_title']) ? $data['post_title'] = S_VAR_TEXT($_POST['news_title']) : false;
-        isset($_POST['news_lead']) ? $data['post_lead'] = S_VAR_TEXT($_POST['news_lead']) : false;
-        isset($_POST['news_text']) ? $data['post_text'] = S_VAR_TEXT($_POST['news_text']) : false;
+        isset($_POST['news_title']) ? $data['post_title'] = S_VAR_TEXT_ESCAPE($_POST['news_title']) : false;
+        isset($_POST['news_lead']) ? $data['post_lead'] = S_VAR_TEXT_ESCAPE($_POST['news_lead']) : false;
+        isset($_POST['news_text']) ? $data['post_text'] = S_VAR_TEXT_ESCAPE($_POST['news_text']) : false;
         isset($_POST['news_category']) ? $data['post_category'] = S_VAR_INTEGER($_POST['news_category'], 8) : false;
-        isset($_POST['news_lang']) ? $data['post_lang'] = S_VAR_TEXT($_POST['news_lang']) : $data['post_lang'] = $config['WEB_LANG'];
-        isset($_POST['news_acl']) ? $data['post_acl'] = S_VAR_TEXT($_POST['news_acl']) : false; //TODO CHECK FILTER OK
+        isset($_POST['news_featured']) ? $data['post_featured'] = S_VAR_INTEGER($_POST['news_featured'], 1) : false; 
+        isset($_POST['news_lang']) ? $data['post_lang'] = S_VAR_TEXT_ESCAPE($_POST['news_lang']) : $data['post_lang'] = $config['WEB_LANG'];
+        isset($_POST['news_acl']) ? $data['post_acl'] = S_VAR_TEXT_ESCAPE($_POST['news_acl']) : false; //TODO CHECK FILTER OK
     } else {
-        isset($_POST['news_title1']) ? $data['post_title'] = S_VAR_TEXT($_POST['news_title1']) : false;
-        isset($_POST['news_lead1']) ? $data['post_lead'] = S_VAR_TEXT($_POST['news_lead1']) : false;
-        isset($_POST['news_text1']) ? $data['post_text'] = S_VAR_TEXT($_POST['news_text1']) : false;
+        isset($_POST['news_title1']) ? $data['post_title'] = S_VAR_TEXT_ESCAPE($_POST['news_title1']) : false;
+        isset($_POST['news_lead1']) ? $data['post_lead'] = S_VAR_TEXT_ESCAPE($_POST['news_lead1']) : false;
+        isset($_POST['news_text1']) ? $data['post_text'] = S_VAR_TEXT_ESCAPE($_POST['news_text1']) : false;
         isset($_POST['news_category1']) ? $data['post_category'] = S_VAR_INTEGER($_POST['news_category1'], 8) : false;
-        isset($_POST['news_lang1']) ? $data['post_lang'] = S_VAR_TEXT($_POST['news_lang1']) : $data['post_lang'] = $config['WEB_LANG'];
-        isset($_POST['news_acl1']) ? $data['post_acl'] = S_VAR_TEXT($_POST['news_acl1']) : false; //TODO CHECK FILTER OK
+        isset($_POST['news_featured1']) ? $data['post_featured'] = S_VAR_INTEGER($_POST['news_featured1'], 1) :  false; 
+        isset($_POST['news_lang1']) ? $data['post_lang'] = S_VAR_TEXT_ESCAPE($_POST['news_lang1']) : $data['post_lang'] = $config['WEB_LANG'];
+        isset($_POST['news_acl1']) ? $data['post_acl'] = S_VAR_TEXT_ESCAPE($_POST['news_acl1']) : false; //TODO CHECK FILTER OK
     }   
     return $data;
 }
@@ -306,6 +308,9 @@ function news_form_submit_process() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }
+    //FEATURED
+    //NOCHECK ATM
+    //
     //ACL
     //NO CHECK ATM
     //
@@ -346,14 +351,20 @@ function news_db_submit($news_data) {
     
     $acl = $news_data['post_acl']; 
     
+    if (empty($news_data['post_featured'])) {
+        $news_data['post_featured'] = 0;
+    } else {
+        //CLEAN ALL OLD FEATURES or ALL by lang if multilang 
+    }
+    
     $q = "INSERT INTO {$config['DB_PREFIX']}news ("
         . "nid, lang_id, title, lead, text, media, featured, author, author_id, category, lang, acl, moderation"    
         . ") VALUES ("
         . "'$nid', '$lang_id', '{$news_data['post_title']}', '{$news_data['post_lead']}', '{$news_data['post_text']}', "         
-        . "'0', '0', '{$news_data['username']}', '$uid', '{$news_data['post_category']}', '{$news_data['post_lang']}', '$acl', '{$config['NEWS_MODERATION']}'"       
+        . "'0', '{$news_data['post_featured']}', '{$news_data['username']}', '$uid', '{$news_data['post_category']}', '{$news_data['post_lang']}', '$acl', '{$config['NEWS_MODERATION']}'"       
         . ");";
-        //TODO FEATURED
-     $query = db_query($q);
+        
+    db_query($q);
     return true;
 }
 
