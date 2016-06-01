@@ -119,3 +119,16 @@ function ML_get_langs_from_db() {
 
     return $LANGS_DATA;
 }
+
+function ML_iso_to_id($isolang) {
+    
+    $LANGS = do_action("get_site_langs");
+    
+    foreach ($LANGS as $lang) {
+        if($lang->iso_code == $isolang) {
+            return $lang->lang_id;
+        }
+    }
+    
+    return false;
+}

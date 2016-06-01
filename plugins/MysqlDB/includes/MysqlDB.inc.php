@@ -60,11 +60,11 @@ function db_die($query) {
 function db_insert_id() {
     global $dblink;
     
-     if(!($id = mysqli_insert_id($dblink)) ) {
+    if(!($id = mysqli_insert_id($dblink)) ) {
         die('Could not connect: ' . mysqli_error($dblink));
         db_close();
         exit;
-     }
+    }
 
     return $id;
 }
@@ -73,3 +73,10 @@ function db_free_result(& $query) {
     mysqli_free_result($query);
 }
 
+function db_get_next_num ($field, $table) {
+    $q = "SELECT MAX( $field ) AS max FROM `$table`;";    
+    $query = db_query($q);
+    $row = db_fetch($query);
+    
+    return ++$row['max'];
+}
