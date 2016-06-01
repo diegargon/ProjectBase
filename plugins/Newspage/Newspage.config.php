@@ -20,3 +20,5 @@ $config['NEWS_TITLE_MIN_LENGHT'] = 10;
 $config['NEWS_LEAD_MIN_LENGHT'] = 30;
 $config['NEWS_TEXT_MIN_LENGHT'] = 200;
 $config['NEWS_MODERATION'] = 1;
+//$config['NEWS_SUBMIT_URL'] = 1;
+//$config['NEWS_PRIMARY_SOURCE'] = 1;

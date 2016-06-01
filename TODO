@@ -4,11 +4,9 @@ by priority order
 
 #Priority
 
-
-Newspage->Submit news admin/user submit options
-    -> Featured option (admin)
+Newspage->Submit news admin/user submit options    
     -> LINK field on submit news,  image url (if not image not display image field on tpl
-    -> Link source (optional/config
+    -> Link source (optional/config)
     -> upload file image/video (later need upload plugin )
 News not display moderation = 1 if we use moderation news
 X: Local user time VS Server Time
@@ -47,3 +45,4 @@ SMBasic: Check if can reduce some big fuctions
 Admin: Mobile menu
 Core: Mobile Menu.
 NEws: add support for display ALL LANG news
+Media plugin?
