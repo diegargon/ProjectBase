@@ -5,8 +5,8 @@ by priority order
 #Priority
 
 Newspage->Submit news admin/user submit options    
-    -> LINK field on submit news,  image url (if not image not display image field on tpl
-    -> Link source (optional/config)
+    -> LINK field on submit news,  image url
+    -> Link source (optional/config) & Link Related
     -> upload file image/video (later need upload plugin )
 News not display moderation = 1 if we use moderation news
 X: Local user time VS Server Time
