@@ -353,8 +353,8 @@ function news_db_submit($news_data) {
     
     if (empty($news_data['post_featured'])) {
         $news_data['post_featured'] = 0;
-    } else {
-        //CLEAN ALL OLD FEATURES or ALL by lang if multilang 
+    } else {        
+        news_clean_featured($news_data['post_lang']);
     }
     
     $q = "INSERT INTO {$config['DB_PREFIX']}news ("
@@ -387,4 +387,14 @@ function news_get_categories_select() {
     } 
     $select .= "</select>";
     return $select;
+}
+
+function news_clean_featured($lang) {
+    global $config;
+    
+    $q = "UPDATE {$config['DB_PREFIX']}news SET featured = '0'";
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $q .= "WHERE lang = '$lang'";
+    }            
+    db_query($q);
 }
