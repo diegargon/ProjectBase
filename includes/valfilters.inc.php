@@ -150,3 +150,18 @@ function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
     return $var;
 
 }
+
+function S_VAR_TEXT ($var, $max_size = null, $min_size = null) {
+    if (!empty($max_size)) {
+        if (strlen($var) > $max_size) {
+            return false;
+        }
+    }
+    if (!empty($min_size)) {
+        if (strlen($var) < $min_size) {
+            return false;
+        }
+    }
+    
+    return htmlspecialchars($var);
+}

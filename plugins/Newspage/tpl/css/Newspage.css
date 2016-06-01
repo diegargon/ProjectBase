@@ -195,18 +195,20 @@
     border:0px solid red;    
     width:70%;
 }
-
-.submit_author {
+#news_author, #news_lead, #news_title, #news_text, #news_lang {
+    box-shadow: 0 0 3px black
+}
+#news_author {
     width: 150px;
 }
-.submit_lead {
+#news_lead {
     width: 500px;
     height: 100px;
 }
-.submit_title {
+#news_title {
     width: 500px;
 }
-.submit_text {
+#news_text {
     width: 500px;
     height: 200px;
 }

@@ -14,15 +14,22 @@ function Newspage_init(){
 
     if (news_check_display_submit()) {
         register_action("nav_element", "news_menu_submit_news");
-    }
-    
-
+    }    
 }
 
 function news_index_page (){
-    if(!empty($_GET['sendnews'])) {
+    
+    if(!empty($_GET['sendnews']) && empty($_POST['sendnews']) && empty($_POST['sendnews1'])) {
         do_action("common_web_structure");
+        addto_tplvar("SCRIPTS", Newspage_SendNewsScript());
         news_display_submit_news();
+    }  else if(!empty($_POST['sendnews'])) {
+            do_action("common_web_structure");
+            addto_tplvar("SCRIPTS", Newspage_SendNewsScript());
+            $post_data = news_sendnews_getPost(1);
+            news_display_submit_news($post_data);  
+    } else if (!empty($_POST['sendnews1'])) {
+        news_form_submit_process();
     } else {
         do_action("common_web_structure");
         news_portal();
@@ -91,7 +98,7 @@ function news_page() {
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_show_body"));                                               
 }
 
-function news_display_submit_news() {
+function news_display_submit_news($post_data = null) {
     global $config, $LANGDATA, $acl_auth;
     
     if (  isset($_SESSION['isLogged']) && S_VAR_INTEGER($_SESSION['isLogged'])   == 1) {
@@ -112,17 +119,21 @@ function news_display_submit_news() {
             }
         }        
         $select .= "</select>";
+        $data['select_langs'] = $select;
     }    
-    $data['select_langs'] = $select;
-    
-    if (defined('ACL') && 'ACL') {
+        
+    if (defined('ACL')) {
         if( 
                 ( $acl_auth->acl_ask('news_admin') ) == true ||
-                ( $acl_auth->ack_ask('admin_all') ) == true ) 
+                ( $acl_auth->acl_ask('admin_all') ) == true ) 
             {
             $can_change_author = 1;
             }
-    }     
-    empty($can_change_author) ?  $data['can_change_author'] = "disable" : $data['can_change_author'] = "";
+    }       
+    empty($can_change_author) ?  $data['can_change_author'] = "disabled" : $data['can_change_author'] = "";
+    
+    if(!empty($post_data)) {
+        $data = array_merge($data, $post_data);
+    }  
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_submit", $data));     
 }
