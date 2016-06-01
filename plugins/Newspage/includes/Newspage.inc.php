@@ -74,7 +74,7 @@ function fetch_news_data($row) {
     } else {            
         $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
     }
-    $query = db_query("SELECT * FROM $config[DB_PREFIX]media WHERE nid = $row[nid] AND itsmain = '1'");
+    $query = db_query("SELECT * FROM $config[DB_PREFIX]links WHERE source_id = $row[nid] AND plugin='Newspage' AND itsmain = '1' LIMIT 1");
     if (db_num_rows($query) >= 0) {
         $media_row = db_fetch($query);
         $data['MEDIA'] = news_format_media($media_row);
@@ -86,8 +86,8 @@ function fetch_news_data($row) {
 
 function news_format_media($media) {
     //TODO MEDIA TYPES   
-    if ($media['mediatype'] == 'image') {
-        $result =  "<img src=" . $media['medialink'] ." alt=". $media['medialink'] . "/>"; //TODO FIX ALT        
+    if ($media['type'] == 'image') {
+        $result =  "<img src=" . $media['link'] ." alt=". $media['link'] . "/>"; //TODO FIX ALT        
     } else {
         return false;
     }
@@ -142,13 +142,13 @@ function get_news_byId($id, $lang = null){
 function get_news_media_byID($id) {
     global $config;
     
-    $query = db_query("SELECT * FROM $config[DB_PREFIX]media WHERE nid = $id");    
+    $query = db_query("SELECT * FROM {$config['DB_PREFIX']}links WHERE source_id = '$id' AND plugin='Newspage' ");    
     if (db_num_rows($query) > 0) {
         while ($row = db_fetch($query)) {
             $media[] = array (
-                "mediaid" => $row['mediaid'], 
-                "mediatype" => $row['mediatype'], 
-                "medialink" => $row['medialink'], 
+                "rid" => $row['rid'], 
+                "type" => $row['type'], 
+                "link" => $row['link'], 
                 "itsmain" => $row['itsmain']);        
         }                
     } else {
@@ -213,7 +213,7 @@ function news_get_categories() {
     
     $lang_id = ML_iso_to_id($config['WEB_LANG']);
     
-    $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'news' AND lang_id = '$lang_id'";
+    $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage' AND lang_id = '$lang_id'";
     $query = db_query($q);
     return $query;
 }

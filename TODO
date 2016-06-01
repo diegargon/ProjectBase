@@ -17,7 +17,7 @@ SMBasic: session expire problem (server VS custom) use session_start or custom s
 SMBasic:clean  all users expired sessions  on each user logout or when?
 }
 New:admin comments for resources
-ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL
+ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL or both if ACL use ACL not isLogged
 *: Track  config['BACKLINK'] with the last backlink or keep javascript -1?;
 CORE: Plugins.check  re-check  functions calls in core exist and manage errors (some check missed)
 New:Admin users plugin
@@ -33,7 +33,7 @@ New:Forum plugin
 New:Shop plugin
 New:Social plugin
 SimpleACL: Improve
-SimpleACL support for something like acl_ask("news_submit|admin_all");
+SimpleACL support multiple checks for something like acl_ask("news_submit|admin_all");
 core: Better method for avoid duplicate standard scripts like jquery
 DebugWindow: improved debug and debug window with filters, print_debug ($msg, FILTER_PLUGIN_LOAD) ?¿?¿?¿
 SMBasic: Login/Register  scripts fix language method like profile
@@ -47,4 +47,4 @@ SMBasic: Check if can reduce some big fuctions
 Admin: Mobile menu
 Core: Mobile Menu.
 NEws: add support for display ALL LANG news
-Media plugin?
+pb_links to plugin?
