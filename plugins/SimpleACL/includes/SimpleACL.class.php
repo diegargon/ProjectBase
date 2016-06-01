@@ -19,13 +19,14 @@ class ACL {
         if (empty($this->roles) || empty($this->user_roles)) {
             $this->getRoles();
             $this->getUserRoles();   
-        } else if ($this->roles == false || $this->user_roles == false) {
+        }
+        if ($this->roles == false) { 
             $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ROLES_DB'];        
-            do_action("error_message_page");            
+            do_action("error_message_page");  //TODO RECHECK THAT
             return false;            
         }
 
-        if($this->user_roles == false) { //No user roles in DB
+        if($this->user_roles == false) { //No user_roles in DB for that user
             return false;
         }
         list($role_group, $role_type) = preg_split("/_/", $role);                        
