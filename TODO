@@ -24,8 +24,9 @@ New:Admin users plugin
 Admin plugin: Improved
 New:comments plugin for resources
 Newspage: Recheck all conditions for Optional ACL support
-
+Newspage: "Enviar noticia" /NAV no funciona desde una noticia
 #BACKLOG
+js: serialice like sendnews.js all js forms
 New:User private message plugin
 New:Forum plugin
 New:Shop plugin

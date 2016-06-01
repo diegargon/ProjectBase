@@ -17,18 +17,18 @@ function Newspage_init(){
     }    
 }
 
-function news_index_page (){
+function news_index_page (){       
     
-    if(!empty($_GET['sendnews']) && empty($_POST['sendnews']) && empty($_POST['sendnews1'])) {
+    if(!empty($_GET['sendnews']) && empty($_POST['sendnews'])  && empty($_POST['sendnews_stage2'])) {
         do_action("common_web_structure");
         addto_tplvar("SCRIPTS", Newspage_SendNewsScript());
         news_display_submit_news();
     }  else if(!empty($_POST['sendnews'])) {
             do_action("common_web_structure");
             addto_tplvar("SCRIPTS", Newspage_SendNewsScript());
-            $post_data = news_sendnews_getPost(1);
+            $post_data = news_sendnews_getPost();
             news_display_submit_news($post_data);  
-    } else if (!empty($_POST['sendnews1'])) {
+    } else if (!empty($_POST['sendnews_stage2'])) {
         news_form_submit_process();
     } else {
         do_action("common_web_structure");
@@ -49,7 +49,7 @@ function news_portal() {
 
     $tpldata['FEATURED'] = get_news_featured(1);
     $tpldata['COL1_ARTICLES'] = get_news(1,0);
-    $tpldata['COL2_ARTICLES'] = get_news(1,0);
+    $tpldata['COL2_ARTICLES'] = get_news(2,0);
     $tpldata['COL3_ARTICLES'] = get_news(1,0);          
         
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));     
@@ -57,7 +57,7 @@ function news_portal() {
 
 function news_page() {
     global $tpldata, $config, $LANGDATA;
-    
+
     if( ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
         $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];
         addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));

@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 ?>
 <div  class="clear bodysize page">
     <div class="standard_box submit_box">        
-        <form  action="" autocomplete="on" method="post">         
+        <form  id="form_sendnews" action="" autocomplete="on" method="post">         
         <section>
         <h1><?php print $LANGDATA['L_SEND_NEWS']?></h1>  
         <div class="news_submit_center_wrapper">
