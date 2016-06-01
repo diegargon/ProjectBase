@@ -40,7 +40,7 @@ function news_portal() {
     global $tpldata, $config;
         
     $news_nLayout = news_layout_select();
-    $news_layout_tpl = "News_body_style" . $news_nLayout++;
+    $news_layout_tpl = "news_body_style" . $news_nLayout++;
     
     if ($config['LAYOUT_SWITCH']) {           
         $tpldata['news_nSwitch'] = $news_nLayout;
@@ -91,7 +91,7 @@ function news_page() {
     if ( ($allmedia = get_news_media_byID($nid)) != false) {
         foreach ($allmedia as $media) {
             if($media['itsmain'] == 1 ) {
-                $tpldata['NEWS_MAIN_MEDIA'] = $media['medialink'];
+                $tpldata['NEWS_MAIN_MEDIA'] = news_format_media($media);
             }
         }
     }
@@ -122,6 +122,12 @@ function news_display_submit_news($post_data = null) {
         $data['select_langs'] = $select;
     }    
 
+    if (defined('ACL') && 'ACL') {        
+        if($acl_auth->acl_ask("news_admin") || $acl_auth->acl_ask("admin_all")) {
+            $data['select_acl'] = $acl_auth->get_roles_select("news");
+        }
+    }
+    
     $data['select_categories'] = news_get_categories_select();
     
     if (defined('ACL')) {
@@ -138,4 +144,52 @@ function news_display_submit_news($post_data = null) {
         $data = array_merge($data, $post_data);
     }  
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_submit", $data));     
+}
+
+function get_news_featured($category = null, $limit = 1) {
+    global $config;
+    $content = "";
+        
+    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
+
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $LANGS = do_action("get_site_langs");
+        
+        foreach ($LANGS as $lang) {
+            if ($lang->iso_code == $config['WEB_LANG']) {
+                $lang_id = $lang->lang_id;
+                $q .= " AND lang_id = $lang_id";
+            } 
+        }
+    }
+    
+    if ((!empty($category)) && ($category != 0 )) {
+        $q .= " AND category = $category";
+    }
+
+    $q .= " LIMIT $limit";
+    $query = db_query($q);
+   
+    if (db_num_rows($query) <= 0) {
+        return false;
+    }
+    
+    if(!empty($category)) {
+        if (defined('MULTILANG') && 'MULTILANG') {
+            $catname = get_category_name($category, $lang_id);       
+        } else {
+            $catname = get_category_name($category);
+        }
+    } 
+  
+    while($row = db_fetch($query)) {
+        if ( ($content_data = fetch_news_data($row)) != false ) {
+            isset($catname) ? $content_data['CATEGORY'] = $catname: false;         
+            $content .= getTPL_file("Newspage", "news_featured", $content_data);
+        }
+    }
+    
+    db_free_result($query);
+    
+    return $content;
 }

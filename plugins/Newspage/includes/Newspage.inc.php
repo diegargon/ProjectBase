@@ -44,58 +44,10 @@ function get_news($category, $limit = null) {
 
     while($row = db_fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false) {
-            $content .= getTPL_file("Newspage", "News", $content_data);        
+            $content .= getTPL_file("Newspage", "news_preview", $content_data);        
         }
     }
     db_free_result($query);    
-    
-    return $content;
-}
-
-function get_news_featured($category = null, $limit = 1) {
-    global $config;
-    $content = "";
-        
-    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
-
-    if (defined('MULTILANG') && 'MULTILANG') {
-        $LANGS = do_action("get_site_langs");
-        
-        foreach ($LANGS as $lang) {
-            if ($lang->iso_code == $config['WEB_LANG']) {
-                $lang_id = $lang->lang_id;
-                $q .= " AND lang_id = $lang_id";
-            } 
-        }
-    }
-    
-    if ((!empty($category)) && ($category != 0 )) {
-        $q .= " AND category = $category";
-    }
-
-    $q .= " LIMIT $limit";
-    $query = db_query($q);
-   
-    if (db_num_rows($query) <= 0) {
-        return false;
-    }
-    
-    if(!empty($category)) {
-        if (defined('MULTILANG') && 'MULTILANG') {
-            $catname = get_category_name($category, $lang_id);       
-        } else {
-            $catname = get_category_name($category);
-        }
-    } 
-  
-    while($row = db_fetch($query)) {
-        if ( ($content_data = fetch_news_data($row)) != false ) {
-            isset($catname) ? $content_data['CATEGORY'] = $catname: false;         
-            $content .= getTPL_file("Newspage", "NewsFeatured", $content_data);
-        }
-    }
-    
-    db_free_result($query);
     
     return $content;
 }
@@ -121,11 +73,23 @@ function fetch_news_data($row) {
         $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
     }
     $query = db_query("SELECT * FROM $config[DB_PREFIX]media WHERE nid = $row[nid] AND itsmain = '1'");
-    $media_row = db_fetch($query);
-    $data['MEDIA'] = $media_row['medialink'];
+    if (db_num_rows($query) >= 0) {
+        $media_row = db_fetch($query);
+        $data['MEDIA'] = news_format_media($media_row);
+    }
     db_free_result($query);
 
     return $data;
+}
+
+function news_format_media($media) {
+    //TODO MEDIA TYPES   
+    if ($media['mediatype'] == 'image') {
+        $result =  "<img src=" . $media['medialink'] ." alt=". $media['medialink'] . "/>"; //TODO FIX ALT        
+    } else {
+        return false;
+    }
+    return $result;
 }
 
 function get_category_name($cid, $lang_id = null) {
@@ -260,12 +224,14 @@ function news_sendnews_getPost($stage = 1) {
         isset($_POST['news_text']) ? $data['post_text'] = S_VAR_TEXT($_POST['news_text']) : false;
         isset($_POST['news_category']) ? $data['post_category'] = S_VAR_INTEGER($_POST['news_category'], 8) : false;
         isset($_POST['news_lang']) ? $data['post_lang'] = S_VAR_TEXT($_POST['news_lang']) : $data['post_lang'] = $config['WEB_LANG'];
+        isset($_POST['news_acl']) ? $data['post_acl'] = S_VAR_TEXT($_POST['news_acl']) : false; //TODO CHECK FILTER OK
     } else {
         isset($_POST['news_title1']) ? $data['post_title'] = S_VAR_TEXT($_POST['news_title1']) : false;
         isset($_POST['news_lead1']) ? $data['post_lead'] = S_VAR_TEXT($_POST['news_lead1']) : false;
         isset($_POST['news_text1']) ? $data['post_text'] = S_VAR_TEXT($_POST['news_text1']) : false;
         isset($_POST['news_category1']) ? $data['post_category'] = S_VAR_INTEGER($_POST['news_category1'], 8) : false;
         isset($_POST['news_lang1']) ? $data['post_lang'] = S_VAR_TEXT($_POST['news_lang1']) : $data['post_lang'] = $config['WEB_LANG'];
+        isset($_POST['news_acl1']) ? $data['post_acl'] = S_VAR_TEXT($_POST['news_acl1']) : false; //TODO CHECK FILTER OK
     }   
     return $data;
 }
@@ -340,10 +306,17 @@ function news_form_submit_process() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }
-    $return = news_db_submit($news_data);
-    
-     $response[] = array("status" => "10", "msg" => htmlspecialchars($return));    
-     echo json_encode($response, JSON_UNESCAPED_SLASHES);
+    //ACL
+    //NO CHECK ATM
+    //
+    //
+    //ALL OK
+    if( news_db_submit($news_data)) {
+     $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'], "url" => $config['WEB_URL']);    
+     echo json_encode($response, JSON_UNESCAPED_SLASHES);    
+     //return true; 
+    }
+
      return false;
 }
 
@@ -371,16 +344,17 @@ function news_db_submit($news_data) {
         $uid = 0;
     }
     
-    $acl =""; //TODO ACL
+    $acl = $news_data['post_acl']; 
     
     $q = "INSERT INTO {$config['DB_PREFIX']}news ("
         . "nid, lang_id, title, lead, text, media, featured, author, author_id, category, lang, acl, moderation"    
         . ") VALUES ("
         . "'$nid', '$lang_id', '{$news_data['post_title']}', '{$news_data['post_lead']}', '{$news_data['post_text']}', "         
-        . "'null', '{$news_data['username']}', '$uid', '{$news_data['post_category']}', '{$news_data['post_lang']}', '$acl', '{$config['NEWS_MODERATION']}'"       
+        . "'0', '0', '{$news_data['username']}', '$uid', '{$news_data['post_category']}', '{$news_data['post_lang']}', '$acl', '{$config['NEWS_MODERATION']}'"       
         . ");";
-        //TODO finish
-    return $q;
+        //TODO FEATURED
+     $query = db_query($q);
+    return true;
 }
 
 function news_get_categories() {

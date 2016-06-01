@@ -6,6 +6,10 @@ by priority order
 
 
 Newspage->Submit news admin/user submit options
+    -> Featured option (admin)
+    -> LINK field on submit news,  image url (if not image not display image field on tpl
+    -> Link source (optional/config
+    -> upload file image/video (later need upload plugin )
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core/ALL: Filter vars correctly 

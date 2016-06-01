@@ -47,7 +47,16 @@ if(defined('MULTILANG')) {
                     <?php print $data['select_langs'] ?>
 <?php            
 }
-?>                        
+?>        
+<?php 
+if(!empty($data['select_acl'])) {
+?>
+                <span  class="lang_label"><?php print $LANGDATA['L_ACL']?></span>
+                    <?php print $data['select_acl'] ?>
+
+<?php                
+}
+?>
             </p>                
         </div>           
         <div class="submit_buttom">

@@ -21,18 +21,19 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                     <?php isset($tpldata['NEWSLEAD']) ? print $tpldata['NEWS_LEAD']:false ?>
                 </div>                                
                 <hr/>
+<?php if(!empty($tpldata['NEWS_MAIN_MEDIA'])) {
+?>
                 <div class="article_main_media">
-                    <img src="<?php isset($tpldata['NEWS_MAIN_MEDIA']) ? print $tpldata['NEWS_MAIN_MEDIA']:false ?>"/>
+                   <?php isset($tpldata['NEWS_MAIN_MEDIA']) ? print $tpldata['NEWS_MAIN_MEDIA']:false ?>
                 </div>                
+<?php } ?>                
                 <div class="article_text">
                     <?php isset($tpldata['NEWS_TEXT']) ? print $tpldata['NEWS_TEXT']:false ?>
                 </div>      
-                <?php isset($tpldata['ADD_TO_NEWSHOW']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
+                <?php isset($tpldata['ADD_TO_NEWSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM']:false ?>
             </div>
             <div class="article_side">
                 <?php isset($tpldata['ADD_TO_NEWS_SIDE']) ? print $tpldata['ADD_TO_NEWSHOW_SIDE']:false ?>
             </div>
         </div>
     </div>
-
-

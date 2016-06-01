@@ -16,4 +16,3 @@ function SimpleACL_init(){
         $acl_auth = new ACL;
     }    
 }
-

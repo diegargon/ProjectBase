@@ -25,6 +25,10 @@ $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR'] = "La entradilla tiene que estar entre max
 $LANGDATA['L_NEWS_TEXT_ERROR'] = "Hay algun error en el texto de la noticia, compruebe que los caracteres sean correctos o que el campo no este vacio";
 $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR'] = "El texto de la noticia tiene que estar entre maximo de ". $config['NEWS_TEXT_MAX_LENGHT'] ." y un minimo de ". $config['NEWS_TEXT_MIN_LENGHT'] ." caracteres";
 $LANGDATA['L_NEWS_CATEGORY'] = "Categoria";
-$LANGDATA['L'] = "";
-$LANGDATA['L'] = "";
-
+$LANGDATA['L_NEWS_ADMIN'] = "Administrador";
+$LANGDATA['L_NEWS_ALL_NOADMIN'] = "Todo excepto administración";
+$LANGDATA['L_NEWS_SUBMIT'] = "Grupo que puede enviar";
+$LANGDATA['L_NEWS_COMMENT'] = "Grupo que puede comentar";
+$LANGDATA['L_NEWS_PAYMENT'] = "Grupo de pago";
+$LANGDATA['L_NEWS_READ'] = "Grupo que puede leer noticias";
+$LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'] ="Noticia enviada con exito";

@@ -11,6 +11,21 @@ class ACL {
     
     function __construct() {     
    }
+   
+
+    function get_roles_select($acl_group = null) {
+        global $LANGDATA;
+    
+        $query = $this->get_roles_query($acl_group);
+    
+        $select = "<select name='{$acl_group}_acl' id='{$acl_group}_acl'>";
+        $select .= "<option selected value='none'>{$LANGDATA['L_ACL_NONE']}</option>";
+        while($row = db_fetch($query)) {
+            $select .= "<option value='{$row['role_group']}_{$row['role_type']}'>{$LANGDATA[$row['role_name']]}</option>";        
+        } 
+        $select .= "</select>";
+        return $select;        
+    }   
     
     function acl_ask($role, $resource = "ALL") {
         if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {          
@@ -114,5 +129,15 @@ class ACL {
         }
         db_free_result($query);
     }    
+
+    private function get_roles_query($acl_group = null) {
+        global $config;
+        $q = "SELECT * FROM {$config['DB_PREFIX']}acl_roles";
+        if(!empty($acl_group)) {
+            $q .= " WHERE role_group = '$acl_group'";            
+        }    
+        $query = db_query($q);
+        return $query;
+    }
     
 }

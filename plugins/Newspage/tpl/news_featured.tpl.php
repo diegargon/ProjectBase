@@ -8,9 +8,10 @@ if (!defined('IN_WEB')) { exit; }
 <section id="featured">
     <h2><?php isset($data['CATEGORY']) ? print $data['CATEGORY'] :false ?></h2>
     <article>
-        <div class="feature_image">
-        <img src="<?php print $data['MEDIA']?>" alt="<?php print $data['TITLE']?>">
-        </div>
+<?php if (!empty($data['MEDIA'])) {
+?>        
+        <div class="feature_image"><?php print $data['MEDIA']?></div>
+<?php } ?>        
         <div class="feature_article">
             <p class="p-extra-small"><?php print $data['date']?></p>
             <h3><?php echo $data['TITLE']?></h3>
