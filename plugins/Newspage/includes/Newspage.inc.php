@@ -264,28 +264,35 @@ function news_sendnews_getPost($stage = 1) {
         isset($_POST['news_lead1']) ? $data['post_lead'] = S_VAR_TEXT($_POST['news_lead1']) : false;
         isset($_POST['news_text1']) ? $data['post_text'] = S_VAR_TEXT($_POST['news_text1']) : false;
         isset($_POST['news_lang1']) ? $data['post_lang'] = S_VAR_TEXT($_POST['news_lang1']) : $data['post_lang'] = $config['WEB_LANG'];
-    }
+    }   
     return $data;
 }
 
 function news_form_submit_process() {
     global $LANGDATA, $config;
+    
     $news_data = news_sendnews_getPost(2);
+
     //USERNAME/AUTHOR
     if (empty($news_data['username']) ) {
-        $news_data['username'] = S_VAR_CHAR_AZ_NUM($_SESSION['username']);
-    }       
+        $news_data['username'] = "Anonimous"; //TODO CHECK IF ITS RIGHT THAT PROCEDURE
+        //$news_data['username'] = S_VAR_CHAR_AZ_NUM($_SESSION['username']);
+    }           
     if ($news_data['username'] == false) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;
-    }
-    //UID/AUTHORUID
-    if ( ($news_data['uid'] = S_VAR_INTEGER($_SESSION['uid'])) == false ) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }
+    }    
+    //UID/AUTHORUID       
+    if  ( !empty($_SESSION['uid'])) {
+        if (($news_data['uid'] = S_VAR_INTEGER($_SESSION['uid'])) == false ) {
+            $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);    
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;        
+        }
+    } else {
+        $news_data['uid'] = 0;
+    } 
     //TITLE        
     if($news_data['post_title'] == false) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_ERROR']);    
@@ -325,6 +332,7 @@ function news_form_submit_process() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }
+    
     $return = news_db_submit($news_data);
     
      $response[] = array("status" => "10", "msg" => htmlspecialchars($return));    
