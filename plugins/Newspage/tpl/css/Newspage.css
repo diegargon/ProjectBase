@@ -224,3 +224,31 @@
 .text_small {
     font-size: 9px;      
 }
+/* ADMIN NAV */
+#adm_nav_container {
+ border:0px solid blue; 
+ overflow:hidden;
+ 
+}
+#adm_nav {    
+    
+}
+#adm_nav li {
+    border:0px solid red;
+    padding-top:9px;
+    padding-bottom:9px;
+    float:left;
+    overflow:hidden;
+}
+#adm_nav li a {
+    border:0px solid red;
+    color:#C0BAB6;
+    padding:7px;
+    font-size: 1.3em;
+    text-decoration: none;
+    background-color: #232323;
+}
+
+#adm_nav li a:hover {
+    background-color: black;
+}

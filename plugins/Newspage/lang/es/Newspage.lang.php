@@ -41,3 +41,7 @@ $LANGDATA['L_NEWS_ERROR_WAITINGMOD'] = "La noticia esta en espera de moderación
 $LANGDATA['L_NEWS_DELETE'] = "Borrar";
 $LANGDATA['L_NEWS_EDIT'] = "Editar";
 $LANGDATA['L_NEWS_APPROVED'] = "Aprobar";
+$LANGDATA['L_NEWS_EDIT'] = "Editar";
+$LANGDATA['L_NEWS_DISABLE'] = "Deshabilitar";
+$LANGDATA['L_NEWS_DELETE'] = "Eliminar";
+$LANGDATA['L_NEWS_CONFIRM_DEL'] = "¿Estas seguro que quieres eliminar?";

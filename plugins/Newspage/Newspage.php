@@ -62,6 +62,7 @@ function news_page() {
     require_once("includes/news_page.inc.php");
     
     //TODO: Split simplified in functions -> news_page.inc
+
     
     if( (empty($_GET['nid'])) || ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
         $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];
@@ -102,8 +103,18 @@ function news_page() {
             $tpldata['E_MSG'] = $LANGDATA['L_NEWS_ERROR_WAITINGMOD'];
             addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
             return false;        
-    } 
-    
+    }     
+    //ADMIN
+    if (defined("ACL") && "ACL") {
+        if($acl_auth->acl_ask("admin_all") || $acl_auth->acl_ask("news_admin")) {
+            addto_tplvar("NEWS_ADMIN_NAV", Newspage_AdminOptions($news_row));
+            if (!empty($_GET['news_delete']) && !empty($_GET['lang_id']) &&
+                    $_GET['news_delete'] > 0 && $_GET['lang_id'] > 0) {
+                news_delete(S_GET_INT("news_delete"), S_GET_INT("lang_id"));
+                header('Location: '. '/');
+            }
+        }
+    }        
     $tpldata['NID'] = $news_row['nid'];    
     $tpldata['NEWS_TITLE'] = $news_row['title'];    
     $tpldata['NEWS_LEAD'] = $news_row['lead'];    
@@ -118,7 +129,7 @@ function news_page() {
                 $tpldata['NEWS_MAIN_MEDIA'] = news_format_media($media);
             }
         }
-    }
+    }    
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_show_body"));                                               
 }
 
