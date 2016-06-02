@@ -17,7 +17,8 @@ function news_sendnews_getPost() {
     isset($_POST['news_featured']) ? $data['post_featured'] = S_VAR_INTEGER($_POST['news_featured'], 1) : false; 
     isset($_POST['news_lang']) ? $data['post_lang'] = S_VAR_TEXT_ESCAPE($_POST['news_lang']) : $data['post_lang'] = $config['WEB_LANG'];
     isset($_POST['news_acl']) ? $data['post_acl'] = S_VAR_TEXT_ESCAPE($_POST['news_acl']) : false; //TODO CHECK FILTER OK   
-
+    isset($_POST['news_main_media']) ? $data['post_main_media'] = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']) : false;
+    
     return $data;
 }
 
@@ -98,6 +99,15 @@ function news_form_submit_process() {
     //NO CHECK ATM
     //
     //
+    //MEDIA
+    //echo "* {$news_data['post_main_media']} * {$_POST['news_media_link']} *";
+    if($news_data['post_main_media'] == false) {
+        $response[] = array("status" => "6", "msg" => $LANGDATA['L_NEWS_MEDIALINK_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+
+    //
     //ALL OK
     if( news_db_submit($news_data)) {
      $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'], "url" => $config['WEB_URL']);    
@@ -144,9 +154,19 @@ function news_db_submit($news_data) {
         . ") VALUES ("
         . "'$nid', '$lang_id', '{$news_data['post_title']}', '{$news_data['post_lead']}', '{$news_data['post_text']}', "         
         . "'0', '{$news_data['post_featured']}', '{$news_data['username']}', '$uid', '{$news_data['post_category']}', '{$news_data['post_lang']}', '$acl', '{$config['NEWS_MODERATION']}'"       
-        . ");";
-        
-    db_query($q);
+        . ");";       
+    $query = db_query($q);    
+    $source_id = $nid;
+    $plugin = "Newspage";
+     //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
+    $type = "image";
+    $q = "INSERT INTO {$config['DB_PREFIX']}links ("
+        . "source_id, plugin, type, link, itsmain"
+        . ") VALUES ("
+        . "'$source_id', '$plugin', '$type', '{$news_data['post_main_media']}', '1'"
+        . ");";    
+    $query = db_query($q);
+    
     return true;
 }
 

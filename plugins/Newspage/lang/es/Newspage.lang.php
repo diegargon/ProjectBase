@@ -33,3 +33,5 @@ $LANGDATA['L_NEWS_PAYMENT'] = "Grupo de pago";
 $LANGDATA['L_NEWS_READ'] = "Grupo que puede leer noticias";
 $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'] ="Noticia enviada con exito";
 $LANGDATA['L_NEWS_FEATURED'] = "Destacada";
+$LANGDATA['L_NEWS_MAIN_MEDIA'] = "Imagen o video principal";
+$LANGDATA['L_NEWS_MEDIALINK_ERROR'] = "Imagen no valida";

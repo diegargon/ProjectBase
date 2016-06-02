@@ -36,6 +36,12 @@ if (!defined('IN_WEB')) { exit; }
         </div>
         <div class="submit_items">
             <p> 
+                <label for="news_main_media"><?php print $LANGDATA['L_NEWS_MAIN_MEDIA'] ?> </label>
+                <input value="<?php isset($data['post_main_media']) ? print $data['post_main_media'] : false ?>"  minlength="<?php print $config['NEWS_MEDIA_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_MEDIA_MAX_LENGHT']?>" id="news_main_media" name="news_main_media" type="text" placeholder="http://site.com/image.jpg"/>
+            </p>
+        </div>            
+        <div class="submit_items">
+            <p> 
                 <span class="submit_others_label"><?php print $LANGDATA['L_NEWS_OTHER_OPTIONS'] ?> </span>
                 <span  class="lang_label"><?php print $LANGDATA['L_NEWS_CATEGORY']?></span>
                     <?php print $data['select_categories'] ?>

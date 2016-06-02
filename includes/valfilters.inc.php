@@ -165,3 +165,45 @@ function S_VAR_TEXT_ESCAPE ($var, $max_size = null, $min_size = null) {
     
     return db_escape_string($var);
 }
+
+function S_VALIDATE_URL($url, $max_size = null, $min_size = null) {
+    if (!empty($max_size)) {
+        if (strlen($url) > $max_size) {
+            return false;
+        }
+    }
+    if (!empty($min_size)) {
+        if (strlen($url) < $min_size) {
+            return false;
+        }
+    }
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+
+    if ( filter_var($url, FILTER_VALIDATE_URL) === false) {
+        return false;
+    } else {
+        return $url;
+    }        
+}
+
+function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null) {
+    global $config;
+    //TODO make something good and optional better remote connection for check
+    //TODO add http if not provided
+    $regex = '/\.('. $config['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
+    
+    if( ($url = S_VALIDATE_URL($url, $max_size, $min_size)) == false ) {
+        return false;
+    }    
+    if ( !preg_match($regex, $url) ) {
+      return false;
+    }  
+    if ($config['REMOTE_CHECKS']) {
+        $headers = @get_headers($url);
+        if($headers['0'] == 'HTTP/1.1 404 Not Found') {
+            return false;
+        }
+    }
+ 
+    return $url;
+}
