@@ -117,7 +117,13 @@ function news_page() {
                     $_GET['news_approved'] > 0 && $_GET['lang_id'] > 0) {
                 news_approved(S_GET_INT("news_approved"), S_GET_INT("lang_id"));
                 news_redirect();
+            }
+            if (!empty($_GET['news_featured']) && !empty($_GET['lang_id']) &&
+                    $_GET['news_featured'] > 0 && $_GET['lang_id'] > 0) {
+                news_featured(S_GET_INT("news_featured"), S_GET_INT("lang_id"));
+                news_redirect();
             }            
+            
         }
     }
     //

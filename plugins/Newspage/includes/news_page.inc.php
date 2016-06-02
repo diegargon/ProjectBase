@@ -10,6 +10,7 @@ function Newspage_AdminOptions($news) {
     $content .= "<nav id='adm_nav'>";
     $content .= "<ul>";
     $content .= "<li><a href=''>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
+    $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured={$news['nid']}&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";
     if ($news['moderation']) {
         $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_approved={$news['nid']}&lang_id={$news['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a></li>";
     }
@@ -41,6 +42,19 @@ function news_approved($nid, $lang_id) {
     if (!empty($nid) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {    
         $q = "UPDATE {$config['DB_PREFIX']}news  SET moderation = '0' WHERE nid = '$nid' AND lang_id = '$lang_id' ";
         db_query($q);
+    } else {
+        return false;
+    }
+    return true;    
+}
+
+function news_featured($nid, $lang_id) {
+    global $config;
+    
+    if (!empty($nid) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {            
+        $q = "UPDATE {$config['DB_PREFIX']}news  SET featured = '1' WHERE nid = '$nid' AND lang_id = '$lang_id' ";
+        $q2 = "UPDATE {$config['DB_PREFIX']}news  SET featured = '0' WHERE  lang_id = '$lang_id' AND nid != '$nid'";
+        db_query($q) && db_query($q2);
     } else {
         return false;
     }
