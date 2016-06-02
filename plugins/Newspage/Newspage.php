@@ -57,9 +57,11 @@ function news_portal() {
 }
 
 function news_page() {
-    global $tpldata, $config, $LANGDATA;
+    global $tpldata, $config, $LANGDATA, $acl_auth;
     
     require_once("includes/news_page.inc.php");
+    
+    //TODO: Split simplified in functions -> news_page.inc
     
     if( (empty($_GET['nid'])) || ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
         $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];
@@ -67,7 +69,16 @@ function news_page() {
         return false;
     }
     if ( S_GET_INT("admin") && ( $newslang = S_GET_CHAR_AZ("newslang", 2, 1) ) ) {
-       if ( ($news_row = get_news_byId($nid, $newslang)) == 403) {
+       if (defined("ACL") && "ACL") {
+           if($acl_auth->acl_ask("admin_all") || $acl_auth->acl_ask("news_admin")) {
+               //Do nothing
+            } else {           
+               $tpldata['E_MSG'] = $LANGDATA['L_ERROR_NOACCESS'];
+               addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box")); 
+               return false;                
+           }
+       }
+       if ( (($news_row = get_news_byId($nid, $newslang)) == 403) )  {
            $tpldata['E_MSG'] = $LANGDATA['L_ERROR_NOACCESS'];
            addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box")); 
            return false; 
