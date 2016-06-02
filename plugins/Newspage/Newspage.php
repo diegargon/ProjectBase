@@ -56,34 +56,45 @@ function news_portal() {
 function news_page() {
     global $tpldata, $config, $LANGDATA;
 
-    if( ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
+    if( (empty($_GET['nid'])) || ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
         $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];
         addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
         return false;
     }
-    if (($row = get_news_byId($nid, $config['WEB_LANG'])) == 403) {
+    if ( S_GET_INT("admin") && ( $newslang = S_GET_CHAR_AZ("newslang", 2, 1) ) ) {
+       if ( ($news_row = get_news_byId($nid, $newslang)) == 403) {
+           $tpldata['E_MSG'] = $LANGDATA['L_ERROR_NOACCESS'];
+           addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box")); 
+           return false; 
+       }       
+    } else if ( ($news_row = get_news_byId($nid, $config['WEB_LANG'])) == 403)  {
         $tpldata['E_MSG'] = $LANGDATA['L_ERROR_NOACCESS'];
         addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box")); 
         return false; 
-    } else if ($row == false) {
-        if( ($row = get_news_byId($nid)) == false) {
+    } else if ($news_row == false) {
+        if( ($news_row = get_news_byId($nid)) == false) {
             $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];
             addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
             return false;
         } else {
             $tpldata['E_MSG'] = $LANGDATA['L_NEWS_WARN_NOLANG'];
             addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
-            return false;
-            
+            return false;            
         }        
-    }    
-    $tpldata['NID'] = $row['nid'];    
-    $tpldata['NEWS_TITLE'] = $row['title'];    
-    $tpldata['NEWS_LEAD'] = $row['lead'];    
-    $tpldata['NEWS_URL'] = "news.php?nid=$row[nid]";
-    $tpldata['NEWS_DATE'] = format_date($row['date']);
-    $tpldata['NEWS_AUTHOR'] = $row['author'];
-    $tpldata['NEWS_TEXT']  = $row['text'];
+    }  
+    if ($config['NEWS_MODERATION'] && $news_row['moderation'] && !S_GET_INT("admin") ) {
+            $tpldata['E_MSG'] = $LANGDATA['L_NEWS_ERROR_WAITINGMOD'];
+            addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
+            return false;        
+    } 
+    
+    $tpldata['NID'] = $news_row['nid'];    
+    $tpldata['NEWS_TITLE'] = $news_row['title'];    
+    $tpldata['NEWS_LEAD'] = $news_row['lead'];    
+    $tpldata['NEWS_URL'] = "news.php?nid=$news_row[nid]";
+    $tpldata['NEWS_DATE'] = format_date($news_row['date']);
+    $tpldata['NEWS_AUTHOR'] = $news_row['author'];
+    $tpldata['NEWS_TEXT']  = $news_row['text'];
 
     if ( ($allmedia = get_news_media_byID($nid)) != false) {
         foreach ($allmedia as $media) {

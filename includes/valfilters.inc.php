@@ -55,6 +55,12 @@ function S_GET_INT($var) {
     }
     return filter_input(INPUT_GET, $var, FILTER_VALIDATE_INT);
 }
+function S_GET_CHAR_AZ($var, $max_size = null, $min_size = null) {
+    if(empty($_GET[$var])) {
+       return false;
+    }
+    return S_VAR_CHAR_AZ($_GET[$var], $max_size, $min_size);    
+}
 function S_GET_EMAIL($var) {
     if(empty($_GET[$var])) {
        return false;

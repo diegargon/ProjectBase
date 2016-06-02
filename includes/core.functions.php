@@ -53,7 +53,7 @@ function check_jsScript($script) {
     return false;
 }
 
-function includePluginFiles($plugin) {
+function includePluginFiles($plugin, $admin = 0) {
     global $config, $LANGDATA; 
     
     //CONFIG FILES
@@ -62,21 +62,21 @@ function includePluginFiles($plugin) {
     if (file_exists($config_plugin)) {
         require_once($config_plugin);
     }
-
     if (file_exists($config_plugin_user)) { //User Overdrive
         require_once($config_plugin_user); 
-    }
-    
+    }    
     //LANG FILES;
     $lang_file = "plugins/$plugin/lang/" . $config['WEB_LANG'] . "/$plugin.lang.php";
     if (file_exists($lang_file)) {
         include_once($lang_file);
     }     
-
     //INC FILE
-    $inc_file = "plugins/$plugin/includes/$plugin.inc.php";
+    if ($admin == 0) {
+        $inc_file = "plugins/$plugin/includes/$plugin.inc.php";
+    } else {
+        $inc_file = "plugins/$plugin/admin/$plugin.admin.inc.php";
+    }
     if (file_exists($inc_file)) {
         include_once($inc_file);
     }     
-    
 }

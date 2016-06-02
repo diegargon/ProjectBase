@@ -10,6 +10,6 @@ if (!defined('IN_WEB')) { exit; }
     </ul>    
 </aside>
 <section>    
-<h1><?php print $tpldata['ADM_CONTENT_DESC']?></h1>
-<?php print $tpldata['ADM_CONTENT']?>
+<h1><?php !empty($tpldata['ADM_CONTENT_DESC']) ? print $tpldata['ADM_CONTENT_DESC'] : false ?></h1>
+<?php !empty($tpldata['ADM_CONTENT'])? print $tpldata['ADM_CONTENT'] : false ?>
 </section>

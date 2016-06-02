@@ -60,13 +60,11 @@ function get_news($category, $limit = null) {
 function get_news_featured($category = null, $limit = 1) {
     global $config;
 
-    //INFO: news_featured skip moderation bit since submit a featured news its a admin thing
-    //and set 0 the old featured
+    //INFO: news_featured skip moderation bit
     $content = "";        
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
     if (defined('MULTILANG') && 'MULTILANG') {
-        $LANGS = do_action("get_site_langs");
-        
+        $LANGS = do_action("get_site_langs");        
         foreach ($LANGS as $lang) {
             if ($lang->iso_code == $config['WEB_LANG']) {
                 $lang_id = $lang->lang_id;

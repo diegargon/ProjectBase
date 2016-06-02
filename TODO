@@ -9,6 +9,7 @@ Newspage->Submit news admin/user submit options
     -> Link source (optional/config) & Link Related
     -> upload file image/video (later need upload plugin )
 News not display moderation = 1 if we use moderation news
+Newspage: editing news;
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core/ALL: Filter vars correctly 
@@ -24,7 +25,7 @@ New:Admin users plugin
 Admin plugin: Improved
 New:comments plugin for resources
 Newspage: Recheck all conditions for Optional ACL support
-
+Newspage: al ver una noticia por ID no comprueba si esta en la cola de moderación
 
 #BACKLOG
 js: serialice like sendnews.js all js forms
@@ -48,3 +49,4 @@ Admin: Mobile menu
 Core: Mobile Menu.
 NEws: add support for display ALL LANG news
 pb_links to plugin?
+ALL: Move some plugins to OO/classes
