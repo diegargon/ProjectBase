@@ -11,7 +11,10 @@ function get_news($category, $limit = null) {
     
     $content = "";         
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1' ";
-        
+
+    if( $config['NEWS_MODERATION'] == 1) {
+        $q .=" AND moderation = 0";
+    }
     if (defined('MULTILANG') && 'MULTILANG') {
         $LANGS = do_action("get_site_langs");
         
@@ -50,6 +53,49 @@ function get_news($category, $limit = null) {
         }
     }
     db_free_result($query);    
+    
+    return $content;
+}
+
+function get_news_featured($category = null, $limit = 1) {
+    global $config;
+
+    //INFO: news_featured skip moderation bit since submit a featured news its a admin thing
+    //and set 0 the old featured
+    $content = "";        
+    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $LANGS = do_action("get_site_langs");
+        
+        foreach ($LANGS as $lang) {
+            if ($lang->iso_code == $config['WEB_LANG']) {
+                $lang_id = $lang->lang_id;
+                $q .= " AND lang_id = $lang_id";
+            } 
+        }
+    }    
+    if ((!empty($category)) && ($category != 0 )) {
+        $q .= " AND category = $category";
+    }
+    $q .= " LIMIT $limit";
+    $query = db_query($q);   
+    if (db_num_rows($query) <= 0) {
+        return false;
+    }    
+    if(!empty($category)) {
+        if (defined('MULTILANG') && 'MULTILANG') {
+            $catname = get_category_name($category, $lang_id);       
+        } else {
+            $catname = get_category_name($category);
+        }
+    }   
+    while($row = db_fetch($query)) {
+        if ( ($content_data = fetch_news_data($row)) != false ) {
+            isset($catname) ? $content_data['CATEGORY'] = $catname: false;         
+            $content .= getTPL_file("Newspage", "news_featured", $content_data);
+        }
+    }    
+    db_free_result($query);
     
     return $content;
 }
