@@ -4,8 +4,6 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-require_once("news_sendform.inc.php");
-
 function get_news($category, $limit = null) {
     global $config;
     
