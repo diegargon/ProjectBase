@@ -49,9 +49,9 @@ function Newspage_AdminModeration() {
 
     if (db_num_rows($query) > 0) {
         while ($news_row = db_fetch($query)) {
-            $content .= "<p>"
-                    . "[<a href=''>{$LANGDATA['L_NEWS_DELETE']}</a>]"
-                    . "[<a href=''>{$LANGDATA['L_NEWS_APPROVED']}</a>]"                        
+            $content .= "<p>"                    
+                    . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete={$news_row['nid']}&lang_id={$news_row['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_DELETE']}</a>]"
+                    . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_approved={$news_row['nid']}&lang_id={$news_row['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a>]"                        
                     . "<a href='/newspage.php?nid={$news_row['nid']}&admin=1&newslang={$news_row['lang']}' target='_blank'>{$news_row['title']}</a>"
                     . "</p>";
         }

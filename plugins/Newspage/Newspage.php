@@ -111,10 +111,16 @@ function news_page() {
             if (!empty($_GET['news_delete']) && !empty($_GET['lang_id']) &&
                     $_GET['news_delete'] > 0 && $_GET['lang_id'] > 0) {
                 news_delete(S_GET_INT("news_delete"), S_GET_INT("lang_id"));
-                header('Location: '. '/');
+                news_redirect();
             }
+            if (!empty($_GET['news_approved']) && !empty($_GET['lang_id']) &&
+                    $_GET['news_approved'] > 0 && $_GET['lang_id'] > 0) {
+                news_approved(S_GET_INT("news_approved"), S_GET_INT("lang_id"));
+                news_redirect();
+            }            
         }
-    }        
+    }
+    //
     $tpldata['NID'] = $news_row['nid'];    
     $tpldata['NEWS_TITLE'] = $news_row['title'];    
     $tpldata['NEWS_LEAD'] = $news_row['lead'];    
