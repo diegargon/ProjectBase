@@ -149,11 +149,17 @@ function news_db_submit($news_data) {
         news_clean_featured($news_data['post_lang']);
     }
     
+    if ($news_data['post_featured'] == 1 && $config['NEWS_MODERATION'] == 1) {
+        $moderation = 0;
+    } else if ($config['NEWS_MODERATION'] == 1){
+        $moderation = 1;
+    }
+    
     $q = "INSERT INTO {$config['DB_PREFIX']}news ("
         . "nid, lang_id, title, lead, text, media, featured, author, author_id, category, lang, acl, moderation"    
         . ") VALUES ("
         . "'$nid', '$lang_id', '{$news_data['post_title']}', '{$news_data['post_lead']}', '{$news_data['post_text']}', "         
-        . "'0', '{$news_data['post_featured']}', '{$news_data['username']}', '$uid', '{$news_data['post_category']}', '{$news_data['post_lang']}', '$acl', '{$config['NEWS_MODERATION']}'"       
+        . "'0', '{$news_data['post_featured']}', '{$news_data['username']}', '$uid', '{$news_data['post_category']}', '{$news_data['post_lang']}', '$acl', '$moderation'"       
         . ");";       
     $query = db_query($q);    
     $source_id = $nid;
