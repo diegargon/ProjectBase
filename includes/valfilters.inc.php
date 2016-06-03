@@ -81,8 +81,6 @@ function S_POST_CHAR_AZNUM ($var, $max_size = null, $min_size = null) {
 
     return S_VAR_CHAR_AZ_NUM ($_POST[$var], $max_size, $min_size);    
 }
-
-
 //$_SERVER
 function S_SERVER_USER_AGENT () {
     if(empty($_SERVER['HTTP_USER_AGENT'])) {
@@ -90,7 +88,6 @@ function S_SERVER_USER_AGENT () {
     }
     return filter_input(INPUT_SERVER,'HTTP_USER_AGENT',FILTER_SANITIZE_ENCODED,FILTER_FLAG_STRIP_LOW);
 }
-
 function S_SERVER_REMOTE_ADDR () {
     if(empty($_SERVER['REMOTE_ADDR'])) {
         return false;
@@ -115,12 +112,10 @@ function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
     
     return filter_var($var, FILTER_VALIDATE_INT);    
 }
-
 function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
         return false;        
     }
-
     if (!empty($max_size)) {
         if (strlen($var) > $max_size) {
             return false;
@@ -131,7 +126,6 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
             return false;
         }
     }
-
     if (preg_match("/[^A-Za-z]/", $var))
     {
         return false;
@@ -140,12 +134,10 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
     return $var;
 
 }
-
 function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
         return false;        
     }
-
     if (!empty($max_size)) {
         if (strlen($var) > $max_size) {
             return false;
@@ -156,7 +148,6 @@ function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
             return false;
         }
     }
-
     if (preg_match('/[^A-Za-z0-9.#\\-$]/', $var)) {
         return false;
     }

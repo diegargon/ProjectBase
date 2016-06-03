@@ -60,3 +60,11 @@ function news_featured($nid, $lang_id) {
     }
     return true;    
 }
+
+function news_redirect()  {
+    if(!empty($_GET['return_home'])) {
+        header("Location: / ");                
+    } else {        
+        header("Location: {$_SERVER['HTTP_REFERER']} ");  //TODO FILTER
+    }    
+}

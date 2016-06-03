@@ -5,23 +5,19 @@ by priority order
 #Priority
 
 Newspage: editing news;
-X: Local user time VS Server Time
-SMBasic: ?When log with cookie change sid and update cookie sid.?
 Core/ALL: Filter vars correctly 
-js: serialice like sendnews.js all js forms
-New:admin comments for resources
 ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL or both if ACL use ACL not isLogged
-*: Track  config['BACKLINK'] with the last backlink or keep javascript -1?;
 CORE: Plugins.check  re-check  functions calls in core exist and manage errors (some check missed)
-New:Admin users plugin
-Admin plugin: Improved
-New:comments plugin for resources
+SMBasic: provid Admin users
 Newspage: Recheck all conditions for Optional ACL support
 Newspage: not show disable news and add admin submit news to submit disable 
 SMBasic: Check cookies run every page if anonymous, avoid creating a anonymous session, cookie anon or something like that.
 SMBasic/Core: Passsword valid characters filter
+New: comments plugin for resources
+
 #BACKLOG
 
+Admin plugin: Improved
 SMBasic SMBasic_ProfileChange() function too big recheck
 SMBasic: Check if can reduce some big fuctions
 SimpleACL: Improve
@@ -46,6 +42,8 @@ Newspage-> Link source (optional/config) & Link Related
 SMBasic: session expire problem (server VS custom) use session_start or custom session
 SMBasic:clean  all users expired sessions  on each user logout or when?
 }
+X: Local user time VS Server Time
+*: Track  config['BACKLINK'] with the last backlink or keep javascript -1?;
 New:User private message plugin
 New:Forum plugin
 New:Shop plugin

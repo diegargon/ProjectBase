@@ -34,35 +34,17 @@ function news_index_page (){
         require_once("/includes/news_sendform.inc.php");
         news_form_submit_process();
     } else {
-        do_action("common_web_structure");
+        require_once("includes/news.portal.php");
+        do_action("common_web_structure");       
         news_portal();
     }
-}
-
-function news_portal() {
-    global $tpldata, $config;
-        
-    $news_nLayout = news_layout_select();
-    $news_layout_tpl = "news_body_style" . $news_nLayout++;
-    
-    if ($config['LAYOUT_SWITCH']) {           
-        $tpldata['news_nSwitch'] = $news_nLayout;
-        register_action("nav_element", "news_layout_switcher", 6);
-    }
-    $tpldata['FEATURED'] = get_news_featured();
-    $tpldata['COL1_ARTICLES'] = get_news(1,0);
-    $tpldata['COL2_ARTICLES'] = get_news(2,0);
-    $tpldata['COL3_ARTICLES'] = get_news(1,0);                  
-    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));     
 }
 
 function news_page() {
     global $tpldata, $config, $LANGDATA, $acl_auth;
     
-    require_once("includes/news_page.inc.php");
-    
-    //TODO: Split simplified in functions -> news_page.inc
-
+    require_once("includes/news_page.inc.php");   
+    //TODO: Split simplified in functions -> news_page.inc    
     
     if( (empty($_GET['nid'])) || ($nid = S_VAR_INTEGER($_GET['nid'], 8, 1)) == false) {
         $tpldata['E_MSG'] = $LANGDATA['L_NEWS_NOT_EXIST'];

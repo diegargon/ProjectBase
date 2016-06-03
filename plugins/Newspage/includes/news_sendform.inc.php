@@ -176,7 +176,6 @@ function Newspage_SendNewsScript() {
     return $script;
 }
 
-
 function news_db_submit($news_data) {
     global $config;
     
@@ -229,4 +228,25 @@ function news_clean_featured($lang) {
         $q .= "WHERE lang = '$lang'";
     }            
     db_query($q);
+}
+
+function news_get_categories_select() {
+    $query = news_get_categories();
+    
+    $select = "<select name='news_category' id='news_category'>";
+    while($row = db_fetch($query)) {
+        $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";        
+    } 
+    $select .= "</select>";
+    return $select;
+}
+
+function news_get_categories() {
+    global $config;
+    
+    $lang_id = ML_iso_to_id($config['WEB_LANG']);
+    
+    $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage' AND lang_id = '$lang_id'";
+    $query = db_query($q);
+    return $query;
 }
