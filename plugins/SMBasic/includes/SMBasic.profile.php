@@ -12,7 +12,7 @@ function SMBasic_ProfileScript() {
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }           
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/profile.js\"></script>\n";
+    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/tpl/js/profile.js\"></script>\n";
     
     return $script;
 }

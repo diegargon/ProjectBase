@@ -25,7 +25,7 @@ function SMBasic_Login() {
             if($user['active'] == 0) {
                     SMBasic_setSession($user);
                     if ( ($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])  ){         
-                        SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']);
+                        SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']); //TODO filter
                     }                    
                     $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);                
             } else {
@@ -125,7 +125,7 @@ function SMBasic_user_reset_account() {
         $password_encrypted = do_action("encrypt_password", $password);
         $q = "UPDATE {$config['DB_PREFIX']}users SET password = '$password_encrypted', reset = '0' WHERE uid = '{$user['uid']}' ";
         db_query($q);
-        $URL = "http://$_SERVER[HTTP_HOST]". "/{$config['WEB_LANG']}/". "login.php";
+        $URL = "http://{$_SERVER['HTTP_HOST']}". "/{$config['WEB_LANG']}/". "login.php";  //TODO FILTER
         $msg = $LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] . "\n" . "$password\n" ."$URL"; 
         mail($email, $LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'], $msg);
         echo $LANGDATA['L_RESET_PASSWORD_SUCCESS']; 
@@ -155,7 +155,7 @@ function SMBasic_LoginScript() {
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }      
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/login.js\"></script>\n";
+    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/tpl/js/login.js\"></script>\n";
            
     return $script;
 }
