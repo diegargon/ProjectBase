@@ -2,6 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
+if (!defined('IN_WEB')) { exit; }
 ?>
 <div  class="clear bodysize page">   
     <div class="register_box">

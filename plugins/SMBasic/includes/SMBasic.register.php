@@ -26,7 +26,7 @@ function SMBasic_Register() {
         return false; 
     }    
     if( ($config['smbasic_need_username'] == 1) && 
-        (($username = S_VAR_CHAR_AZ_NUM($_POST['username'], $config['smbasic_max_username'])) == false)) {
+        (($username = S_POST_CHAR_AZNUM("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false)) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_USERNAME']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
@@ -38,7 +38,7 @@ function SMBasic_Register() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    if( ($password = s_char($_POST['password'], $config['smbasic_max_password'])) == false ) {  //TODO FILTER
+    if( ($password = s_char($_POST['password'], $config['smbasic_max_password'])) == false ) {  //TODO PASSWORD FILTER
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
@@ -48,14 +48,14 @@ function SMBasic_Register() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'";  //FIX SELECT username or/and mixed with email
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'";  
     $query = db_query($q);     
     if ((db_num_rows($query)) > 0) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                
     }
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'";  //FIX SELECT email or/and mixed with email
+    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'"; 
     $query = db_query($q);    
     if ((db_num_rows($query)) > 0) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);    
@@ -95,11 +95,10 @@ function SMBasic_create_reg_mail($active) {
     global $LANGDATA, $config;
     
     if ($active > 1) {        
-        $URL = "http://{$_SERVER['HTTP_HOST']}". "/{$config['WEB_LANG']}/". "login.php" . "?active=$active";
+        $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php" . "?active=$active";
         $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL";         
-    } else {
-        $register_message = $LANGDATA['L_REGISTER_OKMSG'];
-        $URL = "http://{$_SERVER['HTTP_HOST']}". "/{$config['WEB_LANG']}/" . "login.php";
+    } else {        
+        $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/" . "login.php";
         $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
     }      
     return $msg;

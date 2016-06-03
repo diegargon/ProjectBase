@@ -25,7 +25,7 @@ function SMBasic_ProfileChange() {
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;
     }    
-    if (!$password = s_char($_POST['cur_password'], $config['smbasic_max_password'] )) {
+    if (!$password = s_char($_POST['cur_password'], $config['smbasic_max_password'] )) {  //TODO/FIX FILTER PASSWORD
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;        
@@ -68,17 +68,15 @@ function SMBasic_ProfileChange() {
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                        
         }    
-        if ( ($username = s_char($_POST['username'], $config['smbasic_max_username'])) == false) { //FIX function check allowed chars 
+        //if ( ($username = s_char($_POST['username'], $config['smbasic_max_username'])) == false) { 
+        if ( ($username = S_POST_CHAR_AZNUM("username", $config['smbasic_max_username'], $config['smbasic_max_username'])) == false) { 
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHAR']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                                    
         }
     }   
-    if ( ( $config['smbasic_need_email'] == 1) &&
-            ( $config['smbasic_can_change_email'] == 1)
-    ){
-        if ( ($email = S_POST_EMAIL("email")) == false
-        ) {
+    if ( ( $config['smbasic_need_email'] == 1) && ( $config['smbasic_can_change_email'] == 1) ){
+        if ( ($email = S_POST_EMAIL("email")) == false ) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_EMAIL']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                                    
@@ -102,9 +100,7 @@ function SMBasic_ProfileChange() {
     }        
     if ( ( $config['smbasic_need_username'] == 1) &&
             ( $config['smbasic_can_change_username'] == 1) &&
-            ( $user['username'] != $_POST['username'])
-    ){
-        
+            ( $user['username'] != $_POST['username']) ){        
         $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username='$username' LIMIT 1";
         $query = db_query($q);
         if (db_num_rows($query) > 0) {
@@ -115,8 +111,7 @@ function SMBasic_ProfileChange() {
     }        
     if ( ( $config['smbasic_need_email'] == 1) &&
             ( $config['smbasic_can_change_email'] == 1) &&
-            ( $user['email'] != $_POST['email'] ) 
-    ){        
+            ( $user['email'] != $_POST['email'] )  ){        
         $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
         $query = db_query($q);
         if (db_num_rows($query) > 0) {
@@ -126,23 +121,18 @@ function SMBasic_ProfileChange() {
         }               
     }     
     if ( ($config['smbasic_need_username'] == 0) ||  
-            ($config['smbasic_can_change_username'] == 0) ||
-            ($username == $user['username']) 
-    ) {
+            ($config['smbasic_can_change_username'] == 0) || 
+            ($username == $user['username']) ) {
         unset($username);
     }
     if ( ($config['smbasic_need_email'] == 0) ||  
             ($config['smbasic_can_change_email'] == 0) ||
-            ($email == $user['email']) 
-    ) {
+            ($email == $user['email']) ) {
         unset($email);
     }    
     //CHECK if something need change
-    if ( (empty($email)) &&
-            (empty($username)) &&
-            (empty($_POST['new_password'])) &&
-            (empty($_POST['r_password']))
-    ) {
+    if ( (empty($email)) && (empty($username)) && 
+            (empty($_POST['new_password'])) && (empty($_POST['r_password'])) ) {
         $response[] = array("status" => "6", "msg" => $LANGDATA['L_NOTHING_CHANGE']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                     

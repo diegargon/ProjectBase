@@ -4,7 +4,6 @@ by priority order
 
 #Priority
 
-News not display moderation = 1 if we use moderation news
 Newspage: editing news;
 X: Local user time VS Server Time
 SMBasic: ?When log with cookie change sid and update cookie sid.?
@@ -19,7 +18,8 @@ Admin plugin: Improved
 New:comments plugin for resources
 Newspage: Recheck all conditions for Optional ACL support
 Newspage: not show disable news and add admin submit news to submit disable 
-
+SMBasic: Check cookies run every page if anonymous, avoid creating a anonymous session, cookie anon or something like that.
+SMBasic/Core: Passsword valid characters filter
 #BACKLOG
 
 SMBasic SMBasic_ProfileChange() function too big recheck

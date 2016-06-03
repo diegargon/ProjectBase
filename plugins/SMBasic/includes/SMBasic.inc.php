@@ -59,26 +59,25 @@ function SMBasic_checkSession() {
 
 function SMBasic_checkCookies() {
     global $config;
-    $cookie_uid = $config['smbasic_cookie_prefixname']."uid";
-    $cookie_sid = $config['smbasic_cookie_prefixname']."sid";
-    if (!empty($_COOKIE[$cookie_uid]) && !empty($_COOKIE[$cookie_sid])) {
-        $cookie_uid =  s_num($_COOKIE[$cookie_uid], 11);
-        $cookie_sid = s_char($_COOKIE[$cookie_sid], 32);
+
+    $cookie_uid = S_COOKIE_INT("{$config['smbasic_cookie_prefixname']}uid", 11);    
+    $cookie_sid = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefixname']}sid", 32);        
+    
+    if ($cookie_uid != false && $cookie_sid != false) {
         $q = "SELECT * FROM {$config['DB_PREFIX']}sessions"
             . " WHERE session_id = '$cookie_sid' AND session_uid = '$cookie_uid' LIMIT 1";
         $query = db_query($q);
         if (db_num_rows($query) > 0) {           
-            if( ($user = SMBasic_getUserbyID($cookie_uid)) != false ) {
+            if( ($user = SMBasic_getUserbyID($cookie_uid)) != false ) {                
                 SMBasic_setSession($user);
-                SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']); 
+                SMBasic_setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11)); //New sid by setSession -> new cookies
                 return true;
             }
         } else { 
             SMBasic_sessionDestroy();
-            db_free_result($query);
         }
     }
-    
+   
     return false;
 }
 
@@ -161,7 +160,7 @@ function SMBasic_setSession($user) {
     
     $q = "DELETE FROM {$config['DB_PREFIX']}sessions WHERE session_uid = {$user['uid']}";
     db_query($q);
-    $q = "INSERT INTO $config[DB_PREFIX]sessions ("
+    $q = "INSERT INTO {$config['DB_PREFIX']}sessions ("
      . "session_id, session_uid, session_ip, session_browser, session_expire"
      . ")VALUES("
      . "'{$_SESSION['sid']}', '{$user['uid']}', '$ip', '$user_agent', '$session_expire'"
@@ -192,11 +191,10 @@ function SMBasic_getUserbyID($uid) {
 }
 
 function SMBasic_getUserID () { //track used by externa/ news plugin only ATM
-    if(!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1 ) {
-        return false;
-    } else {
-        return S_VAR_INTEGER($_SESSION['uid'], 11);
-    }
+    if (S_SESSION_INT("isLogged", 1) == 1) {
+        return S_SESSION_INT("uid", 11);
+    } 
+    return false;
 }
 
 function SMBasic_sessionToken() {

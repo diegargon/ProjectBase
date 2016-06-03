@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function s_char($char, $size) {
+function s_char($char, $size) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUNCTION
     print_debug("Deprecated: schar $char");
     if (strlen($char) <= $size) {
         return input_filter($char);
@@ -14,7 +14,7 @@ function s_char($char, $size) {
     return false;
 }
 
-function s_num($num, $size) {
+function s_num($num, $size) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUNCTION
     print_debug("Deprecated: snum $num use S_VAR_INTEGER");
     if(is_numeric($num) && (strlen($num) <= $size)) {
         return $num;
@@ -22,11 +22,11 @@ function s_num($num, $size) {
     return false;
 }
 
-function s_bool($bool) {
+function s_bool($bool) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUNCTION
     return filter_var($bool, FILTER_VALIDATE_BOOLEAN);
 }
 
-function input_filter($data) {
+function input_filter($data) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUNCTION and do a decent filter function if not already do.
     global $config;
     
     if (is_array($data)) {
@@ -74,6 +74,14 @@ function S_POST_EMAIL($var) {
     }    
     return filter_input(INPUT_POST, $var, FILTER_VALIDATE_EMAIL);
 }
+function S_POST_CHAR_AZNUM ($var, $max_size = null, $min_size = null) {
+    if(empty($_POST[$var])) {
+       return false;
+    }    
+
+    return S_VAR_CHAR_AZ_NUM ($_POST[$var], $max_size, $min_size);    
+}
+
 
 //$_SERVER
 function S_SERVER_USER_AGENT () {
@@ -89,7 +97,6 @@ function S_SERVER_REMOTE_ADDR () {
     }
     return filter_input(INPUT_SERVER, 'REMOTE_ADDR',FILTER_VALIDATE_IP);
 }
-
 //VAR
 function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
@@ -205,11 +212,44 @@ function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null) {
       return false;
     }  
     if ($config['REMOTE_CHECKS']) {
-        $headers = @get_headers($url);
+        $headers = get_headers($url);
         if($headers['0'] == 'HTTP/1.1 404 Not Found') {
             return false;
         }
     }
  
     return $url;
+}
+//SESSION
+function S_SESSION_INT($var, $max_size = null, $min_size = null) {
+    if (empty($_SESSION[$var])) { 
+        return false;
+    }
+    return S_VAR_INTEGER($_SESSION[$var], $max_size, $min_size);
+}
+function S_SESSION_CHAR_AZ($var, $max_size = null, $min_size = null) {
+    if (empty($_SESSION[$var])) { 
+        return false;
+    }    
+    return S_VAR_CHAR_AZ($_SESSION[$var], $max_size, $min_size);
+}
+function S_SESSION_CHAR_AZNUM($var, $max_size = null, $min_size = null) {
+    if (empty($_SESSION[$var])) { 
+        return false;
+    }    
+    return S_VAR_CHAR_AZ_NUM ($_SESSION[$var], $max_size, $min_size);
+}
+//COOKIE
+function S_COOKIE_INT($var, $max_size = null, $min_size = null) {
+    
+    if (empty($_COOKIE[$var])) { 
+        return false;
+    }
+    return S_VAR_INTEGER($_COOKIE[$var], $max_size, $min_size);
+}
+function S_COOKIE_CHAR_AZNUM($var, $max_size = null, $min_size = null) {    
+    if (empty($_COOKIE[$var])) { 
+        return false;
+    }    
+    return S_VAR_CHAR_AZ_NUM ($_COOKIE[$var], $max_size, $min_size);
 }

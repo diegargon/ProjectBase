@@ -24,8 +24,8 @@ function SMBasic_Login() {
         if ($user = db_fetch($query)) {
             if($user['active'] == 0) {
                     SMBasic_setSession($user);
-                    if ( ($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])  ){         
-                        SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']); //TODO filter
+                    if ( ($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])  ){                                 
+                        SMBasic_setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11));
                     }                    
                     $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);                
             } else {
@@ -95,7 +95,7 @@ function SMBasic_RequestResetOrActivation() {
             $reset = mt_rand(11111111, 2147483647);
             $q = "UPDATE {$config['DB_PREFIX']}users SET reset = '$reset' WHERE email = '$email'";
             db_query($q);
-            $URL = "http://$_SERVER[HTTP_HOST]". "/{$config['WEB_LANG']}/". "login.php" . "?reset=$reset&email=$email";
+            $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php" . "?reset=$reset&email=$email";
             $msg = $LANGDATA['L_RESET_EMAIL_MSG'] . "\n" ."$URL"; 
             mail($email, $LANGDATA['L_RESET_EMAIL_SUBJECT'], $msg);
             $response[] = array("status" => "2", "msg" => $LANGDATA['L_RESET_EMAIL']);
@@ -125,7 +125,7 @@ function SMBasic_user_reset_account() {
         $password_encrypted = do_action("encrypt_password", $password);
         $q = "UPDATE {$config['DB_PREFIX']}users SET password = '$password_encrypted', reset = '0' WHERE uid = '{$user['uid']}' ";
         db_query($q);
-        $URL = "http://{$_SERVER['HTTP_HOST']}". "/{$config['WEB_LANG']}/". "login.php";  //TODO FILTER
+        $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php"; 
         $msg = $LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] . "\n" . "$password\n" ."$URL"; 
         mail($email, $LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'], $msg);
         echo $LANGDATA['L_RESET_PASSWORD_SUCCESS']; 
