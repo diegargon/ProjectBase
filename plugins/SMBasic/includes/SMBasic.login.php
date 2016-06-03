@@ -103,8 +103,6 @@ function SMBasic_RequestResetOrActivation() {
             return false;  
         }
     }    
-    $response[] = array("status" => "1", "msg" => $email);
-    echo json_encode($response, JSON_UNESCAPED_SLASHES);
 
     return false;                         
 }

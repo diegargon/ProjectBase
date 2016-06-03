@@ -4,6 +4,7 @@ by priority order
 
 #Priority
 
+use login_ES.js login_EN.js for errror messages?
 News not display moderation = 1 if we use moderation news
 Newspage: editing news;
 X: Local user time VS Server Time

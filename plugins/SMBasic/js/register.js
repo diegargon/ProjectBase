@@ -36,7 +36,7 @@ $(document).ready(function(){
                 alert("Email incorrecto");        
         } else if( password == '' || password == null) {
                 $('#password').css("border","2px solid red");
-                $('#password').css("box-shadow","0 0 3px red");                            
+                $('#password').css("box-shadow","0 0 3px red");
                 alert("Password es obligatorio");
         } else if( password.length < 8 ){
             $('#password').css("border","2px solid red");

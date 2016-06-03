@@ -2,7 +2,6 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
-
 $(document).ready(function(){
     
     $('#reset_password_chk').click(function(){
@@ -24,7 +23,7 @@ $(document).ready(function(){
     $("#reset_password_btn").click(function(){           
            $.post("", $( "#login_form" ).serialize() ,
             function(data) {
-               alert(data); //DEBUG
+               //alert(data); //DEBUG
                 var json = $.parseJSON(data);
                 if (json[0].status == 1) {
                     $('#email').css("border","2px solid red");
@@ -52,38 +51,46 @@ $(document).ready(function(){
 
         var email = $("#email").val();
         var password = $("#password").val();
-        // Checking for blank fields.
-            $('input[type="text"]').css("border","1px solid black");
-            $('input[type="text"]').css("box-shadow","0 0 0px black");
-            $('input[type="password"]').css("border","1px solid black");
-            $('input[type="password"]').css("box-shadow","0 0 0px black");            
+        //reset red borders
+            $('#email').css("border","1px solid black");
+            $('#email').css("box-shadow","0 0 0px black");
+            $('#password').css("border","1px solid black");
+            $('#password').css("box-shadow","0 0 0px black");
+        // Checking for blank fields. 
         if( email == '' ) {              
-            $('input[type="text"]').css("border","2px solid red");
-            $('input[type="text"]').css("box-shadow","0 0 3px red");
+            $('#email').css("border","2px solid red");
+            $('#email').css("box-shadow","0 0 3px red");
             alert("Email es obligatorio");
         } else if(reg.test(email) == false ) {
-            $('input[type="text"]').css("border","2px solid red");
-            $('input[type="text"]').css("box-shadow","0 0 3px red");         
+            $('#email').css("border","2px solid red");
+            $('#email').css("box-shadow","0 0 3px red");     
             alert("Email incorrecto");        
         } else if( password == '' ) {
-                $('input[type="password"]').css("border","2px solid red");
-                $('input[type="password"]').css("box-shadow","0 0 3px red");                            
-                alert("Password es obligatorio");
+            $('#password').css("border","2px solid red");
+            $('#password').css("box-shadow","0 0 3px red");                       
+            alert("Password es obligatorio");
         } else if( password.length < 8 ){
-            $('input[type="password"]').css("border","2px solid red");
-            $('input[type="password"]').css("box-shadow","0 0 3px red");
+            $('#password').css("border","2px solid red");
+            $('#password').css("box-shadow","0 0 3px red");
             alert("La contraseña tiene que tener más de 8 caracteres");                                
         } else {
             
             $.post("", $( "#login_form" ).serialize() + '&login=1',
             function(data) {
-                alert(data); //DEBUG
+                //alert(data); //DEBUG
                 var json = $.parseJSON(data);
                 if(json[0].status == 'ok') {
                     $("form")[0].reset();                
                     $(location).attr('href', json[0].msg);
-                } else {
-                    $('input[type="text"],input[type="password"]').css({"border":"2px solid red","box-shadow":"0 0 3px red"});
+                } else if (json[0].status == 1) {
+                    $('#email').css("border","2px solid red");
+                    $('#email').css("box-shadow","0 0 3px red");                      
+                    alert(json[0].msg);                    
+                } else if (json[0].status == 2) {
+                    $('#password').css("border","2px solid red");
+                    $('#password').css("box-shadow","0 0 3px red");                       
+                    alert(json[0].msg);                                        
+                } else {                    
                     alert(json[0].msg);
                     return false;
                 }
