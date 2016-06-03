@@ -212,7 +212,7 @@ h1,h2,h3,h4,h5,h6{
 }
 .p_center_small {
     text-align: center;    
-    font-size: 12px;    
+    font-size: 12px;
 }
 .p_center_medium {
     text-align: center;
@@ -220,5 +220,6 @@ h1,h2,h3,h4,h5,h6{
 }
 .p_center_big {
     text-align: center;
-    font-size: 28px;    
+    font-size: 28px;
+    line-height: 1em;    
 }

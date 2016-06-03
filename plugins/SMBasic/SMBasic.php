@@ -48,6 +48,8 @@ function SMBasic_Init() {
 function SMBasic_regPage() {
     global $config;
 
+    require_once("includes/SMBasic.register.php");
+    
     if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];                
         do_action("error_message_page");
@@ -71,6 +73,9 @@ function SMBasic_regPage() {
 }
 
 function SMBasic_profilePage() {
+    
+    require_once("includes/SMBasic.profile.php");
+    
     if(empty($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOT_LOGGED'];
         do_action("error_message_page");
@@ -96,6 +101,8 @@ function SMBasic_profilePage() {
 }
 
 function SMBasic_loginPage () {
+
+    require_once("includes/SMBasic.login.php");
     
     if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];        
@@ -140,47 +147,6 @@ function SMBasic_navLogReg() {
        $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/register.php'>{$LANGDATA['L_REGISTER']}</a></li>\n";
     }
     return $elements;
-}
-
-function SMBasic_LoginScript() {
-    $script = "";
-    
-    if (!check_jsScript("jquery.min.js")) 
-    {
-        global $external_scripts;
-        $external_scripts[] = "jquery.min.js";
-        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }      
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/login.js\"></script>\n";
-           
-    return $script;
-}
-
-function SMBasic_RegisterScript() {
-    $script = "";
-    
-    if (!check_jsScript("jquery.min.js")) 
-    {
-        global $external_scripts;
-        $external_scripts[] = "jquery.min.js";
-        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }           
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/register.js\"></script>\n";
-    
-    return $script;
-}
-
-function SMBasic_ProfileScript() {
-    $script = "";
-    if (!check_jsScript("jquery.min.js")) 
-    {
-        global $external_scripts;
-        $external_scripts[] = "jquery.min.js";
-        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }           
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/js/profile.js\"></script>\n";
-    
-    return $script;
 }
 
 function SMBasic_logoutPage() {
