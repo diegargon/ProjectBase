@@ -9,9 +9,7 @@ $LANGDATA['L_ERROR'] = "Error";
 $LANGDATA['L_ERROR_NOACCESS'] = "No tienes permiso para acceder";
 $LANGDATA['L_BACKHOME'] = "Volver al inicio";
 $LANGDATA['L_GENERAL'] = "General";
-
 $LANGDATA['L_SEP'] = ": ";
-
 //PLUGIN_STATE
 $LANGDATA['L_PL_STATE'] = "Estado del plugin";
 $LANGDATA['L_PL_NAME'] = "Nombre";
