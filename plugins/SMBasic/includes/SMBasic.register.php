@@ -10,8 +10,8 @@ function SMBasic_RegisterScript() {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }           
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/tpl/js/register.js\"></script>\n";
+    }               
+    $script .= getScript_fileCode("SMBasic", "register");
     
     return $script;
 }
