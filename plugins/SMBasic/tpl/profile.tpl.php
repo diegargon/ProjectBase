@@ -5,7 +5,7 @@
 ?>
 <div  class="clear bodysize page">   
     <div class="profile_box">        
-        <form  action="" autocomplete="off" method="post"> 
+        <form id="profile_form" action="" autocomplete="off" method="post"> 
                 <h1><?php print $LANGDATA['L_PROFILE']?></h1> 
                 <dl>
                     <dt><label><?php print $LANGDATA['L_USERNAME']?></label><br/>

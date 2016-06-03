@@ -26,7 +26,7 @@ $(document).ready(function(){
             $('#new_password').css("border","1px solid black");
             $('#new_password').css("box-shadow","0 0 0px black");                        
            
-            $.post("profile.php",{ email1: email, cur_password1:cur_password, new_password1:new_password, r_password1: r_password, username1:username, profile1:profile},
+            $.post("", $( "#profile_form" ).serialize() + '&profile=1' ,
             function(data) {                
                 //alert(data); //DEBUG
                 var json = $.parseJSON(data);

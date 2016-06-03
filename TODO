@@ -4,7 +4,6 @@ by priority order
 
 #Priority
 
-use login_ES.js login_EN.js for errror messages?
 News not display moderation = 1 if we use moderation news
 Newspage: editing news;
 X: Local user time VS Server Time
@@ -24,18 +23,18 @@ Newspage: not show disable news and add admin submit news to submit disable
 #BACKLOG
 
 SMBasic SMBasic_ProfileChange() function too big recheck
+SMBasic: Check if can reduce some big fuctions
 SimpleACL: Improve
 SimpleACL support multiple checks for something like acl_ask("news_submit|admin_all");
 core: Better method for avoid duplicate standard scripts like jquery
 DebugWindow: improved debug and debug window with filters, print_debug ($msg, FILTER_PLUGIN_LOAD) ?¿?¿?¿
-SMBasic: Login/Register  scripts fix language method like profile
 SMBasic: Remove need_email since its necessary always
+SMBasic: profile.js not form checks client/javascript side
 Plugins: avoid the need of root files for plugins.
 tplbasic: Improve/rewrite
 ALL: track number db querys for stats?¿?¿?¿
 New or add to DebugWindow: Debug to file and change name to SimpleDebug or other...
 Newspage: Extra functions for addons
-SMBasic: Check if can reduce some big fuctions
 Admin: Mobile menu
 Core: Mobile Menu.
 NEws: add support for display ALL LANG news

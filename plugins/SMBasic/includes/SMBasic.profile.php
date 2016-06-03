@@ -20,32 +20,32 @@ function SMBasic_ProfileScript() {
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config; 
     
-    if( empty($_POST['cur_password1']) ||  strlen ($_POST['cur_password1']) <  $config['smbasic_min_password']) {
+    if( empty($_POST['cur_password']) ||  strlen ($_POST['cur_password']) <  $config['smbasic_min_password']) {
        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;
     }    
-    if (!$password = s_char($_POST['cur_password1'], $config['smbasic_max_password'] )) {
+    if (!$password = s_char($_POST['cur_password'], $config['smbasic_max_password'] )) {
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;        
     }   
-    if ( (!empty($_POST['new_password1']) && empty($_POST['r_password1']) ) ||
-            (!empty($_POST['r_password1']) && empty($_POST['new_password1']) )
+    if ( (!empty($_POST['new_password']) && empty($_POST['r_password']) ) ||
+            (!empty($_POST['r_password']) && empty($_POST['new_password']) )
     ) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEW_BOTH_PASSWORD']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                
     }
-    if ( (!empty($_POST['new_password1']) && !empty($_POST['r_password1'])) &&
-            ((strlen($_POST['new_password1']) < $config['smbasic_min_password']) ||
-            (strlen($_POST['r_password1']) < $config['smbasic_min_password']))
+    if ( (!empty($_POST['new_password']) && !empty($_POST['r_password'])) &&
+            ((strlen($_POST['new_password']) < $config['smbasic_min_password']) ||
+            (strlen($_POST['r_password']) < $config['smbasic_min_password']))
     ) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEWPASS_TOOSHORT']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;         
     }   
-    if ( $_POST['new_password1'] != $_POST['r_password1']) {
+    if ( $_POST['new_password'] != $_POST['r_password']) {
        $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEW_PASSWORD_NOTMATCH']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;           
@@ -53,22 +53,22 @@ function SMBasic_ProfileChange() {
     if ( ( $config['smbasic_need_username'] == 1) &&
             ( $config['smbasic_can_change_username'] == 1)
     ){
-        if(empty($_POST['username1'])) {
+        if(empty($_POST['username'])) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_EMPTY']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                
         } 
-        if (strlen($_POST['username1']) < $config['smbasic_min_username'] ) {
+        if (strlen($_POST['username']) < $config['smbasic_min_username'] ) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_SHORT']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                        
         }
-        if (strlen($_POST['username1']) > $config['smbasic_max_username'] ) {
+        if (strlen($_POST['username']) > $config['smbasic_max_username'] ) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_LONG']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                        
         }    
-        if ( ($username = s_char($_POST['username1'], $config['smbasic_max_username'])) == false) { //FIX function check allowed chars 
+        if ( ($username = s_char($_POST['username'], $config['smbasic_max_username'])) == false) { //FIX function check allowed chars 
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHAR']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                                    
@@ -77,7 +77,7 @@ function SMBasic_ProfileChange() {
     if ( ( $config['smbasic_need_email'] == 1) &&
             ( $config['smbasic_can_change_email'] == 1)
     ){
-        if ( ($email = S_POST_EMAIL("email1")) == false
+        if ( ($email = S_POST_EMAIL("email")) == false
         ) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_EMAIL']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
@@ -102,7 +102,7 @@ function SMBasic_ProfileChange() {
     }        
     if ( ( $config['smbasic_need_username'] == 1) &&
             ( $config['smbasic_can_change_username'] == 1) &&
-            ( $user['username'] != $_POST['username1'])
+            ( $user['username'] != $_POST['username'])
     ){
         
         $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username='$username' LIMIT 1";
@@ -115,7 +115,7 @@ function SMBasic_ProfileChange() {
     }        
     if ( ( $config['smbasic_need_email'] == 1) &&
             ( $config['smbasic_can_change_email'] == 1) &&
-            ( $user['email'] != $_POST['email1'] ) 
+            ( $user['email'] != $_POST['email'] ) 
     ){        
         $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
         $query = db_query($q);
@@ -140,8 +140,8 @@ function SMBasic_ProfileChange() {
     //CHECK if something need change
     if ( (empty($email)) &&
             (empty($username)) &&
-            (empty($_POST['new_password1'])) &&
-            (empty($_POST['r_password1']))
+            (empty($_POST['new_password'])) &&
+            (empty($_POST['r_password']))
     ) {
         $response[] = array("status" => "6", "msg" => $LANGDATA['L_NOTHING_CHANGE']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
@@ -164,8 +164,8 @@ function SMBasic_ProfileChange() {
             $need_coma = 1;
         }
     }       
-    if (!empty($_POST['new_password1'])) {
-        if  ( ($new_password = s_char($_POST['new_password1'], $config['smbasic_max_password'])) != false) { //FIX password validation
+    if (!empty($_POST['new_password'])) {
+        if  ( ($new_password = s_char($_POST['new_password'], $config['smbasic_max_password'])) != false) { //FIX password validation
             $new_password_encrypt = do_action("encrypt_password", $new_password);
             if ($need_coma) {               
                $q .= ", password = '$new_password_encrypt'";
@@ -184,4 +184,3 @@ function SMBasic_ProfileChange() {
 
     return false;
 }
-

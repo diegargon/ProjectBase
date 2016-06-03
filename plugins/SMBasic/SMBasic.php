@@ -56,10 +56,10 @@ function SMBasic_regPage() {
         return false;
     }
     
-    if ((($config['smbasic_need_email'] == 1) && !isset($_POST['email1'])  ||
-        ($config['smbasic_need_username'] == 1) && !isset($_POST['username1'])) &&
-        !isset($_POST['password1']) &&
-        !isset($_POST['register1'])
+    if ((($config['smbasic_need_email'] == 1) && !isset($_POST['email'])  ||
+        ($config['smbasic_need_username'] == 1) && !isset($_POST['username'])) &&
+        !isset($_POST['password']) &&
+        !isset($_POST['register'])
         ) {
         do_action("common_web_structure");       
         getCSS_filePath("SMBasic");
@@ -79,11 +79,11 @@ function SMBasic_profilePage() {
         do_action("error_message_page");
         return false;
     }
-    
-    if(isset($_POST['profile1']) ) {          
+
+    if(isset($_POST['profile']) ) {          
         SMBasic_ProfileChange();       
     } 
-    if (!isset($_POST['profile1']) ) {
+    if (!isset($_POST['profile']) ) {
         if( ($user = SMBasic_getUserbyID($_SESSION['uid'])) == false ) {
             //TODO error manager
             echo "Error: 3242";

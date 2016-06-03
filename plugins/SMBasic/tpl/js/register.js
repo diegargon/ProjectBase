@@ -2,7 +2,6 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
-
 $(document).ready(function(){
     $("#register").click(function(){
         //Email Validation
@@ -25,35 +24,31 @@ $(document).ready(function(){
         if( username == '' && username != null) {
             $('#username').css("border","2px solid red");
             $('#username').css("box-shadow","0 0 3px red");
-            alert("Username es obligatorio");            
+            alert("Username required");            
         } else if( email == '' ) {             
             $('#email').css("border","2px solid red");
             $('#email').css("box-shadow","0 0 3px red");
-            alert("Email es obligatorio");
+            alert("Email required");
         } else if(email != null && reg.test(email) == false) {
                 $('#email').css("border","2px solid red");
                 $('#email').css("box-shadow","0 0 3px red");         
-                alert("Email incorrecto");        
+                alert("Invalid email");        
         } else if( password == '' || password == null) {
                 $('#password').css("border","2px solid red");
                 $('#password').css("box-shadow","0 0 3px red");
-                alert("Password es obligatorio");
+                alert("Password required");
         } else if( password.length < 8 ){
             $('#password').css("border","2px solid red");
             $('#password').css("box-shadow","0 0 3px red");
-            alert("La contraseña tiene que tener más de 8 caracteres");                                
-        } else if( rpassword.length < 8 ){
-            $('#rpassword').css("border","2px solid red");
-            $('#rpassword').css("box-shadow","0 0 3px red");
-            alert("La contraseña tiene que tener más de 8 caracteres");                                
+            alert("Password too small");                                
         } else if( password != rpassword ){
             $('#password').css("border","2px solid red");
             $('#password').css("box-shadow","0 0 3px red");
             $('#rpassword').css("border","2px solid red");
             $('#rpassword').css("box-shadow","0 0 3px red");
-            alert("Contraseñas no concuerdan");
+            alert("Password not match");
         } else {            
-            $.post("register.php",{ email1: email, password1:password, username1:username, register1:register},
+            $.post("", $( "#register_form" ).serialize() ,
             function(data) {                
                 //alert(data); //DEBUG
                 var json = $.parseJSON(data);
@@ -61,11 +56,21 @@ $(document).ready(function(){
                     alert(json[0].msg);
                     $("form")[0].reset();                
                     $(location).attr('href', json[0].url);
+                } else if (json[0].status == 1) {
+                    $('#email').css("border","2px solid red");
+                    $('#email').css("box-shadow","0 0 3px red");
+                    alert(json[0].msg);
+                } else if (json[0].status == 2) {
+                    $('#username').css("border","2px solid red");
+                    $('#username').css("box-shadow","0 0 3px red");
+                    alert(json[0].msg);                    
+                } else if (json[0].status == 3) {
+                    $('#password').css("border","2px solid red");
+                    $('#password').css("box-shadow","0 0 3px red");
+                    alert(json[0].msg);                   
                 } else {
                     alert(json[0].msg);
-                    return false;
-                }
-                
+                }                
             });    
         }
         return false;

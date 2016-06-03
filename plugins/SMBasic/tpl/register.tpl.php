@@ -5,7 +5,7 @@
 ?>
 <div  class="clear bodysize page">   
     <div class="register_box">
-        <form  action="" autocomplete="off" method="post"> 
+        <form  id="register_form" action="" autocomplete="off" method="post"> 
             <h1><?php print $LANGDATA['L_REGISTER']?></h1> 
 <?php 
 if($config['smbasic_need_username']) {
