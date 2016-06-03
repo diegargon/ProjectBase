@@ -70,6 +70,35 @@ function getCSS_filePath($plugin, $filename = null) {
     addto_tplvar("LINK", $css);
 }
 
+function getScript_fileCode($plugin, $filename = null) {
+    global $config;
+    
+    if(empty($filename)) {
+        $filename = $plugin;
+    }    
+    if(TPL_DEBUG) { print_debug("Get Script called by-> $plugin for get a $filename"); }
+
+    $USER_LANG_PATH = "tpl/{$config['THEME']}/js/$filename.{$config['WEB_LANG']}.js"; 
+    $DEFAULT_LANG_PATH = "plugins/$plugin/tpl/js/$filename.{$config['WEB_LANG']}.js";     
+    $USER_PATH = "tpl/{$config['THEME']}/js/$filename.js";
+    $DEFAULT_PATH = "plugins/$plugin/tpl/js/$filename.js"; 
+    
+    if (file_exists($USER_LANG_PATH))  { //TODO Recheck priority later
+        $SCRIPT_PATH = $USER_LANG_PATH;
+    } else if (file_exists($USER_PATH)) {
+        $SCRIPT_PATH = $USER_PATH;
+    } else if (file_exists($DEFAULT_LANG_PATH))  {
+        $SCRIPT_PATH = $DEFAULT_LANG_PATH;
+    } else if (file_exists($DEFAULT_PATH)) {
+        $SCRIPT_PATH = $DEFAULT_PATH;
+    }
+    if (!empty($SCRIPT_PATH)) {
+        return  "<script type='text/javascript' src='$SCRIPT_PATH'></script>\n";
+    }
+    
+    return false;
+}
+
 function addto_tplvar ($tplvar, $data, $priority = 5) {
     global $tpldata;
     if (!isset($tpldata[$tplvar])) {

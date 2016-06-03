@@ -154,9 +154,8 @@ function SMBasic_LoginScript() {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }      
-    $script .= "<script type=\"text/javascript\" src=\"plugins/SMBasic/tpl/js/login.js\"></script>\n";
-           
+    }          
+    $script .= getScript_fileCode("SMBasic", "login");       
     return $script;
 }
 

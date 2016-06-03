@@ -60,19 +60,19 @@ $(document).ready(function(){
         if( email == '' ) {              
             $('#email').css("border","2px solid red");
             $('#email').css("box-shadow","0 0 3px red");
-            alert("Email is required");
+            alert("Email es obligatorio");
         } else if(reg.test(email) == false ) {
             $('#email').css("border","2px solid red");
             $('#email').css("box-shadow","0 0 3px red");     
-            alert("Email incorrect");        
+            alert("Email incorrecto");        
         } else if( password == '' ) {
             $('#password').css("border","2px solid red");
             $('#password').css("box-shadow","0 0 3px red");                       
-            alert("Password incorrect");
+            alert("Password es obligatorio");
         } else if( password.length < 8 ){
             $('#password').css("border","2px solid red");
             $('#password').css("box-shadow","0 0 3px red");
-            alert("Password too small");                                
+            alert("La contraseña es demasiado pequeña");                                
         } else {
             
             $.post("", $( "#login_form" ).serialize() + '&login=1',
