@@ -21,12 +21,10 @@ $(document).ready(function(){
         $('#reset_password_btn').toggle();
     });    
 
-    $("#reset_password_btn").click(function(){
-        var email = $("#email").val();
-        var reset_password_btn = $("#reset_password_btn").val();
-            $.post("login.php",{ email1: email, reset1:reset_password_btn},
+    $("#reset_password_btn").click(function(){           
+           $.post("", $( "#login_form" ).serialize() ,
             function(data) {
-               //alert(data); //DEBUG
+               alert(data); //DEBUG
                 var json = $.parseJSON(data);
                 if (json[0].status == 1) {
                     $('#email').css("border","2px solid red");
@@ -54,8 +52,6 @@ $(document).ready(function(){
 
         var email = $("#email").val();
         var password = $("#password").val();
-        var login = $("#login").val();
-        var rememberme = $('#rememberme').is(':checked'); 
         // Checking for blank fields.
             $('input[type="text"]').css("border","1px solid black");
             $('input[type="text"]').css("box-shadow","0 0 0px black");
@@ -79,9 +75,9 @@ $(document).ready(function(){
             alert("La contraseña tiene que tener más de 8 caracteres");                                
         } else {
             
-            $.post("login.php",{ email1: email, password1:password, rememberme1:rememberme, login1:login},
+            $.post("", $( "#login_form" ).serialize() + '&login=1',
             function(data) {
-                //alert(data); //DEBUG
+                alert(data); //DEBUG
                 var json = $.parseJSON(data);
                 if(json[0].status == 'ok') {
                     $("form")[0].reset();                
@@ -91,8 +87,7 @@ $(document).ready(function(){
                     alert(json[0].msg);
                     return false;
                 }
-            });
-            
+            });            
         }
         return false;
     });

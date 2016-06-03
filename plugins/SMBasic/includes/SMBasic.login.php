@@ -7,9 +7,9 @@ if (!defined('IN_WEB')) { exit; }
 function SMBasic_Login() {
     global $config, $LANGDATA;
     
-    if ( (($email = S_POST_EMAIL("email1")) != false) &&
+    if ( (($email = S_POST_EMAIL("email")) != false) &&
         ($email != null) &&
-        (($password = SMBasic_validate_password($_POST['password1']))!= false) &&
+        (($password = SMBasic_validate_password($_POST['password']))!= false) &&
         ($password != null)
     ){
         $password = do_action("encrypt_password", $password);
@@ -24,8 +24,7 @@ function SMBasic_Login() {
         if ($user = db_fetch($query)) {
             if($user['active'] == 0) {
                     SMBasic_setSession($user);
-                    if ( ($config['smbasic_session_persistence']) && ($_POST['rememberme1'] == "true") //true without "" not work (javascript true) 
-                    ){         
+                    if ( ($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])  ){         
                         SMBasic_setCookies($_SESSION['sid'], $_SESSION['uid']);
                     }                    
                     $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);                
@@ -50,7 +49,7 @@ function SMBasic_Login() {
 function SMBasic_user_activate_account() {
     global $config;
     
-    if ( ($active = s_num($_GET['active'], 12)) == false) {
+    if ( ($active = S_GET_INT("active", 12)) == false) {
         return false;
     }
     $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE active = '$active'";
@@ -68,7 +67,7 @@ function SMBasic_user_activate_account() {
 function SMBasic_RequestResetOrActivation() {
     global $LANGDATA, $config;
 
-    if ( ($email = S_POST_EMAIL("email1")) == false ) {
+    if ( ($email = S_POST_EMAIL("email")) == false ) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                                    
@@ -117,6 +116,9 @@ function SMBasic_user_reset_account() {
     
     $reset = S_GET_INT('reset');
     $email = S_GET_EMAIL('email');
+    if ($reset == false || $email == false) {
+        return false;
+    }
     $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email' AND reset = '$reset'";
     $query = db_query($q);
     if (db_num_rows($query) > 0) {

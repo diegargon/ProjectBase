@@ -7,7 +7,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_Init() {
-    global $config;
+    global $config;   
     
     if (DEBUG_PLUGINS_LOAD) { print_debug("SMBasic initialice<br/>"); }
 
@@ -56,12 +56,11 @@ function SMBasic_regPage() {
         return false;
     }
     
-    if ( 
-            (($config['smbasic_need_email'] == 1) && !isset($_POST['email1'])  ||
-            ($config['smbasic_need_username'] == 1) && !isset($_POST['username1'])) &&
-            !isset($_POST['password1']) &&
-            !isset($_POST['register1'])
-                    ) {
+    if ((($config['smbasic_need_email'] == 1) && !isset($_POST['email1'])  ||
+        ($config['smbasic_need_username'] == 1) && !isset($_POST['username1'])) &&
+        !isset($_POST['password1']) &&
+        !isset($_POST['register1'])
+        ) {
         do_action("common_web_structure");       
         getCSS_filePath("SMBasic");
         getCSS_filePath("SMBasic", "SMBasic-mobile");
@@ -72,8 +71,7 @@ function SMBasic_regPage() {
     }
 }
 
-function SMBasic_profilePage() {
-    
+function SMBasic_profilePage() {    
     require_once("includes/SMBasic.profile.php");
     
     if(empty($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
@@ -100,8 +98,7 @@ function SMBasic_profilePage() {
     }
 }
 
-function SMBasic_loginPage () {
-
+function SMBasic_loginPage () {   
     require_once("includes/SMBasic.login.php");
     
     if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
@@ -118,13 +115,9 @@ function SMBasic_loginPage () {
        SMBasic_user_reset_account();
        //TODO error msg on return false;
     }
-    if (
-        isset($_POST['email1']) && 
-        isset($_POST['password1']) &&
-        isset($_POST['login1'])
-    ) {
+    if ( isset($_POST['email']) && isset($_POST['password']) && isset($_POST['login']) ) {
         SMBasic_Login(); 
-    } else if (!empty($_POST['reset1'])){  
+    } else if ( !empty($_POST['reset_password_chk']) ) {  
         SMBasic_RequestResetOrActivation();
     } else {        
         do_action("common_web_structure");       
