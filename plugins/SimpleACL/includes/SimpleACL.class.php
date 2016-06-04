@@ -38,15 +38,24 @@ class ACL {
         }
     }
 
-    function get_roles_select($acl_group = null) {
+    function get_roles_select($acl_group = null, $selected = null) {
         global $LANGDATA;
     
         $query = $this->get_roles_query($acl_group);
     
         $select = "<select name='{$acl_group}_acl' id='{$acl_group}_acl'>";
-        $select .= "<option selected value=''>{$LANGDATA['L_ACL_NONE']}</option>";
+        if ($selected == null) {
+            $select .= "<option selected value=''>{$LANGDATA['L_ACL_NONE']}</option>";
+        } else {
+            $select .= "<option value=''>{$LANGDATA['L_ACL_NONE']}</option>";
+        }
         while($row = db_fetch($query)) {
-            $select .= "<option value='{$row['role_group']}_{$row['role_type']}'>{$LANGDATA[$row['role_name']]}</option>";        
+            $full_role = $row['role_group'] ."_". $row['role_type'];
+            if ($full_role != $selected) {
+                $select .= "<option value='$full_role'>{$LANGDATA[$row['role_name']]}</option>";
+            } else {
+                $select .= "<option selected value='$full_role'>{$LANGDATA[$row['role_name']]}</option>";
+            }
         } 
         $select .= "</select>";
         return $select;        
