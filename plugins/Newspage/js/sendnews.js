@@ -14,7 +14,7 @@ $(document).ready(function(){
         $('#news_main_media').css("border","1px solid black");
         $('#news_main_media').css("box-shadow","0 0 3px black");            
            
-        $.post("", $( "#form_sendnews" ).serialize() + '&sendnews_stage2=1' ,
+        $.post("", $( "#form_news" ).serialize() + '&sendnews_stage2=1' ,
         function(data) {                
             alert(data); //DEBUG             
             var json = $.parseJSON(data);
