@@ -15,9 +15,8 @@ function Multilang_init(){
         register_uniq_action("get_site_langs", "ML_get_langs_from_db");
     } else {
         register_uniq_action("get_site_langs", "ML_get_langs_from_json");
-    }
-    
-    $request_uri = $_SERVER['REQUEST_URI'];
+    }    
+    $request_uri = $_SERVER['REQUEST_URI']; //TODO FILTER
     
     if (
        (isset($_GET['lang'])) &&
@@ -38,11 +37,9 @@ function Multilang_init(){
     }
 
     if( //TODO: check lang agains pb_lang
-            isset($_POST['choose_lang']) &&
-            (($choose_lang =  S_VAR_CHAR_AZ($_POST['choose_lang'], 2, 2)) != false)
-            ) {
-            $request_uri = str_replace($config['WEB_LANG'], $choose_lang, $request_uri);
-            header('Location:' .$request_uri);
+        isset($_POST['choose_lang']) && (($choose_lang = S_POST_CHAR_AZ("choose_lang", 2, 2)) != false)) {
+        $request_uri = str_replace("/". $config['WEB_LANG'], "/".$choose_lang, $request_uri); // FIX better method than can replace something not wanted.
+        header('Location:' .$request_uri);
     }
 
     register_action("nav_element", "ML_nav", 6);
@@ -57,8 +54,7 @@ function ML_Script() {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
         $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }    
-   
+    }       
     $script = $script . "<script type='text/javascript'>\n"
             . "jQuery(function() {\n"
             . "jQuery('#choose_lang').change(function() {\n"
@@ -73,9 +69,8 @@ function ML_nav() {
     global $config;
 
     $mlnav = "<li class='nav_right'>"
-    . "<form action='?' method='post'>"
+    . "<form action='#' method='post'>"
     . "<select name='choose_lang' id='choose_lang'>";
-
     $LANGS = do_action("get_site_langs");
   
     foreach ($LANGS as $content) {
@@ -85,7 +80,6 @@ function ML_nav() {
             $mlnav .= "<option value='$content->iso_code'>$content->lang_name</option>";
         }
     }
-
     $mlnav .= "</select>"
            . "</form>"
            . "</li>";
@@ -93,13 +87,13 @@ function ML_nav() {
     return $mlnav;
 }
 
-
 function ML_get_langs_from_json() {
     global $config;
     
     if(file_exists($config['ML_JSON_LANGS_FILE'])) {    
         $LANGS_DATA =  json_decode(file_get_contents ($config['ML_JSON_LANGS_FILE']));
-    }    
+    }   
+    
     return $LANGS_DATA;
 }
 

@@ -81,6 +81,13 @@ function S_POST_CHAR_AZNUM ($var, $max_size = null, $min_size = null) {
 
     return S_VAR_CHAR_AZ_NUM ($_POST[$var], $max_size, $min_size);    
 }
+function S_POST_CHAR_AZ ($var, $max_size = null, $min_size = null) {
+    if(empty($_POST[$var])) {
+       return false;
+    }    
+
+    return S_VAR_CHAR_AZ($_POST[$var], $max_size, $min_size);    
+}
 //$_SERVER
 function S_SERVER_USER_AGENT () {
     if(empty($_SERVER['HTTP_USER_AGENT'])) {
