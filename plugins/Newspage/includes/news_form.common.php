@@ -45,8 +45,8 @@ function news_form_getPost() {
     isset($_POST['news_featured']) ? $data['featured'] = S_VAR_INTEGER($_POST['news_featured'], 1) : false; 
     isset($_POST['news_lang']) ? $data['lang'] = S_VAR_TEXT_ESCAPE($_POST['news_lang']) : $data['lang'] = $config['WEB_LANG'];
     isset($_POST['news_acl']) ? $data['acl'] = S_VAR_TEXT_ESCAPE($_POST['news_acl']) : false; //TODO CHECK FILTER OK   
-    isset($_POST['news_main_media']) ? $data['main_media'] = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']) : false;
-    isset($_POST['news_update']) ? $data['update'] = 1 : false;
+    !empty($_POST['news_main_media']) ? $data['main_media'] = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']) : $data['main_media'] = "";
+    !empty($_POST['news_update']) ? $data['update'] = 1 : $data['update'] = 0;
     
     return $data;
 }
@@ -56,6 +56,7 @@ function news_form_process() {
     global $LANGDATA, $config;
     
     $news_data = news_form_getPost();
+
     //USERNAME/AUTHOR
     if (empty($news_data['author']) ) {
         $news_data['author'] = $LANGDATA['L_ANONYMOUS']; //TODO CHECK IF ITS RIGHT THAT PROCEDURE
@@ -122,11 +123,13 @@ function news_form_process() {
         return false;        
     }
     //MEDIA    
-    if($news_data['main_media'] == false) {
-        $response[] = array("status" => "6", "msg" => $LANGDATA['L_NEWS_MEDIALINK_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }        
+    if ( $config['NEWS_MAIN_MEDIA_REQUIRED'] || !empty($news_data['main_media'])) {
+        if($news_data['main_media'] == -1 || empty($news_data['main_media'])) {
+            $response[] = array("status" => "6", "msg" => $LANGDATA['L_NEWS_MEDIALINK_ERROR']);    
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;        
+        }
+    }
     //FEATURED
     //NOCHECK ATM
     //
@@ -135,7 +138,8 @@ function news_form_process() {
     //
 
     //ALL OK SUBMIT or UPDATE
-    if($news_data['update']) {
+    //echo $news_data['update'];
+    if($news_data['update'] == 1) {
         if (news_update($news_data)) {
             $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
         } else {

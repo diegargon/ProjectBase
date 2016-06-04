@@ -204,15 +204,15 @@ function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null) {
     $regex = '/\.('. $config['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
     
     if( ($url = S_VALIDATE_URL($url, $max_size, $min_size)) == false ) {
-        return false;
+        return -1;
     }    
     if ( !preg_match($regex, $url) ) {
-      return false;
+      return -1;
     }  
     if ($config['REMOTE_CHECKS']) {
         $headers = get_headers($url);
         if($headers['0'] == 'HTTP/1.1 404 Not Found') {
-            return false;
+            return -1;
         }
     }
  

@@ -23,5 +23,6 @@ $config['NEWS_MEDIA_MAX_LENGHT'] = 200;
 $config['NEWS_MEDIA_MIN_LENGHT'] = 10;
 $config['NEWS_MODERATION'] = 1;
 $config['NEWS_NUM_LIST_MOD'] = 100;
+$config['NEWS_MAIN_MEDIA_REQUIRED'] = 1;
 //$config['NEWS_SUBMIT_URL'] = 1;
 //$config['NEWS_PRIMARY_SOURCE'] = 1;

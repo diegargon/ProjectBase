@@ -45,7 +45,7 @@ function news_create_new($news_data) {
         $uid = 0;
     }    
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 
-    !empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($news_data['lang']) ;
+    empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($news_data['lang']) ;
 
     if ($news_data['featured'] == 1 && $config['NEWS_MODERATION'] == 1) {
         $moderation = 0;
@@ -59,17 +59,18 @@ function news_create_new($news_data) {
         . "'0', '{$news_data['featured']}', '{$news_data['author']}', '$uid', '{$news_data['category']}', '{$news_data['lang']}', '$acl', '$moderation'"       
         . ");";       
     $query = db_query($q);    
-    $source_id = $nid;
-    $plugin = "Newspage";
-     //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
-    $type = "image";
-    $q = "INSERT INTO {$config['DB_PREFIX']}links ("
-        . "source_id, plugin, type, link, itsmain"
-        . ") VALUES ("
-        . "'$source_id', '$plugin', '$type', '{$news_data['main_media']}', '1'"
-        . ");";    
-    $query = db_query($q);
-    
+    if (!empty($news_data['main_media'])) {
+        $source_id = $nid;
+        $plugin = "Newspage";
+        //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
+        $type = "image";
+        $q = "INSERT INTO {$config['DB_PREFIX']}links ("
+            . "source_id, plugin, type, link, itsmain"
+            . ") VALUES ("
+            . "'$source_id', '$plugin', '$type', '{$news_data['main_media']}', '1'"
+            . ");";    
+        $query = db_query($q);
+    }
     return true;
 }
 
