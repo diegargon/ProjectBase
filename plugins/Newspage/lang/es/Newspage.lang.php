@@ -43,5 +43,6 @@ $LANGDATA['L_NEWS_EDIT'] = "Editar";
 $LANGDATA['L_NEWS_APPROVED'] = "Aprobar";
 $LANGDATA['L_NEWS_EDIT'] = "Editar";
 $LANGDATA['L_NEWS_DISABLE'] = "Deshabilitar";
-$LANGDATA['L_NEWS_DELETE'] = "Eliminar";
 $LANGDATA['L_NEWS_CONFIRM_DEL'] = "¿Estas seguro que quieres eliminar?";
+$LANGDATA['L_NEWS_EDIT_NEWS'] = "Editar noticia";
+$LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] = "Noticia actualizada con exito";
