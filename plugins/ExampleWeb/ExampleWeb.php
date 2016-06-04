@@ -25,7 +25,6 @@ function ex_index_page(){
 }
 
 function ex_news_page() {
-    do_action("common_web_structure");
     plugin_manual_start("Newspage"); 
     news_page();   
 }

@@ -6,38 +6,38 @@ if (!defined('IN_WEB')) { exit; }
 ?>
 <div  class="clear bodysize page">
     <div class="standard_box submit_box">        
-        <form  id="form_sendnews" action="" autocomplete="on" method="post">         
+        <form  id="form_news" action="" autocomplete="on" method="post">         
         <section>
-        <h1><?php print $LANGDATA['L_SEND_NEWS']?></h1>  
+        <h1><?php print  $data['NEWS_FORM_TITLE'] ?></h1>  
         <div class="news_submit_center_wrapper">
         <div class="submit_items">
             <p> 
                 <label for="news_author"><?php print $LANGDATA['L_NEWS_AUTHOR'] ?> </label>
-                <input <?php print $data['can_change_author'] ?>   id="news_author" name="news_author" required="required" type="text"  maxlength="13" value="<?php print $data['username'] ?>"/>
+                <input <?php print $data['can_change_author'] ?>   id="news_author" name="news_author" required="required" type="text"  maxlength="13" value="<?php print $data['author'] ?>"/>
             </p>            
         </div>
         <div class="submit_items">
             <p> 
                 <label for="news_title"><?php print $LANGDATA['L_NEWS_TITLE'] ?> </label>
-                <input value="<?php isset($data['post_title']) ? print $data['post_title'] : false ?>"  minlength="<?php print $config['NEWS_TITLE_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TITLE_MAX_LENGHT']?>" id="news_title" name="news_title" required="required" type="text" placeholder=""/>
+                <input value="<?php isset($data['title']) ? print $data['title'] : false ?>"  minlength="<?php print $config['NEWS_TITLE_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TITLE_MAX_LENGHT']?>" id="news_title" name="news_title" required="required" type="text" placeholder=""/>
             </p>
         </div>
         <div class="submit_items">
             <p> 
                 <label for="news_lead"><?php print $LANGDATA['L_NEWS_LEAD'] ?> </label>                
-                <textarea required="required"  minlength="<?php print $config['NEWS_LEAD_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LEAD_MAX_LENGHT']?>" id="news_lead" name="news_lead" ><?php isset($data['post_lead']) ? print $data['post_lead'] : false ?></textarea>                
+                <textarea required="required"  minlength="<?php print $config['NEWS_LEAD_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LEAD_MAX_LENGHT']?>" id="news_lead" name="news_lead" ><?php isset($data['lead']) ? print $data['lead'] : false ?></textarea>                
             </p>            
         </div>
         <div class="submit_items">
             <p> 
                 <label for="news_text"><?php print $LANGDATA['L_NEWS_TEXT'] ?> </label>
-                <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text"><?php isset($data['post_text']) ? print $data['post_text'] : false ?></textarea>
+                <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text"><?php isset($data['text']) ? print $data['text'] : false ?></textarea>
             </p>
         </div>
         <div class="submit_items">
             <p> 
                 <label for="news_main_media"><?php print $LANGDATA['L_NEWS_MAIN_MEDIA'] ?> </label>
-                <input value="<?php isset($data['post_main_media']) ? print $data['post_main_media'] : false ?>"  minlength="<?php print $config['NEWS_MEDIA_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_MEDIA_MAX_LENGHT']?>" id="news_main_media" name="news_main_media" type="text" placeholder="http://site.com/image.jpg"/>
+                <input value="<?php isset($data['main_media']) ? print $data['main_media'] : false ?>"  minlength="<?php print $config['NEWS_MEDIA_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_MEDIA_MAX_LENGHT']?>" id="news_main_media" name="news_main_media" type="text" placeholder="http://site.com/image.jpg"/>
             </p>
         </div>            
         <div class="submit_items">
@@ -61,16 +61,17 @@ if(!empty($data['select_acl'])) {
                     <?php print $data['select_acl'] ?>
 
                 <span  class="featured_label"><?php print $LANGDATA['L_NEWS_FEATURED']?></span>
-                <input type="checkbox" name="news_featured" id="news_featured" value="1"/>
+                <input <?php  !empty($data['featured']) ? print "checked": false ?> type="checkbox" name="news_featured" id="news_featured" value="1"/>
 
 <?php                
 }
 ?>
-            </p>                
-        </div>           
+            </p>         
+            <input type="hidden" value="<?php  !empty($data['update']) ? print 1: false ?>"  name="news_update" id="news_update"/> 
+        </div>                       
         <div class="submit_buttom">
             <p> 
-                <input type="submit" id="sendnews" name="sendnews" class="btnSubmitNews" value="<?php print $LANGDATA['L_SEND_NEWS']?>" /> 
+                <input type="submit" id="newsFormSubmit" name="newsFormSubmit" class="btnSubmitForm" value="<?php print $LANGDATA['L_SEND_NEWS']?>" /> 
             </p>             
         </div>   
         </div>                     

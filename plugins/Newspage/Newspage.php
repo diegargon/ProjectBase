@@ -18,21 +18,17 @@ function Newspage_init(){
 }
 
 function news_index_page (){       
-    
-    if(!empty($_GET['sendnews']) && empty($_POST['sendnews'])  && empty($_POST['sendnews_stage2'])) {
-        require_once("includes/news_sendform.inc.php");
-        do_action("common_web_structure");
-        addto_tplvar("SCRIPTS", Newspage_SendNewsScript());
-        news_display_submit_news();
-    }  else if(!empty($_POST['sendnews'])) {
-            require_once("includes/news_sendform.inc.php");
+
+    if(!empty($_GET['sendnews']) && empty($_POST['newsFormSubmit']) ) { // && empty ($_POST['newsFormSubmit_ST2'])) {
+        require_once 'includes/news_form.common.php';
+        require_once("includes/news_form.submit.php");
+        if (empty($_POST['newsFormSubmit_ST2'])) {
             do_action("common_web_structure");
-            addto_tplvar("SCRIPTS", Newspage_SendNewsScript());
-            $post_data = news_sendnews_getPost();
-            news_display_submit_news($post_data);  
-    } else if (!empty($_POST['sendnews_stage2'])) {
-        require_once("/includes/news_sendform.inc.php");
-        news_form_submit_process();
+            addto_tplvar("SCRIPTS", Newspage_FormScript());            
+            news_new_form();
+        } else {
+            news_form_process();
+        }
     } else {
         require_once("includes/news.portal.php");
         do_action("common_web_structure");       
@@ -41,9 +37,22 @@ function news_index_page (){
 }
 
 function news_page() {
-    global $acl_auth;
-    
-    require_once("includes/news_page.inc.php");   
+    global $acl_auth;        
 
-    news_page_main();
+    if(!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
+        //TODO Check if its the author or ACL rights 
+        require_once 'includes/news_form.common.php';
+        require_once 'includes/news_page_edit.php';        
+        if (!empty($_POST['news_update']) && !empty($_POST['newsFormSubmit_ST2'])) {
+            news_form_process();
+        } else {            
+            do_action("common_web_structure");
+            addto_tplvar("SCRIPTS", Newspage_FormScript());
+            news_page_edit();              
+        }
+    } else {
+        require_once("includes/news_page.main.php");   
+        do_action("common_web_structure");
+        news_page_main();
+    }
 }

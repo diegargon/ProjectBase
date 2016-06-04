@@ -2,7 +2,7 @@
  *  Copyright @ 2016 Diego Garcia
  */
 $(document).ready(function(){
-    $("#sendnews").click(function(){       
+    $("#newsFormSubmit").click(function(){       
         $('#news_author').css("border","1px solid black");
         $('#news_author').css("box-shadow","0 0 3px black");
         $('#news_title').css("border","1px solid black");          
@@ -14,7 +14,7 @@ $(document).ready(function(){
         $('#news_main_media').css("border","1px solid black");
         $('#news_main_media').css("box-shadow","0 0 3px black");            
            
-        $.post("", $( "#form_news" ).serialize() + '&sendnews_stage2=1' ,
+        $.post("", $( "#form_news" ).serialize() + '&newsFormSubmit_ST2=1' ,
         function(data) {                
             alert(data); //DEBUG             
             var json = $.parseJSON(data);
@@ -22,7 +22,7 @@ $(document).ready(function(){
                 alert(json[0].msg);
                 $("form")[0].reset();                
                 $(location).attr('href', json[0].url);
-            } else if (json[0].status == 1) {
+            } else if (json[0].status == 1) { //Internal
                     alert(json[0].msg);
             } else if (json[0].status == 2) {
                 $('#news_author').css("border","2px solid red");
