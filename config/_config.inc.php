@@ -4,7 +4,6 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-
 global $config;
 $config = [];
 define("DEBUG", true);
@@ -22,5 +21,7 @@ $config['WEB_VIEWPORT'] = "width=device-width, initial-scale=1.0";
 $config['FRIENDLY_URL'] = 1;
 $config['DEFAULT_TIMEZONE'] = "UTC";
 $config['DEFAULT_DATEFORMAT'] = "d/m/y H:i";
-$config['BACKLINK'] = "./";
+$config['BACKLINK'] = "javascript:history.go(-1)";
+$config['REMOTE_CHECKS'] = 1;
+$config['ACCEPTED_MEDIA_REGEX'] = "jpe?g|bmp|png|JPE?G|BMP|PNG";
 //$config['']
