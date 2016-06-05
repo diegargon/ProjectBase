@@ -67,7 +67,8 @@ if(!empty($data['select_acl'])) {
 }
 ?>
             </p>         
-            <input type="hidden" value="<?php  !empty($data['update']) ? print 1: false ?>"  name="news_update" id="news_update"/> 
+            <input type="hidden" value="<?php  !empty($data['update']) ? print $data['update']: false ?>"  name="news_update" id="news_update"/> 
+            <input type="hidden" value="<?php  !empty($data['current_langid']) ? print $data['current_langid']: false ?>"  name="news_current_langid" id="news_current_langid"/> 
         </div>                       
         <div class="submit_buttom">
             <p> 

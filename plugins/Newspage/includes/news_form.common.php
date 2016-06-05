@@ -32,12 +32,16 @@ function news_get_categories() {
 
 function news_form_getPost() {
     global $acl_auth, $config;
-
+       
     if (defined('ACL') && 'ACL') { //if admin can change author if not ignore news_author
         if( ( $acl_auth->acl_ask('news_admin') ) == true || ( $acl_auth->acl_ask('admin_all') ) == true ) {            
             isset($_POST['news_author']) ? $data['author'] = S_VAR_CHAR_AZ_NUM($_POST['news_author']) : false;
         } 
-    }    
+    }
+    if(empty($data['author'])) { 
+        $user = SMBasic_getUserbyID(S_SESSION_INT("uid", 11, 1));
+        $data['author'] = $user['username'];
+    }
     isset($_POST['news_title']) ? $data['title'] = S_VAR_TEXT_ESCAPE($_POST['news_title']) : false;
     isset($_POST['news_lead']) ? $data['lead'] = S_VAR_TEXT_ESCAPE($_POST['news_lead']) : false;
     isset($_POST['news_text']) ? $data['text'] = S_VAR_TEXT_ESCAPE($_POST['news_text']) : false;
@@ -46,8 +50,8 @@ function news_form_getPost() {
     isset($_POST['news_lang']) ? $data['lang'] = S_VAR_TEXT_ESCAPE($_POST['news_lang']) : $data['lang'] = $config['WEB_LANG'];
     isset($_POST['news_acl']) ? $data['acl'] = S_VAR_TEXT_ESCAPE($_POST['news_acl']) : false; //TODO CHECK FILTER OK   
     !empty($_POST['news_main_media']) ? $data['main_media'] = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']) : $data['main_media'] = "";
-    !empty($_POST['news_update']) ? $data['update'] = 1 : $data['update'] = 0;
-    
+    !empty($_POST['news_update']) ? $data['update'] = S_POST_INT("news_update", 11, 1) : $data['update'] = 0;
+    !empty($_POST['news_current_langid']) ? $data['current_langid'] = S_POST_INT("news_current_langid", 8, 1) : $data['current_langid'] = 0;
     return $data;
 }
 
@@ -59,7 +63,7 @@ function news_form_process() {
 
     //USERNAME/AUTHOR
     if (empty($news_data['author']) ) {
-        $news_data['author'] = $LANGDATA['L_ANONYMOUS']; //TODO CHECK IF ITS RIGHT THAT PROCEDURE
+        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK IF ITS RIGHT THAT PROCEDURE
         //$news_data['username'] = S_VAR_CHAR_AZ_NUM($_SESSION['username']);
     }           
     if ($news_data['author'] == false) {
@@ -139,7 +143,7 @@ function news_form_process() {
 
     //ALL OK SUBMIT or UPDATE
     //echo $news_data['update'];
-    if($news_data['update'] == 1) {
+    if($news_data['update'] > 0) {
         if (news_update($news_data)) {
             $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
         } else {
@@ -195,3 +199,12 @@ function news_get_sitelangs($news_data = null) {
     return $select;
 }
 
+function news_clean_featured($lang) {
+    global $config;
+    
+    $q = "UPDATE {$config['DB_PREFIX']}news SET featured = '0'";
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $q .= "WHERE lang = '$lang'";
+    }            
+    db_query($q);
+}

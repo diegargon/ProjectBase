@@ -14,7 +14,9 @@ Newspage: not show disable news and add admin submit news to submit disable
 SMBasic: Check cookies run every page if anonymous, avoid creating a anonymous session, cookie anon or something like that.
 SMBasic/Core: Passsword valid characters filter
 New: comments plugin for resources
-
+Newspage: al borrar una noticia vuelve al lenguage del usuario no al elegido.
+Newspage: Solo admin puede editar, añadir la posibilidad de que el usuario que envia edite.
+Newspage: if not ACL check a user var "isAdmin" 
 #BACKLOG
 
 Admin plugin: Improved

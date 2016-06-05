@@ -40,8 +40,7 @@ function input_filter($data) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUN
         
         if (isset($config['SQL_DB']) && $config['SQL_DB']) {
             $data = db_escape_string($data);
-        }
-        
+        }        
     }
     
     return $data;
@@ -88,6 +87,13 @@ function S_POST_CHAR_AZ ($var, $max_size = null, $min_size = null) {
 
     return S_VAR_CHAR_AZ($_POST[$var], $max_size, $min_size);    
 }
+function S_POST_INT($var, $max_size = null, $min_size = null) {
+    if(empty($_POST[$var])) {
+       return false;
+    }    
+    
+    return S_VAR_INTEGER($_POST[$var], $max_size, $min_size);    
+}
 //$_SERVER
 function S_SERVER_USER_AGENT () {
     if(empty($_SERVER['HTTP_USER_AGENT'])) {
@@ -103,6 +109,7 @@ function S_SERVER_REMOTE_ADDR () {
 }
 //VAR
 function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
+    
     if(empty($var)) {
         return false;
     }
@@ -133,8 +140,7 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
             return false;
         }
     }
-    if (preg_match("/[^A-Za-z]/", $var))
-    {
+    if (preg_match("/[^A-Za-z]/", $var)) {
         return false;
     }
     

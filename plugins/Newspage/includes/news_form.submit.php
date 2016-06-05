@@ -9,10 +9,10 @@ function news_new_form($post_data = null) {
     
     $data['NEWS_FORM_TITLE'] = $LANGDATA['L_SEND_NEWS'];
             
-    if (  isset($_SESSION['isLogged']) && S_VAR_INTEGER($_SESSION['isLogged'])   == 1) {
+    if (  isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
         $user = SMBasic_getUserbyID(S_VAR_INTEGER($_SESSION['uid']), 11);        
     } else {
-        $user['username'] = $LANGDATA['L_ANONYMOUS'];
+        $user['username'] = $LANGDATA['L_NEWS_ANONYMOUS'];
     }
     $data['author'] = $user['username'];    
     
@@ -53,10 +53,10 @@ function news_create_new($news_data) {
         $moderation = 1;
     }    
     $q = "INSERT INTO {$config['DB_PREFIX']}news ("
-        . "nid, lang_id, title, lead, text, media, featured, author, author_id, category, lang, acl, moderation"    
+        . "nid, lang_id, title, lead, text,  featured, author, author_id, category, lang, acl, moderation"    
         . ") VALUES ("
         . "'$nid', '$lang_id', '{$news_data['title']}', '{$news_data['lead']}', '{$news_data['text']}', "         
-        . "'0', '{$news_data['featured']}', '{$news_data['author']}', '$uid', '{$news_data['category']}', '{$news_data['lang']}', '$acl', '$moderation'"       
+        . "'{$news_data['featured']}', '{$news_data['author']}', '$uid', '{$news_data['category']}', '{$news_data['lang']}', '$acl', '$moderation'"       
         . ");";       
     $query = db_query($q);    
     if (!empty($news_data['main_media'])) {
@@ -72,14 +72,4 @@ function news_create_new($news_data) {
         $query = db_query($q);
     }
     return true;
-}
-
-function news_clean_featured($lang) {
-    global $config;
-    
-    $q = "UPDATE {$config['DB_PREFIX']}news SET featured = '0'";
-    if (defined('MULTILANG') && 'MULTILANG') {
-        $q .= "WHERE lang = '$lang'";
-    }            
-    db_query($q);
 }

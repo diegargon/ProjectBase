@@ -20,7 +20,7 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 </div>
                 <div class="extra-small"><?php print($tpldata['NEWS_DATE'])?> | <?php print $tpldata['NEWS_AUTHOR'] ?></div>                
                 <div class="article_lead">
-                    <?php isset($tpldata['NEWSLEAD']) ? print $tpldata['NEWS_LEAD']:false ?>
+                    <?php isset($tpldata['NEWS_LEAD']) ? print $tpldata['NEWS_LEAD']:false ?>
                 </div>                                
                 <hr/>
 <?php if(!empty($tpldata['NEWS_MAIN_MEDIA'])) {

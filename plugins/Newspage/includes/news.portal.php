@@ -44,13 +44,14 @@ function news_layout_switcher() {
 
 function get_news($category, $limit = null) {
     global $config;
-    
+        
     $content = "";         
-    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1' ";
+    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1'";
 
     if( $config['NEWS_MODERATION'] == 1) {
         $q .=" AND moderation = 0";
     }
+        
     if (defined('MULTILANG') && 'MULTILANG') {
         $LANGS = do_action("get_site_langs");
         
@@ -64,7 +65,9 @@ function get_news($category, $limit = null) {
     
     if ((!empty($category)) && ($category != 0 )) {
         $q .= " AND category = '$category'";
-    }
+    }    
+    $q .= " ORDER BY date DESC";
+    
     if ($limit > 0) {
         $q .= " LIMIT $limit";
     }
