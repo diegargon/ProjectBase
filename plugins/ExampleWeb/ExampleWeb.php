@@ -16,7 +16,7 @@ function ExampleWeb_init(){
 }
 
 function ex_common_web_structure() {
-    plugin_manual_start("DebugWindow");    
+   // plugin_manual_start("DebugWindow");    
 }
 
 function ex_index_page(){       

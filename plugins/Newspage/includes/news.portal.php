@@ -16,8 +16,10 @@ function news_portal() {
     }
     $tpldata['FEATURED'] = get_news_featured();
     $tpldata['COL1_ARTICLES'] = get_news(1,0);
+    $tpldata['COL1_ARTICLES'] .= get_news(2,0);
     $tpldata['COL2_ARTICLES'] = get_news(2,0);
-    $tpldata['COL3_ARTICLES'] = get_news(1,0);                  
+    $tpldata['COL3_ARTICLES'] = get_news(1,0,1,0);  
+    $tpldata['COL3_ARTICLES'].= get_news(2,0,1,0);  
     addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));     
 }
 
@@ -35,21 +37,21 @@ function news_layout_select() {
 function news_layout_switcher() { 
     global $tpldata;
     
-    $data = "<li class='nav_left'><form action='' method='post'>";
+    $data = "<li class='nav_left'><form action='#' method='post'>";
     $data .= "<input type='submit'  value='' class='button_switch' />";
     $data .= "<input type='hidden' value=" . $tpldata['news_nSwitch'] ." name='news_switch'/>";
     $data .= "</form></li>";
     return $data;
 }
 
-function get_news($category, $limit = null) {
+function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     global $config;
         
     $content = "";         
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1'";
 
-    if ($config['NEWS_SELECTED_FRONTPAGE']) {
-        $q .= " AND frontpage = 1";
+    if ($config['NEWS_SELECTED_FRONTPAGE']) {        
+        $q .= " AND frontpage = $frontpage";            
     }
     if( $config['NEWS_MODERATION'] == 1) {
         $q .=" AND moderation = 0";
@@ -86,20 +88,22 @@ function get_news($category, $limit = null) {
         } else {
             $catname = get_category_name($category);    
         }
-        $content .= "<h2>$catname</h2>";        
+        $content .= "<section><h2>$catname</h2>";        
     }     
 
     while($row = db_fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false) {
+            if ($headlines == 1) { $content_data['headlines'] = 1; }
             $content .= getTPL_file("Newspage", "news_preview", $content_data);        
         }
     }
+    $content .= "</section>";
     db_free_result($query);    
     
     return $content;
 }
 
-function get_news_featured($category = null, $limit = 1) {
+function get_news_featured() {
     global $config;
 
     //INFO: news_featured skip moderation bit
@@ -114,24 +118,20 @@ function get_news_featured($category = null, $limit = 1) {
             } 
         }
     }    
-    if ((!empty($category)) && ($category != 0 )) {
-        $q .= " AND category = $category";
-    }
-    $q .= " LIMIT $limit";
+    $q .= " LIMIT 1";
+    
     $query = db_query($q);   
     if (db_num_rows($query) <= 0) {
         return false;
     }    
-    if(!empty($category)) {
-        if (defined('MULTILANG') && 'MULTILANG') {
-            $catname = get_category_name($category, $lang_id);       
-        } else {
-            $catname = get_category_name($category);
-        }
-    }   
+
     while($row = db_fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false ) {
-            isset($catname) ? $content_data['CATEGORY'] = $catname: false;         
+            if (defined('MULTILANG') && 'MULTILANG') {
+                $content_data['CATEGORY'] = get_category_name($row['category'], $lang_id);       
+            } else {
+                $content_data['CATEGORY'] = get_category_name($$row['category']);
+            }            
             $content .= getTPL_file("Newspage", "news_featured", $content_data);
         }
     }    
@@ -143,9 +143,11 @@ function get_news_featured($category = null, $limit = 1) {
 function fetch_news_data($row) {
     global $config, $acl_auth;    
 
-    if( 'ACL' && !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
+    
+    if( $config['NEWS_ACL_PREVIEW_CHECK']  && defined('ACL') && 'ACL' && !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
         return false;
-    }     
+    }
+    
     $data['NID'] = $row['nid'];
     $data['TITLE'] = $row['title'];
     $data['LEAD'] = $row['lead'];                

@@ -25,13 +25,14 @@ html, body {
 .bodysize {
     display:block;
     margin:0 auto;
+    min-height: 800px;
 }
 #col1, #col2, #col3{
     border: 0px solid red;
-    width: 30%;
+    width: 32%;
     padding-top: 10px;
     float:left;
-    margin-left: 22px;
+    margin-left: 10px;
 
 }
 #col1, col2, #col3 h1 {}

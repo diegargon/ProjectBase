@@ -6,7 +6,7 @@
 .newsbox {
     display:block;
     float:left;
-    margin:0 0px 10px 0px;
+    margin:0 0px 5px 0px;
     text-decoration: none;
     color: gray;
     background-color: #FFFFFF;
@@ -15,12 +15,16 @@
     line-height: 1.2em;
     padding: 5px;
     box-shadow: 0 0 10px #ccc;
+    width:96%;
 }
 .newsbox:hover {
     box-shadow: 0 0 10px #000;
 }
-.newsbox:hover h3 {
+.newsbox:hover h3, .newsbox:hover h4{
     color: blue;
+}
+.newsbox h4 {
+    font-size: 0.8em;
 }
 .newsbox:hover img {
     opacity: 0.4;
@@ -39,9 +43,9 @@
 #featured {
    display:table;
    float:left;
-   width: 95%;
+   width: 97.5%;
    border: 0px solid red;
-   margin-left: 20px;   
+   margin-left: 10px;   
 }
 #featured  img {
     margin-right: 5px;
@@ -151,7 +155,9 @@
     font-size: 12px;
     margin-top: 10px;
 }
-#col1 h2, #col2 h2, #col3 h2 {
+#col1 section h2, #col2  section h2, #col3 section h2 { 
+    float:left;
+    width: 98%;
     color:#919191;
     background-color:#232323;
     margin-bottom: 4px;

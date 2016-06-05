@@ -16,6 +16,9 @@
     .page {
         padding: 5px 0;
     }  
+    .bodysize {
+        min-height: 0;
+    }
 }
 
 @media only screen and (max-width: 400px) {
