@@ -47,3 +47,4 @@ $LANGDATA['L_NEWS_CONFIRM_DEL'] = " Delete news, are you sure?";
 $LANGDATA['L_NEWS_EDIT_NEWS'] = "News edit";
 $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] = "News update succesful";
 $LANGDATA['L_NEWS_NO_EDIT_PERMISS'] = "Can't edit, no rights";
+$LANGDATA['L_NEWS_FRONTPAGE'] = "Frontpage";

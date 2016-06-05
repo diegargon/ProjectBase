@@ -48,6 +48,9 @@ function get_news($category, $limit = null) {
     $content = "";         
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1'";
 
+    if ($config['NEWS_SELECTED_FRONTPAGE']) {
+        $q .= " AND frontpage = 1";
+    }
     if( $config['NEWS_MODERATION'] == 1) {
         $q .=" AND moderation = 0";
     }
