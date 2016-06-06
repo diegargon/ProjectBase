@@ -56,6 +56,9 @@ function check_jsScript($script) {
 function includePluginFiles($plugin, $admin = 0) {
     global $config, $LANGDATA; 
     
+    $class_file ="";
+    $inc_file ="";
+    
     //CONFIG FILES
     $config_plugin = "plugins/$plugin/$plugin.config.php";
     $config_plugin_user = "config/$plugin.config.php";
@@ -73,10 +76,14 @@ function includePluginFiles($plugin, $admin = 0) {
     //INC FILE
     if ($admin == 0) {
         $inc_file = "plugins/$plugin/includes/$plugin.inc.php";
+        $lass_file = "plugins/$plugin/includes/$plugin.class.php";
     } else {
         $inc_file = "plugins/$plugin/admin/$plugin.admin.inc.php";
     }
-    if (file_exists($inc_file)) {
+    if (!empty($inc_file) && file_exists($inc_file)) {
         include_once($inc_file);
     }     
+    if (!empty($inc_file) && file_exists($class_file)) {
+        include_once($class_file);    
+    }        
 }

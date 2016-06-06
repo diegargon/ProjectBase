@@ -19,10 +19,10 @@ function get_news_byId($id, $lang = null){
     
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
     if (defined('MULTILANG') && 'MULTILANG' && $lang != null) {        
-        $LANGS = do_action("get_site_langs");
-        foreach ($LANGS as $content) {
-            if($content->iso_code == $lang) {
-                $q .= "AND lang_id = '$content->lang_id'";
+        $site_langs = do_action("get_site_langs");
+        foreach ($site_langs as $site_lang) {
+            if($site_lang['iso_code'] == $lang) {
+                $q .= "AND lang_id = '{$site_lang['lang_id']}'";
                 break;
             }
         }

@@ -177,8 +177,8 @@ function Newspage_FormScript() {
 function news_get_sitelangs($news_data = null) { 
     global $config; 
     
-    $LANGS = do_action("get_site_langs"); //Provided by ML TODO ¿not use do_action? re-check
-    if (empty($LANGS)) { return false; }
+    $site_langs = do_action("get_site_langs"); //Provided by ML TODO ¿not use do_action? re-check
+    if (empty($site_langs)) { return false; }
     
     if ($news_data != null && !empty($news_data['lang'])) {
         $match_lang = $news_data['lang'];
@@ -187,11 +187,11 @@ function news_get_sitelangs($news_data = null) {
     }
     
     $select = "<select name='news_lang' id='news_lang'>";     
-    foreach ($LANGS as $content) {
-        if($content->iso_code == $match_lang) {
-            $select .= "<option selected value='$content->iso_code'>$content->lang_name</option>";
+    foreach ($site_langs as $site_lang) {
+        if($site_lang['iso_code'] == $match_lang) {
+            $select .= "<option selected value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
         } else {
-            $select .= "<option value='$content->iso_code'>$content->lang_name</option>";
+            $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
         }
     }        
     $select .= "</select>";

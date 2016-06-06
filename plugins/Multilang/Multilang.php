@@ -10,12 +10,9 @@ function Multilang_init(){
 
     includePluginFiles("Multilang");      
     
-    //MUST PRIOTIZE MYSQL Plugin load before starting multilang for use from_db
-    if (isset($config['SQL_DB']) && $config['SQL_DB'] == 1 && $config['ML_USE_JSON_LANGS'] == 0) {
-        register_uniq_action("get_site_langs", "ML_get_langs_from_db");
-    } else {
-        register_uniq_action("get_site_langs", "ML_get_langs_from_json");
-    }    
+
+    register_uniq_action("get_site_langs", "ML_get_site_langs");
+  
     $request_uri = $_SERVER['REQUEST_URI']; //TODO FILTER
     
     if (
@@ -71,13 +68,13 @@ function ML_nav() {
     $mlnav = "<li class='nav_right'>"
     . "<form action='#' method='post'>"
     . "<select name='choose_lang' id='choose_lang'>";
-    $LANGS = do_action("get_site_langs");
+    $langs = do_action("get_site_langs");
   
-    foreach ($LANGS as $content) {
-        if($content->iso_code == $config['WEB_LANG']) {
-            $mlnav .= "<option selected value='$content->iso_code'>$content->lang_name</option>";
+    foreach ($langs as $lang) {
+        if($lang['iso_code'] == $config['WEB_LANG']) {
+            $mlnav .= "<option selected value='{$lang['iso_code']}'>{$lang['lang_name']}</option>";
         } else {
-            $mlnav .= "<option value='$content->iso_code'>$content->lang_name</option>";
+            $mlnav .= "<option value='{$lang['iso_code']}'>{$lang['lang_name']}</option>";
         }
     }
     $mlnav .= "</select>"
@@ -133,11 +130,11 @@ function ML_get_langs_from_db() {
 
 function ML_iso_to_id($isolang) {
     
-    $LANGS = do_action("get_site_langs");
+    $langs = do_action("get_site_langs");
     
-    foreach ($LANGS as $lang) {
-        if($lang->iso_code == $isolang) {
-            return $lang->lang_id;
+    foreach ($langs as $lang) {
+        if($lang['iso_code'] == $isolang) {
+            return $lang['lang_id'];
         }
     }
     
