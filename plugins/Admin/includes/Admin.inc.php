@@ -32,12 +32,14 @@ function admin_load_plugin_files() {
 
 function Admin_GetPluginState($plugin) { 
     global $registered_plugins;
-    
+    $content = "";
     foreach ($registered_plugins as $reg_plugin) {
         if ($reg_plugin->plugin_name == $plugin) { 
-            return getTPL_file("Admin", "plugin_state", (array) $reg_plugin);            
+            $content = getTPL_file("Admin", "plugin_state", (array) $reg_plugin);            
         }
     }    
+    $content = $content . "<hr/><p><pre>" . htmlentities(Admin_GetPluginConfigFiles($plugin)) . "</pre></p>";  
+    return $content;
 }
 
 function Admin_GetPluginConfigFiles($plugin) { //TODO BETTER CONFIG VIEW

@@ -19,44 +19,30 @@ function Newspage_AdminMenu($params) {
 }
 
 function Newspage_AdminContent($params) {
-   global $tpldata, $LANGDATA;    
+   global $LANGDATA;    
    
    includePluginFiles("Newspage", 1);
-    $tpldata['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n";
-    $tpldata['ADM_ASIDE_OPTION'] .=  "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_NEWS_MODERATION'] ."</a></li>\n";
-    $tpldata['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_GENERAL_OPT");
-    
+    addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n" );                               
+    addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_NEWS_MODERATION'] ."</a></li>\n");
+    addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=3'>". $LANGDATA['L_NEWS_CATEGORY'] ."</a></li>\n");
+    addto_tplvar("ADM_ASIDE_OPTION", do_action("ADD_ADM_GENERAL_OPT") );
+
+    addto_tplvar("ADM_CONTENT_H1", "Newspage");
     $opt = S_GET_INT("opt");
     if ( $opt == 1 || $opt == false) {
-        $tpldata['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'];
-        $tpldata['ADM_CONTENT'] = Admin_GetPluginState("Newspage");
-        $tpldata['ADM_CONTENT'] .= "<hr/><p><pre>" . htmlentities(Admin_GetPluginConfigFiles("Newspage")) . "</pre></p>";        
+        addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'] );
+        addto_tplvar("ADM_CONTENT", Admin_GetPluginState("Newspage"));                               
     } else if ($opt == 2) {
-        $tpldata['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] .": ". $LANGDATA['L_NEWS_MODERATION'] ."";
-        $tpldata['ADM_CONTENT'] = $LANGDATA['L_NEWS_MODERATION_DESC'];
-        $tpldata['ADM_CONTENT'] = Newspage_AdminModeration();                
-    }
-    
-    return getTPL_file("Admin", "admin_std_content");
-}
-
-function Newspage_AdminModeration() {
-    global $config, $LANGDATA;
-    
-    $content = "<div>";
-    $q = "SELECT * FROM {$config['DB_PREFIX']}news WHERE moderation = '1' LIMIT {$config['NEWS_NUM_LIST_MOD']}";
-    $query = db_query($q);
-
-    if (db_num_rows($query) > 0) {
-        while ($news_row = db_fetch($query)) {
-            $content .= "<p>"                    
-                    . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete={$news_row['nid']}&lang_id={$news_row['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_DELETE']}</a>]"
-                    . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_approved={$news_row['nid']}&lang_id={$news_row['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a>]"                        
-                    . "<a href='/newspage.php?nid={$news_row['nid']}&admin=1&newslang={$news_row['lang']}' target='_blank'>{$news_row['title']}</a>"
-                    . "</p>";
+        addto_tplvar("ADM_CONTENT", Newspage_AdminModeration());              
+    } else if ($opt == 3) {        
+        if (isset($_POST['ModCatSubmit'])) {
+            Newspage_ModCategories(); //Intercept modifify categories form
         }
+        if (isset($_POST['NewCatSubmit'])) {
+            Newspage_NewCategory(); //Intercept new categories form
+        }        
+        addto_tplvar("ADM_CONTENT", Newspage_AdminCategories()); 
     }
-    $content .= "</div>";
-    
-    return $content;
+     
+    return getTPL_file("Admin", "admin_std_content");
 }

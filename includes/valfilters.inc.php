@@ -87,6 +87,13 @@ function S_POST_CHAR_AZ ($var, $max_size = null, $min_size = null) {
 
     return S_VAR_CHAR_AZ($_POST[$var], $max_size, $min_size);    
 }
+function S_POST_CHAR_UTF8 ($var, $max_size = null, $min_size = null) {
+    if(empty($_POST[$var])) {
+       return false;
+    }    
+
+    return S_VAR_CHAR_UTF8($_POST[$var], $max_size, $min_size);    
+}
 function S_POST_INT($var, $max_size = null, $min_size = null) {
     if(empty($_POST[$var])) {
        return false;
@@ -147,6 +154,31 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
     return $var;
 
 }
+
+function S_VAR_CHAR_UTF8 ($var, $max_size = null, $min_size = null) {
+    if(empty($var)) {
+        return false;        
+    }
+    if (!empty($max_size)) {
+        if (strlen($var) > $max_size) {
+            return false;
+        }
+    }
+    if (!empty($min_size)) {
+        if (strlen($var) < $min_size) {
+            return false;
+        }
+    }
+    
+    // supposed :) UTF-8 check... checking if works, need another for utf8+numbers
+    if (!preg_match("/^\p{L}+$/ui", $var)) {       
+        return false;
+    }
+    
+    return $var;
+
+}
+
 function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
         return false;        

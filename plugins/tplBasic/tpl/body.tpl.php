@@ -1,7 +1,7 @@
 <?php
 if (!defined('IN_WEB')) { exit; }
 ?>
-<body id="Top" ondblclick="javascript:history.go(-1)">
+<body id="Top">
 <div class="main_container">
 <div class="container">    
 <div class="row1">        
