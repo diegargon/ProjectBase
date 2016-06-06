@@ -21,9 +21,14 @@ function news_get_categories_select($news_data = null) {
 }
 
 function news_get_categories() {
-    global $config;
+    global $config, $ml;
     
-    $lang_id = ML_iso_to_id($config['WEB_LANG']); //TODO CHANGE ML to OO and change this    
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $lang_id = $ml->iso_to_id($config['WEB_LANG']); 
+    } else {
+        $lang_id = $config['WEB_LANG_ID'];
+    }
+    
     $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage' AND lang_id = '$lang_id'";
     $query = db_query($q);
     
@@ -175,9 +180,14 @@ function Newspage_FormScript() {
 }
 
 function news_get_sitelangs($news_data = null) { 
-    global $config; 
-    
-    $site_langs = do_action("get_site_langs"); //Provided by ML TODO ¿not use do_action? re-check
+    global $config, $ml; 
+    if(defined('MULTILANG') && 'MULTILANG') {
+        $site_langs = $ml->get_site_langs();
+    } else {
+        $site_langs['lang_id'] = $config['WEB_LANG_ID'];
+        $site_langs['lang_name'] = $config['WEB_LANG_NAME'];
+        $site_langs['iso_code'] = $config['WEB_LANG'];
+    }
     if (empty($site_langs)) { return false; }
     
     if ($news_data != null && !empty($news_data['lang'])) {

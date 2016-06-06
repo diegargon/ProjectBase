@@ -15,11 +15,11 @@ function news_format_media($media) {
 }
 
 function get_news_byId($id, $lang = null){
-    global $config, $acl_auth;         
+    global $config, $acl_auth, $ml;         
     
     $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
     if (defined('MULTILANG') && 'MULTILANG' && $lang != null) {        
-        $site_langs = do_action("get_site_langs");
+        $site_langs = $ml->get_site_langs();
         foreach ($site_langs as $site_lang) {
             if($site_lang['iso_code'] == $lang) {
                 $q .= "AND lang_id = '{$site_lang['lang_id']}'";

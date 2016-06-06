@@ -63,8 +63,12 @@ function news_update($news_data) {
 
     $nid = $news_data['update'];
     $current_langid = $news_data['current_langid'];
-    $lang_id = ML_iso_to_id($news_data['lang']);
-
+    
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $lang_id = $ml->iso_to_id($news_data['lang']);        
+    } else {
+        $lang_id  = $config['WEB_LANG_ID'];        
+    }
     $q = "SELECT * FROM {$config['DB_PREFIX']}news WHERE nid = '$nid' AND lang_id = '$current_langid' ";
     $query = db_query($q);
     if (db_num_rows($query) <= 0) {

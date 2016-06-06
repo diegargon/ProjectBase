@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function Newspage_AdminCategories() {
-    global $config, $LANGDATA;
+    global $config, $LANGDATA, $ml;
                 
     addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_CATEGORIES']);
     addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_CATEGORY_DESC']);
@@ -15,7 +15,12 @@ function Newspage_AdminCategories() {
     $content .= "<p>{$LANGDATA['L_NEWS_MODIFIED_CATS']}</p><br/>";
     $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage'   GROUP BY cid";  
     $query = db_query($q);
-    $langs = ML_get_site_langs();
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $langs = $ml->get_site_langs();
+    } else {
+        $langs['lang_id'] = $config['WEB_LANG_ID'];
+        $langs['lang_name'] = $config['WEB_LANG'];
+    }
     
     while ($cat_grouped = db_fetch($query)) {
         $content .= "<form id='cat_mod' method='post' action=''>";
@@ -48,7 +53,14 @@ function Newspage_AdminCategories() {
     $content .= "<p>{$LANGDATA['L_NEWS_CREATE_CAT']}</p><br/>";
     $content .= "<form id='cat_new' method='post' action=''>";
     $content .= "<div>";
-    $langs = ML_get_site_langs();
+
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $langs = $ml->get_site_langs();
+    } else {
+        $langs['lang_id'] = $config['WEB_LANG_ID'];
+        $langs['lang_name'] = $config['WEB_LANG_NAME'];
+    }
+     
     foreach ($langs as $lang) {
         $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";        
     }
@@ -62,9 +74,14 @@ function Newspage_AdminCategories() {
 }
 
 function Newspage_ModCategories() {
-   global $config;
+   global $config, $ml;
 
-   $langs = ML_get_site_langs();
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $langs = $ml->get_site_langs();
+    } else {
+        $langs['lang_id'] = $config['WEB_LANG_ID'];
+    }
+    
    foreach ($langs as $lang) {
         $lang_id = $lang['lang_id'];
         $posted_name = S_POST_CHAR_UTF8("$lang_id"); // field name value its 1 or 2 depend of lang
@@ -88,12 +105,17 @@ function Newspage_ModCategories() {
 }
 
 function Newspage_NewCategory() {
-    global $config;
+    global $config, $ml;
    
     $plugin = "Newspage";
     $new_cid = db_get_next_num("cid", $config['DB_PREFIX']."categories");
-     
-    $langs = ML_get_site_langs();
+         
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $langs = $ml->get_site_langs();           
+    } else {
+        $langs['lang_id']  = $config['WEB_LANG_ID'];             
+    }
+    
     foreach ($langs as $lang) {    
         $lang_id = $lang['lang_id'];
         $posted_name = S_POST_CHAR_UTF8("$lang_id");

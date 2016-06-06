@@ -37,10 +37,16 @@ function news_new_form($post_data = null) {
 }
 
 function news_create_new($news_data) {
-    global $config;
+    global $config, $ml;
     
-    $nid = db_get_next_num("nid", $config['DB_PREFIX']."news");    
-    $lang_id = ML_iso_to_id($news_data['lang']);
+    $nid = db_get_next_num("nid", $config['DB_PREFIX']."news"); 
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $lang_id = $ml->iso_to_id($news_data['lang']);        
+    } else {
+        $lang_id  = $config['WEB_LANG_ID'];        
+    }
+        
+    
     if ( ($uid = SMBasic_getUserID()) == false ) {
         $uid = 0;
     }    
