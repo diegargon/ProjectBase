@@ -13,24 +13,24 @@ function Newspage_AdminCategories() {
     //MOD CAT
     $content = "<div>";
     $content .= "<p>{$LANGDATA['L_NEWS_MODIFIED_CATS']}</p><br/>";
-    $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage'   GROUP BY cid";
-    $q2 = "SELECT *  FROM {$config['DB_PREFIX']}lang";    
+    $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage'   GROUP BY cid";  
     $query = db_query($q);
-
+    $langs = ML_get_site_langs();
+    
     while ($cat_grouped = db_fetch($query)) {
         $content .= "<form id='cat_mod' method='post' action=''>";
         $content .= "<div>";
-        $query2 = db_query($q2);
-        while($lang = db_fetch($query2)) {
-            if ($lang['lang_id'] == $cat_grouped['lang_id']) {
+
+        foreach ($langs as $lang) {            
+            if ($lang['lang_id'] == $cat_grouped['lang_id']) {                
                 $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='{$cat_grouped['name']}' />";
-            } else {   
-                $q3 = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage'  AND cid = '{$cat_grouped['cid']}' AND lang_id = '{$lang['lang_id']}'";
-                $query3 = db_query($q3);
-                if(db_num_rows($query3) <= 0) {
+            } else {                   
+                $q2 = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage'  AND cid = '{$cat_grouped['cid']}' AND lang_id = '{$lang['lang_id']}'";
+                $query2 = db_query($q2);
+                if(db_num_rows($query2) <= 0) {
                     $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";                    
                 } else {
-                    $other_lang_cat = db_fetch($query3);
+                    $other_lang_cat = db_fetch($query2);
                     $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='{$other_lang_cat['name']}' />";
                 }
             }
@@ -48,10 +48,9 @@ function Newspage_AdminCategories() {
     $content .= "<p>{$LANGDATA['L_NEWS_CREATE_CAT']}</p><br/>";
     $content .= "<form id='cat_new' method='post' action=''>";
     $content .= "<div>";
-    $q = "SELECT * FROM {$config['DB_PREFIX']}lang";    
-    $query = db_query($q);
-    while($langs = db_fetch($query)) {
-        $content .= "<label>{$langs['lang_name']}</label> <input type='text' name='{$langs['lang_id']}' value='' />";        
+    $langs = ML_get_site_langs();
+    foreach ($langs as $lang) {
+        $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";        
     }
     $content .= "<input type='submit' name='NewCatSubmit' value='{$LANGDATA['L_NEWS_CREATE']}' />" ;
     $content .= "</div>";        
@@ -65,11 +64,9 @@ function Newspage_AdminCategories() {
 function Newspage_ModCategories() {
    global $config;
 
-    $q = "SELECT *  FROM {$config['DB_PREFIX']}lang"; 
-    $query = db_query($q);
- 
-    while ($row = db_fetch($query)) {
-        $lang_id = $row['lang_id'];
+   $langs = ML_get_site_langs();
+   foreach ($langs as $lang) {
+        $lang_id = $lang['lang_id'];
         $posted_name = S_POST_CHAR_UTF8("$lang_id"); // field name value its 1 or 2 depend of lang
         
         if(!empty($posted_name)) {
@@ -95,15 +92,13 @@ function Newspage_NewCategory() {
    
     $plugin = "Newspage";
     $new_cid = db_get_next_num("cid", $config['DB_PREFIX']."categories");
-    
-    $q = "SELECT *  FROM {$config['DB_PREFIX']}lang"; 
-    $query = db_query($q);
- 
-    while ($langs = db_fetch($query)) {  
-        $lang_id = $langs['lang_id'];
+     
+    $langs = ML_get_site_langs();
+    foreach ($langs as $lang) {    
+        $lang_id = $lang['lang_id'];
         $posted_name = S_POST_CHAR_UTF8("$lang_id");
         if (!empty($posted_name))  {
-            $insert = "INSERT INTO {$config['DB_PREFIX']}categories (cid, lang_id, plugin, name) VALUES ('$new_cid', '{$langs['lang_id']}', '$plugin', '$posted_name' );";
+            $insert = "INSERT INTO {$config['DB_PREFIX']}categories (cid, lang_id, plugin, name) VALUES ('$new_cid', '{$lang['lang_id']}', '$plugin', '$posted_name' );";
             db_query($insert);
         } 
     }

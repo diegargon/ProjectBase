@@ -97,6 +97,23 @@ function ML_get_langs_from_json() {
     return $LANGS_DATA;
 }
 
+function ML_get_site_langs() {
+    global $config;    
+    
+    $q = "SELECT * FROM {$config['DB_PREFIX']}lang";
+    $query = db_query($q);
+    while($lang_row = db_fetch($query)) {
+        $langs[] = array ("lang_id" => $lang_row['lang_id'],
+                             "lang_name" => $lang_row['lang_name'],
+                             "active" => $lang_row['active'],
+                             "iso_code" => $lang_row['iso_code'],
+                            );
+    } 
+    db_free_result($query);
+
+    return $langs;
+}
+
 function ML_get_langs_from_db() {
     global $config;    
     
