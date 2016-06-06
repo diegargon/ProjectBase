@@ -76,7 +76,7 @@ function includePluginFiles($plugin, $admin = 0) {
     //INC FILE
     if ($admin == 0) {
         $inc_file = "plugins/$plugin/includes/$plugin.inc.php";
-        $lass_file = "plugins/$plugin/includes/$plugin.class.php";
+        $class_file = "plugins/$plugin/includes/$plugin.class.php";
     } else {
         $inc_file = "plugins/$plugin/admin/$plugin.admin.inc.php";
     }
