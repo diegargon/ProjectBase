@@ -19,12 +19,15 @@ function Newspage_AdminMenu($params) {
 }
 
 function Newspage_AdminContent($params) {
-   global $LANGDATA;    
+   global $LANGDATA, $config;    
    
    includePluginFiles("Newspage", 1);
     addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n" );                               
     addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_NEWS_MODERATION'] ."</a></li>\n");
     addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=3'>". $LANGDATA['L_NEWS_CATEGORY'] ."</a></li>\n");
+    if ($config['NEWS_SELECTED_FRONTPAGE']) {
+        addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=4'>". $LANGDATA['L_NEWS_INFRONTPAGE'] ."</a></li>\n");
+    }
     addto_tplvar("ADM_ASIDE_OPTION", do_action("ADD_ADM_GENERAL_OPT") );
 
     addto_tplvar("ADM_CONTENT_H1", "Newspage");
@@ -42,6 +45,8 @@ function Newspage_AdminContent($params) {
             Newspage_NewCategory(); //Intercept new categories form
         }        
         addto_tplvar("ADM_CONTENT", Newspage_AdminCategories()); 
+    } else if ($opt == 4) {
+        addto_tplvar("ADM_CONTENT", Newspage_InFrontpage());
     }
      
     return getTPL_file("Admin", "admin_std_content");

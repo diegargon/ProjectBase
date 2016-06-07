@@ -8,18 +8,20 @@ global $dblink;
 
 function MysqlDB_Init() {
     global $db;
+    
     if (DEBUG_PLUGINS_LOAD) { print_debug("MysqlDB Initialice<br/>"); }
 
     includePluginFiles("MysqlDB");    
   
     register_action("finalize", "MysqlDB_Close", "5");
     db_connect();
-/*
+
+    //both until migrate all
     if (!isset($db)) {
         $db = new Database;
     }
     $db->connect();
-    
+/*    
     $query = $db->select("users", array('uid' => 1, 'username' => "diego"));
     while ($row = $db->fetch($query)) {
       echo "{$row['username']} <br>";  
@@ -30,5 +32,7 @@ function MysqlDB_Init() {
 }
 
 function MysqlDB_Close() {
+    global $db;
+    $db->close();
     db_close();    
 }

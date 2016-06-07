@@ -16,6 +16,7 @@ Core/ALL: Filter vars correctly
 ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL or both if ACL use ACL not isLogged
 CORE: Plugins.check  re-check  functions calls in core exist and manage errors (some check missed)
 ALL: revise when need UTF on CHAR_AZ_FILTERS
+Multilang/Admin: add/modified site langs;
 
 #BACKLOG
 
