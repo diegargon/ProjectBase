@@ -17,7 +17,7 @@ function SMBasic_RegisterScript() {
 }
 
 function SMBasic_Register() {
-    global $config, $LANGDATA;
+    global $config, $LANGDATA, $db;
     
     if( ($config['smbasic_need_email'] == 1)  && 
         (($email = S_POST_EMAIL("email")) == false)) {
@@ -48,22 +48,24 @@ function SMBasic_Register() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'";  
-    $query = db_query($q);     
-    if ((db_num_rows($query)) > 0) {
+    //$q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'";  
+    //$query = db_query($q);     
+    $query = $db->select_all("users", array("username" => "$username"), "LIMIT 1");
+    if (($db->num_rows($query)) > 0) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                
     }
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'"; 
-    $query = db_query($q);    
-    if ((db_num_rows($query)) > 0) {
+//    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'"; 
+//    $query = db_query($q);    
+    $query = $db->select_all("users", array("email" => "$email"));
+    if (($db->num_rows($query)) > 0) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                        
     }        
     
-    db_free_result($query);
+    $db->free($query);
     
     $password = do_action("encrypt_password", $password);
     if ($config['smbasic_email_confirmation']) {
@@ -74,11 +76,16 @@ function SMBasic_Register() {
         $register_message = $LANGDATA['L_REGISTER_OKMSG'];        
     }    
     $mail_msg = SMBasic_create_reg_mail($active);    
+/*
     $q = "INSERT INTO {$config['DB_PREFIX']}users ("
         . "username, password, email, active"
         . ") VALUES ("
         . "'$username', '$password', '$email', '$active');";   
     $query = db_query($q);    
+ 
+ */
+    $query = $db->insert("users", array("username" => "$username", "password" => "$password", "email" => "$email", "active" => "$active"));
+    
     if($query) {       
        mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg);       
        $response[] = array("status" => "ok", "msg" => $register_message, "url" => $config['WEB_URL']);       

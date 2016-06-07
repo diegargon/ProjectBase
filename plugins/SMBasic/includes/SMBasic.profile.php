@@ -18,7 +18,7 @@ function SMBasic_ProfileScript() {
 }
 
 function SMBasic_ProfileChange() {
-    global $LANGDATA, $config; 
+    global $LANGDATA, $config, $db; 
     
     if( empty($_POST['cur_password']) ||  strlen ($_POST['cur_password']) <  $config['smbasic_min_password']) {
        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
@@ -50,9 +50,7 @@ function SMBasic_ProfileChange() {
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;           
     } 
-    if ( ( $config['smbasic_need_username'] == 1) &&
-            ( $config['smbasic_can_change_username'] == 1)
-    ){
+    if ( ( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) ){
         if(empty($_POST['username'])) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_EMPTY']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
@@ -69,8 +67,8 @@ function SMBasic_ProfileChange() {
            return false;                        
         }    
         //if ( ($username = s_char($_POST['username'], $config['smbasic_max_username'])) == false) { 
-        if ( ($username = S_POST_CHAR_AZNUM("username", $config['smbasic_max_username'], $config['smbasic_max_username'])) == false) { 
-           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHAR']);
+        if ( ($username = S_POST_CHAR_AZNUM("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false) { 
+           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHARS']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                                    
         }
@@ -89,21 +87,25 @@ function SMBasic_ProfileChange() {
     }
        
     $password_encrypted = do_action("encrypt_password", $password);
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE uid = '{$_SESSION['uid']}' AND password = '$password_encrypted' LIMIT 1";
+/*    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE uid = '{$_SESSION['uid']}' AND password = '$password_encrypted' LIMIT 1";
     $query = db_query($q);
-    if(db_num_rows($query) <= 0) {
+ * *
+ */
+    $query = $db->select_all("users", array("uid" => "{$_SESSION['uid']}", "password" => "$password_encrypted"), "LIMIT 1");
+    if($db->num_rows($query) <= 0) {
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_WRONG_PASSWORD']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;         
     } else {
-        $user = db_fetch($query);
+        $user = $db->fetch($query);
     }        
     if ( ( $config['smbasic_need_username'] == 1) &&
             ( $config['smbasic_can_change_username'] == 1) &&
             ( $user['username'] != $_POST['username']) ){        
-        $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username='$username' LIMIT 1";
-        $query = db_query($q);
-        if (db_num_rows($query) > 0) {
+        //$q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username='$username' LIMIT 1";
+        //$query = db_query($q);
+        $query = $db->select_all("users", array("username" => "$username"), "LIMIT 1");
+        if ($db->num_rows($query) > 0) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
             return false;             
@@ -112,9 +114,10 @@ function SMBasic_ProfileChange() {
     if ( ( $config['smbasic_need_email'] == 1) &&
             ( $config['smbasic_can_change_email'] == 1) &&
             ( $user['email'] != $_POST['email'] )  ){        
-        $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
-        $query = db_query($q);
-        if (db_num_rows($query) > 0) {
+//        $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
+//        $query = db_query($q);
+        $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
+        if ($db->num_rows($query) > 0) {
            $response[] = array("status" => "5", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
             return false;             
@@ -138,36 +141,45 @@ function SMBasic_ProfileChange() {
         return false;                     
     }
     
-    $need_coma = 0; // huh!
+//    $need_coma = 0; // huh!
     
-    $q = "UPDATE {$config['DB_PREFIX']}users SET ";
-   
+    //$q = "UPDATE {$config['DB_PREFIX']}users SET ";
+    $q_set_ary = [];
     if (( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) && ( !empty($username) )) {
-        $q .= "username = '$username'";
-        $need_coma = 1;
+//        $q .= "username = '$username'";
+//        $need_coma = 1;
+            $q_set_ary = array("username" => "$username");
     }    
     if (( $config['smbasic_need_email'] == 1) && ( $config['smbasic_can_change_email'] == 1) && ( !empty($email) )) {
-        if ($need_coma) {
+/*        if ($need_coma) {
             $q .= ", email = '$email'";
         } else {
             $q .= "email = '$email'";
             $need_coma = 1;
         }
+ * 
+ */
+        $q_set_ary = array("email" => "$email");
     }       
     if (!empty($_POST['new_password'])) {
         if  ( ($new_password = s_char($_POST['new_password'], $config['smbasic_max_password'])) != false) { //FIX password validation
             $new_password_encrypt = do_action("encrypt_password", $new_password);
+/*
             if ($need_coma) {               
                $q .= ", password = '$new_password_encrypt'";
            } else {
                $q .= " password = '$new_password_encrypt'";
                $need_coma = 1;
            }
+ * 
+ */
+            $q_set_ary = array("password" => "$new_password_encrypt");
         }
     }   
 
-    $q .= " WHERE uid = {$_SESSION['uid']} LIMIT 1";    
-    db_query($q);
+    $db->update("users", $q_set_ary, array("uid" => "{$_SESSION['uid']}"), "LIMIT 1");
+//    $q .= " WHERE uid = {$_SESSION['uid']} LIMIT 1";    
+//    db_query($q);
     $profile_url = $config['WEB_URL'] . "profile.php";
     $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] , "url" => "$profile_url");    
     echo json_encode($response, JSON_UNESCAPED_SLASHES);

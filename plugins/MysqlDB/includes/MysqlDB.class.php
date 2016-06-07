@@ -83,7 +83,7 @@ class Database {
     /* Especify operator default '=';
     /* $query = $db->select_all("news", array ("frontpage" => array("value"=> 1, "operator" => "="), "moderation" => 0, "disabled" => 0));
     /* extra not array */
-    function select_all($table, $where = null, $extra = null) {
+    function select_all($table, $where = null, $extra = null) { //TODO: add separator = ALL?
         global $config;
 
         if(empty($table)) {
@@ -126,7 +126,7 @@ class Database {
         foreach ($set as $field => $value) {
              $q_set_fields[] = "$field = " . "'". $value ."'";
         } 
-        $q .= implode( ', ', $q_set_fields );
+        $q .= implode( ',', $q_set_fields );
         
         if (!empty($where)) {
             $q .= " WHERE ";
@@ -147,6 +147,8 @@ class Database {
     function insert($table, $data) {
         global $config;
 
+        if (empty($table) || empty($data)) { return false; }
+        
         foreach ($data as $field => $value){        
             $fields_ary[] = $field;
             $values_ary[] = "'". $value . "'";
@@ -156,6 +158,21 @@ class Database {
         $q = "INSERT INTO {$config['DB_PREFIX']}$table ( $fields ) VALUES ( $values )";        
         
         
+        return $this->query($q);
+    }
+    
+    function delete($table, $where) {
+        global $config;
+               
+        if(empty($table) || empty($where) ) { return false; }
+        
+        $q = "DELETE FROM {$config['DB_PREFIX']}$table WHERE ";
+
+        foreach ($where as $field => $value) {
+             $q_where_fields[] = "$field = " . "'". $value ."'";
+        } 
+        $q .= implode( ' AND ', $q_where_fields );        
+     
         return $this->query($q);
     }
 }

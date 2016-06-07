@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_Login() {
-    global $config, $LANGDATA;
+    global $config, $LANGDATA, $db;
     
     if ( (($email = S_POST_EMAIL("email")) != false) &&
         ($email != null) &&
@@ -19,9 +19,10 @@ function SMBasic_Login() {
             exit(0);
         }
         $response = [];       
-        $q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password' LIMIT 1";       
-        $query = db_query($q);
-        if ($user = db_fetch($query)) {
+        //$q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password' LIMIT 1";               
+        //$query = db_query($q);
+        $query = $db->select_all("users", array("email" => "$email", "password" => "$password"), "LIMIT 1");
+        if ($user = $db->fetch($query)) {
             if($user['active'] == 0) {
                     SMBasic_setSession($user);
                     if ( ($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])  ){                                 
@@ -38,7 +39,7 @@ function SMBasic_Login() {
         } else {            
             $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD'] );
         }
-        db_free_result($query);
+        $db->free($query);
     } else {
             $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD']);
     }
@@ -47,14 +48,15 @@ function SMBasic_Login() {
 
 
 function SMBasic_user_activate_account() {
-    global $config;
+    global $config, $db;
     
     if ( ($active = S_GET_INT("active", 12)) == false) {
         return false;
     }
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE active = '$active'";
-    $query = db_query($q);
-    if(db_num_rows($query) <= 0) {
+    //$q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE active = '$active'";
+    //$query = db_query($q);
+    $query = $db->select_all("users", array("active" => "$active"), "LIMIT 1");
+    if($db->num_rows($query) <= 0) {
         return false;
     } else {
         $q = "UPDATE {$config['DB_PREFIX']}users SET active = '0' WHERE active='$active'";
@@ -65,7 +67,7 @@ function SMBasic_user_activate_account() {
 }
 
 function SMBasic_RequestResetOrActivation() {
-    global $LANGDATA, $config;
+    global $LANGDATA, $config, $db;
 
     if ( ($email = S_POST_EMAIL("email")) == false ) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);
@@ -77,14 +79,15 @@ function SMBasic_RequestResetOrActivation() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                        
     }  
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
-    $query = db_query($q);
-    if (db_num_rows($query) <= 0) {
+//    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
+//    $query = db_query($q);
+    $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
+    if ($db->num_rows($query) <= 0) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL_NOEXISTS']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;             
     } else {
-        $user = db_fetch($query);
+        $user = $db->fetch($query);
         if($user['active'] > 1) {
             $mail_msg = SMBasic_create_reg_mail($user['active']);
             mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg);            
@@ -93,8 +96,10 @@ function SMBasic_RequestResetOrActivation() {
             return false;             
         } else {            
             $reset = mt_rand(11111111, 2147483647);
-            $q = "UPDATE {$config['DB_PREFIX']}users SET reset = '$reset' WHERE email = '$email'";
-            db_query($q);
+            //$q = "UPDATE {$config['DB_PREFIX']}users SET reset = '$reset' WHERE email = '$email'";
+            //db_query($q);
+            $db->update("users", array("reset" => "$reset"), array("email" => "$email"));
+            
             $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php" . "?reset=$reset&email=$email";
             $msg = $LANGDATA['L_RESET_EMAIL_MSG'] . "\n" ."$URL"; 
             mail($email, $LANGDATA['L_RESET_EMAIL_SUBJECT'], $msg);
@@ -110,21 +115,24 @@ function SMBasic_RequestResetOrActivation() {
 
 
 function SMBasic_user_reset_account() {
-    global $config, $LANGDATA;
+    global $config, $LANGDATA, $db;
     
     $reset = S_GET_INT('reset');
     $email = S_GET_EMAIL('email');
     if ($reset == false || $email == false) {
         return false;
     }
-    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email' AND reset = '$reset'";
-    $query = db_query($q);
-    if (db_num_rows($query) > 0) {
-        $user = db_fetch($query);        
+    //$q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email' AND reset = '$reset'";
+    //$query = db_query($q);
+    $query = $db->select_all("users", array("email" => "$email", "reset" => "$reset"));
+    if ($db->num_rows($query) > 0) {
+        $user = $db->fetch($query);        
         $password = SMBasic_randomPassword();
         $password_encrypted = do_action("encrypt_password", $password);
-        $q = "UPDATE {$config['DB_PREFIX']}users SET password = '$password_encrypted', reset = '0' WHERE uid = '{$user['uid']}' ";
-        db_query($q);
+        
+        //$q = "UPDATE {$config['DB_PREFIX']}users SET password = '$password_encrypted', reset = '0' WHERE uid = '{$user['uid']}' ";
+        //db_query($q);
+        $db->update("users", array("password" => "$password_encrypted", "reset" => "0"), array("uid" => "{$user['uid']}") );
         $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php"; 
         $msg = $LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] . "\n" . "$password\n" ."$URL"; 
         mail($email, $LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'], $msg);
