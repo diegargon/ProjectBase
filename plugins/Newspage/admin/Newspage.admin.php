@@ -22,6 +22,9 @@ function Newspage_AdminContent($params) {
    global $LANGDATA, $config;    
    
    includePluginFiles("Newspage", 1);
+   getCSS_filePath("Newspage");
+   getCSS_filePath("Newspage", "Newspage-mobile");  
+   
     addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n" );                               
     addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_NEWS_MODERATION'] ."</a></li>\n");
     addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=3'>". $LANGDATA['L_NEWS_CATEGORY'] ."</a></li>\n");

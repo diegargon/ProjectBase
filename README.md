@@ -37,6 +37,5 @@ Author
 * Diego Garcia <diego@envigo.ent>
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/diegargon/projectbase/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 
