@@ -26,7 +26,7 @@ function MysqlDB_Init() {
     while ($row = $db->fetch($query)) {
       echo "{$row['username']} <br>";  
     }
-    //$db->free_result($query);
+    //$db->free($query);
     $db->close();
 */
 }

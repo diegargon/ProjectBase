@@ -72,16 +72,15 @@ class Multilang {
     }    
     
     private function retrieve_db_langs() {
-        global $config;
-        $q = "SELECT * FROM {$config['DB_PREFIX']}lang";
-        $query = db_query($q);
-        while($lang_row = db_fetch($query)) {
+        global $config, $db;        
+        $query = $db->select_all("lang");        
+        while($lang_row = $db->fetch($query)) {
             $this->site_langs[] = array ("lang_id" => $lang_row['lang_id'],
                              "lang_name" => $lang_row['lang_name'],
                              "active" => $lang_row['active'],
                              "iso_code" => $lang_row['iso_code'],
                             );
         } 
-        db_free_result($query);                
+        $db->free($query);
     }
 }

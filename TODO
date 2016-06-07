@@ -17,7 +17,7 @@ ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL or both
 CORE: Plugins.check  re-check  functions calls in core exist and manage errors (some check missed)
 ALL: revise when need UTF on CHAR_AZ_FILTERS
 Multilang/Admin: add/modified site langs;
-
+Mysql/core: move  _ESCAPE filter to Mysql class
 #BACKLOG
 
 Newspage: Solo admin puede editar, añadir la posibilidad de que el usuario que envia edite.

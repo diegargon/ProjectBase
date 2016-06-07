@@ -61,7 +61,7 @@ class Database {
         return $id;
     }
 
-    function free_result(& $query) {
+    function free(& $query) {
         $query->free();
         
     }
