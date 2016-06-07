@@ -39,17 +39,17 @@ class ACL {
     }
 
     function get_roles_select($acl_group = null, $selected = null) {
-        global $LANGDATA;
-    
-        $query = $this->get_roles_query($acl_group);
-    
+        global $LANGDATA, $db;
+       
         $select = "<select name='{$acl_group}_acl' id='{$acl_group}_acl'>";
         if ($selected == null) {
             $select .= "<option selected value=''>{$LANGDATA['L_ACL_NONE']}</option>";
         } else {
             $select .= "<option value=''>{$LANGDATA['L_ACL_NONE']}</option>";
         }
-        while($row = db_fetch($query)) {
+        
+        $query = $this->get_roles_query($acl_group);               
+        while($row = $db->fetch($query)) {
             $full_role = $row['role_group'] ."_". $row['role_type'];
             if ($full_role != $selected) {
                 $select .= "<option value='$full_role'>{$LANGDATA[$row['role_name']]}</option>";
@@ -110,46 +110,45 @@ class ACL {
     }
     
     private function getRoles() {
-        global $config;
+        global $db;
         
-        $q = "SELECT * FROM {$config['DB_PREFIX']}acl_roles";
-        $query = db_query ($q);
-        if (db_num_rows($query) > 0) {
-            while ($row = db_fetch($query)) {
+        $query = $db->select_all("acl_roles"); 
+        if ($db->num_rows($query) > 0) {
+            while ($row = $db->fetch($query)) {
                 $this->roles[] = $row;
             }
         } else {
             $this->roles = false;
         }
-        db_free_result($query);        
+        $db->free($query);        
     }
 
     private function getUserRoles() {
-        global $config;
+        global $db;
 
         if(!$uid = S_VAR_INTEGER($_SESSION['uid'], 11, 0)) { //TODO change to a global user variable?                                
             return false;
         }
-        $q = "SELECT * FROM {$config['DB_PREFIX']}acl_users WHERE uid = '$uid'";
-        $query = db_query ($q);
-        if (db_num_rows($query) > 0) {
-            while ($row = db_fetch($query)) {
+        $query = $db->select_all("acl_users", array("uid" => "$uid"));
+        if ($db->num_rows($query) > 0) {
+            while ($row = $db->fetch($query)) {
                 $this->user_roles[] = $row;
             }
         } else {
             $this->user_roles = false;
         }
-        db_free_result($query);
+        $db->free($query);
     }    
 
     private function get_roles_query($acl_group = null) {
-        global $config;
-        $q = "SELECT * FROM {$config['DB_PREFIX']}acl_roles";
-        if(!empty($acl_group)) {
-            $q .= " WHERE role_group = '$acl_group'";            
-        }    
-        $query = db_query($q);
+        global $db;
+
+        if (!empty($acl_group)) {
+            $query = $db->select_all("acl_roles", array("role_group" => "$acl_group"));
+        } else {
+            $query = $db->select_all("acl_roles");
+        }
+        
         return $query;
-    }
-    
+    }    
 }
