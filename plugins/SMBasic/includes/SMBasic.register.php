@@ -38,7 +38,7 @@ function SMBasic_Register() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    if( ($password = s_char($_POST['password'], $config['smbasic_max_password'])) == false ) {  //TODO PASSWORD FILTER
+    if( ($password = S_POST_CHAR_AZNUM("password", $config['smbasic_max_password'], $config['smbasic_min_password'] ) ) == false ) {  //FIX: Password not accept special
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        

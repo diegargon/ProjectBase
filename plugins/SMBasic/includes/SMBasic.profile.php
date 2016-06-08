@@ -25,7 +25,7 @@ function SMBasic_ProfileChange() {
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;
     }    
-    if (!$password = s_char($_POST['cur_password'], $config['smbasic_max_password'] )) {  //TODO/FIX FILTER PASSWORD
+    if (!$password = S_POST_CHAR_AZNUM("cur_password", $config['smbasic_max_password'], $config['smbasic_min_password'] )) { //TODO only accept AZ_NUM no special chars
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;        
@@ -65,8 +65,7 @@ function SMBasic_ProfileChange() {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_LONG']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                        
-        }    
-        //if ( ($username = s_char($_POST['username'], $config['smbasic_max_username'])) == false) { 
+        }            
         if ( ($username = S_POST_CHAR_AZNUM("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false) { 
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHARS']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
@@ -161,7 +160,7 @@ function SMBasic_ProfileChange() {
         $q_set_ary["email"] = $email;
     }       
     if (!empty($_POST['new_password'])) {
-        if  ( ($new_password = s_char($_POST['new_password'], $config['smbasic_max_password'])) != false) { //FIX password validation
+        if  ( ($new_password = S_POST_CHAR_AZNUM("new_password", $config['smbasic_max_password'], $config['smbasic_min_password'] )) != false) { //TODO ONLY AZ NUM no special
             $new_password_encrypt = do_action("encrypt_password", $new_password);
 /*
             if ($need_coma) {               

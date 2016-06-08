@@ -54,7 +54,7 @@ class Multilang {
     return $mlnav;
     }    
     
-    function get_site_langs($active) {
+    function get_site_langs($active = null) {
         if (empty($this->site_langs) && empty($active)) {
           $this->retrieve_db_langs();            
         }

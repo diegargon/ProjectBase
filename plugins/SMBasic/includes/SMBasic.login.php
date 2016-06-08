@@ -112,8 +112,6 @@ function SMBasic_RequestResetOrActivation() {
     return false;                         
 }
 
-
-
 function SMBasic_user_reset_account() {
     global $config, $LANGDATA, $db;
     
@@ -155,7 +153,6 @@ function SMBasic_randomPassword() {
     return implode($pass);
 }
 
-
 function SMBasic_LoginScript() {
     $script = "";    
     if (!check_jsScript("jquery.min.js")) {
@@ -170,5 +167,5 @@ function SMBasic_LoginScript() {
 
 function SMBasic_validate_password($password) { //TODO FILTER VALFILTER CORE
     global $config;
-    return s_char($password, $config['smbasic_max_password']);
+    return S_VAR_CHAR_AZ_NUM($password, $config['smbasic_max_password'], $config['smbasic_min_password'] ); //FIX only AZ NUM no special
 }

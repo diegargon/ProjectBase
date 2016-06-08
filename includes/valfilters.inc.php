@@ -4,48 +4,6 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function s_char($char, $size) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUNCTION
-    print_debug("Deprecated: schar $char");
-    if (strlen($char) <= $size) {
-        return input_filter($char);
-    } else if ($size == 0) { // 0 disable size
-        return input_filter($char); 
-    }
-    return false;
-}
-
-function s_num($num, $size) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUNCTION
-    print_debug("Deprecated: snum $num use S_VAR_INTEGER");
-    if(is_numeric($num) && (strlen($num) <= $size)) {
-        return $num;
-    }
-    return false;
-}
-
-function s_bool($bool) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUNCTION
-    return filter_var($bool, FILTER_VALIDATE_BOOLEAN);
-}
-
-function input_filter($data) { //TODO REPLACE ALL REFERENCES AND DELETE THIS FUNCTION and do a decent filter function if not already do.
-    global $config;
-    
-    if (is_array($data)) {
-        foreach ($data as $key => $element) {
-            $data[$key] = input_filter($element);
-        }
-    } else {
-        
-        $data = trim(htmlentities(strip_tags($data)));        
-        if(get_magic_quotes_gpc()) $data = stripslashes($data);
-        
-        if (isset($config['SQL_DB']) && $config['SQL_DB']) {
-            $data = db_escape_string($data);
-        }        
-    }
-    
-    return $data;
-}
-
 //$_GET
 
 function S_GET_INT($var) {
