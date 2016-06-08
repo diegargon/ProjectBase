@@ -91,3 +91,21 @@
     font-weight: bold;
 }
 
+#admin_opt_content {
+    border:0px solid blue;
+    width:84%;
+    float:left;
+    font-size: 14px;
+}
+#admin_opt_content span{             
+    font-size: 12px;
+    font-weight: bold
+}
+#admin_opt_content a {
+}
+#admin_opt_content ul {
+    list-style: none;
+    padding:0;
+}
+#admin_opt_content li {}
+#admin_opt_content section {}

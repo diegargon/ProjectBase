@@ -4,8 +4,6 @@ by priority order
 
 #Priority
 
-
-Newspage/Admin: List menu with frontpage and backpage news for toggle for newspage
 SMBasic: provid Admin users
 Newspage: Recheck all conditions for Optional ACL support
 Newspage: not show disable news and add admin submit news to submit disable 
@@ -17,7 +15,6 @@ Core/ALL: Filter vars correctly
 ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL or both if ACL use ACL not isLogged
 CORE: Plugins.check  re-check  functions calls in core exist and manage errors (some check missed)
 ALL: revise when need UTF on CHAR_AZ_FILTERS
-Multilang/Admin: add/modified site langs;
 Mysql/core: move  _ESCAPE filter to Mysql class
 #BACKLOG
 
@@ -56,3 +53,4 @@ New:Forum plugin
 New:Shop plugin
 New:Social plugin
 Language: Fix bad/fast english support
+ALL: change config files to ini files?

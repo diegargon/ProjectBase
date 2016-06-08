@@ -83,7 +83,7 @@ class Database {
     /* Especify operator default '=';
     /* $query = $db->select_all("news", array ("frontpage" => array("value"=> 1, "operator" => "="), "moderation" => 0, "disabled" => 0));
     /* extra not array */
-    function select_all($table, $where = null, $extra = null) { //TODO: add separator = ALL?
+    function select_all($table, $where = null, $extra = null, $logic = "AND") { 
         global $config;
 
         if(empty($table)) {
@@ -101,13 +101,12 @@ class Database {
                     $q_where_fields[] = "$field {$value['operator']} " . "'". $value['value'] ."'";
                 }
             }
-            $q .= implode( ' AND ', $q_where_fields );
+            $q .= implode( " $logic ", $q_where_fields );
         }
         
         if( !empty($extra) ) {
             $q .= " $extra";
         }
-        
         return $this->query($q);
     }
     

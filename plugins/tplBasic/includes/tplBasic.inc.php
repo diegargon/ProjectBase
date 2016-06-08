@@ -65,9 +65,11 @@ function getCSS_filePath($plugin, $filename = null) {
     if (file_exists($USER_PATH))  {
         $css = "<link rel='stylesheet' href='/$USER_PATH'>\n";
     } else if (file_exists($DEFAULT_PATH)) {
-        $css =  "<link rel='stylesheet' href='/$DEFAULT_PATH'>\n";
-    }          
-    addto_tplvar("LINK", $css);
+        $css =  "<link rel='stylesheet' href='/$DEFAULT_PATH'>\n";           
+    }
+    if (isset($css)) {
+        addto_tplvar("LINK", $css);
+    }
 }
 
 function getScript_fileCode($plugin, $filename = null) {

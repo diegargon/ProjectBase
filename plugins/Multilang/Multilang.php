@@ -44,8 +44,6 @@ function Multilang_init(){
         header('Location:' .$request_uri);
     }
 
-    //register_action("nav_element", "ML_nav", 6);
-    //addto_tplvar("SCRIPTS", ML_Script());
     register_action("nav_element", array($ml, "get_nav"), 6);
     
     addto_tplvar("SCRIPTS", $ml->get_js());    
