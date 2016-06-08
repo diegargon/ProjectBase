@@ -5,10 +5,11 @@
 if (!defined('IN_WEB')) { exit; }
 
 class Multilang {
+    private $active_site_langs;
     private $site_langs;
-    
+            
     function __construct() {
-        $this->get_site_langs();
+        $this->get_site_langs(1);
    }
     
 
@@ -39,7 +40,7 @@ class Multilang {
             . "<form action='#' method='post'>"
             . "<select name='choose_lang' id='choose_lang'>";
   
-        foreach ($this->get_site_langs() as $lang) {
+        foreach ($this->get_site_langs(1) as $lang) {
             if($lang['iso_code'] == $config['WEB_LANG']) {
                 $mlnav .= "<option selected value='{$lang['iso_code']}'>{$lang['lang_name']}</option>";
             } else {
@@ -53,12 +54,19 @@ class Multilang {
     return $mlnav;
     }    
     
-    function get_site_langs() {
-        if (empty($this->site_langs)) {
+    function get_site_langs($active) {
+        if (empty($this->site_langs) && empty($active)) {
           $this->retrieve_db_langs();            
         }
-        
-        return $this->site_langs;
+        if (empty($this->active_site_langs) && !empty($active)) {
+          $this->retrieve_db_langs(1);            
+        }        
+                
+        if ($active) {
+            return $this->active_site_langs;
+        } else {
+            return $this->site_langs;
+        }
     }
 
     function iso_to_id($isolang) {    
@@ -71,16 +79,31 @@ class Multilang {
     return false;
     }    
     
-    private function retrieve_db_langs() {
-        global $config, $db;        
-        $query = $db->select_all("lang");        
+    private function retrieve_db_langs($active= null) {
+        global $config, $db;
+
+        if (!empty($active)) {
+            $query = $db->select_all("lang", array("active" => "$active"));
+        } else{
+            $query = $db->select_all("lang");
+        }
         while($lang_row = $db->fetch($query)) {
-            $this->site_langs[] = array ("lang_id" => $lang_row['lang_id'],
+            if ($active) { //TODO better
+                $this->active_site_langs[] = array ("lang_id" => $lang_row['lang_id'],
                              "lang_name" => $lang_row['lang_name'],
                              "active" => $lang_row['active'],
                              "iso_code" => $lang_row['iso_code'],
                             );
-        } 
+            } else {
+                $this->site_langs[] = array ("lang_id" => $lang_row['lang_id'],
+                             "lang_name" => $lang_row['lang_name'],
+                             "active" => $lang_row['active'],
+                             "iso_code" => $lang_row['iso_code'],
+                            );
+                
+            }
+        }
+
         $db->free($query);
     }
 }
