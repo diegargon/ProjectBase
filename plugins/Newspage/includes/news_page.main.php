@@ -64,9 +64,9 @@ function news_page_main() {
                 news_approved(S_GET_INT("news_approved"), S_GET_INT("lang_id"));
                 news_redirect();
             }
-            if (!empty($_GET['news_featured']) && !empty($_GET['lang_id']) &&
-                    $_GET['news_featured'] > 0 && $_GET['lang_id'] > 0) {
-                news_featured(S_GET_INT("news_featured"), S_GET_INT("lang_id"));
+            if (isset($_GET['news_featured']) && !empty($_GET['lang_id'] && !empty($_GET['nid']))) {
+                empty($_GET['news_featured']) ? $news_featured = 0: $news_featured =1;                
+                news_featured(S_GET_INT("nid", 11, 1), $news_featured, S_GET_INT("lang_id"));
                 news_redirect();
             }
 
@@ -101,9 +101,9 @@ function Newspage_AdminOptions($news) {
     $content .= "<ul>";
     $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
     if ($news['featured'] == 1) {
-        $content .= "<li><a class='link_active' href=''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
-    } else {        
-        $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured={$news['nid']}&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";
+        $content .= "<li><a class='link_active' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=0&featured_value=0&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
+    } else {
+        $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=1&featured_value=1&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
     }
     if ($news['moderation']) {
         $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_approved={$news['nid']}&lang_id={$news['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a></li>";
@@ -149,13 +149,16 @@ function news_approved($nid, $lang_id) {
     return true;    
 }
 
-function news_featured($nid, $lang_id) {
+function news_featured($nid, $featured, $lang_id) {
     global $config;
     
-    if (!empty($nid) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {            
-        $q = "UPDATE {$config['DB_PREFIX']}news  SET featured = '1' WHERE nid = '$nid' AND lang_id = '$lang_id' ";
-        $q2 = "UPDATE {$config['DB_PREFIX']}news  SET featured = '0' WHERE  lang_id = '$lang_id' AND nid != '$nid'";
-        db_query($q) && db_query($q2);
+    if (!empty($nid) && !empty($lang_id)) {            
+        $q = "UPDATE {$config['DB_PREFIX']}news  SET featured = '$featured' WHERE nid = '$nid' AND lang_id = '$lang_id' ";
+        db_query($q);
+        if($featured == 1) {
+            $q2 = "UPDATE {$config['DB_PREFIX']}news  SET featured = '0' WHERE  lang_id = '$lang_id' AND nid != '$nid'";
+            db_query($q2);
+        }
     } else {
         return false;
     }
