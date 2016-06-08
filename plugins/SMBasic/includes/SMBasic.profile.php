@@ -141,14 +141,14 @@ function SMBasic_ProfileChange() {
         return false;                     
     }
     
-//    $need_coma = 0; // huh!
-    
+//    $need_coma = 0; // huh!  
     //$q = "UPDATE {$config['DB_PREFIX']}users SET ";
+    
     $q_set_ary = [];
     if (( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) && ( !empty($username) )) {
 //        $q .= "username = '$username'";
 //        $need_coma = 1;
-            $q_set_ary = array("username" => "$username");
+            $q_set_ary['username'] = $username;
     }    
     if (( $config['smbasic_need_email'] == 1) && ( $config['smbasic_can_change_email'] == 1) && ( !empty($email) )) {
 /*        if ($need_coma) {
@@ -157,9 +157,8 @@ function SMBasic_ProfileChange() {
             $q .= "email = '$email'";
             $need_coma = 1;
         }
- * 
  */
-        $q_set_ary = array("email" => "$email");
+        $q_set_ary["email"] = $email;
     }       
     if (!empty($_POST['new_password'])) {
         if  ( ($new_password = s_char($_POST['new_password'], $config['smbasic_max_password'])) != false) { //FIX password validation
@@ -173,7 +172,7 @@ function SMBasic_ProfileChange() {
            }
  * 
  */
-            $q_set_ary = array("password" => "$new_password_encrypt");
+            $q_set_ary['password'] = $new_password_encrypt;
         }
     }   
 
