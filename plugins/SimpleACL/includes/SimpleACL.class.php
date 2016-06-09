@@ -12,7 +12,9 @@ class ACL {
     function __construct() {     
    }
    
-    function acl_ask($role, $resource = "ALL") {
+    function acl_ask($roles_demand, $resource = null) {
+        if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL_ASK-> $roles_demand"); }
+ 
         if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {          
             return false;
         }
@@ -29,13 +31,19 @@ class ACL {
         if($this->user_roles == false) { //No user_roles in DB for that user
             return false;
         }
-        list($role_group, $role_type) = preg_split("/_/", $role);                        
-
-        if (!$this->checkUserPerms($role_group, $role_type, $resource) ) {    
+        //remove all white spaces since in next step when split not want check agains "admin_all " instead of "admin_all"
+        $roles_demand = preg_replace('/\s+/', '', $roles_demand); 
+        return $this->check_demanding_roles($roles_demand);
+/*   OLD method conservar mientras se prueba nuevo     
+        list($role_group, $role_type) = preg_split("/_/", $roles_demand);                        
+        
+        if (!$this->checkUserPerms($role_group, $role_type) ) {    
             return false;            
         } else {
             return true;
         }
+ * 
+ */
     }
 
     function get_roles_select($acl_group = null, $selected = null) {
@@ -61,7 +69,7 @@ class ACL {
         return $select;        
     }   
         
-    private function checkUserPerms($role_group, $role_type, $resource) {
+    private function checkUserPerms($role_group, $role_type, $resource = "ALL") {
         if(!$asked_role = $this->getRoleDataByName($role_group, $role_type)) {
             return false;
         }        
@@ -72,14 +80,14 @@ class ACL {
             }
             if (
                     ($user_role_data['role_id'] ==  $asked_role['role_id']) &&
-                    ($user_role_data['resource'] == $resource) //Used later for specific resources                    
+                    ($user_role_data['resource'] == $resource) //Used later                     
                     ) {                
                 return true; //its the exact role
             }                          
             if ( //Look if role its upper level
                     ( $asked_role['role_group'] == $user_role_data['role_group'] )&&
                     ( $asked_role['level'] > $user_role_data['level'] ) &&
-                    ( $user_role_data['resource'] == $resource) //Used later for specific resources
+                    ( $user_role_data['resource'] == $resource) //Used later 
                     ) {
                 return true;
             }
@@ -150,5 +158,52 @@ class ACL {
         }
         
         return $query;
-    }    
+    } 
+    
+    private function check_demanding_roles($roles_demand) {
+        
+        if (preg_match("/\|\|/", $roles_demand)) {
+            $or_split = preg_split("/\|\|/", $roles_demand);
+        } else {
+            $or_split[] = $roles_demand;
+        }
+
+        foreach ($or_split  as $or_split_role){    
+            $auth = false;
+            if (!preg_match("/\&\&/", $or_split_role)) {     
+                $auth = $this->demanding_role_process($or_split_role);
+                if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL 1 \"$or_split_role\" result->$auth"); }
+                if ($auth) {                     
+                    return true;                     
+                } //first OR true, no need check the others
+            } else { //&& check all except if any its false
+                $and_split = preg_split("/\&\&/", $or_split_role);
+                
+                foreach ($and_split as $and_split_role) {
+                    $auth = $this->demanding_role_process($and_split_role);
+                    if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL 3 -> \"$and_split_role\" -> $auth  "); }
+                    if ($auth == false) {
+                        if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL 4 -> \"$and_split_role\" -> Break"); }
+                        break; 
+                    } //if any && role its false, not check the next && roles
+                } 
+                if($auth == true) {
+                    if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL result->true"); }
+                    return true; 
+                } //if auth = true at this point, this group of && roles are all true
+            }
+        }
+        if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL F result->false"); }
+        return false;
+    }
+
+    private function demanding_role_process($role) {
+        if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL Checking -> $role"); }                
+        list($role_group, $role_type) = preg_split("/_/", $role);
+        if (!$this->checkUserPerms($role_group, $role_type) ) {    
+            return false;            
+        } else {
+            return true;
+        }        
+    }            
 }

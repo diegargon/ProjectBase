@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 
 function ExampleWeb_init(){
         
-    if (DEBUG_PLUGINS_LOAD) { print_debug ("ExampleWeb initialized<br>"); }
+    if ('DEBUG_PLUGINS_LOAD' && 'DEBUG') { print_debug ("ExampleWeb initialized<br>"); }
             
     includePluginFiles("ExampleWeb");
     
@@ -16,7 +16,7 @@ function ExampleWeb_init(){
 }
 
 function ex_common_web_structure() {
-   // plugin_manual_start("DebugWindow");    
+    plugin_manual_start("DebugWindow");    
 }
 
 function ex_index_page(){       

@@ -22,7 +22,7 @@ function news_new_form($post_data = null) {
         }
     }    
     if (defined('ACL') && 'ACL') {        
-        if($acl_auth->acl_ask("news_admin") || $acl_auth->acl_ask("admin_all")) {
+        if($acl_auth->acl_ask("news_admin||admin_all")) { //|| $acl_auth->acl_ask("admin_all")) {
             $data['select_acl'] = $acl_auth->get_roles_select("news");
             $can_change_author = 1;
         }

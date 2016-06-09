@@ -5,11 +5,13 @@
 if (!defined('IN_WEB')) { exit; }
 
 function DebugWindow_init() {
-    if (DEBUG_PLUGINS_LOAD) { print_debug("Plugin: DebugWindow initiated<br/>"); }
+    if ('DEBUG_PLUGINS_LOAD' && 'DEBUG') { print_debug("Plugin: DebugWindow initiated<br/>"); }
     
     getCSS_filePath("DebugWindow");
-    //register_action("add_to_footer", "get_dw_tpl","5");   
-    addto_tplvar("ADD_TO_FOOTER", getTPL_file("DebugWindow", null, $GLOBALS['debug']));
+    register_action("add_to_footer", "get_dw_tpl","5");   
+     //Lo siguiente no funciona por que añadir al iniciar no muestra todos los mensajes debug de despues la acción en cambio se realiza/recoge al final
+     //al final de todo.
+    //addto_tplvar("ADD_TO_FOOTER", getTPL_file("DebugWindow", null, $GLOBALS['debug']));
 }
 
 function get_dw_tpl() {

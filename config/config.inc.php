@@ -15,6 +15,8 @@ $config['TITLE'] = "Project Base";
 $config['THEME'] = "default";
 $config['WEB_URL'] = "http://projectbase.envigo.net/";
 $config['WEB_LANG'] = "es";
+$config['WEB_LANG_NAME'] = "Español";
+$config['WEB_LANG_ID'] = "1"; //used when not ML
 $config['WEB_DIR'] = "ltr";
 $config['WEB_KEYWORDS'] = "test";
 $config['WEB_VIEWPORT'] = "width=device-width, initial-scale=1.0";

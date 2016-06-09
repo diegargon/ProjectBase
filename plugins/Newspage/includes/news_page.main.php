@@ -16,7 +16,7 @@ function news_page_main() {
     }
     if ( S_GET_INT("admin") && ( $newslang = S_GET_CHAR_AZ("newslang", 2, 1) ) ) {
        if (defined("ACL") && "ACL") {
-           if($acl_auth->acl_ask("admin_all") || $acl_auth->acl_ask("news_admin")) {
+           if($acl_auth->acl_ask("admin_all||news_admin")){// || $acl_auth->acl_ask("news_admin")) {
                //Do nothing
             } else {           
                $tpldata['E_MSG'] = $LANGDATA['L_ERROR_NOACCESS'];
@@ -51,7 +51,7 @@ function news_page_main() {
     }     
     //ADMIN
     if (defined("ACL") && "ACL") {
-        if($acl_auth->acl_ask("admin_all") || $acl_auth->acl_ask("news_admin")) {
+        if($acl_auth->acl_ask("admin_all || news_admin")) { // || $acl_auth->acl_ask("news_admin")) {
             addto_tplvar("NEWS_ADMIN_NAV", Newspage_AdminOptions($news_row));
             
             if (!empty($_GET['news_delete']) && !empty($_GET['lang_id']) &&

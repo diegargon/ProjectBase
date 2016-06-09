@@ -22,7 +22,7 @@ function news_page_edit() {
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_EDIT_NEWS'];
     
     if (defined('ACL') && 'ACL') {        
-        if($acl_auth->acl_ask("news_admin") || $acl_auth->acl_ask("admin_all")) {
+        if($acl_auth->acl_ask("news_admin||admin_all")) {// || $acl_auth->acl_ask("admin_all")) {
             $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
             $can_change_author = 1;
         }

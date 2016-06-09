@@ -8,17 +8,18 @@ SMBasic: provid Admin users
 Newspage: Recheck all conditions for Optional ACL support
 Newspage: not show disable news and add admin submit news to submit disable 
 SMBasic: Check cookies run every page if anonymous, avoid creating a anonymous session, cookie anon or something like that.
-SMBasic/Core: Passsword valid characters filter
+SMBasic/Core: Passsword valid characters filter ATM use AZ_NUM no special characters allowed
 New: comments plugin for resources
 Newspage: al borrar una noticia vuelve al lenguage del usuario no al elegido.
-Core/ALL: Filter vars correctly 
 ALL: Change all isLogged to S_SESSION_INTEGER("isLogged") or/and use ACL or both if ACL use ACL not isLogged
 CORE: Plugins.check  re-check  functions calls in core exist and manage errors (some check missed)
 ALL: revise when need UTF on CHAR_AZ_FILTERS
+{
 Mysql/core: move  _ESCAPE filter to Mysql class
+ALL: recheck all where need escape the text.
+}
 #BACKLOG
 
-SQL: SELECT WHERE use AND option for use OR other operators?
 Newspage: Solo admin puede editar, añadir la posibilidad de que el usuario que envia edite.
 Newspage: if not ACL check a user var "isAdmin" 
 Admin plugin: Improved
