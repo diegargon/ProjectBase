@@ -33,13 +33,13 @@ function Multilang_AdminContent($params) {
         addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'] );                
         addto_tplvar("ADM_CONTENT", Admin_GetPluginState("Multilang"));        
     } else if ($opt == 2) { 
-        if (empty($_POST['btnModifyLang'])) {
+        if (!empty($_POST['btnModifyLang'])) {
             Multilang_ModifyLang();
         }
-        if (empty($_POST['btnCreateLang'])) {
+        if (!empty($_POST['btnCreateLang'])) {
             Multilang_CreateLang();
         }        
-        if (empty($_POST['btnDeleteLang'])) {
+        if (!empty($_POST['btnDeleteLang'])) {
             Multilang_DeleteLang();
         }             
         addto_tplvar("ADM_CONTENT",  Multilang_AdminLangs());          
