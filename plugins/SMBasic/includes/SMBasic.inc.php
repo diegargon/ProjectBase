@@ -33,20 +33,20 @@ function SMBasic_checkSession() {
         $db->free($query);
         if ($config['smbasic_check_ip'] == 1) {
             if(!SMBasic_check_IP($session['session_ip'])) {
-                if (SM_DEBUG) { print_debug("SMBasic:IP validated FALSE"); }
+                print_debug("SMBasic:IP validated FALSE", "SM_DEBUG"); 
                 return false;
             }
-            if (SM_DEBUG) { print_debug("SMBasic:IP validated OK"); }
+            print_debug("SMBasic:IP validated OK", "SM_DEBUG");
         }
         if ($config['smbasic_check_user_agent'] == 1) {
             if(!SMBasic_check_user_agent($session['session_browser'])) {
-                if (SM_DEBUG) { print_debug("SMBasic:UserAgent validated FALSE"); }            
+                print_debug("SMBasic:UserAgent validated FALSE", "SM_DEBUG");            
                 return false;
             }
-            if (SM_DEBUG) { print_debug("SMBasic:UserAgent validated OK"); }
+            print_debug("SMBasic:UserAgent validated OK", "SM_DEBUG"); 
         }
         if ($session['session_expire'] < $now) { 
-            if (SM_DEBUG) { print_debug("SMBasic: db session expired at $now"); }
+            print_debug("SMBasic: db session expired at $now", "SM_DEBUG"); 
             return false;
         } else {
 /*            $q = "UPDATE {$config['DB_PREFIX']}sessions"

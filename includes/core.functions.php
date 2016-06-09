@@ -4,10 +4,16 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function print_debug($msg) {
+function print_debug($msg, $filter = null) {
     global $debug;
-    
-    $debug[] = $msg;
+    if ( (array_search($msg, array_column($debug, 'msg')) ) != null) { //avoid duplicates
+        return;
+    }
+    if (!empty($filter) && defined($filter) && defined('DEBUG')) {   
+        $debug[] = array ("msg" => "$msg", "filter" => "$filter" );
+    } else if (defined($filter) && defined ('DEBUG')) {
+        $debug[] = array ("msg" => "$msg", "filter" => "DEBUG");
+    }
 }
 
 

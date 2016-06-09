@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function Admin_init(){
-    if (DEBUG_PLUGINS_LOAD) { print_debug("Admin Inititated<br/>"); }
+    print_debug("Admin Inititated", "PLUGIN_LOAD");
     
     includePluginFiles("Admin");    
     register_uniq_action("admin_page", "Admin_main_page");

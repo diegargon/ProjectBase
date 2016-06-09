@@ -7,7 +7,7 @@ if (!defined('IN_WEB')) { exit; }
 function Multilang_init(){
     global $config, $ml;
     
-    if ('DEBUG_PLUGINS_LOAD' && 'DEBUG') { print_debug("Multilang Inititated<br/>"); }
+    print_debug("Multilang Inititated", "PLUGIN_LOAD");
 
     includePluginFiles("Multilang");      
     
@@ -35,7 +35,7 @@ function Multilang_init(){
         header('Location:' .$request_uri);
     }
     if( //TODO: check lang agains pb_lang
-        isset($_POST['choose_lang']) && (($choose_lang = S_POST_CHAR_AZ("choose_lang", 2, 2)) != false)) {
+        isset($_POST['choose_lang']) && (($choose_lang = S_POST_CHAR_AZ("choose_lang", 2, 2)) != false)) {         
         $request_uri = str_replace("/". $config['WEB_LANG'], "/".$choose_lang, $request_uri); // FIX better method than can replace something not wanted.
         header('Location:' .$request_uri);
     }

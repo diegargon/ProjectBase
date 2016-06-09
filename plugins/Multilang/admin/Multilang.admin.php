@@ -139,7 +139,7 @@ function Multilang_CreateLang() {
             
     if ($lang_name != false && $iso_code != false) {        
         
-        //Lang/ISo collation its utf8_general_ci (case insensitve), use LIKE operator instead '=' anyway
+        //Lang/ISo collation its utf8_general_ci (case insensitve), anway we use LIKE operator instead '=' 
         $where_ary = array (
             "lang_name" => array ("value" => "$lang_name", "operator" => "LIKE"),
             "iso_code" => array ("value" => "$iso_code", "operator" => "LIKE")

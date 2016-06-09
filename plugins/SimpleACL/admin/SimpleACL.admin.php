@@ -9,7 +9,8 @@ function SimpleACL_AdminInit() {
 }
 
 function SimpleACL_AdminMenu($params) {
-    $tab_num = 102; //TODO: A WAY TO ASSIGN UNIQ NUMBERS
+    print_debug("SimpleACL.admin.php: A way to assign uniq numbers".__LINE__, "TODO");
+    $tab_num = 102;
     if ($params['admtab'] == $tab_num) {
         register_uniq_action("admin_get_content", "SimpleACL_AdminContent");        
         return "<li class='tab_active'><a href='?admtab=$tab_num'>SimpleACL</a></li>";

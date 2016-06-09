@@ -7,7 +7,7 @@ if (!defined('IN_WEB')) { exit; }
 global $tpldata;
 
 function tplBasic_init(){   
-    if (DEBUG_PLUGINS_LOAD) { print_debug ("tplBasic initialized<br>"); }
+    print_debug ("tplBasic initialized", "PLUGIN_LOAD");
     
     includePluginFiles("tplBasic");
     

@@ -10,7 +10,7 @@ function admin_load_plugin_files() {
     global $registered_plugins;
 
     foreach ($registered_plugins as $plugin) {  
-            if (ADMIN_DEBUG) { print_debug("ADMIN: Admin processing $plugin->plugin_name"); }
+        print_debug("ADMIN: Admin processing $plugin->plugin_name", "ADMIN_DEBUG");
         if(!empty($plugin->function_admin_init)) {
             $admin_file = "plugins/$plugin->plugin_name/admin/$plugin->plugin_name.admin.php";
             if(file_exists($admin_file)) {
@@ -19,13 +19,13 @@ function admin_load_plugin_files() {
                     $init_function = $plugin->function_admin_init;
                     $init_function();                         
                 }  else {
-                    if(ADMIN_DEBUG) { print_debug("ADMIN: Function $plugin->function_admin_init not exist"); }
+                    print_debug("ADMIN: Function $plugin->function_admin_init not exist", "ADMIN_DEBUG");
                 }              
             } else {
-                if(ADMIN_DEBUG) { print_debug("ADMIN: File $admin_file not exist"); }
+                print_debug("ADMIN: File $admin_file not exist", "ADMIN_DEBUG"); 
             }
         } else {
-            if(ADMIN_DEBUG) { print_debug("ADMIN: Plugin $plugin->plugin_name haven't the function admin_init declared in his json file"); }
+            print_debug("ADMIN: Plugin $plugin->plugin_name haven't the function admin_init declared in his json file", "ADMIN_DEBUG"); 
         }            
     }
 }
@@ -43,7 +43,7 @@ function Admin_GetPluginState($plugin) {
 }
 
 function Admin_GetPluginConfigFiles($plugin) { //TODO BETTER CONFIG VIEW
-    $config_plugin = "plugins/$plugin/$plugin.config.php";
+    $config_plugin = "plugins/$plugin/$plugin.config.php"; 
     $config_plugin_user = "config/$plugin.config.php";
     $data = "";
     if (file_exists($config_plugin)) {

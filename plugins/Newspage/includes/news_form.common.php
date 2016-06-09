@@ -147,7 +147,7 @@ function news_form_process() {
     //
 
     //ALL OK SUBMIT or UPDATE
-    //echo $news_data['update'];
+
     if($news_data['update'] > 0) {
         if (news_update($news_data)) {
             $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    

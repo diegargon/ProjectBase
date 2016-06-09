@@ -9,7 +9,7 @@ if (!defined('IN_WEB')) { exit; }
 function SMBasic_Init() {
     global $config;   
     
-    if (DEBUG_PLUGINS_LOAD) { print_debug("SMBasic initialice<br/>"); }
+    print_debug("SMBasic initialice", "PLUGIN_LOAD");
 
     includePluginFiles("SMBasic");
 
@@ -21,16 +21,16 @@ function SMBasic_Init() {
     
     if ( (S_SESSION_INT("uid") != false && S_SESSION_CHAR_AZNUM("sid") != false) ) {
         if(!SMBasic_checkSession()) {
-            if(SM_DEBUG) { print_debug("Check session failed on SMBasic_Init destroy session"); }
+            print_debug("Check session failed on SMBasic_Init destroy session", "SM_DEBUG");
             SMBasic_sessionDestroy();
             }           
         } else {
            if($config['smbasic_session_persistence']) {
-              if (SM_DEBUG) { print_debug("Checkcookies trigged");  }
+              print_debug("Checkcookies trigged", "SM_DEBUG"); 
               SMBasic_checkCookies();
             }
         }
-    if(SM_DEBUG && (S_SESSION("isLogged") == 1) ) { // !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
+    if(defined('SM_DEBUG') && (S_SESSION("isLogged") == 1) ) { // !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
         SMBasic_sessionDebugDetails();
     }
 

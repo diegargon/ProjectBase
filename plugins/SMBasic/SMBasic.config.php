@@ -5,8 +5,8 @@
 if (!defined('IN_WEB')) { exit; }
 
 global $config;
-
-define('SM_DEBUG', false);
+define('SM', true); //SESSION MANAGER TRUE
+//define('SM_DEBUG', true);
 
 $config['smbasic_session_persistence'] = 1;
 $config['smbasic_max_email'] = 60;

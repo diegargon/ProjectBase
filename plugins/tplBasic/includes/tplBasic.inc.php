@@ -16,7 +16,7 @@ function tpl_build_page() {
     //END HEAD
     
     //BEGIN BODY
-    if ($config['NAV_MENU']) { //use do_action for order 
+    if ($config['NAV_MENU']) { //we use do_action for select order
         !isset($tpldata['NAV_ELEMENT']) ? $tpldata['NAV_ELEMENT'] = "" : false;
         $tpldata['NAV_ELEMENT'] .= do_action("nav_element");       
     }   
@@ -39,7 +39,7 @@ function getTPL_file($plugin, $filename = null, $data = null) {
     if(empty($filename)) {
         $filename = $plugin;
     }        
-    if(TPL_DEBUG) { print_debug("getTPL_file called by-> $plugin for get a $filename"); }
+    print_debug("getTPL_file called by-> $plugin for get a $filename", "TPL_DEBUG");
 
     $USER_PATH = "tpl/{$config['THEME']}/$filename.tpl.php";
     $DEFAULT_PATH = "plugins/$plugin/tpl/$filename.tpl.php";
@@ -58,7 +58,7 @@ function getCSS_filePath($plugin, $filename = null) {
     if(empty($filename)) {
         $filename = $plugin;
     }    
-    if(TPL_DEBUG) { print_debug("Get CSS called by-> $plugin for get a $filename"); }
+    print_debug("Get CSS called by-> $plugin for get a $filename", "TPL_DEBUG");
 
     $USER_PATH = "tpl/{$config['THEME']}/css/$filename.css";
     $DEFAULT_PATH = "plugins/$plugin/tpl/css/$filename.css";        
@@ -78,7 +78,7 @@ function getScript_fileCode($plugin, $filename = null) {
     if(empty($filename)) {
         $filename = $plugin;
     }    
-    if(TPL_DEBUG) { print_debug("Get Script called by-> $plugin for get a $filename"); }
+    print_debug("Get Script called by-> $plugin for get a $filename", "TPL_DEBUG");
 
     $USER_LANG_PATH = "tpl/{$config['THEME']}/js/$filename.{$config['WEB_LANG']}.js"; 
     $DEFAULT_LANG_PATH = "plugins/$plugin/tpl/js/$filename.{$config['WEB_LANG']}.js";     

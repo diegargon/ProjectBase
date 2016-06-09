@@ -3,7 +3,7 @@
  *  Copyright @ 2016 Diego Garcia
  */
 if (!defined('IN_WEB')) { exit; }
-
+ 
 function news_page_edit() {
     global $config, $LANGDATA, $acl_auth;    
     
@@ -11,12 +11,12 @@ function news_page_edit() {
     $lang_id = S_GET_INT("lang_id");
     
     if ($nid == false || $lang_id == false) {
-        echo "ERROR 1"; 
+        echo "ERROR 1";  //TODO error mesage
     }    
     $q = "SELECT * FROM {$config['DB_PREFIX']}news WHERE nid = '$nid' AND lang_id = '$lang_id' LIMIT 1"; 
     $query = db_query($q);
     if (db_num_rows($query) <= 0) {
-        echo "ERROR 2";
+        echo "ERROR 2"; //TODO error mesage
     }
     $news_data = db_fetch($query);    
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_EDIT_NEWS'];

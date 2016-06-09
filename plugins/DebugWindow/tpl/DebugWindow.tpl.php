@@ -11,7 +11,7 @@ if (!defined('IN_WEB')) { exit; }
         <ul class="ul_scroll">
             <?php
             foreach ($data as $element) {
-                echo $element . "<br/>";
+                echo  $element['filter'] . ": " . $element['msg'] ."<br/>";
             }            
             ?>
         </ul>

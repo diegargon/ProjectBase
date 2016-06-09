@@ -13,7 +13,7 @@ class ACL {
    }
    
     function acl_ask($roles_demand, $resource = null) {
-        if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL_ASK-> $roles_demand"); }
+        print_debug("ACL_ASK-> $roles_demand", "ACL_DEBUG"); 
  
         if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {          
             return false;
@@ -172,7 +172,7 @@ class ACL {
             $auth = false;
             if (!preg_match("/\&\&/", $or_split_role)) {     
                 $auth = $this->demanding_role_process($or_split_role);
-                if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL 1 \"$or_split_role\" result->$auth"); }
+                print_debug("ACL 1 \"$or_split_role\" result->$auth", "ACL_DEBUG");
                 if ($auth) {                     
                     return true;                     
                 } //first OR true, no need check the others
@@ -181,24 +181,24 @@ class ACL {
                 
                 foreach ($and_split as $and_split_role) {
                     $auth = $this->demanding_role_process($and_split_role);
-                    if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL 3 -> \"$and_split_role\" -> $auth  "); }
+                    print_debug("ACL 3 -> \"$and_split_role\" -> $auth  ", "ACL_DEBUG"); 
                     if ($auth == false) {
-                        if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL 4 -> \"$and_split_role\" -> Break"); }
+                        print_debug("ACL 4 -> \"$and_split_role\" -> Break", "ACL_DEBUG");
                         break; 
                     } //if any && role its false, not check the next && roles
                 } 
                 if($auth == true) {
-                    if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL result->true"); }
+                    print_debug("ACL result->true", "ACL_DEBUG"); 
                     return true; 
                 } //if auth = true at this point, this group of && roles are all true
             }
         }
-        if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL F result->false"); }
+        print_debug("ACL F result->false", "ACL_DEBUG"); 
         return false;
     }
 
     private function demanding_role_process($role) {
-        if(defined('ACL_DEBUG') && 'DEBUG') { print_debug("ACL Checking -> $role"); }                
+        print_debug("ACL Checking -> $role", "ACL_DEBUG");                
         list($role_group, $role_type) = preg_split("/_/", $role);
         if (!$this->checkUserPerms($role_group, $role_type) ) {    
             return false;            

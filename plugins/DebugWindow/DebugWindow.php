@@ -4,8 +4,8 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function DebugWindow_init() {
-    if ('DEBUG_PLUGINS_LOAD' && 'DEBUG') { print_debug("Plugin: DebugWindow initiated<br/>"); }
+function DebugWindow_init() {    
+    print_debug("Debugwindow initiated", "PLUGIN_LOAD");
     
     getCSS_filePath("DebugWindow");
     register_action("add_to_footer", "get_dw_tpl","5");   

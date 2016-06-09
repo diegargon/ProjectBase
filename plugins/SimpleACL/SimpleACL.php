@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 
 function SimpleACL_init(){
     global $acl_auth; 
-    if (DEBUG_PLUGINS_LOAD) { print_debug("SimpleACL Inititated<br/>"); }
+    print_debug("SimpleACL Inititated", "PLUGIN_LOAD");
           
     includePluginFiles("SimpleACL"); 
     

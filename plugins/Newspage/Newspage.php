@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 
 function Newspage_init(){  
     
-    if ('DEBUG_PLUGINS_LOAD' && 'DEBUG') { print_debug("Newspage Inititated<br/>");}
+    print_debug("Newspage Inititated", "PLUGIN_LOAD");
     
     includePluginFiles("Newspage"); 
     getCSS_filePath("Newspage");
@@ -42,8 +42,7 @@ function news_page() {
     if(!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
         //TODO ADD AUTHOR EDITING
         if(defined('ACL') && 'ACL') { 
-            if ($acl_auth->acl_ask("admin_all||news_admin")) { // || $acl_auth->acl_ask("news_admin")) {
-                //TODO Check if its the author or ACL rights 
+            if ($acl_auth->acl_ask("admin_all||news_admin")) { // || $acl_auth->acl_ask("news_admin")) {                
                 require_once 'includes/news_form.common.php';
                 require_once 'includes/news_page_edit.php';        
                 if (!empty($_POST['news_update']) && !empty($_POST['newsFormSubmit_ST2'])) {

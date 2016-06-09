@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 
 function ExampleWeb_init(){
         
-    if ('DEBUG_PLUGINS_LOAD' && 'DEBUG') { print_debug ("ExampleWeb initialized<br>"); }
+    print_debug ("ExampleWeb initialized", "PLUGIN_LOAD");
             
     includePluginFiles("ExampleWeb");
     

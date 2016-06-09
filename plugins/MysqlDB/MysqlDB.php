@@ -9,14 +9,14 @@ global $dblink;
 function MysqlDB_Init() {
     global $db;
     
-    if (DEBUG_PLUGINS_LOAD) { print_debug("MysqlDB Initialice<br/>"); }
+    print_debug("MysqlDB Initialice", "PLUGIN_LOAD");
 
     includePluginFiles("MysqlDB");    
   
     register_action("finalize", "MysqlDB_Close", "5");
     db_connect();
 
-    //both until migrate all
+    //both methods until migrate all
     if (!isset($db)) {
         $db = new Database;
     }

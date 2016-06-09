@@ -154,7 +154,7 @@ function fetch_news_data($row) {
     $data['date'] = format_date($row['date']);    
     $data['ALT_TITLE'] = htmlspecialchars($row['title']);            
 
-    if ($config['FRIENDLY_URL']) {    
+    if ($config['FRIENDLY_URL']) {   
         //FIX: one line str_replace?        
         $friendly_url = str_replace(' ', "-", $row['title']); 
         $friendly_url = str_replace('"', "", $friendly_url);        
