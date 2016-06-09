@@ -11,7 +11,7 @@ function print_debug($msg, $filter = null) {
     }
     if (!empty($filter) && defined($filter) && defined('DEBUG')) {   
         $debug[] = array ("msg" => "$msg", "filter" => "$filter" );
-    } else if (defined($filter) && defined ('DEBUG')) {
+    } else if (empty($filter) && defined ('DEBUG')) {
         $debug[] = array ("msg" => "$msg", "filter" => "DEBUG");
     }
 }

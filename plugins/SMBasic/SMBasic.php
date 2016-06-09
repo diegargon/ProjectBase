@@ -30,7 +30,7 @@ function SMBasic_Init() {
               SMBasic_checkCookies();
             }
         }
-    if(defined('SM_DEBUG') && (S_SESSION("isLogged") == 1) ) { // !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
+    if( defined('SM_DEBUG') && !empty($_SESSION['isLogged'])) { // && $_SESSION['isLogged'] == 1 ) {
         SMBasic_sessionDebugDetails();
     }
 

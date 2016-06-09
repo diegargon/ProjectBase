@@ -16,6 +16,8 @@ function SMBasic_encrypt_password($password) {
 
 function SMBasic_checkSession() {
     global $config, $db;
+    
+    print_debug("CheckSession called", "SM_DEBUG");
     $now = time();
     $next_expire = time() + $config['smbasic_session_expire'];
     
@@ -54,6 +56,7 @@ function SMBasic_checkSession() {
             . " WHERE session_uid = '{$session['session_uid']}'";
             db_query($q);
  */
+            print_debug("Update session expire at user {$session['session_uid']}", "SM_DEBUG");
             $db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
         }
     }
@@ -108,33 +111,33 @@ function SMBasic_clearCookies() {
 function SMBasic_sessionDebugDetails() { 
     global $db;
     
-    print_debug("<hr><br/><h2>Session Details</h2>");
-    print_debug("Time Now: ". format_date(time(),true) ."");
-    print_debug("Session VAR ID: {$_SESSION['uid']}");
-    print_debug("Session VAR Username: {$_SESSION['username']}");
-    print_debug("Session VAR SID:  {$_SESSION['sid']}");
+    print_debug("<hr><br/><h2>Session Details</h2>", "SM_DEBUG");
+    print_debug("Time Now: ". format_date(time(),true) ."", "SM_DEBUG");
+    print_debug("Session VAR ID: {$_SESSION['uid']}", "SM_DEBUG");
+    print_debug("Session VAR Username: {$_SESSION['username']}", "SM_DEBUG");
+    print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
     
     $query = $db->select_all("sessions", array("session_uid" => "{$_SESSION['uid']}", "session_id" => "{$_SESSION['sid']}"), "LIMIT 1"); //TODO filter $_SESSION
 //    $q = "SELECT * FROM {$config['DB_PREFIX']}sessions WHERE session_uid = '{$_SESSION['uid']}' AND  session_id = '{$_SESSION['sid']}' LIMIT 1";
 //    $query = db_query($q);
     $session = $db->fetch($query);    
-    print_debug("Session DB IP: {$session['session_ip']}");
-    print_debug("Session DB Browser: {$session['session_browser']}");
-    print_debug("Session DB Create: {$session['session_created']}");
-    print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) ."");
-    print_debug("Session DB Admin: {$session['session_admin']} ");
-    print_debug("PHP Session expire: " . ini_get('session.gc_maxlifetime'));
-    print_debug("Cookies State:");
+    print_debug("Session DB IP: {$session['session_ip']}", "SM_DEBUG");
+    print_debug("Session DB Browser: {$session['session_browser']}", "SM_DEBUG");
+    print_debug("Session DB Create: {$session['session_created']}", "SM_DEBUG");
+    print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) ."","SM_DEBUG");
+    print_debug("Session DB Admin: {$session['session_admin']} ", "SM_DEBUG");
+    print_debug("PHP Session expire: " . ini_get('session.gc_maxlifetime'), "SM_DEBUG");
+    print_debug("Cookies State:", "SM_DEBUG");
     if ( isset($_COOKIE) ) {
-        print_debug(" is set");
-        print_debug("Cookie Array:");
+        print_debug(" is set", "SM_DEBUG");
+        print_debug("Cookie Array:", "SM_DEBUG");
         foreach ($_COOKIE as $key=>$val)
         {
-            print_debug("Cookie $key -> $val");
+            print_debug("Cookie $key -> $val", "SM_DEBUG");
         }   
-        print_debug("<hr>");        
+        print_debug("<hr>", "SM_DEBUG");        
     } else {
-        print_debug(" not set");        
+        print_debug(" not set", "SM_DEBUG");        
     }
 }
 
