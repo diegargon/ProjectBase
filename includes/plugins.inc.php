@@ -2,6 +2,9 @@
 if (!defined('IN_WEB')) { exit; }
 /* 
  *  Copyright @ 2016 Diego Garcia
+ * 
+ *  Class: register_uniq_action("action",  array($class, "method"));
+ *  Function: register_uniq_action("action", "function"))
  */
 
 function register_action($event, $func, $priority = 5)

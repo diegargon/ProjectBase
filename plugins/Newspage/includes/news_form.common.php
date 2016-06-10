@@ -36,7 +36,7 @@ function news_get_categories() {
 }
 
 function news_form_getPost() {
-    global $acl_auth, $config;
+    global $acl_auth, $config, $sm;
        
     if (defined('ACL') && 'ACL') { //if admin can change author if not ignore news_author
         if( ( $acl_auth->acl_ask('news_admin') ) == true || ( $acl_auth->acl_ask('admin_all') ) == true ) {            
@@ -44,7 +44,7 @@ function news_form_getPost() {
         } 
     }
     if(empty($data['author'])) { 
-        $user = SMBasic_getUserbyID(S_SESSION_INT("uid", 11, 1));
+        $user = $sm->getUserbyID(S_SESSION_INT("uid", 11, 1));
         $data['author'] = $user['username'];
     }
     isset($_POST['news_title']) ? $data['title'] = S_VAR_TEXT_ESCAPE($_POST['news_title']) : false;

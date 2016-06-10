@@ -55,7 +55,7 @@ function Multilang_AdminLangs() {
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_ML_LANGS'] );
     
-    $query = $db->select_all("lang");
+    $query = $db->select_all("lang"); //change to $ml->get_site_langs(0)? but $ml class its init out of admin
     $modify = "";
     while ($lang_row = $db->fetch($query)) {
         $modify .= "<form id='form_modify' action='#' method='post'>";

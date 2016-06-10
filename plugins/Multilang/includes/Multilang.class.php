@@ -9,7 +9,7 @@ class Multilang {
     private $site_langs;
             
     function __construct() {
-        $this->get_site_langs(1);
+        $this->get_site_langs();
    }
     
 
@@ -40,7 +40,7 @@ class Multilang {
             . "<form action='#' method='post'>"
             . "<select name='choose_lang' id='choose_lang'>";
   
-        foreach ($this->get_site_langs(1) as $lang) {
+        foreach ($this->get_site_langs() as $lang) {
             if($lang['iso_code'] == $config['WEB_LANG']) {
                 $mlnav .= "<option selected value='{$lang['iso_code']}'>{$lang['lang_name']}</option>";
             } else {
@@ -54,7 +54,7 @@ class Multilang {
     return $mlnav;
     }    
     
-    function get_site_langs($active = null) {
+    function get_site_langs($active = 1) {
         if (empty($this->site_langs) && empty($active)) {
           $this->retrieve_db_langs();            
         }

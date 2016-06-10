@@ -62,7 +62,8 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     }
         
     if (defined('MULTILANG') && 'MULTILANG') {
-        $site_langs = do_action("get_site_langs");
+        global $ml;
+        $site_langs = $ml->get_site_langs();
         
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
@@ -120,7 +121,8 @@ function get_news_featured() {
     //$q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
     $where_ary['featured'] = 1;
     if (defined('MULTILANG') && 'MULTILANG') {
-        $site_langs = do_action("get_site_langs");        
+        global $ml;
+        $site_langs = $ml->get_site_langs();
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
                 $lang_id = $site_lang['lang_id'];

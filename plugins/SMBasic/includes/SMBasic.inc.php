@@ -65,7 +65,8 @@ function SMBasic_checkCookies() {
 
         $query = $db->select_all("sessions", array("session_id" => "$cookie_sid", "session_uid" => "$cookie_uid"), "LIMIT 1" );
         if ($db->num_rows($query) > 0) {           
-            if( ($user = SMBasic_getUserbyID($cookie_uid)) != false ) {                
+            global $sm;
+            if( ($user = $sm->getUserbyID($cookie_uid)) != false ) {                
                 SMBasic_setSession($user);
                 SMBasic_setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11)); //New sid by setSession -> new cookies
                 return true;
@@ -175,25 +176,6 @@ function SMBasic_setCookies($sid, $uid) {
     $cookie_name_uid = $config['smbasic_cookie_prefixname'] . "uid";            
     setcookie($cookie_name_sid,$sid , $cookie_expire,'/');
     setcookie($cookie_name_uid,$uid , $cookie_expire,'/');
-}
-
-function SMBasic_getUserbyID($uid) { 
-    global $db;
-   
-    $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
-    
-    if ($db->num_rows($query) <= 0) {
-        return false;        
-    }
-    $user = $db->fetch($query);
-    return $user;
-}
-
-function SMBasic_getUserID () { //track used by externa/ news plugin only ATM
-    if (S_SESSION_INT("isLogged", 1) == 1) {
-        return S_SESSION_INT("uid", 11);
-    } 
-    return false;
 }
 
 function SMBasic_sessionToken() {

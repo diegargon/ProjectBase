@@ -5,13 +5,13 @@
 if (!defined('IN_WEB')) { exit; }
  
 function news_new_form($post_data = null) {
-    global $LANGDATA, $acl_auth, $tpl;
+    global $LANGDATA, $acl_auth, $tpl, $sm;
     
     $data['NEWS_FORM_TITLE'] = $LANGDATA['L_SEND_NEWS'];
             
-    if (  isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {
-        $user = SMBasic_getUserbyID(S_VAR_INTEGER($_SESSION['uid']), 11);        
-    } else {
+    if (  isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {        
+        $user = $sm->getUserbyID(S_SESSION_INT("uid", 11, 1));        
+    } else { 
         $user['username'] = $LANGDATA['L_NEWS_ANONYMOUS'];
     }
     $data['author'] = $user['username'];    
@@ -37,7 +37,7 @@ function news_new_form($post_data = null) {
 }
 
 function news_create_new($news_data) {
-    global $config, $ml, $db;
+    global $config, $ml, $db, $sm;
     
     $nid = db_get_next_num("nid", $config['DB_PREFIX']."news"); 
     //$nid = $db->get_next_num("news", "nid");
@@ -48,7 +48,7 @@ function news_create_new($news_data) {
     }
         
     
-    if ( ($uid = SMBasic_getUserID()) == false ) {
+    if ( ($uid = $sm->getUserID()) == false ) {
         $uid = 0;
     }    
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 

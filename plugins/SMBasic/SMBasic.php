@@ -7,12 +7,14 @@
 if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_Init() {
-    global $config;   
+    global $config, $sm;   
     
     print_debug("SMBasic initialice", "PLUGIN_LOAD");
 
     includePluginFiles("SMBasic");
 
+    $sm = new SessionManager;
+    
     if (action_isset("encrypt_password") == false) {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }
@@ -83,7 +85,8 @@ function SMBasic_profilePage() {
         SMBasic_ProfileChange();       
     } 
     if (!isset($_POST['profile']) ) {
-        if( ($user = SMBasic_getUserbyID($_SESSION['uid'])) == false ) {
+        global $sm;
+        if( ($user = $sm->getUserbyID(S_SESSION_INT("uid", 11, 1)) ) == false  ){
             //TODO error manager
             echo "Error: 3242";
             exit(0);        

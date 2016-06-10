@@ -14,8 +14,7 @@ function Multilang_init(){
     if(empty($ml)) {
         $ml = new Multilang;
     }      
-
-    register_uniq_action("get_site_langs",  array($ml, "get_site_langs")); //REMOVE  
+    
     $request_uri = $_SERVER['REQUEST_URI']; //TODO FILTER
     
     if (
