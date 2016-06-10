@@ -16,9 +16,7 @@ function news_format_media($media) {
 
 function get_news_byId($nid, $lang = null){
     global $acl_auth, $ml, $db;         
-    
-    
-    //$q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $nid ";
+
     $where_ary['nid'] = $nid;
     if (defined('MULTILANG') && 'MULTILANG' && $lang != null) {        
         $site_langs = $ml->get_site_langs();
@@ -30,8 +28,6 @@ function get_news_byId($nid, $lang = null){
             }
         }
     }                
-    //$q .= " LIMIT 1";    
-    //$query = db_query($q);
     $query = $db->select_all("news", $where_ary, "LIMIT 1");
     
     if($db->num_rows($query) == 0 ) {        
@@ -52,8 +48,7 @@ function get_news_byId($nid, $lang = null){
 function get_news_media_byID($nid) {
     global $db;
     
-    $query = $db->select_all("links", array("source_id" => "$nid"));
-    //$query = db_query("SELECT * FROM {$config['DB_PREFIX']}links WHERE source_id = '$nid' AND plugin='Newspage' ");    
+    $query = $db->select_all("links", array("source_id" => "$nid"));    
     if ($db->num_rows($query) > 0) {
         while ($row = $db->fetch($query)) {
             $media[] = array (

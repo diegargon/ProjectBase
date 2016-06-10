@@ -12,27 +12,25 @@ function MysqlDB_Init() {
     print_debug("MysqlDB Initialice", "PLUGIN_LOAD");
 
     includePluginFiles("MysqlDB");    
-  
-    register_action("finalize", "MysqlDB_Close", "5");
-    db_connect();
+
+    //old way remove later
+    //register_action("finalize", "MysqlDB_Close", "5");
+    //db_connect();
 
     //both methods until migrate all
     if (!isset($db)) {
         $db = new Database;
     }
+    register_action("finalize", array($db, "close"), "5");
     $db->connect();
-/*    
-    $query = $db->select("users", array('uid' => 1, 'username' => "diego"));
-    while ($row = $db->fetch($query)) {
-      echo "{$row['username']} <br>";  
-    }
-    //$db->free($query);
-    $db->close();
-*/
+
 }
 
+/* remove later
 function MysqlDB_Close() {
     global $db;
     $db->close();
     db_close();    
 }
+ * 
+ */

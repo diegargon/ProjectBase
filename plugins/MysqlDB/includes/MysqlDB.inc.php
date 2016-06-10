@@ -1,6 +1,6 @@
 <?php
 if (!defined('IN_WEB')) { exit; }
-
+/* switch to class, remove later
 function db_connect() {
     global $dblink;
     
@@ -80,3 +80,5 @@ function db_get_next_num ($field, $table) {
     
     return ++$row['max'];
 }
+ * 
+ */

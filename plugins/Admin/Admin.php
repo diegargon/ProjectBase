@@ -14,8 +14,8 @@ function Admin_init(){
 function Admin_main_page() {
     global $acl_auth, $tpl;    
               
-    if (!$acl_auth->acl_ask("admin_read")) {
-        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOACCESS'];        
+    if (!$acl_auth->acl_ask("admin_read")) {        
+        $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_ERROR_NOACCESS']);
         do_action("error_message_page");        
         return false;
     }

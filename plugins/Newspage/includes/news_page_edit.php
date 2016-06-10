@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
  
 function news_page_edit() {
-    global $config, $LANGDATA, $acl_auth, $tpl;    
+    global $LANGDATA, $acl_auth, $tpl, $db;    
     
     $nid = S_GET_INT("newsedit");
     $lang_id = S_GET_INT("lang_id");
@@ -13,12 +13,11 @@ function news_page_edit() {
     if ($nid == false || $lang_id == false) {
         echo "ERROR 1";  //TODO error mesage
     }    
-    $q = "SELECT * FROM {$config['DB_PREFIX']}news WHERE nid = '$nid' AND lang_id = '$lang_id' LIMIT 1"; 
-    $query = db_query($q);
-    if (db_num_rows($query) <= 0) {
+    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id"), "LIMIT 1");
+    if ($db->num_rows($query) <= 0) {
         echo "ERROR 2"; //TODO error mesage
     }
-    $news_data = db_fetch($query);    
+    $news_data = $db->fetch($query);    
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_EDIT_NEWS'];
     
     if (defined('ACL') && 'ACL') {        
@@ -45,21 +44,20 @@ function news_page_edit() {
 }
 
 function news_getMedia($nid) {
-    global $config;
+    global $db;
     
-    $q = "SELECT * FROM {$config['DB_PREFIX']}links WHERE source_id = '$nid' LIMIT 1";
-    $query = db_query($q);
-    
-    if (db_num_rows($query) <= 0) {
+
+    $query = $db->select_all("links", array("source_id" => "$nid"), "LIMIT 1");
+    if ($db->num_rows($query) <= 0) {
         return false;
     }    
-    $media = db_fetch($query);
+    $media = $db->fetch($query);
     
     return $media;    
 }
 
 function news_update($news_data) {
-    global $config;
+    global $config, $db, $ml;
 
     $nid = $news_data['update'];
     $current_langid = $news_data['current_langid'];
@@ -69,43 +67,44 @@ function news_update($news_data) {
     } else {
         $lang_id  = $config['WEB_LANG_ID'];        
     }
-    $q = "SELECT * FROM {$config['DB_PREFIX']}news WHERE nid = '$nid' AND lang_id = '$current_langid' ";
-    $query = db_query($q);
-    if (db_num_rows($query) <= 0) {
+
+    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$current_langid"));
+    if ($db->num_rows($query) <= 0) {
         return false;
     }
 
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($news_data['lang']) ;
-    
-    $q = "UPDATE {$config['DB_PREFIX']}news SET"
-        . " lang_id = '$lang_id', title = '{$news_data['title']}', lead = '{$news_data['lead']}', text = '{$news_data['text']}', featured = '{$news_data['featured']}', "
-        . " author = '{$news_data['author']}', category = '{$news_data['category']}',  lang = '{$news_data['lang']}', acl = '$acl'"                            
-        . " WHERE nid = '$nid' AND lang_id = '$current_langid'";
 
-     db_query($q);
+    $set_ary = array (
+      "lang_id" => $lang_id, "title" => $news_data['title'],  "lead" => $news_data['lead'],  "text" => $news_data['text'],  
+        "featured" => $news_data['featured'], "author" => $news_data['author'], "category" => $news_data['category'],
+        "lang" => $news_data['lang'], "acl" => $acl
+    );
+
+    $where_ary = array ( 
+        "nid" => "$nid", "lang_id" => "$current_langid"
+    );
+    $db->update("news", $set_ary, $where_ary);
+
         
-    if (!empty($news_data['main_media'])) {
+    if (!empty($news_data['main_media'])) {        
         //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
         $source_id = $nid;
         $plugin = "Newspage";
         $type = "image";
-        
-        $q = "SELECT * FROM {$config['DB_PREFIX']}links WHERE source_id = '$source_id' AND plugin = '$plugin' AND itsmain = '1' ";
-        $query = db_query($q);
 
-        if (db_num_rows($query) > 0) {        
-            $q = "UPDATE {$config['DB_PREFIX']}links SET"
-                . " link = '{$news_data['main_media']}' "
-                . " WHERE source_id = '$source_id' ";
+        $query = $db->select_all("links", array("source_id" => $source_id, "plugin" => $plugin, "itsmain" => 1 ));
+        if ($db->num_rows($query) > 0) {        
+            $db->update("links", array("link" => $news_data['main_media']), array("source_id" => $source_id));
         } else {
-            $q = "INSERT INTO {$config['DB_PREFIX']}links ("
-                . "source_id, plugin, type, link, itsmain"
-                . ") VALUES ("
-                . "'$source_id', '$plugin', '$type', '{$news_data['main_media']}', '1'"
-                . ");";              
+            $insert_ary = array ( 
+                "source_id" => $source_id, "plugin" => $plugin,
+                "type" => $type, "link" => $news_data['main_media'],
+                "itsmain" => 1
+            );
+            $db->insert("links", $insert_ary);
         }
-        db_query($q);
     }        
     
     return true;

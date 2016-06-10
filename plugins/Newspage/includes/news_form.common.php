@@ -5,10 +5,11 @@
 if (!defined('IN_WEB')) { exit; }
 
 function news_get_categories_select($news_data = null) {
+    global $db;
     $query = news_get_categories();
     
     $select = "<select name='news_category' id='news_category'>";
-    while($row = db_fetch($query)) {
+    while($row = $db->fetch($query)) {
         if( ($news_data != null) && ($row['cid'] == $news_data['category']) ) {
             $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>"; 
         } else {
@@ -21,7 +22,7 @@ function news_get_categories_select($news_data = null) {
 }
 
 function news_get_categories() {
-    global $config, $ml;
+    global $config, $ml, $db;
     
     if (defined('MULTILANG') && 'MULTILANG') {
         $lang_id = $ml->iso_to_id($config['WEB_LANG']); 
@@ -29,8 +30,7 @@ function news_get_categories() {
         $lang_id = $config['WEB_LANG_ID'];
     }
     
-    $q = "SELECT * FROM {$config['DB_PREFIX']}categories WHERE plugin = 'Newspage' AND lang_id = '$lang_id'";
-    $query = db_query($q);
+    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id"));
     
     return $query;
 }
@@ -210,11 +210,13 @@ function news_get_sitelangs($news_data = null) {
 }
 
 function news_clean_featured($lang) {
-    global $config;
-    
-    $q = "UPDATE {$config['DB_PREFIX']}news SET featured = '0'";
+    global $db;
+       
+    $where_ary['featured'] = '0';
     if (defined('MULTILANG') && 'MULTILANG') {
-        $q .= "WHERE lang = '$lang'";
-    }            
-    db_query($q);
+
+        $where_ary['lang'] = $lang;
+    }
+    $db->update("news", $where_ary);
+
 }

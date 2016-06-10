@@ -50,14 +50,12 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     global $config, $db, $tpl;
         
     $content = "";         
-   // $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1'";
+   
     $where_ary['featured'] = array("value" => "1", "operator" => "<>");
-    if ($config['NEWS_SELECTED_FRONTPAGE']) {        
-        //$q .= " AND frontpage = $frontpage";
+    if ($config['NEWS_SELECTED_FRONTPAGE']) {               
         $where_ary['frontpage'] = $frontpage;
     }
-    if( $config['NEWS_MODERATION'] == 1) {
-        //$q .=" AND moderation = 0";
+    if( $config['NEWS_MODERATION'] == 1) {       
         $where_ary['moderation'] = 0;
     }
         
@@ -67,27 +65,22 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
         
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
-                $lang_id = $site_lang['lang_id'];                
-                //$q .= " AND lang_id = '$lang_id'";                
+                $lang_id = $site_lang['lang_id'];                               
                 $where_ary['lang_id'] = $lang_id;
                 break;
             } 
         }
     } 
     
-    if ((!empty($category)) && ($category != 0 )) {
-        //$q .= " AND category = '$category'";
+    if ((!empty($category)) && ($category != 0 )) {        
         $where_ary['category'] = $category;
-    }    
-    //$q .= " ORDER BY date DESC";
+    }       
     $q_extra = " ORDER BY date DESC";
-    if ($limit > 0) {
-        //$q .= " LIMIT $limit";
+    if ($limit > 0) {       
         $q_extra .= " LIMIT $limit";
     }
     
     $query = $db->select_all("news", $where_ary, $q_extra);
-    //$query = db_query($q);
     if ($db->num_rows($query) <= 0) {
         return false;
     }
@@ -118,7 +111,6 @@ function get_news_featured() {
 
     //INFO: news_featured skip moderation bit
     $content = "";        
-    //$q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
     $where_ary['featured'] = 1;
     if (defined('MULTILANG') && 'MULTILANG') {
         global $ml;
@@ -126,13 +118,10 @@ function get_news_featured() {
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
                 $lang_id = $site_lang['lang_id'];
-                //$q .= " AND lang_id = $lang_id";
                 $where_ary['lang_id'] = $lang_id;
             } 
         }
     }    
-    //$q .= " LIMIT 1";    
-    //$query = db_query($q);   
     $query = $db->select_all("news", $where_ary, "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
         return false;
@@ -157,7 +146,8 @@ function fetch_news_data($row) {
     global $config, $acl_auth, $db;    
 
     
-    if( $config['NEWS_ACL_PREVIEW_CHECK']  && defined('ACL') && 'ACL' && !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
+    if( $config['NEWS_ACL_PREVIEW_CHECK']  && defined('ACL') && 'ACL' && 
+            !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
         return false;
     }
     
@@ -175,7 +165,6 @@ function fetch_news_data($row) {
     } else {            
         $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
     }
-    //$query = db_query("SELECT * FROM $config[DB_PREFIX]links WHERE source_id = $row[nid] AND plugin='Newspage' AND itsmain = '1' LIMIT 1");
     $query = $db->select_all("links", array("source_id" => "{$row['nid']}", "plugin" => "Newspage", "itsmain" => "1"), "LIMIT 1");
     if ($db->num_rows($query) >= 0) {
         $media_row = $db->fetch($query);
@@ -189,14 +178,10 @@ function fetch_news_data($row) {
 function get_category_name($cid, $lang_id = null) {
     global $config, $db; 
     
-    //$q = "SELECT name FROM {$config['DB_PREFIX']}categories WHERE cid = '$cid'";    
     $where_ary['cid'] = $cid;
     if (defined('MULTILANG') && 'MULTILANG' && $lang_id != null) {
-      //  $q .= " AND lang_id = $lang_id";
         $where_ary['lang_id'] = $lang_id;
     }
-    //$q .= " LIMIT 1";
-    //$query = db_query($q);
     $query = $db->select_all("categories", $where_ary, "LIMIT 1");
     $category = $db->fetch($query);
     $db->free($query);  
