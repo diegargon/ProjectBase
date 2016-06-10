@@ -40,7 +40,7 @@ function news_form_getPost() {
        
     if (defined('ACL') && 'ACL') { //if admin can change author if not ignore news_author
         if( ( $acl_auth->acl_ask('news_admin') ) == true || ( $acl_auth->acl_ask('admin_all') ) == true ) {            
-            isset($_POST['news_author']) ? $data['author'] = S_VAR_CHAR_AZ_NUM($_POST['news_author']) : false;
+            isset($_POST['news_author']) ? $data['author'] = S_POST_CHAR_UTF8("news_author") : false;
         } 
     }
     if(empty($data['author'])) { 

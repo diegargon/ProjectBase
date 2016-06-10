@@ -4,15 +4,16 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-global $tpldata;
-
 function tplBasic_init(){   
+    global $tpl;    
     print_debug ("tplBasic initialized", "PLUGIN_LOAD");
-    
+
     includePluginFiles("tplBasic");
     
-    getCSS_filePath("tplBasic", "basic");
-    getCSS_filePath("tplBasic", "basic-mobile");
+    $tpl = new TPL;
+   
+    $tpl->getCSS_filePath("tplBasic", "basic");
+    $tpl->getCSS_filePath("tplBasic", "basic-mobile");
     register_action("common_web_structure", "tplBasic_web_structure", "0");
     register_uniq_action("index_page", "tplBasic_index_page", "5");
     register_uniq_action("error_message_page", "tplBasic_error_page");
@@ -30,39 +31,35 @@ function tplBasic_index_page() {
 }
 
 function tplBasic_error_page() {        
-    global $tpldata, $LANGDATA;
+    global $LANGDATA, $tpl;
             
-    if(empty($tpldata['E_TITLE'])) {
-        $tpldata['E_TITLE'] = $LANGDATA['L_E_ERROR'];
-    }
-    if(empty($tpldata['E_BACKLINK_TITLE'])) {
-        $tpldata['E_BACKLINK_TITLE'] = $LANGDATA['L_E_BACKLINK_TITLE'];       
-    }    
+    $tpl->add_if_empty("E_TITLE", $LANGDATA['L_E_ERROR']);        
+    $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_E_BACKLINK_TITLE']);  
+
     do_action("common_web_structure");        
-    addto_tplvar("ADD_TO_BODY", getTPL_file("tplBasic", "error"));
+    $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "error"));
    
  }
 
  function tplBasic_error_box () {
-    global $tpldata, $LANGDATA;
+    global $tpl, $LANGDATA;
     
-    if(empty($tpldata['E_TITLE'])) {
-        $tpldata['E_TITLE'] = $LANGDATA['L_E_ERROR'];
-    }
-    if(empty($tpldata['E_BACKLINK_TITLE'])) {
-        $tpldata['E_BACKLINK_TITLE'] = $LANGDATA['L_E_BACKLINK_TITLE'];       
-    }   
-    addto_tplvar("ADD_TO_BODY", getTPL_file("tplBasic", "error"));
+    $tpl->add_if_empty("E_TITLE", $LANGDATA['L_E_ERROR']);
+    $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_E_BACKLINK_TITLE']);
+            
+    $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "error"));
  }
  
 function tpl_basic_head() {
-    return getTPL_file("tplBasic", "head");
+    global $tpl;
+    return $tpl->getTPL_file("tplBasic", "head");
 }
-
 function tpl_basic_body() {
-    return getTPL_file("tplBasic", "body");    
+    global $tpl;
+    return $tpl->getTPL_file("tplBasic", "body");    
 }
 
 function tpl_basic_footer() {
-    return getTPL_file("tplBasic", "footer");
+    global $tpl;    
+    return $tpl->getTPL_file("tplBasic", "footer");
 }

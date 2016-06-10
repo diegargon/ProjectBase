@@ -5,10 +5,10 @@
 if (!defined('IN_WEB')) { exit; }
 
 function Newspage_AdminCategories() {
-    global $config, $LANGDATA, $ml, $db;
+    global $config, $LANGDATA, $ml, $db, $tpl;
                 
-    addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_CATEGORIES']);
-    addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_CATEGORY_DESC']);
+    $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_CATEGORIES']);
+    $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_CATEGORY_DESC']);
     
     //MOD CAT
     $content = "<div>";
@@ -121,10 +121,10 @@ function Newspage_NewCategory() {
 }
 
 function Newspage_AdminModeration() {
-    global $config, $LANGDATA, $db;
+    global $config, $LANGDATA, $db, $tpl;
 
-    addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_MODERATION']);
-    addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_MODERATION_DESC']);
+    $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_MODERATION']);
+    $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_MODERATION_DESC']);
     
     $content = "<div>";
     $query = $db->select_all("news", array ("moderation" =>  "1"), "LIMIT {$config['NEWS_NUM_LIST_MOD']}");
@@ -144,10 +144,10 @@ function Newspage_AdminModeration() {
 }
 
 function Newspage_InFrontpage () {
-    global $LANGDATA, $db;
+    global $LANGDATA, $db, $tpl;
 
-    addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_INFRONTPAGE']);
-    addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_INFRONTPAGE_DESC']);    
+    $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_INFRONTPAGE']);
+    $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_INFRONTPAGE_DESC']);    
 
     $frontpage = "<h3>{$LANGDATA['L_NEWS_INFRONTPAGE']}</h3>";
     $backpage = "<h3>{$LANGDATA['L_NEWS_BACKPAGE']}</h3>";

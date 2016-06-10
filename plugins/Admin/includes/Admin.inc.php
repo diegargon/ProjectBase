@@ -31,11 +31,11 @@ function admin_load_plugin_files() {
 }
 
 function Admin_GetPluginState($plugin) { 
-    global $registered_plugins;
+    global $registered_plugins, $tpl;
     $content = "";
     foreach ($registered_plugins as $reg_plugin) {
         if ($reg_plugin->plugin_name == $plugin) { 
-            $content = getTPL_file("Admin", "plugin_state", (array) $reg_plugin);            
+            $content = $tpl->getTPL_file("Admin", "plugin_state", (array) $reg_plugin);            
         }
     }    
     $content = $content . "<hr/><p><pre>" . htmlentities(Admin_GetPluginConfigFiles($plugin)) . "</pre></p>";  

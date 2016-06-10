@@ -1,4 +1,4 @@
-<?php
+ <?php
 /* 
  *  Copyright @ 2016 Diego Garcia
  * 
@@ -42,7 +42,7 @@ function SMBasic_Init() {
 }
 
 function SMBasic_regPage() {
-    global $config;
+    global $config, $tpl;
 
     require_once("includes/SMBasic.register.php");
     
@@ -59,16 +59,17 @@ function SMBasic_regPage() {
         !isset($_POST['register'])
         ) {
         do_action("common_web_structure");       
-        getCSS_filePath("SMBasic");
-        getCSS_filePath("SMBasic", "SMBasic-mobile");
-        addto_tplvar("SCRIPTS", SMBasic_RegisterScript());
-        addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("SMBasic", "register"));                                
+        $tpl->getCSS_filePath("SMBasic");
+        $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
+        $tpl->addto_tplvar("SCRIPTS", SMBasic_RegisterScript());
+        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "register"));                                
     } else {
         SMBasic_Register();   
     }
 }
 
-function SMBasic_profilePage() {    
+function SMBasic_profilePage() {
+    global $tpl;    
     require_once("includes/SMBasic.profile.php");
     
     //if(empty($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
@@ -88,15 +89,16 @@ function SMBasic_profilePage() {
             exit(0);        
         } else {        
             do_action("common_web_structure");       
-            getCSS_filePath("SMBasic");
-            getCSS_filePath("SMBasic", "SMBasic-mobile");
-            addto_tplvar("SCRIPTS", SMBasic_ProfileScript()); 
-            addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("SMBasic", "profile", $user));
+            $tpl->getCSS_filePath("SMBasic");
+            $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
+            $tpl->addto_tplvar("SCRIPTS", SMBasic_ProfileScript()); 
+            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "profile", $user));
         }    
     }
 }
 
-function SMBasic_loginPage () {   
+function SMBasic_loginPage () {
+    global $tpl;
     require_once("includes/SMBasic.login.php");
     
     //if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
@@ -120,10 +122,10 @@ function SMBasic_loginPage () {
         SMBasic_RequestResetOrActivation();
     } else {        
         do_action("common_web_structure");       
-        getCSS_filePath("SMBasic");
-        getCSS_filePath("SMBasic", "SMBasic-mobile");             
-        addto_tplvar("SCRIPTS", SMBasic_LoginScript()); 
-        addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("SMBasic", "login"));       
+        $tpl->getCSS_filePath("SMBasic");
+        $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");             
+        $tpl->addto_tplvar("SCRIPTS", SMBasic_LoginScript()); 
+        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "login"));       
     }
 }
 

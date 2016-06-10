@@ -19,19 +19,20 @@ function Multilang_AdminMenu($params) {
 }
 
 function Multilang_AdminContent($params) {   
-    global $tpldata, $LANGDATA;    
+    global  $LANGDATA, $tpl;    
     includePluginFiles("Multilang", 1);
-    getCSS_filePath("Multilang");
+    $tpl->getCSS_filePath("Multilang");
     
-    $tpldata['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n";
-    $tpldata['ADM_ASIDE_OPTION'] .=  "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_ML_LANGS'] ."</a></li>\n";
-    $tpldata['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_MULTILANG_OPT");
-    
-    addto_tplvar("ADM_CONTENT_H1", "Multilang");
+    $tpl_data['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n";
+    $tpl_data['ADM_ASIDE_OPTION'] .=  "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_ML_LANGS'] ."</a></li>\n";
+    $tpl_data['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_MULTILANG_OPT");
+    $tpl_data['ADM_CONTENT_H1'] = "Multilang";
+
+    $tpl->addtpl_array($tpl_data);
     
     if ( (!$opt = S_GET_INT("opt")) || $opt == 1 ) {
-        addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'] );                
-        addto_tplvar("ADM_CONTENT", Admin_GetPluginState("Multilang"));        
+        $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'] );                
+        $tpl->addto_tplvar("ADM_CONTENT", Admin_GetPluginState("Multilang"));        
     } else if ($opt == 2) { 
         if (!empty($_POST['btnModifyLang'])) {
             Multilang_ModifyLang();
@@ -42,17 +43,17 @@ function Multilang_AdminContent($params) {
         if (!empty($_POST['btnDeleteLang'])) {
             Multilang_DeleteLang();
         }             
-        addto_tplvar("ADM_CONTENT",  Multilang_AdminLangs());          
+        $tpl->addto_tplvar("ADM_CONTENT",  Multilang_AdminLangs());          
     } else {
         do_action("ADM_MULTILANG_OPT", $opt);
     }
-    return getTPL_file("Admin", "admin_std_content");   
+    return $tpl->getTPL_file("Admin", "admin_std_content");   
 }
 
 function Multilang_AdminLangs() {
-    global $db, $LANGDATA;
+    global $db, $LANGDATA, $tpl;
     
-    addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_ML_LANGS'] );
+    $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_ML_LANGS'] );
     
     $query = $db->select_all("lang");
     $modify = "";
@@ -89,7 +90,7 @@ function Multilang_AdminLangs() {
 
 
 function Multilang_ModifyLang() {
-    global $db, $LANGDATA;
+    global $db, $LANGDATA, $tpl;
 
     $lang_id = S_POST_INT("lang_id", 11, 1);
     $lang_name = S_POST_CHAR_UTF8("lang_name", 11, 2); 
@@ -107,7 +108,7 @@ function Multilang_ModifyLang() {
             if ($lang_data['lang_name'] != $lang_name) {
                 $query3 = $db->select_all("lang", array("lang_name" => "$lang_name"), "LIMIT 1");
                 if ($db->num_rows($query3) > 0) {
-                    addto_tplvar("ml_msg", $LANGDATA['L_ML_WARN_FIELD_IGNORE']);
+                    $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_WARN_FIELD_IGNORE']);
                 } else {
                     $modify_ary["lang_name"] = $lang_name;
                 }                
@@ -115,22 +116,22 @@ function Multilang_ModifyLang() {
             if ($lang_data['iso_code'] != $iso_code) {
                 $query3 = $db->select_all("lang", array("iso_code" => "$iso_code"), "LIMIT 1");
                 if ($db->num_rows($query3) > 0) {
-                    addto_tplvar("ml_msg", $LANGDATA['L_ML_WARN_FIELD_IGNORE']);
+                    $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_WARN_FIELD_IGNORE']);
                 } else {
                     $modify_ary["iso_code"] = $iso_code;
                 }                                
             }
             $db->update("lang", $modify_ary, array("lang_id" => "$lang_id"));
         } else {
-            addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_INTERNAL_ID']);
+            $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_INTERNAL_ID']);
         }
     } else {
-        addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS']);    
+        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS']);    
     }  
 }
 
 function Multilang_CreateLang() {
-    global $db, $LANGDATA;
+    global $db, $LANGDATA, $tpl;
     
     $lang_name = S_POST_CHAR_UTF8("lang_name", 11, 2); 
     $iso_code = S_POST_CHAR_AZ("iso_code", 2, 2);
@@ -148,12 +149,12 @@ function Multilang_CreateLang() {
               
         if ($db->num_rows($query) == 0 ) {        
             $db->insert("lang", array("lang_name" => "$lang_name", "active" => "$active", "iso_code" => "$iso_code"));
-            addto_tplvar("ml_msg", $LANGDATA['L_ML_CREATE_SUCCESFUL']);
+            $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_CREATE_SUCCESFUL']);
         } else {
-            addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS_EXISTS']);
+            $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS_EXISTS']);
         }
     } else {
-        addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS']);
+        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS']);
     }
 }
 function Multilang_DeleteLang() {
@@ -162,8 +163,8 @@ function Multilang_DeleteLang() {
     $lid = S_POST_INT("lang_id", 11);
     if ($lid != false) {
         $db->delete("lang", array("lang_id" => "$lid"));
-        addto_tplvar("ml_msg", $LANGDATA['L_ML_DELETE_SUCCESS']);
+        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_DELETE_SUCCESS']);
     } else {
-         addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_INTERNAL_ID']);
+         $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_INTERNAL_ID']);
     }
 }

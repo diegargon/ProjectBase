@@ -14,42 +14,48 @@ function news_format_media($media) {
     return $result;
 }
 
-function get_news_byId($id, $lang = null){
-    global $config, $acl_auth, $ml;         
+function get_news_byId($nid, $lang = null){
+    global $acl_auth, $ml, $db;         
     
-    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $id ";
+    
+    //$q = "SELECT * FROM $config[DB_PREFIX]news WHERE nid = $nid ";
+    $where_ary['nid'] = $nid;
     if (defined('MULTILANG') && 'MULTILANG' && $lang != null) {        
         $site_langs = $ml->get_site_langs();
         foreach ($site_langs as $site_lang) {
             if($site_lang['iso_code'] == $lang) {
-                $q .= "AND lang_id = '{$site_lang['lang_id']}'";
+                //$q .= "AND lang_id = '{$site_lang['lang_id']}'";
+                $where_ary['lang_id'] = $site_lang['lang_id'];
                 break;
             }
         }
     }                
-    $q .= " LIMIT 1";
-    $query = db_query($q);
-    if(db_num_rows($query) == 0 ) {        
+    //$q .= " LIMIT 1";    
+    //$query = db_query($q);
+    $query = $db->select_all("news", $where_ary, "LIMIT 1");
+    
+    if($db->num_rows($query) == 0 ) {        
         return false;
     }
-    $row = db_fetch($query);
+    $row = $db->fetch($query);
     
     if( 'ACL' && !empty($acl_auth) && !empty($row['acl'])) {
         if(!$acl_auth->acl_ask($row['acl'])) {
             return 403;
         }
     } 
-    db_free_result($query);
+    $db->free($query);
 
     return $row;
 }
 
-function get_news_media_byID($id) {
-    global $config;
+function get_news_media_byID($nid) {
+    global $db;
     
-    $query = db_query("SELECT * FROM {$config['DB_PREFIX']}links WHERE source_id = '$id' AND plugin='Newspage' ");    
-    if (db_num_rows($query) > 0) {
-        while ($row = db_fetch($query)) {
+    $query = $db->select_all("links", array("source_id" => "$nid"));
+    //$query = db_query("SELECT * FROM {$config['DB_PREFIX']}links WHERE source_id = '$nid' AND plugin='Newspage' ");    
+    if ($db->num_rows($query) > 0) {
+        while ($row = $db->fetch($query)) {
             $media[] = array (
                 "rid" => $row['rid'], 
                 "type" => $row['type'], 
@@ -59,7 +65,7 @@ function get_news_media_byID($id) {
     } else {
         $media = false;
     }   
-    db_free_result($query);
+    $db->free($query);
 
     return $media;   
 }

@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
  
 function news_new_form($post_data = null) {
-    global $config, $LANGDATA, $acl_auth;
+    global $LANGDATA, $acl_auth, $tpl;
     
     $data['NEWS_FORM_TITLE'] = $LANGDATA['L_SEND_NEWS'];
             
@@ -33,13 +33,14 @@ function news_new_form($post_data = null) {
     if(!empty($post_data)) {
         $data = array_merge($data, $post_data);
     }  
-    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_form", $data));     
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $data));     
 }
 
 function news_create_new($news_data) {
-    global $config, $ml;
+    global $config, $ml, $db;
     
     $nid = db_get_next_num("nid", $config['DB_PREFIX']."news"); 
+    //$nid = $db->get_next_num("news", "nid");
     if (defined('MULTILANG') && 'MULTILANG') {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
     } else {

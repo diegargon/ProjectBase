@@ -5,12 +5,12 @@
 if (!defined('IN_WEB')) { exit; }
 
 function Newspage_init(){  
-    
+    global $tpl;
     print_debug("Newspage Inititated", "PLUGIN_LOAD");
     
     includePluginFiles("Newspage"); 
-    getCSS_filePath("Newspage");
-    getCSS_filePath("Newspage", "Newspage-mobile");  
+    $tpl->getCSS_filePath("Newspage");
+    $tpl->getCSS_filePath("Newspage", "Newspage-mobile");  
 
     if (news_check_display_submit()) {
         register_action("nav_element", "news_menu_submit_news");
@@ -18,13 +18,13 @@ function Newspage_init(){
 }
 
 function news_index_page (){       
-
+    global $tpl;
     if(!empty($_GET['sendnews']) && empty($_POST['newsFormSubmit']) ) { // && empty ($_POST['newsFormSubmit_ST2'])) {
         require_once 'includes/news_form.common.php';
         require_once("includes/news_form.submit.php");
         if (empty($_POST['newsFormSubmit_ST2'])) {
             do_action("common_web_structure");
-            addto_tplvar("SCRIPTS", Newspage_FormScript());            
+            $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());            
             news_new_form();
         } else {
             news_form_process();
@@ -37,7 +37,7 @@ function news_index_page (){
 }
 
 function news_page() {
-    global $acl_auth;        
+    global $acl_auth, $tpl;        
 
     if(!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
         //TODO ADD AUTHOR EDITING
@@ -49,7 +49,7 @@ function news_page() {
                     news_form_process();
                 } else {            
                     do_action("common_web_structure");
-                    addto_tplvar("SCRIPTS", Newspage_FormScript());
+                    $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());
                     news_page_edit();              
                 }
             } else {                

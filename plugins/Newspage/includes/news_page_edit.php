@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
  
 function news_page_edit() {
-    global $config, $LANGDATA, $acl_auth;    
+    global $config, $LANGDATA, $acl_auth, $tpl;    
     
     $nid = S_GET_INT("newsedit");
     $lang_id = S_GET_INT("lang_id");
@@ -41,7 +41,7 @@ function news_page_edit() {
     }    
     $news_data['update'] = $nid;  
     $news_data['current_langid'] = $news_data['lang_id'];
-    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", "news_form", $news_data));     
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));     
 }
 
 function news_getMedia($nid) {

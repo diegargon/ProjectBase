@@ -20,5 +20,6 @@ function SimpleACL_AdminMenu($params) {
 }
 
 function SimpleACL_AdminContent() {
-    return getTPL_file("SimpleACL", "acl_admin_main");
+    global $tpl;    
+    return $tpl->getTPL_file("SimpleACL", "acl_admin_main");
 }

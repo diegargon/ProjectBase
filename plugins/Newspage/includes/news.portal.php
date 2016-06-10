@@ -5,22 +5,24 @@
 if (!defined('IN_WEB')) { exit; }
 
 function news_portal() {    
-    global $tpldata, $config;
+    global $config, $tpl;
           
     $news_nLayout = news_layout_select();
     $news_layout_tpl = "news_body_style" . $news_nLayout++;
     
-    if ($config['LAYOUT_SWITCH']) {           
-        $tpldata['news_nSwitch'] = $news_nLayout;
+    if ($config['LAYOUT_SWITCH']) {                   
+        $tpl->addto_tplvar("news_nSwitch", $news_nLayout);
         register_action("nav_element", "news_layout_switcher", 6);
     }
-    $tpldata['FEATURED'] = get_news_featured();
-    $tpldata['COL1_ARTICLES'] = get_news(1,0);
-    $tpldata['COL1_ARTICLES'] .= get_news(2,0);
-    $tpldata['COL2_ARTICLES'] = get_news(2,0);
-    $tpldata['COL3_ARTICLES'] = get_news(1,0,1,0);  
-    $tpldata['COL3_ARTICLES'].= get_news(2,0,1,0);  
-    addto_tplvar("POST_ACTION_ADD_TO_BODY", getTPL_file("Newspage", $news_layout_tpl));     
+    $tpl_data['FEATURED'] = get_news_featured();
+    $tpl_data['COL1_ARTICLES'] = get_news(1,0);
+    $tpl_data['COL1_ARTICLES'] .= get_news(2,0);
+    $tpl_data['COL2_ARTICLES'] = get_news(2,0);
+    $tpl_data['COL3_ARTICLES'] = get_news(1,0,1,0);  
+    $tpl_data['COL3_ARTICLES'].= get_news(2,0,1,0);    
+    $tpl->addtpl_array($tpl_data);
+    
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", $news_layout_tpl));     
 }
 
 function news_layout_select() {
@@ -35,26 +37,28 @@ function news_layout_select() {
 }
 
 function news_layout_switcher() { 
-    global $tpldata;
+    global $tpl;
     
     $data = "<li class='nav_left'><form action='#' method='post'>";
     $data .= "<input type='submit'  value='' class='button_switch' />";
-    $data .= "<input type='hidden' value=" . $tpldata['news_nSwitch'] ." name='news_switch'/>";
+    $data .= "<input type='hidden' value=" . $tpl->gettpl_value("news_nSwitch") ." name='news_switch'/>";
     $data .= "</form></li>";
     return $data;
 }
 
 function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
-    global $config;
+    global $config, $db, $tpl;
         
     $content = "";         
-    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1'";
-
+   // $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured <> '1'";
+    $where_ary['featured'] = array("value" => "1", "operator" => "<>");
     if ($config['NEWS_SELECTED_FRONTPAGE']) {        
-        $q .= " AND frontpage = $frontpage";            
+        //$q .= " AND frontpage = $frontpage";
+        $where_ary['frontpage'] = $frontpage;
     }
     if( $config['NEWS_MODERATION'] == 1) {
-        $q .=" AND moderation = 0";
+        //$q .=" AND moderation = 0";
+        $where_ary['moderation'] = 0;
     }
         
     if (defined('MULTILANG') && 'MULTILANG') {
@@ -63,22 +67,27 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
                 $lang_id = $site_lang['lang_id'];                
-                $q .= " AND lang_id = '$lang_id'";                
+                //$q .= " AND lang_id = '$lang_id'";                
+                $where_ary['lang_id'] = $lang_id;
+                break;
             } 
         }
     } 
     
     if ((!empty($category)) && ($category != 0 )) {
-        $q .= " AND category = '$category'";
+        //$q .= " AND category = '$category'";
+        $where_ary['category'] = $category;
     }    
-    $q .= " ORDER BY date DESC";
-    
+    //$q .= " ORDER BY date DESC";
+    $q_extra = " ORDER BY date DESC";
     if ($limit > 0) {
-        $q .= " LIMIT $limit";
+        //$q .= " LIMIT $limit";
+        $q_extra .= " LIMIT $limit";
     }
-    $query = db_query($q);
-   
-    if (db_num_rows($query) <= 0) {
+    
+    $query = $db->select_all("news", $where_ary, $q_extra);
+    //$query = db_query($q);
+    if ($db->num_rows($query) <= 0) {
         return false;
     }
        
@@ -91,57 +100,59 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
         $content .= "<section><h2>$catname</h2>";        
     }     
 
-    while($row = db_fetch($query)) {
+    while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false) {
             if ($headlines == 1) { $content_data['headlines'] = 1; }
-            $content .= getTPL_file("Newspage", "news_preview", $content_data);        
+            $content .= $tpl->getTPL_file("Newspage", "news_preview", $content_data);        
         }
     }
     $content .= "</section>";
-    db_free_result($query);    
+    $db->free($query);    
     
     return $content;
 }
 
 function get_news_featured() {
-    global $config;
+    global $config, $db, $tpl;
 
     //INFO: news_featured skip moderation bit
     $content = "";        
-    $q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
+    //$q = "SELECT * FROM $config[DB_PREFIX]news WHERE featured = '1'";
+    $where_ary['featured'] = 1;
     if (defined('MULTILANG') && 'MULTILANG') {
         $site_langs = do_action("get_site_langs");        
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
                 $lang_id = $site_lang['lang_id'];
-                $q .= " AND lang_id = $lang_id";
+                //$q .= " AND lang_id = $lang_id";
+                $where_ary['lang_id'] = $lang_id;
             } 
         }
     }    
-    $q .= " LIMIT 1";
-    
-    $query = db_query($q);   
-    if (db_num_rows($query) <= 0) {
+    //$q .= " LIMIT 1";    
+    //$query = db_query($q);   
+    $query = $db->select_all("news", $where_ary, "LIMIT 1");
+    if ($db->num_rows($query) <= 0) {
         return false;
     }    
 
-    while($row = db_fetch($query)) {
+    while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false ) {
             if (defined('MULTILANG') && 'MULTILANG') {
                 $content_data['CATEGORY'] = get_category_name($row['category'], $lang_id);       
             } else {
                 $content_data['CATEGORY'] = get_category_name($$row['category']);
             }            
-            $content .= getTPL_file("Newspage", "news_featured", $content_data);
+            $content .= $tpl->getTPL_file("Newspage", "news_featured", $content_data);
         }
     }    
-    db_free_result($query);
+    $db->free($query);
     
     return $content;
 }
 
 function fetch_news_data($row) {
-    global $config, $acl_auth;    
+    global $config, $acl_auth, $db;    
 
     
     if( $config['NEWS_ACL_PREVIEW_CHECK']  && defined('ACL') && 'ACL' && !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
@@ -162,27 +173,31 @@ function fetch_news_data($row) {
     } else {            
         $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
     }
-    $query = db_query("SELECT * FROM $config[DB_PREFIX]links WHERE source_id = $row[nid] AND plugin='Newspage' AND itsmain = '1' LIMIT 1");
-    if (db_num_rows($query) >= 0) {
-        $media_row = db_fetch($query);
+    //$query = db_query("SELECT * FROM $config[DB_PREFIX]links WHERE source_id = $row[nid] AND plugin='Newspage' AND itsmain = '1' LIMIT 1");
+    $query = $db->select_all("links", array("source_id" => "{$row['nid']}", "plugin" => "Newspage", "itsmain" => "1"), "LIMIT 1");
+    if ($db->num_rows($query) >= 0) {
+        $media_row = $db->fetch($query);
         $data['MEDIA'] = news_format_media($media_row);
     }
-    db_free_result($query);
+    $db->free($query);
 
     return $data;
 }
 
 function get_category_name($cid, $lang_id = null) {
-    global $config; 
+    global $config, $db; 
     
-    $q = "SELECT name FROM {$config['DB_PREFIX']}categories WHERE cid = '$cid'";    
+    //$q = "SELECT name FROM {$config['DB_PREFIX']}categories WHERE cid = '$cid'";    
+    $where_ary['cid'] = $cid;
     if (defined('MULTILANG') && 'MULTILANG' && $lang_id != null) {
-        $q .= " AND lang_id = $lang_id";
+      //  $q .= " AND lang_id = $lang_id";
+        $where_ary['lang_id'] = $lang_id;
     }
-    $q .= " LIMIT 1";
-    $query = db_query($q);
-    $category = db_fetch($query);
-    db_free_result($query);  
+    //$q .= " LIMIT 1";
+    //$query = db_query($q);
+    $query = $db->select_all("categories", $where_ary, "LIMIT 1");
+    $category = $db->fetch($query);
+    $db->free($query);  
 
     return $category['name'];
 }
