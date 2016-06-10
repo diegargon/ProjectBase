@@ -6,13 +6,14 @@ if (!defined('IN_WEB')) { exit; }
 
 
 function SMBasic_ProfileScript() {
+    global $tpl;
     $script = "";
     if (!check_jsScript("jquery.min.js")) {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }               
-    $script .= getScript_fileCode("SMBasic", "profile");
+    $script .= $tpl->getScript_fileCode("SMBasic", "profile");
     
     return $script;
 }
@@ -86,10 +87,7 @@ function SMBasic_ProfileChange() {
     }
        
     $password_encrypted = do_action("encrypt_password", $password);
-/*    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE uid = '{$_SESSION['uid']}' AND password = '$password_encrypted' LIMIT 1";
-    $query = db_query($q);
- * *
- */
+
     $query = $db->select_all("users", array("uid" => "{$_SESSION['uid']}", "password" => "$password_encrypted"), "LIMIT 1");
     if($db->num_rows($query) <= 0) {
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_WRONG_PASSWORD']);
@@ -101,8 +99,7 @@ function SMBasic_ProfileChange() {
     if ( ( $config['smbasic_need_username'] == 1) &&
             ( $config['smbasic_can_change_username'] == 1) &&
             ( $user['username'] != $_POST['username']) ){        
-        //$q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username='$username' LIMIT 1";
-        //$query = db_query($q);
+
         $query = $db->select_all("users", array("username" => "$username"), "LIMIT 1");
         if ($db->num_rows($query) > 0) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);
@@ -113,8 +110,7 @@ function SMBasic_ProfileChange() {
     if ( ( $config['smbasic_need_email'] == 1) &&
             ( $config['smbasic_can_change_email'] == 1) &&
             ( $user['email'] != $_POST['email'] )  ){        
-//        $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
-//        $query = db_query($q);
+
         $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
         if ($db->num_rows($query) > 0) {
            $response[] = array("status" => "5", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);
@@ -140,44 +136,22 @@ function SMBasic_ProfileChange() {
         return false;                     
     }
     
-//    $need_coma = 0; // huh!  
-    //$q = "UPDATE {$config['DB_PREFIX']}users SET ";
-    
     $q_set_ary = [];
     if (( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) && ( !empty($username) )) {
-//        $q .= "username = '$username'";
-//        $need_coma = 1;
             $q_set_ary['username'] = $username;
     }    
     if (( $config['smbasic_need_email'] == 1) && ( $config['smbasic_can_change_email'] == 1) && ( !empty($email) )) {
-/*        if ($need_coma) {
-            $q .= ", email = '$email'";
-        } else {
-            $q .= "email = '$email'";
-            $need_coma = 1;
-        }
- */
         $q_set_ary["email"] = $email;
     }       
     if (!empty($_POST['new_password'])) {
         if  ( ($new_password = S_POST_CHAR_AZNUM("new_password", $config['smbasic_max_password'], $config['smbasic_min_password'] )) != false) { //TODO ONLY AZ NUM no special
             $new_password_encrypt = do_action("encrypt_password", $new_password);
-/*
-            if ($need_coma) {               
-               $q .= ", password = '$new_password_encrypt'";
-           } else {
-               $q .= " password = '$new_password_encrypt'";
-               $need_coma = 1;
-           }
- * 
- */
             $q_set_ary['password'] = $new_password_encrypt;
         }
     }   
 
     $db->update("users", $q_set_ary, array("uid" => "{$_SESSION['uid']}"), "LIMIT 1");
-//    $q .= " WHERE uid = {$_SESSION['uid']} LIMIT 1";    
-//    db_query($q);
+
     $profile_url = $config['WEB_URL'] . "profile.php";
     $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] , "url" => "$profile_url");    
     echo json_encode($response, JSON_UNESCAPED_SLASHES);

@@ -19,8 +19,6 @@ function SMBasic_Login() {
             exit(0);
         }
         $response = [];       
-        //$q = "SELECT * FROM " . $config['DB_PREFIX'] . "users WHERE email = '$email' AND password = '$password' LIMIT 1";               
-        //$query = db_query($q);
         $query = $db->select_all("users", array("email" => "$email", "password" => "$password"), "LIMIT 1");
         if ($user = $db->fetch($query)) {
             if($user['active'] == 0) {
@@ -53,8 +51,6 @@ function SMBasic_user_activate_account() {
     if ( ($active = S_GET_INT("active", 12)) == false) {
         return false;
     }
-    //$q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE active = '$active'";
-    //$query = db_query($q);
     $query = $db->select_all("users", array("active" => "$active"), "LIMIT 1");
     if($db->num_rows($query) <= 0) {
         return false;
@@ -79,8 +75,6 @@ function SMBasic_RequestResetOrActivation() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                        
     }  
-//    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email='$email' LIMIT 1";
-//    $query = db_query($q);
     $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL_NOEXISTS']);
@@ -96,8 +90,6 @@ function SMBasic_RequestResetOrActivation() {
             return false;             
         } else {            
             $reset = mt_rand(11111111, 2147483647);
-            //$q = "UPDATE {$config['DB_PREFIX']}users SET reset = '$reset' WHERE email = '$email'";
-            //db_query($q);
             $db->update("users", array("reset" => "$reset"), array("email" => "$email"));
             
             $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php" . "?reset=$reset&email=$email";
@@ -120,16 +112,11 @@ function SMBasic_user_reset_account() {
     if ($reset == false || $email == false) {
         return false;
     }
-    //$q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email' AND reset = '$reset'";
-    //$query = db_query($q);
     $query = $db->select_all("users", array("email" => "$email", "reset" => "$reset"));
     if ($db->num_rows($query) > 0) {
         $user = $db->fetch($query);        
         $password = SMBasic_randomPassword();
         $password_encrypted = do_action("encrypt_password", $password);
-        
-        //$q = "UPDATE {$config['DB_PREFIX']}users SET password = '$password_encrypted', reset = '0' WHERE uid = '{$user['uid']}' ";
-        //db_query($q);
         $db->update("users", array("password" => "$password_encrypted", "reset" => "0"), array("uid" => "{$user['uid']}") );
         $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php"; 
         $msg = $LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] . "\n" . "$password\n" ."$URL"; 
@@ -154,13 +141,14 @@ function SMBasic_randomPassword() {
 }
 
 function SMBasic_LoginScript() {
+    global $tpl;
     $script = "";    
     if (!check_jsScript("jquery.min.js")) {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }          
-    $script .= getScript_fileCode("SMBasic", "login");
+    $script .= $tpl->getScript_fileCode("SMBasic", "login");
     
     return $script;
 }

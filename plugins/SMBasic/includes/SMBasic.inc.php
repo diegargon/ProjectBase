@@ -21,10 +21,6 @@ function SMBasic_checkSession() {
     $now = time();
     $next_expire = time() + $config['smbasic_session_expire'];
     
-    //$q = "SELECT * FROM {$config['DB_PREFIX']}sessions"
-//        . " WHERE session_id = '{$_SESSION['sid']}' AND session_uid = '{$_SESSION['uid']}' LIMIT 1";
-  //  $query = db_query($q);
-    
     $query = $db->select_all("sessions", array("session_id" => "{$_SESSION['sid']}", "session_uid" => "{$_SESSION['uid']}"), "LIMIT 1"); //TODO filter SESSION
     
     if ($db->num_rows($query) <= 0) {        
@@ -51,11 +47,6 @@ function SMBasic_checkSession() {
             print_debug("SMBasic: db session expired at $now", "SM_DEBUG"); 
             return false;
         } else {
-/*            $q = "UPDATE {$config['DB_PREFIX']}sessions"
-            . " SET session_expire = '$next_expire'"
-            . " WHERE session_uid = '{$session['session_uid']}'";
-            db_query($q);
- */
             print_debug("Update session expire at user {$session['session_uid']}", "SM_DEBUG");
             $db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
         }
@@ -71,11 +62,7 @@ function SMBasic_checkCookies() {
     $cookie_sid = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefixname']}sid", 32);        
     
     if ($cookie_uid != false && $cookie_sid != false) {
-/*        $q = "SELECT * FROM {$config['DB_PREFIX']}sessions"
-            . " WHERE session_id = '$cookie_sid' AND session_uid = '$cookie_uid' LIMIT 1";
-        $query = db_query($q);
- * 
- */
+
         $query = $db->select_all("sessions", array("session_id" => "$cookie_sid", "session_uid" => "$cookie_uid"), "LIMIT 1" );
         if ($db->num_rows($query) > 0) {           
             if( ($user = SMBasic_getUserbyID($cookie_uid)) != false ) {                
@@ -118,8 +105,6 @@ function SMBasic_sessionDebugDetails() {
     print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
     
     $query = $db->select_all("sessions", array("session_uid" => "{$_SESSION['uid']}", "session_id" => "{$_SESSION['sid']}"), "LIMIT 1"); //TODO filter $_SESSION
-//    $q = "SELECT * FROM {$config['DB_PREFIX']}sessions WHERE session_uid = '{$_SESSION['uid']}' AND  session_id = '{$_SESSION['sid']}' LIMIT 1";
-//    $query = db_query($q);
     $session = $db->fetch($query);    
     print_debug("Session DB IP: {$session['session_ip']}", "SM_DEBUG");
     print_debug("Session DB Browser: {$session['session_browser']}", "SM_DEBUG");
@@ -170,19 +155,8 @@ function SMBasic_setSession($user) {
     $ip = S_SERVER_REMOTE_ADDR();    //FIX: not scape i think check
     $user_agent = S_SERVER_USER_AGENT(); //FIX: not scape i think check
     
-    //$q = "DELETE FROM {$config['DB_PREFIX']}sessions WHERE session_uid = {$user['uid']}";    
-    //db_query($q);
     $db->delete("sessions", array("session_uid" => "{$user['uid']}"));
 
-/*    
-    $q = "INSERT INTO {$config['DB_PREFIX']}sessions ("
-     . "session_id, session_uid, session_ip, session_browser, session_expire"
-     . ")VALUES("
-     . "'{$_SESSION['sid']}', '{$user['uid']}', '$ip', '$user_agent', '$session_expire'"
-     . ");";     
-     db_query($q);
- * 
- */
     $q_ary = array (
         "session_id" => "{$_SESSION['sid']}",
         "session_uid" => "{$user['uid']}",
@@ -206,10 +180,6 @@ function SMBasic_setCookies($sid, $uid) {
 function SMBasic_getUserbyID($uid) { 
     global $db;
    
-/*    $q = "SELECT * FROM $config[DB_PREFIX]users WHERE uid = '$uid'";
-    $query = db_query($q);
- * 
- */
     $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
     
     if ($db->num_rows($query) <= 0) {

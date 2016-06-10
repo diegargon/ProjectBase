@@ -4,6 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
+/* FOR REMOVE
 function tpl_build_page() {
     global $tpldata, $config;
     
@@ -110,3 +111,5 @@ function addto_tplvar ($tplvar, $data, $priority = 5) {
     }     
     
 }
+ * 
+ */

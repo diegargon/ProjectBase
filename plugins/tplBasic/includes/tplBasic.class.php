@@ -6,12 +6,13 @@ if (!defined('IN_WEB')) { exit; }
 
 
 class TPL {
+    private $tpldata;
     
     function build_page() {
-        global $tpldata, $config;
+        global $config;
     
-        !isset($tpldata['ADD_TO_FOOTER']) ? $tpldata['ADD_TO_FOOTER'] = "" : false;
-        !isset($tpldata['ADD_TO_BODY']) ? $tpldata['ADD_TO_BODY'] = "" : false;
+        !isset($this->tpldata['ADD_TO_FOOTER']) ? $this->tpldata['ADD_TO_FOOTER'] = "" : false;
+        !isset($this->tpldata['ADD_TO_BODY']) ? $this->tpldata['ADD_TO_BODY'] = "" : false;
     
         // BEGIN HEAD
  
@@ -20,16 +21,16 @@ class TPL {
     
         //BEGIN BODY
         if ($config['NAV_MENU']) { //we use do_action for select order
-            !isset($tpldata['NAV_ELEMENT']) ? $tpldata['NAV_ELEMENT'] = "" : false;            
-            $tpldata['NAV_ELEMENT'] .= do_action("nav_element");       
+            !isset($this->tpldata['NAV_ELEMENT']) ? $this->tpldata['NAV_ELEMENT'] = "" : false;            
+            $this->tpldata['NAV_ELEMENT'] .= do_action("nav_element");       
         }   
     
-        $tpldata['ADD_TO_BODY'] .= do_action("add_to_body");
+        $this->tpldata['ADD_TO_BODY'] .= do_action("add_to_body");
         $web_body = do_action("get_body");
         //END BODY
     
         //BEGIN FOOTER 
-        $tpldata['ADD_TO_FOOTER'] .= do_action("add_to_footer");
+        $this->tpldata['ADD_TO_FOOTER'] .= do_action("add_to_footer");
         $web_footer = do_action("get_footer");
         //END FOOTER
         
@@ -38,7 +39,7 @@ class TPL {
 
     function getTPL_file($plugin, $filename = null, $data = null) {
         global $config;
-        $tpl = "";
+
         if(empty($filename)) {
         $filename = $plugin;
     }        
@@ -47,12 +48,12 @@ class TPL {
         $USER_PATH = "tpl/{$config['THEME']}/$filename.tpl.php";
         $DEFAULT_PATH = "plugins/$plugin/tpl/$filename.tpl.php";
         if (file_exists($USER_PATH)) {
-            $tpl = codetovar($USER_PATH, $data);
+            $tpl_file_content = codetovar($USER_PATH, $data);
         } else if (file_exists($DEFAULT_PATH)) {
-            $tpl = codetovar($DEFAULT_PATH, $data);
+            $tpl_file_content = codetovar($DEFAULT_PATH, $data);
         } 
     
-        return $tpl;
+        return $tpl_file_content;
     }
 
     function getCSS_filePath($plugin, $filename = null) {
@@ -104,20 +105,20 @@ class TPL {
         return false;
     }
 
-    function addto_tplvar ($tplvar, $data, $priority = 5) { // change name to appendTo_tplvar?
-        global $tpldata;
+    function addto_tplvar ($tplvar, $data, $priority = 5) { // change name to appendTo_tplvar? priority support?
         //TODO add priority support
-        if (!isset($tpldata[$tplvar])) {
-            $tpldata[$tplvar] = $data;
+        
+        if (!isset($this->tpldata[$tplvar])) {
+            $this->tpldata[$tplvar] = $data;
         } else {
-            $tpldata[$tplvar] .= $data;     
+            $this->tpldata[$tplvar] .= $data;     
         }     
     
     }  
     function add_if_empty($tplvar, $data) {
-        global $tpldata;
-        if(empty($tpldata[$tplvar])) {
-            $tpldata[$tplvar] = $data;
+
+        if(empty($this->tpldata[$tplvar])) {
+            $this->tpldata[$tplvar] = $data;
         }
     }
     
@@ -128,12 +129,10 @@ class TPL {
     }
     
     function gettpl_value($value) {
-        global $tpldata;
-        return $tpldata[$value];
+        return $this->tpldata[$value];
     }
     function get_tpldata() {
-        global $tpldata;
-        return $tpldata;
+        return $this->tpldata;
     }
 }
 

@@ -5,13 +5,14 @@
 if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_RegisterScript() {
+    global $tpl;
     $script = "";
     if (!check_jsScript("jquery.min.js")) {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
     }               
-    $script .= getScript_fileCode("SMBasic", "register");
+    $script .= $tpl->getScript_fileCode("SMBasic", "register");
     
     return $script;
 }
@@ -38,26 +39,24 @@ function SMBasic_Register() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    if( ($password = S_POST_CHAR_AZNUM("password", $config['smbasic_max_password'], $config['smbasic_min_password'] ) ) == false ) {  //FIX: Password not accept special
+    if( ($password = S_POST_CHAR_AZNUM("password", $config['smbasic_max_password'] ) ) == false ) {  //FIX: Password not accept special
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    if (strlen($_POST['password']) < 8) { 
+    if (strlen($_POST['password']) < $config['smbasic_min_password']) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD_MIN']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    //$q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE username = '$username'";  
-    //$query = db_query($q);     
+  
     $query = $db->select_all("users", array("username" => "$username"), "LIMIT 1");
     if (($db->num_rows($query)) > 0) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                
     }
-//    $q = "SELECT * FROM {$config['DB_PREFIX']}users WHERE email = '$email'"; 
-//    $query = db_query($q);    
+   
     $query = $db->select_all("users", array("email" => "$email"));
     if (($db->num_rows($query)) > 0) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);    
@@ -76,14 +75,6 @@ function SMBasic_Register() {
         $register_message = $LANGDATA['L_REGISTER_OKMSG'];        
     }    
     $mail_msg = SMBasic_create_reg_mail($active);    
-/*
-    $q = "INSERT INTO {$config['DB_PREFIX']}users ("
-        . "username, password, email, active"
-        . ") VALUES ("
-        . "'$username', '$password', '$email', '$active');";   
-    $query = db_query($q);    
- 
- */
     $query = $db->insert("users", array("username" => "$username", "password" => "$password", "email" => "$email", "active" => "$active"));
     
     if($query) {       
