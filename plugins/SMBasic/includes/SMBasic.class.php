@@ -29,5 +29,15 @@ class SessionManager {
         } else {
             return false;
         }
-    }    
+    }
+
+    function getAllUsersArray($order_field = "regdate", $order = "ASC",  $limit = 20) {
+        global $db;
+        $extra = "ORDER BY " . $order_field ." ". $order ." LIMIT ". $limit;
+        $query = $db->select_all("users", null, $extra);
+        while ($user_row = $db->fetch($query)) {
+            $users_ary[] = $user_row;
+        }
+        return $users_ary;
+    }
 }

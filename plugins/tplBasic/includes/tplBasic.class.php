@@ -41,8 +41,8 @@ class TPL {
         global $config;
 
         if(empty($filename)) {
-        $filename = $plugin;
-    }        
+            $filename = $plugin;
+        }        
         print_debug("getTPL_file called by-> $plugin for get a $filename", "TPL_DEBUG");
 
         $USER_PATH = "tpl/{$config['THEME']}/$filename.tpl.php";
@@ -51,9 +51,12 @@ class TPL {
             $tpl_file_content = codetovar($USER_PATH, $data);
         } else if (file_exists($DEFAULT_PATH)) {
             $tpl_file_content = codetovar($DEFAULT_PATH, $data);
-        } 
+        } else {
+            print_debug("getTPL_file called but not find $filename", "TPL_DEBUG");
+            return false;
+        }
     
-        return $tpl_file_content;
+        return $tpl_file_content;  
     }
 
     function getCSS_filePath($plugin, $filename = null) {
@@ -73,6 +76,8 @@ class TPL {
         }
         if (isset($css)) {
             $this->addto_tplvar("LINK", $css);
+        } else {
+            print_debug("Get CSS called by-> $plugin for get a $filename NOT FOUND IT", "TPL_DEBUG");
         }
     }
 
@@ -100,9 +105,10 @@ class TPL {
         }
         if (!empty($SCRIPT_PATH)) {
             return  "<script type='text/javascript' src='$SCRIPT_PATH'></script>\n";
+        } else {
+            print_debug("Get Script called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
+            return false;
         }
-    
-        return false;
     }
 
     function addto_tplvar ($tplvar, $data, $priority = 5) { // change name to appendTo_tplvar? priority support?
