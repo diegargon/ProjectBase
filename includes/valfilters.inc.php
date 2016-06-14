@@ -53,13 +53,22 @@ function S_POST_CHAR_AZ ($var, $max_size = null, $min_size = null) {
 
     return S_VAR_CHAR_AZ($_POST[$var], $max_size, $min_size);    
 }
-function S_POST_CHAR_UTF8 ($var, $max_size = null, $min_size = null) {
+function S_POST_TEXT_UTF8 ($var, $max_size = null, $min_size = null) {
     if(empty($_POST[$var])) {
        return false;
     }    
 
-    return S_VAR_CHAR_UTF8($_POST[$var], $max_size, $min_size);    
+    return S_VAR_TEXT_UTF8($_POST[$var], $max_size, $min_size);    
 }
+
+function S_POST_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
+    if(empty($_POST[$var])) {
+       return false;
+    }    
+
+    return S_VAR_STRICT_CHARS($_POST[$var], $max_size, $min_size);    
+}
+
 function S_POST_INT($var, $max_size = null, $min_size = null) {
     if(empty($_POST[$var])) {
        return false;
@@ -86,15 +95,11 @@ function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
         return false;
     }
-    if (!empty($max_size)) {
-        if (strlen($var) > $max_size) {
-            return false;
-        }
+    if (!empty($max_size) && (strlen($var) > $max_size) ) {        
+        return false;
     }
-    if (!empty($min_size)) {
-        if (strlen($var) < $min_size) {
-            return false;
-        }
+    if (!empty($min_size) && (strlen($var) < $min_size) ) {
+        return false;
     }
     
     return filter_var($var, FILTER_VALIDATE_INT);    
@@ -103,15 +108,11 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
         return false;        
     }
-    if (!empty($max_size)) {
-        if (strlen($var) > $max_size) {
-            return false;
-        }
+    if (!empty($max_size) && (strlen($var) > $max_size) ) {
+        return false;
     }
-    if (!empty($min_size)) {
-        if (strlen($var) < $min_size) {
-            return false;
-        }
+    if (!empty($min_size) && (strlen($var) < $min_size)) {
+        return false;
     }
     if (preg_match("/[^A-Za-z]/", $var)) {
         return false;
@@ -121,23 +122,40 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
 
 }
 
-function S_VAR_CHAR_UTF8 ($var, $max_size = null, $min_size = null) {
+function S_VAR_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
+    /*
+     * This filter  allow: characters Az 1-9 , "_" (in middle) ... Can't begin with number
+     * For username, ACL roles     
+     */
     if(empty($var)) {
         return false;        
     }
-    if (!empty($max_size)) {
-        if (strlen($var) > $max_size) {
-            return false;
-        }
+    if (!empty($max_size) && (strlen($var) > $max_size) ) {
+        return false;
     }
-    if (!empty($min_size)) {
-        if (strlen($var) < $min_size) {
-            return false;
-        }
-    }
+    if (!empty($min_size) && (strlen($var) < $min_size) ) {
+        return false;
+    }         
     
-    // supposed :) UTF-8 check... checking if works, need another for utf8+numbers
-    if (!preg_match("/^\p{L}+$/ui", $var)) {       
+    if (!preg_match("/^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$/", $var)) {       
+        return false;
+    }    
+    
+    return $var;
+}
+
+function S_VAR_TEXT_UTF8 ($var, $max_size = null, $min_size = null) {
+    if(empty($var)) {
+        return false;        
+    }
+    if (!empty($max_size) && (strlen($var) > $max_size) ) {
+        return false;
+    }
+    if (!empty($min_size) && (strlen($var) < $min_size) ) {
+        return false;
+    }  
+    //  UTF-8 
+    if (!preg_match("//u", $var)) {       
         return false;
     }
     
@@ -149,48 +167,25 @@ function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
         return false;        
     }
-    if (!empty($max_size)) {
-        if (strlen($var) > $max_size) {
-            return false;
-        }
-    }
-    if (!empty($min_size)) {
-        if (strlen($var) < $min_size) {
-            return false;
-        }
-    }
-    if (preg_match('/[^A-Za-z0-9.#\\-$]/', $var)) {
+    if (!empty($max_size) && (strlen($var) > $max_size)  ) {
         return false;
     }
-    return $var;
-
-}
-
-function S_VAR_TEXT_ESCAPE ($var, $max_size = null, $min_size = null) {
-    if (!empty($max_size)) {
-        if (strlen($var) > $max_size) {
-            return false;
-        }
+    if (!empty($min_size) && (strlen($var) < $min_size) ) {
+        return false;
     }
-    if (!empty($min_size)) {
-        if (strlen($var) < $min_size) {
-            return false;
-        }
+    if (!preg_match('/^[A-Za-z0-9]+$/', $var)) {
+        return false;
     }
     
-    return db_escape_string($var);
+    return $var;
 }
 
 function S_VALIDATE_URL($url, $max_size = null, $min_size = null) {
-    if (!empty($max_size)) {
-        if (strlen($url) > $max_size) {
-            return false;
-        }
+    if (!empty($max_size) && (strlen($url) > $max_size) ) {
+        return false;
     }
-    if (!empty($min_size)) {
-        if (strlen($url) < $min_size) {
-            return false;
-        }
+    if (!empty($min_size) && (strlen($url) < $min_size) ) {
+        return false;
     }
     $url = filter_var($url, FILTER_SANITIZE_URL);
 

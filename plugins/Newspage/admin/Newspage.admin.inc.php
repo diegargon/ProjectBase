@@ -84,7 +84,7 @@ function Newspage_ModCategories() {
     
    foreach ($langs as $lang) {
         $lang_id = $lang['lang_id'];
-        $posted_name = S_POST_CHAR_UTF8("$lang_id"); // field name value its 1 or 2 depend of lang_id, we get GET['1']
+        $posted_name = S_POST_TEXT_UTF8("$lang_id"); // field name value its 1 or 2 depend of lang_id, we get GET['1']
         if(!empty($posted_name)) {
             $posted_cid = S_POST_INT("cid");
             
@@ -113,7 +113,7 @@ function Newspage_NewCategory() {
     
     foreach ($langs as $lang) {    
         $lang_id = $lang['lang_id'];
-        $posted_name = S_POST_CHAR_UTF8("$lang_id"); //POST['1'] 2... id return text value
+        $posted_name = S_POST_TEXT_UTF8("$lang_id"); //POST['1'] 2... id return text value
         if (!empty($posted_name))  {
             $db->insert("categories",  array("cid" => "$new_cid", "lang_id" => "{$lang['lang_id']}", "plugin" => "Newspage", "name" => "$posted_name") );
         } 

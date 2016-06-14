@@ -153,8 +153,8 @@ function SMBasic_setSession($user) {
     $_SESSION['uid']  = $user['uid'];
     $_SESSION['sid'] = SMBasic_sessionToken();
     $_SESSION['isLogged'] = 1;
-    $ip = S_SERVER_REMOTE_ADDR();    //FIX: not scape i think check
-    $user_agent = S_SERVER_USER_AGENT(); //FIX: not scape i think check
+    $ip =  $db->escape_strip( S_SERVER_REMOTE_ADDR());
+    $user_agent = $db->escape_strip ( S_SERVER_USER_AGENT() );
     
     $db->delete("sessions", array("session_uid" => "{$user['uid']}"));
 

@@ -76,6 +76,10 @@ function news_update($news_data) {
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($news_data['lang']) ;
 
+    $news_data['title'] = $db->escape_strip($news_data['title']);
+    $news_data['lead'] = $db->escape_strip($news_data['lead']);
+    $news_data['text'] = $db->escape_strip($news_data['text']);    
+    
     $set_ary = array (
       "lang_id" => $lang_id, "title" => $news_data['title'],  "lead" => $news_data['lead'],  "text" => $news_data['text'],  
         "featured" => $news_data['featured'], "author" => $news_data['author'], "category" => $news_data['category'],

@@ -55,12 +55,9 @@ function SMBasic_UserSearch() {
     $content .= "</form><br/>";
     isset($_POST['posted_glob']) ? $glob = 1 : $glob = 0;
     isset($_POST['posted_email']) ? $email = 1 : $email = 0;
-    $s_string = S_POST_CHAR_UTF8("search_user", 32, 3);
-    
-    if ( ($s_string == null) && $email) {   //if its false search users perhaps contain a @     
-        $s_string = S_POST_EMAIL("search_user");
-    }
-    
+    $s_string = S_POST_STRICT_CHARS("search_user", 32, 1);
+
+
     if (!empty($_POST['btnSearchUser']) && !empty($s_string)) {
         if ($users_ary = $sm->searchUser($s_string, $email, $glob)) {
             $table['ADM_TABLE_TH']  = "<th>". $LANGDATA ['L_SM_UID'] ."</th>";

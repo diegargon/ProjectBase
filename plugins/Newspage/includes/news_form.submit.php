@@ -39,8 +39,8 @@ function news_new_form($post_data = null) {
 function news_create_new($news_data) {
     global $config, $ml, $db, $sm;
     
-    $nid = db_get_next_num("nid", $config['DB_PREFIX']."news"); 
-    //$nid = $db->get_next_num("news", "nid");
+    //$nid = db_get_next_num("nid", $config['DB_PREFIX']."news"); 
+    $nid = $db->get_next_num("news", "nid");
     if (defined('MULTILANG') && 'MULTILANG') {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
     } else {
@@ -59,13 +59,18 @@ function news_create_new($news_data) {
     } else if ($config['NEWS_MODERATION'] == 1){
         $moderation = 1;
     }    
+    
+    $news_data['title'] = $db->escape_strip($news_data['title']);
+    $news_data['lead'] = $db->escape_strip($news_data['lead']);
+    $news_data['text'] = $db->escape_strip($news_data['text']);
+    
     $q = "INSERT INTO {$config['DB_PREFIX']}news ("
         . "nid, lang_id, title, lead, text,  featured, author, author_id, category, lang, acl, moderation"    
         . ") VALUES ("
         . "'$nid', '$lang_id', '{$news_data['title']}', '{$news_data['lead']}', '{$news_data['text']}', "         
         . "'{$news_data['featured']}', '{$news_data['author']}', '$uid', '{$news_data['category']}', '{$news_data['lang']}', '$acl', '$moderation'"       
         . ");";       
-    $query = db_query($q);    
+    $query = $db->query($q);    
     if (!empty($news_data['main_media'])) {
         $source_id = $nid;
         $plugin = "Newspage";
@@ -76,7 +81,7 @@ function news_create_new($news_data) {
             . ") VALUES ("
             . "'$source_id', '$plugin', '$type', '{$news_data['main_media']}', '1'"
             . ");";    
-        $query = db_query($q);
+        $query = $db->query($q);
     }
     return true;
 }

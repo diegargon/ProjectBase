@@ -28,10 +28,14 @@ class Database {
 	return $row;
     }
 
-    function escape_string($var) { 
+    function escape($var) { 
         return $this->dblink->real_escape_string($var);        
     }
-
+    function escape_strip($var) { 
+        $var = strip_tags($var);
+        return $this->dblink->real_escape_string($var);        
+    }
+    
     function num_rows($query) {
 	return $query->num_rows;
     }

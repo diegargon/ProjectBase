@@ -93,7 +93,7 @@ function Multilang_ModifyLang() {
     global $db, $LANGDATA, $tpl;
 
     $lang_id = S_POST_INT("lang_id", 11, 1);
-    $lang_name = S_POST_CHAR_UTF8("lang_name", 11, 2); 
+    $lang_name = S_POST_TEXT_UTF8("lang_name", 11, 2); 
     $iso_code = S_POST_CHAR_AZ("iso_code", 2, 2);
     $active = S_POST_INT("active", 1, 1);
     empty($active) ? $active = 0: false;
@@ -133,7 +133,7 @@ function Multilang_ModifyLang() {
 function Multilang_CreateLang() {
     global $db, $LANGDATA, $tpl;
     
-    $lang_name = S_POST_CHAR_UTF8("lang_name", 11, 2); 
+    $lang_name = S_POST_TEXT_UTF8("lang_name", 11, 2); 
     $iso_code = S_POST_CHAR_AZ("iso_code", 2, 2);
     $active = S_POST_INT("active", 1, 1);
     empty($active) ? $active = 0: false;

@@ -141,11 +141,11 @@ function news_delete($nid, $lang_id) {
 }
 
 function news_approved($nid, $lang_id) {
-    global $config;
+    global $config, $db;
     
     if (!empty($nid) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {    
         $q = "UPDATE {$config['DB_PREFIX']}news  SET moderation = '0' WHERE nid = '$nid' AND lang_id = '$lang_id' ";
-        db_query($q);
+        $db->query($q);
     } else {
         return false;
     }
@@ -169,14 +169,14 @@ function news_featured($nid, $featured, $lang_id) {
 }
 
 function news_frontpage($nid, $lang_id, $frontpage_state) {
-    global $config;
+    global $config, $db;
 
     if (empty($frontpage_state)) {
         $frontpage_state = 0;
     }
     if (!empty($nid) && isset($frontpage_state) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {            
         $q = "UPDATE {$config['DB_PREFIX']}news  SET frontpage = '$frontpage_state' WHERE nid = '$nid' AND lang_id = '$lang_id' ";        
-        db_query($q);
+        $db->query($q);
     } else {
         return false;
     }
