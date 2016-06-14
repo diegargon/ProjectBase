@@ -23,7 +23,10 @@ function SMBasic_AdminContent($params) {
     
     includePluginFiles("SMBasic", 1);
 
-    $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n" );                               
+    $tpl->getCSS_filePath("SMBasic");
+    $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");  
+
+   $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n" );                               
     $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_SM_SEARCH_USER'] ."</a></li>\n");
     $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=3'>". $LANGDATA['L_SM_USERS_LIST'] ."</a></li>\n");
 
@@ -43,6 +46,10 @@ function SMBasic_AdminContent($params) {
 
 function SMBasic_UserSearch() {
     global $config, $LANGDATA, $tpl, $sm;
+
+    if(isset($_POST['btnDeleteSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0 ) {
+        SMBasic_DeleteUser($member_id);
+    }    
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_SEARCH_USER']);
     $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_DESC']);
@@ -60,19 +67,23 @@ function SMBasic_UserSearch() {
 
     if (!empty($_POST['btnSearchUser']) && !empty($s_string)) {
         if ($users_ary = $sm->searchUser($s_string, $email, $glob)) {
-            $table['ADM_TABLE_TH']  = "<th>". $LANGDATA ['L_SM_UID'] ."</th>";
-            $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_USERNAME'] ."</th>";
+            $table['ADM_TABLE_TH'] = "<th>". $LANGDATA ['L_SM_USERNAME'] ."</th>";
             $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_EMAIL'] ."</th>";
             $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_REGISTERED'] ."</th>";
-            $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_LASTLOGIN'] ."</th>";            
+            $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_LASTLOGIN'] ."</th>";
+            $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_ACTIONS'] ."</th>";
             $table['ADM_TABLE_ROW'] = "";
             foreach($users_ary as $user_match) {
                 $table['ADM_TABLE_ROW'] .= "<tr>";
-                $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['uid'] . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user_match['uid']}'>" . $user_match['username'] . "</a></td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['email'] . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . format_date($user_match['regdate']) . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['last_login'] . "</td>";
+                $table['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
+                $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid' value='{$user_match['uid']}' />";
+                $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+                $table['ADM_TABLE_ROW'] .= "</form></td>";
+                
                 $table['ADM_TABLE_ROW'] .= "</tr>";                
             }
             $content .= $tpl->getTPL_file("SMBasic", "memberlist", $table);
@@ -84,39 +95,46 @@ function SMBasic_UserSearch() {
 function SMBasic_UserList() {
     global $config, $LANGDATA, $tpl, $sm;
     
+    if(isset($_POST['btnDeleteSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0 ) {
+        SMBasic_DeleteUser($member_id);
+    }
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_USERS_LIST']);
     $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_LIST_DESC']);            
     
     $users_list = $sm->getAllUsersArray();
     
-    
-    
-    $table['ADM_TABLE_TH']  = "<th>". $LANGDATA ['L_SM_UID'] ."</th>";
-    $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_USERNAME'] ."</th>";
+    $table['ADM_TABLE_TH'] = "<th>". $LANGDATA ['L_SM_USERNAME'] ."</th>";
     $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_EMAIL'] ."</th>";
     $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_REGISTERED'] ."</th>";
     $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_LASTLOGIN'] ."</th>";
+    $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_ACTIONS'] ."</th>";
     
     $active['ADM_TABLE_ROW'] = "";
     $inactive['ADM_TABLE_ROW'] = "";
             
     foreach ($users_list as $user) {
-        if ($user['active'] == 0) {        
+        if ($user['active'] == 0) {  
             $active['ADM_TABLE_ROW'] .= "<tr>";
-            $active['ADM_TABLE_ROW'] .= "<td>" . $user['uid'] . "</td>";
             $active['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
-            $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
-            $active['ADM_TABLE_ROW'] .= "</tr>";
+            $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";            
+            $active['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
+            $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid'  value='{$user['uid']}' />";
+            $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+            $active['ADM_TABLE_ROW'] .= "</form></td>";
+            $active['ADM_TABLE_ROW'] .= "</tr>";            
         } else {
             $inactive['ADM_TABLE_ROW'] .= "<tr>";
-            $inactive['ADM_TABLE_ROW'] .= "<td>" . $user['uid'] . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
+            $inactive['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
+            $inactive['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid' value='{$user['uid']}' />";
+            $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+            $inactive['ADM_TABLE_ROW'] .= "</form></td>";            
             $inactive['ADM_TABLE_ROW'] .= "</tr>";            
         }
     }
@@ -127,4 +145,9 @@ function SMBasic_UserList() {
     $content = $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $active));
     $content .= $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $inactive));
     $tpl->addto_tplvar("ADM_CONTENT", $content); 
+}
+
+function SMBasic_DeleteUser($uid) {
+    global $db;    
+    $db->delete("users", array("uid" => $uid), "LIMIT 1");
 }

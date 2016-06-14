@@ -8,7 +8,7 @@ if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_Init() {
     global $config, $sm;   
-    
+ 
     print_debug("SMBasic initialice", "PLUGIN_LOAD");
 
     includePluginFiles("SMBasic");
