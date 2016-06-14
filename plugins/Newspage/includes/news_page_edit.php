@@ -82,7 +82,7 @@ function news_update($news_data) {
     
     $set_ary = array (
       "lang_id" => $lang_id, "title" => $news_data['title'],  "lead" => $news_data['lead'],  "text" => $news_data['text'],  
-        "featured" => $news_data['featured'], "author" => $news_data['author'], "category" => $news_data['category'],
+        "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
         "lang" => $news_data['lang'], "acl" => $acl
     );
 

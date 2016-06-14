@@ -47,7 +47,7 @@ function news_create_new($news_data) {
         $lang_id  = $config['WEB_LANG_ID'];        
     }        
     
-    if ( ($uid = $sm->getUserID()) == false ) {
+    if ( ($uid = $sm->getSessionUserID()) == false ) {
         $uid = 0;
     }    
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 

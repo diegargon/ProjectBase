@@ -75,15 +75,15 @@ function news_page_main() {
                news_redirect();    
             }             
         }
-    }
+    }    
     $tpl_data['NID'] = $news_row['nid'];    
-    $tpl_data['NEWS_TITLE'] = $news_row['title'];    
-    $tpl_data['NEWS_LEAD'] = $news_row['lead'];    
+    $tpl_data['NEWS_TITLE'] = str_replace('\r\n', '', $news_row['title']);    
+    $tpl_data['NEWS_LEAD'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);    
     $tpl_data['NEWS_URL'] = "news.php?nid=$news_row[nid]";
     $tpl_data['NEWS_DATE'] = format_date($news_row['date']);
     $tpl_data['NEWS_AUTHOR'] = $news_row['author'];
     $tpl_data['NEWS_AUTHOR_UID'] = $news_row['author_id'];       
-    $tpl_data['NEWS_TEXT']  = $news_row['text'];
+    $tpl_data['NEWS_TEXT']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
     $tpl->addtpl_array($tpl_data);
     
     if ( ($allmedia = get_news_media_byID($nid)) != false) {

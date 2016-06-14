@@ -22,6 +22,16 @@ class SessionManager {
             return $db->fetch($query);
         }        
     }
+    
+    function getUserByUsername($username) {
+        global $db;
+        $query = $db->select_all("users", array("username" => $username), "LIMIT 1");
+        if ($db->num_rows($query) <= 0) {
+                return false;
+        } else {
+            return $db->fetch($query);
+        }
+    }
 
     function getSessionUser() {  //TODO Recheck/rethink  THIS FUCTION logic
         global $db;
@@ -40,7 +50,7 @@ class SessionManager {
         }
         return $this->user;    
     }
-    function getUserID () { 
+    function getSessionUserID () { 
         //TODO use $user instead of $_SESSION?
         if (S_SESSION_INT("isLogged", 1) == 1) {
             return S_SESSION_INT("uid", 11, 1);

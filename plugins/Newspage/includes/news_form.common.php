@@ -41,11 +41,19 @@ function news_form_getPost() {
     if (defined('ACL') && 'ACL') { //if admin can change author if not ignore news_author
         if( ( $acl_auth->acl_ask('news_admin') ) == true || ( $acl_auth->acl_ask('admin_all') ) == true ) {            
             isset($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author") : false;
+            if (!empty($data['author'])) {               
+                if( ($selected_user = $sm->getUserByUsername($data['author'])) ) {
+                    $data['author_id'] = $selected_user['uid'];                
+                } else {
+                    $data['author'] = false; // author not exists clear for use the session username.
+                }
+            }
         } 
     }
     if(empty($data['author'])) { 
-        $user = $sm->getSessionUser();
-        $data['author'] = $user['username'];
+        $session_user = $sm->getSessionUser();
+        $data['author'] = $session_user['username'];
+        $data['author_id'] = $session_user['uid'];
     }
     isset($_POST['news_title']) ? $data['title'] = S_POST_TEXT_UTF8("news_title") : false;
     isset($_POST['news_lead']) ? $data['lead'] = S_POST_TEXT_UTF8("news_lead") : false;
