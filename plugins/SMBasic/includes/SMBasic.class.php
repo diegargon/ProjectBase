@@ -40,4 +40,32 @@ class SessionManager {
         }
         return $users_ary;
     }
+    
+    function searchUser($string, $email = 0, $glob = 0) {
+        global $db;
+        
+        $where_ary = [];
+        if (!empty($email)) {
+            if (empty($glob)) {
+                $where_ary = array ("email" => array("value" => $string, "operator" => "LIKE")); 
+            } else {
+                $where_ary = array ("email" =>  array("value" => "%". $string ."%", "operator" => "LIKE")); 
+            }
+        } else {
+            if (empty($glob)) {
+                $where_ary = array ("username" =>  array("value" => $string, "operator" => "LIKE"));
+            } else {
+                $where_ary = array ("username" =>  array("value" => "%". $string ."%", "operator" => "LIKE"));
+            }
+        }
+        
+        $query = $db->select_all("users", $where_ary);
+        if ($db->num_rows($query) > 0) {
+            while ($user_row = $db->fetch($query)) {
+                $users_ary[] = $user_row;
+            }
+            return $users_ary;
+        }
+        return false;
+    }
 }

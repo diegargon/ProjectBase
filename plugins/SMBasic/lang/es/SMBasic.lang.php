@@ -76,8 +76,10 @@ $LANGDATA['L_SM_USERS_LIST'] = "Lista de usuarios";
 $LANGDATA['L_SM_USERS_LIST_DESC'] = "Lista de usuarios";
 $LANGDATA['L_SM_UID'] = "Id";
 $LANGDATA['L_SM_USERNAME'] = "Nombre de usuario";
-$LANGDATA ['L_SM_REGISTERED'] = "Registrado";
-$LANGDATA ['L_SM_LASTLOGIN'] = "Ultima conexión";
+$LANGDATA['L_SM_REGISTERED'] = "Registrado";
+$LANGDATA['L_SM_LASTLOGIN'] = "Ultima conexión";
 $LANGDATA['L_SM_USERS_ACTIVE'] = "Usuarios activos";
 $LANGDATA['L_SM_USERS_INACTIVE'] = "Usuarios inactivos";
+$LANGDATA['L_SM_GLOB'] = "Glob";
+
 //$LANGDATA['L_'] = "";

@@ -42,10 +42,46 @@ function SMBasic_AdminContent($params) {
 
 
 function SMBasic_UserSearch() {
-    global $LANGDATA, $tpl;
+    global $LANGDATA, $tpl, $sm;
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_SEARCH_USER']);
-    $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_DESC']);        
+    $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_DESC']);
+    
+    $content = "<form action='' method='post'>";
+    $content .= "<label for='glob'>{$LANGDATA['L_SM_GLOB']}: </label><input type='checkbox' name='posted_glob' id='glob' value='1' />";
+    $content .= "<label for='email'>{$LANGDATA['L_EMAIL']}: </label><input type='checkbox' name='posted_email' id='email' value='1' />";
+    $content .= "<input type='text' maxlength='32' minlength='3' name='search_user' id='search_user' required />";
+    $content .= "<input type='submit' name='btnSearchUser' id='btnSearchUser' />";
+    $content .= "</form><br/>";
+    isset($_POST['posted_glob']) ? $glob = 1 : $glob = 0;
+    isset($_POST['posted_email']) ? $email = 1 : $email = 0;
+    $s_string = S_POST_CHAR_UTF8("search_user", 32, 3);
+    
+    if ( ($s_string == null) && $email) {   //if its false search users perhaps contain a @     
+        $s_string = S_POST_EMAIL("search_user");
+    }
+    
+    if (!empty($_POST['btnSearchUser']) && !empty($s_string)) {
+        if ($users_ary = $sm->searchUser($s_string, $email, $glob)) {
+            $table['ADM_TABLE_TH']  = "<th>". $LANGDATA ['L_SM_UID'] ."</th>";
+            $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_USERNAME'] ."</th>";
+            $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_EMAIL'] ."</th>";
+            $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_REGISTERED'] ."</th>";
+            $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_LASTLOGIN'] ."</th>";            
+            $table['ADM_TABLE_ROW'] = "";
+            foreach($users_ary as $user_match) {
+                $table['ADM_TABLE_ROW'] .= "<tr>";
+                $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['uid'] . "</td>";
+                $table['ADM_TABLE_ROW'] .= "<td><a href='?uid={$user_match['uid']}'>" . $user_match['username'] . "</a></td>";
+                $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['email'] . "</td>";
+                $table['ADM_TABLE_ROW'] .= "<td>" . format_date($user_match['regdate']) . "</td>";
+                $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['last_login'] . "</td>";
+                $table['ADM_TABLE_ROW'] .= "</tr>";                
+            }
+            $content .= $tpl->getTPL_file("SMBasic", "memberlist", $table);
+        }
+    }
+    $tpl->addto_tplvar("ADM_CONTENT", $content); 
 }
 
 function SMBasic_UserList() {
@@ -91,7 +127,7 @@ function SMBasic_UserList() {
     $active['ADM_TABLE_TITLE'] = "<h3>". $LANGDATA['L_SM_USERS_ACTIVE'] ."</h3>";
     $inactive['ADM_TABLE_TITLE'] = "<h3>". $LANGDATA['L_SM_USERS_INACTIVE'] . "</h3>";
     
-    $content = $tpl->getTPL_file("SMBasic", "adm_memberlist", array_merge($table, $active));
-    $content .= $tpl->getTPL_file("SMBasic", "adm_memberlist", array_merge($table, $inactive));
+    $content = $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $active));
+    $content .= $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $inactive));
     $tpl->addto_tplvar("ADM_CONTENT", $content); 
 }
