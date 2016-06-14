@@ -27,7 +27,7 @@ function SMBasic_Register() {
         return false; 
     }    
     if( ($config['smbasic_need_username'] == 1) && 
-        (($username = S_POST_CHAR_AZNUM("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false)) {
+        (($username = S_POST_STRICT_CHARS("username", $config['smbasic_max_username'])) == false)) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_USERNAME']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        

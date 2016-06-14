@@ -82,7 +82,7 @@ function SMBasic_ProfileChange() {
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                        
         }            
-        if ( ($username = S_POST_CHAR_AZNUM("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false) { 
+        if ( ($username = S_POST_STRICT_CHARS("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false) { 
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHARS']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                                    
@@ -97,13 +97,19 @@ function SMBasic_ProfileChange() {
         if (strlen($email) > $config['smbasic_max_email'] ) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_EMAIL_LONG']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
-           return false;                        
+           return false;
         }
     }
        
     $password_encrypted = do_action("encrypt_password", $password);
 
-    $query = $db->select_all("users", array("uid" => "{$_SESSION['uid']}", "password" => "$password_encrypted"), "LIMIT 1");
+    if ( (!$user_id = S_SESSION_INT("uid")) || ($user_id <= 0) ) {         
+        $response[] = array("status" => "0", "msg" => $LANGDATA['L_ERROR_INTERNAL'] );
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    
+    $query = $db->select_all("users", array("uid" => $user_id, "password" => "$password_encrypted"), "LIMIT 1");
     if($db->num_rows($query) <= 0) {
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_WRONG_PASSWORD']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
@@ -164,8 +170,8 @@ function SMBasic_ProfileChange() {
             $q_set_ary['password'] = $new_password_encrypt;
         }
     }   
-
-    $db->update("users", $q_set_ary, array("uid" => "{$_SESSION['uid']}"), "LIMIT 1");
+    
+    $db->update("users", $q_set_ary, array("uid" => $user_id ), "LIMIT 1"); 
 
     $profile_url = $config['WEB_URL'] . "profile.php";
     $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] , "url" => "$profile_url");    
