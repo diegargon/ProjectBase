@@ -13,17 +13,33 @@ class SessionManager {
     
     function getUserbyID($uid) { 
         global $db;
-   
+                       
+        $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
+    
+        if ($db->num_rows($query) <= 0) {
+            return false;        
+        } else {
+            return $db->fetch($query);
+        }        
+    }
+
+    function getSessionUser() {  //TODO FIX THIS FUCTION
+        global $db;
+                
         if (empty($this->user)) {            
+            if( ($uid = S_SESSION_INT("uid", 11, 1)) == false) {
+                return false;
+            }
             $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
     
             if ($db->num_rows($query) <= 0) {
-                $this->user = false;        
+                    $this->user = false;        
             } else {
-                $this->user = $db->fetch($query);
-            }
-        }    
-        return $this->user;    
+                    $this->user = $db->fetch($query);
+            }        
+        } else {
+            return $this->user;    
+        }
     }
     
     function getUserID () { 

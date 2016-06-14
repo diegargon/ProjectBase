@@ -10,7 +10,7 @@ function news_new_form($post_data = null) {
     $data['NEWS_FORM_TITLE'] = $LANGDATA['L_SEND_NEWS'];
             
     if (  isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {        
-        $user = $sm->getUserbyID(S_SESSION_INT("uid", 11, 1));        
+        $user = $sm->getSessionUser();        
     } else { 
         $user['username'] = $LANGDATA['L_NEWS_ANONYMOUS'];
     }

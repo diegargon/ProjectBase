@@ -44,7 +44,7 @@ function news_form_getPost() {
         } 
     }
     if(empty($data['author'])) { 
-        $user = $sm->getUserbyID(S_SESSION_INT("uid", 11, 1));
+        $user = $sm->getSessionUser();
         $data['author'] = $user['username'];
     }
     isset($_POST['news_title']) ? $data['title'] = S_VAR_TEXT_ESCAPE($_POST['news_title']) : false;
