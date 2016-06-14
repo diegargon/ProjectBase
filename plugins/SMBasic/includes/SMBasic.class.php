@@ -23,25 +23,23 @@ class SessionManager {
         }        
     }
 
-    function getSessionUser() {  //TODO FIX THIS FUCTION
+    function getSessionUser() {  //TODO Recheck/rethink  THIS FUCTION logic
         global $db;
                 
         if (empty($this->user)) {            
-            if( ($uid = S_SESSION_INT("uid", 11, 1)) == false) {
-                return false;
-            }
+            if( ($uid = S_SESSION_INT("uid", 11, 1)) == false) {                
+                $this->user = false;
+            }            
             $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
     
-            if ($db->num_rows($query) <= 0) {
-                    $this->user = false;        
-            } else {
-                    $this->user = $db->fetch($query);
+            if ($db->num_rows($query) <= 0) {                
+                $this->user = false;
+            } else {                
+                $this->user = $db->fetch($query);
             }        
-        } else {
-            return $this->user;    
         }
+        return $this->user;    
     }
-    
     function getUserID () { 
         //TODO use $user instead of $_SESSION?
         if (S_SESSION_INT("isLogged", 1) == 1) {
