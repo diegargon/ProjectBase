@@ -49,7 +49,14 @@ function SMBasic_UserSearch() {
 
     if(isset($_POST['btnDeleteSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0 ) {
         SMBasic_DeleteUser($member_id);
-    }    
+    }
+    if(isset($_POST['btnActivateSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0 ) {
+        SMBasic_ActivateUser($member_id);
+    }
+    if(isset($_POST['btnDisableSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0) {
+        $disable_state = S_POST_INT("member_disable", 1, 1);        
+        SMBasic_DisableUser($member_id, $disable_state);
+    }     
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_SEARCH_USER']);
     $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_DESC']);
@@ -81,8 +88,10 @@ function SMBasic_UserSearch() {
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['last_login'] . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
                 $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid' value='{$user_match['uid']}' />";
+                $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user_match['disable']}' />";
                 $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
                 $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
+                $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
                 $table['ADM_TABLE_ROW'] .= "</form></td>";
                 
                 $table['ADM_TABLE_ROW'] .= "</tr>";                
@@ -102,6 +111,10 @@ function SMBasic_UserList() {
     if(isset($_POST['btnActivateSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0 ) {
         SMBasic_ActivateUser($member_id);
     }
+    if(isset($_POST['btnDisableSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0) {
+        $disable_state = S_POST_INT("member_disable", 1, 1);        
+        SMBasic_DisableUser($member_id, $disable_state);
+    }    
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_USERS_LIST']);
     $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_LIST_DESC']);            
@@ -125,9 +138,15 @@ function SMBasic_UserList() {
             $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";            
             $active['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
-            $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid'  value='{$user['uid']}' />";
-            $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+            $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid'  value='{$user['uid']}' />";
+            $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user['disable']}' />";
+            $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";            
             $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
+            if($user['disable'] == 0) {
+                $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
+            } else {
+                $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ENABLE']}' />";
+            }
             $active['ADM_TABLE_ROW'] .= "</form></td>";
             $active['ADM_TABLE_ROW'] .= "</tr>";            
         } else {
@@ -137,9 +156,15 @@ function SMBasic_UserList() {
             $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
-            $inactive['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid' value='{$user['uid']}' />";
-            $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+            $inactive['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid'  value='{$user['uid']}' />";
+            $inactive['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user['disable']}' />";
+            $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";            
             $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
+            if($user['disable'] == 0) {
+                $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit'class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
+            } else {                
+                $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ENABLE']}' />";
+            }                
             $inactive['ADM_TABLE_ROW'] .= "</form></td>";            
             $inactive['ADM_TABLE_ROW'] .= "</tr>";            
         }
@@ -161,4 +186,10 @@ function SMBasic_DeleteUser($uid) {
 function SMBasic_ActivateUser($uid) {
     global $db;    
     $db->update("users", array("active" => 0), array("uid" => $uid), "LIMIT 1");
+}
+
+function SMBasic_DisableUser($uid, $state) {
+    global $db;    
+    empty($state) ? $new_state = 1 : $new_state = 0;
+    $db->update("users", array("disable" => $new_state), array("uid" => $uid), "LIMIT 1");
 }

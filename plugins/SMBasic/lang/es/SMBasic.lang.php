@@ -85,9 +85,6 @@ $LANGDATA['L_VIEWPROFILE'] = "Ver perfil";
 $LANGDATA['L_SM_ACTIONS'] = "Acciones";
 $LANGDATA['L_SM_DELETE'] = "Eliminar";
 $LANGDATA['L_SM_ACTIVATE'] = "Activar";
-$LANGDATA['L_'] = "";
-$LANGDATA['L_'] = "";
-$LANGDATA['L_'] = "";
-$LANGDATA['L_'] = "";
-
+$LANGDATA['L_SM_DISABLE'] = "Desabilitar";
+$LANGDATA['L_SM_ENABLE'] = "Abilitar";
 //$LANGDATA['L_'] = "";

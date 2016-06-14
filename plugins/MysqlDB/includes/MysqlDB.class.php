@@ -117,7 +117,7 @@ class Database {
     /*
      *
      */
-    function update($table, $set, $where = null) {
+    function update($table, $set, $where = null, $extra = null) {
         global $config;
 
         $q = "UPDATE {$config['DB_PREFIX']}$table SET ";
@@ -142,7 +142,7 @@ class Database {
             }
             $q .= implode( ' AND ', $q_where_fields );
         } 
-        
+        !empty($extra) ? $q .= " $extra" : false;
         return $this->query($q);
     }
     
@@ -175,7 +175,7 @@ class Database {
              $q_where_fields[] = "$field = " . "'". $value ."'";
         } 
         $q .= implode( ' AND ', $q_where_fields );        
-        $q .= " $extra";
+        !empty($extra) ? $q .= " $extra" : false;
         return $this->query($q);
     }
 }
