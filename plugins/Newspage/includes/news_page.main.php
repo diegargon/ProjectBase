@@ -128,12 +128,11 @@ function Newspage_AdminOptions($news) {
 }
 
 function news_delete($nid, $lang_id) {
-    global $config;
+    global $db;
     
-    if (!empty($nid) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {    
-        $q = "DELETE FROM {$config['DB_PREFIX']}news WHERE nid = '$nid' AND lang_id = '$lang_id' ";
-        $q2 = "DELETE FROM {$config['DB_PREFIX']}links WHERE plugin='Newspage' AND source_id = '$nid' ";
-        db_query($q) && db_query($q2);
+    if (!empty($nid) && !empty($lang_id)) {    
+        $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
+        $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
     } else {
         return false;
     }
@@ -141,11 +140,10 @@ function news_delete($nid, $lang_id) {
 }
 
 function news_approved($nid, $lang_id) {
-    global $config, $db;
+    global $db;
     
-    if (!empty($nid) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {    
-        $q = "UPDATE {$config['DB_PREFIX']}news  SET moderation = '0' WHERE nid = '$nid' AND lang_id = '$lang_id' ";
-        $db->query($q);
+    if (!empty($nid) && !empty($lang_id) ) {           
+        $db->update("news", array("moderation" => 0), array("nid" => $nid, "lang_id" => $lang_id));        
     } else {
         return false;
     }
@@ -153,14 +151,12 @@ function news_approved($nid, $lang_id) {
 }
 
 function news_featured($nid, $featured, $lang_id) {
-    global $config;
+    global $db;
     
     if (!empty($nid) && !empty($lang_id)) {            
-        $q = "UPDATE {$config['DB_PREFIX']}news  SET featured = '$featured' WHERE nid = '$nid' AND lang_id = '$lang_id' ";
-        db_query($q);
+        $db->update("news", array("featured" => $featured), array("nid" => $nid, "lang_id" => $lang_id));
         if($featured == 1) {
-            $q2 = "UPDATE {$config['DB_PREFIX']}news  SET featured = '0' WHERE  lang_id = '$lang_id' AND nid != '$nid'";
-            db_query($q2);
+            $db->update("news", array("featured" => 0), array("lang_id" => $lang_id, "nid" => array("value" => $nid, "operator" => "!=" ) ));
         }
     } else {
         return false;
@@ -169,14 +165,13 @@ function news_featured($nid, $featured, $lang_id) {
 }
 
 function news_frontpage($nid, $lang_id, $frontpage_state) {
-    global $config, $db;
+    global $db;
 
     if (empty($frontpage_state)) {
         $frontpage_state = 0;
     }
     if (!empty($nid) && isset($frontpage_state) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {            
-        $q = "UPDATE {$config['DB_PREFIX']}news  SET frontpage = '$frontpage_state' WHERE nid = '$nid' AND lang_id = '$lang_id' ";        
-        $db->query($q);
+        $db->update("news", array("frontpage" => $frontpage_state), array("nid" => $nid, "lang_id" => $lang_id));
     } else {
         return false;
     }

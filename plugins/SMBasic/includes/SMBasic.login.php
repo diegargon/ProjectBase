@@ -55,8 +55,7 @@ function SMBasic_user_activate_account() {
     if($db->num_rows($query) <= 0) {
         return false;
     } else {
-        $q = "UPDATE {$config['DB_PREFIX']}users SET active = '0' WHERE active='$active'";
-        $query = db_query($q);
+        $db->update("users", array("active" => 0), array("active" => $active));
     }
     
     return true;

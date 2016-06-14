@@ -45,8 +45,7 @@ function news_create_new($news_data) {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
     } else {
         $lang_id  = $config['WEB_LANG_ID'];        
-    }
-        
+    }        
     
     if ( ($uid = $sm->getUserID()) == false ) {
         $uid = 0;
@@ -64,6 +63,22 @@ function news_create_new($news_data) {
     $news_data['lead'] = $db->escape_strip($news_data['lead']);
     $news_data['text'] = $db->escape_strip($news_data['text']);
     
+    $insert_ary = array (
+        "nid" => $nid,
+        "lang_id" => $lang_id,
+        "title" => $db->escape_strip($news_data['title']),
+        "lead" => $db->escape_strip($news_data['lead']),
+        "text" => $db->escape_strip($news_data['text']),
+        "featured" => $news_data['featured'],
+        "author" => $news_data['author'],
+        "author_id" => $news_data['author_id'],
+        "category" => $news_data['category'],
+        "lang" => $news_data['lang'],
+        "acl" => $acl,
+        "moderation" => $moderation
+    );
+    $db->insert("news", $insert_ary);
+/*    
     $q = "INSERT INTO {$config['DB_PREFIX']}news ("
         . "nid, lang_id, title, lead, text,  featured, author, author_id, category, lang, acl, moderation"    
         . ") VALUES ("
@@ -71,17 +86,31 @@ function news_create_new($news_data) {
         . "'{$news_data['featured']}', '{$news_data['author']}', '$uid', '{$news_data['category']}', '{$news_data['lang']}', '$acl', '$moderation'"       
         . ");";       
     $query = $db->query($q);    
+ * 
+ */
+    
     if (!empty($news_data['main_media'])) {
         $source_id = $nid;
         $plugin = "Newspage";
         //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
         $type = "image";
+        $insert_ary = array (
+            "source_id" => $source_id,
+            "plugin" => $plugin,
+            "type" => $type,
+            "link" => $news_data['main_media'],
+            "itsmain" => 1
+        );
+        $db->insert("links", $insert_ary);
+        /*
         $q = "INSERT INTO {$config['DB_PREFIX']}links ("
             . "source_id, plugin, type, link, itsmain"
             . ") VALUES ("
             . "'$source_id', '$plugin', '$type', '{$news_data['main_media']}', '1'"
             . ");";    
         $query = $db->query($q);
+         * 
+         */
     }
     return true;
 }
