@@ -7,4 +7,4 @@ if (!defined('IN_WEB')) { exit; }
 
 $LANGDATA['L_HOME'] = "Inicio";
 $LANGDATA['L_E_ERROR'] = "Error";
-$LANGDATA['L_E_BACKLINK_TITLE'] = "Volver al inicio";
+$LANGDATA['L_BACK'] = "Volver";

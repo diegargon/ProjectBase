@@ -34,7 +34,7 @@ function tplBasic_error_page() {
     global $LANGDATA, $tpl;
             
     $tpl->add_if_empty("E_TITLE", $LANGDATA['L_E_ERROR']);        
-    $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_E_BACKLINK_TITLE']);  
+    $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_BACK']);  
 
     do_action("common_web_structure");        
     $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "error"));
@@ -45,7 +45,7 @@ function tplBasic_error_page() {
     global $tpl, $LANGDATA;
     
     $tpl->add_if_empty("E_TITLE", $LANGDATA['L_E_ERROR']);
-    $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_E_BACKLINK_TITLE']);
+    $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_BACK']);
             
     $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "error"));
  }

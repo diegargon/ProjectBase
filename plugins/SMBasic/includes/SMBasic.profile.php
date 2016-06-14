@@ -18,6 +18,21 @@ function SMBasic_ProfileScript() {
     return $script;
 }
 
+function SMBasic_ViewProfile() {
+    global $tpl, $db, $sm;
+    
+    $uid = S_GET_INT("viewprofile", 11, 1);
+    if (empty($uid)) {
+        return false; 
+    }
+    $v_user = $sm->getUserbyID($uid);
+
+    do_action("common_web_structure");
+    $tpl->getCSS_filePath("SMBasic");
+    $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");    
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "viewprofile", $v_user));
+
+}
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config, $db; 
     

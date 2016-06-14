@@ -18,9 +18,7 @@ function SMBasic_Init() {
     if (action_isset("encrypt_password") == false) {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }
-
-    session_start();
-    
+       
     if ( (S_SESSION_INT("uid") != false && S_SESSION_CHAR_AZNUM("sid") != false) ) {
         if(!SMBasic_checkSession()) {
             print_debug("Check session failed on SMBasic_Init destroy session", "SM_DEBUG");
@@ -48,7 +46,6 @@ function SMBasic_regPage() {
 
     require_once("includes/SMBasic.register.php");
     
-    //if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
     if( S_SESSION_INT("isLogged") == 1) {
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];                
         do_action("error_message_page");
@@ -71,22 +68,21 @@ function SMBasic_regPage() {
 }
 
 function SMBasic_profilePage() {
-    global $tpl;    
+    global $tpl, $sm;    
     require_once("includes/SMBasic.profile.php");
     
-    //if(empty($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
-    if( S_SESSION_INT("isLogged") != 1) {        
-        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_NOT_LOGGED'];
+    if( S_SESSION_INT("isLogged") != 1) {                
+        $tpl->addto_tplvar("E_MSG",$GLOBALS['LANGDATA']['L_ERROR_NOT_LOGGED'] );
         do_action("error_message_page");
         return false;
     }
 
     if(isset($_POST['profile']) ) {          
         SMBasic_ProfileChange();       
-    } 
-    if (!isset($_POST['profile']) ) {
-        global $sm;
-        if( ($user = $sm->getUserbyID(S_SESSION_INT("uid", 11, 1)) ) == false  ){
+    } else if (isset($_GET['viewprofile'])) {
+        SMBasic_ViewProfile();
+    } else {
+        if( ($user = $sm->getSessionUser()) == false) {
             //TODO error manager
             echo "Error: 3242";
             exit(0);        
@@ -104,9 +100,10 @@ function SMBasic_loginPage () {
     global $tpl;
     require_once("includes/SMBasic.login.php");
     
-    //if( (!empty($_SESSION['isLogged'])) && ($_SESSION['isLogged'] == 1)) {
+
     if( S_SESSION_INT("isLogged") == 1) {  
-        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];        
+        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA'];        
+        $tpl->addto_tplvar("E_MSG",$GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED']);
         do_action("error_message_page");
         return false;
     }
@@ -135,8 +132,7 @@ function SMBasic_loginPage () {
 function SMBasic_navLogReg() {
     global $config, $LANGDATA;
     
-    $elements = "";
-    //if (!empty($_SESSION['username']) && !empty($_SESSION['uid'])) {
+    $elements = "";    
     if( S_SESSION_INT("isLogged") == 1) {
         $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/logout.php'>{$LANGDATA['L_LOGOUT']}</a></li>\n";
         $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/profile.php'>". $_SESSION['username']. "</a></li>\n";

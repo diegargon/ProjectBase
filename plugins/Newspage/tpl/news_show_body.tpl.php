@@ -18,7 +18,7 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 <div class="article_title">
                     <?php isset($tpldata['NEWS_TITLE']) ? print $tpldata['NEWS_TITLE']:false ?>
                 </div>
-                <div class="extra-small"><?php print($tpldata['NEWS_DATE'])?> | <?php print $tpldata['NEWS_AUTHOR'] ?></div>                
+                <div class="extra-small"><?php print($tpldata['NEWS_DATE'])?> | <a href='/<?php print $config['WEB_LANG'] ?>/profile.php?viewprofile=<?php print $tpldata['NEWS_AUTHOR_UID'] ?>'><?php print $tpldata['NEWS_AUTHOR'] ?></a></div>                
                 <div class="article_lead">
                     <?php isset($tpldata['NEWS_LEAD']) ? print $tpldata['NEWS_LEAD']:false ?>
                 </div>                                

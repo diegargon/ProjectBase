@@ -82,6 +82,7 @@ function news_page_main() {
     $tpl_data['NEWS_URL'] = "news.php?nid=$news_row[nid]";
     $tpl_data['NEWS_DATE'] = format_date($news_row['date']);
     $tpl_data['NEWS_AUTHOR'] = $news_row['author'];
+    $tpl_data['NEWS_AUTHOR_UID'] = $news_row['author_id'];       
     $tpl_data['NEWS_TEXT']  = $news_row['text'];
     $tpl->addtpl_array($tpl_data);
     

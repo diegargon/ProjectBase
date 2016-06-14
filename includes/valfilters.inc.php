@@ -6,12 +6,20 @@ if (!defined('IN_WEB')) { exit; }
 
 //$_GET
 
-function S_GET_INT($var) {
+function S_GET_INT($var, $max_size = null, $min_size = null) {
     if(empty($_GET[$var])) {
        return false;
     }
+    if (!empty($max_size) && (strlen($_GET[$var]) > $max_size)) {
+        return false;
+    }
+    if (!empty($min_size) && (strlen($_GET[$var]) < $min_size)) {
+        return false;
+    }    
+    
     return filter_input(INPUT_GET, $var, FILTER_VALIDATE_INT);
 }
+
 function S_GET_CHAR_AZ($var, $max_size = null, $min_size = null) {
     if(empty($_GET[$var])) {
        return false;

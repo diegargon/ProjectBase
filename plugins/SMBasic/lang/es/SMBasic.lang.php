@@ -81,5 +81,13 @@ $LANGDATA['L_SM_LASTLOGIN'] = "Ultima conexión";
 $LANGDATA['L_SM_USERS_ACTIVE'] = "Usuarios activos";
 $LANGDATA['L_SM_USERS_INACTIVE'] = "Usuarios inactivos";
 $LANGDATA['L_SM_GLOB'] = "Glob";
+$LANGDATA['L_VIEWPROFILE'] = "Ver perfil";
+$LANGDATA['L_'] = "";
+$LANGDATA['L_'] = "";
+$LANGDATA['L_'] = "";
+$LANGDATA['L_'] = "";
+$LANGDATA['L_'] = "";
+$LANGDATA['L_'] = "";
+$LANGDATA['L_'] = "";
 
 //$LANGDATA['L_'] = "";
