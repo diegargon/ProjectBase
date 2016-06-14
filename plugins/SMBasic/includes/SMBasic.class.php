@@ -7,6 +7,10 @@ if (!defined('IN_WEB')) { exit; }
 class SessionManager {
     private $user;
     
+    function __construct() {
+        session_start();
+    }
+    
     function getUserbyID($uid) { 
         global $db;
    
