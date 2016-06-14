@@ -22,11 +22,15 @@ function SMBasic_Login() {
         $query = $db->select_all("users", array("email" => "$email", "password" => "$password"), "LIMIT 1");
         if ($user = $db->fetch($query)) {
             if($user['active'] == 0) {
+                if ($user['disable'] == 1) {
+                    $response[] = array("status" => "error", "msg" => $LANGDATA['L_SM_E_DISABLE'] );
+                } else {
                     SMBasic_setSession($user);
                     if ( ($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])  ){                                 
                         SMBasic_setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11));
                     }                    
                     $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);                
+                }
             } else {
                 $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
                 if($user['active'] > 0) { //-1 disable by admin not send email
