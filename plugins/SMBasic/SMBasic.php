@@ -25,13 +25,13 @@ function SMBasic_Init() {
         if(!SMBasic_checkSession()) {
             print_debug("Check session failed on SMBasic_Init destroy session", "SM_DEBUG");
             SMBasic_sessionDestroy();
-            }           
-        } else {
-           if($config['smbasic_session_persistence']) {
-              print_debug("Checkcookies trigged", "SM_DEBUG"); 
-              SMBasic_checkCookies();
-            }
+        }           
+    } else {
+        if($config['smbasic_session_persistence']) {
+            print_debug("Checkcookies trigged", "SM_DEBUG"); 
+            SMBasic_checkCookies();
         }
+    }
     if( defined('SM_DEBUG') && !empty($_SESSION['isLogged'])) { // && $_SESSION['isLogged'] == 1 ) {
         SMBasic_sessionDebugDetails();
     }

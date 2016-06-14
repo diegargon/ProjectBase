@@ -111,7 +111,7 @@ function SMBasic_UserList() {
             $active['ADM_TABLE_ROW'] .= "<td><a href='?uid={$user['uid']}'>" . $user['username'] . "</a></td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
-            $active['ADM_TABLE_ROW'] .= "<td>" . $user['last_login'] . "</td>";
+            $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
             $active['ADM_TABLE_ROW'] .= "</tr>";
         } else {
             $inactive['ADM_TABLE_ROW'] .= "<tr>";
@@ -119,7 +119,7 @@ function SMBasic_UserList() {
             $inactive['ADM_TABLE_ROW'] .= "<td><a href='?uid={$user['uid']}'>" . $user['username'] . "</a></td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
-            $inactive['ADM_TABLE_ROW'] .= "<td>" . $user['last_login'] . "</td>";
+            $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "</tr>";            
         }
     }

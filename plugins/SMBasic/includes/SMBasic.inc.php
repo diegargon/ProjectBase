@@ -166,6 +166,7 @@ function SMBasic_setSession($user) {
         "session_expire" => "$session_expire"                
     );
     $db->insert("sessions", $q_ary);
+    $db->update("users", array("last_login" => date("Y-m-d H:i:s",time())), array("uid" => $user['uid']));
 }
 
 function SMBasic_setCookies($sid, $uid) { 
