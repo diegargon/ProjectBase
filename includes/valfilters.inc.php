@@ -125,7 +125,8 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
 function S_VAR_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
     /*
      * This filter  allow: characters Az 1-9 , "_" (in middle) ... Can't begin with number
-     * For username, ACL roles     
+     * For username, ACL roles    
+     * TODO add support for áÁ 
      */
     if(empty($var)) {
         return false;        
