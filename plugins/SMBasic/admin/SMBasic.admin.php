@@ -42,7 +42,7 @@ function SMBasic_AdminContent($params) {
 
 
 function SMBasic_UserSearch() {
-    global $LANGDATA, $tpl, $sm;
+    global $config, $LANGDATA, $tpl, $sm;
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_SEARCH_USER']);
     $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_DESC']);
@@ -72,7 +72,7 @@ function SMBasic_UserSearch() {
             foreach($users_ary as $user_match) {
                 $table['ADM_TABLE_ROW'] .= "<tr>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['uid'] . "</td>";
-                $table['ADM_TABLE_ROW'] .= "<td><a href='?uid={$user_match['uid']}'>" . $user_match['username'] . "</a></td>";
+                $table['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user_match['uid']}'>" . $user_match['username'] . "</a></td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['email'] . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . format_date($user_match['regdate']) . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['last_login'] . "</td>";
@@ -85,7 +85,7 @@ function SMBasic_UserSearch() {
 }
 
 function SMBasic_UserList() {
-    global $LANGDATA, $tpl, $sm;
+    global $config, $LANGDATA, $tpl, $sm;
     
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_USERS_LIST']);
@@ -108,7 +108,7 @@ function SMBasic_UserList() {
         if ($user['active'] == 0) {        
             $active['ADM_TABLE_ROW'] .= "<tr>";
             $active['ADM_TABLE_ROW'] .= "<td>" . $user['uid'] . "</td>";
-            $active['ADM_TABLE_ROW'] .= "<td><a href='?uid={$user['uid']}'>" . $user['username'] . "</a></td>";
+            $active['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
@@ -116,7 +116,7 @@ function SMBasic_UserList() {
         } else {
             $inactive['ADM_TABLE_ROW'] .= "<tr>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . $user['uid'] . "</td>";
-            $inactive['ADM_TABLE_ROW'] .= "<td><a href='?uid={$user['uid']}'>" . $user['username'] . "</a></td>";
+            $inactive['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
