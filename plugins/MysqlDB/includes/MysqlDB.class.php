@@ -106,11 +106,9 @@ class Database {
                 }
             }
             $q .= implode( " $logic ", $q_where_fields );
-        }
+        }                
+        !empty($extra) ? $q .= " $extra" : falsE;
         
-        if( !empty($extra) ) {
-            $q .= " $extra";
-        }
         return $this->query($q);
     }
     
@@ -159,8 +157,7 @@ class Database {
         $fields = implode( ', ', $fields_ary );
         $values = implode( ', ', $values_ary );
         $q = "INSERT INTO {$config['DB_PREFIX']}$table ( $fields ) VALUES ( $values )";        
-        
-        
+                
         return $this->query($q);
     }
     
@@ -176,6 +173,7 @@ class Database {
         } 
         $q .= implode( ' AND ', $q_where_fields );        
         !empty($extra) ? $q .= " $extra" : false;
+        
         return $this->query($q);
     }
 }
