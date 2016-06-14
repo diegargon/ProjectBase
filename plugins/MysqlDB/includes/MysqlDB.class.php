@@ -164,7 +164,7 @@ class Database {
         return $this->query($q);
     }
     
-    function delete($table, $where) {
+    function delete($table, $where, $extra) {
         global $config;
                
         if(empty($table) || empty($where) ) { return false; }
@@ -175,7 +175,7 @@ class Database {
              $q_where_fields[] = "$field = " . "'". $value ."'";
         } 
         $q .= implode( ' AND ', $q_where_fields );        
-     
+        $q .= " $extra";
         return $this->query($q);
     }
 }
