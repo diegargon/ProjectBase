@@ -164,7 +164,7 @@ class Database {
         return $this->query($q);
     }
     
-    function delete($table, $where, $extra) {
+    function delete($table, $where, $extra = null) {
         global $config;
                
         if(empty($table) || empty($where) ) { return false; }
