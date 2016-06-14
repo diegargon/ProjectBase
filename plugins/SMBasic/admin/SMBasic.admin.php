@@ -81,7 +81,8 @@ function SMBasic_UserSearch() {
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['last_login'] . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
                 $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid' value='{$user_match['uid']}' />";
-                $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+                $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+                $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
                 $table['ADM_TABLE_ROW'] .= "</form></td>";
                 
                 $table['ADM_TABLE_ROW'] .= "</tr>";                
@@ -97,6 +98,9 @@ function SMBasic_UserList() {
     
     if(isset($_POST['btnDeleteSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0 ) {
         SMBasic_DeleteUser($member_id);
+    }
+    if(isset($_POST['btnActivateSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0 ) {
+        SMBasic_ActivateUser($member_id);
     }
     
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_USERS_LIST']);
@@ -123,6 +127,7 @@ function SMBasic_UserList() {
             $active['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
             $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid'  value='{$user['uid']}' />";
             $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+            $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
             $active['ADM_TABLE_ROW'] .= "</form></td>";
             $active['ADM_TABLE_ROW'] .= "</tr>";            
         } else {
@@ -134,6 +139,7 @@ function SMBasic_UserList() {
             $inactive['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
             $inactive['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid' value='{$user['uid']}' />";
             $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
+            $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
             $inactive['ADM_TABLE_ROW'] .= "</form></td>";            
             $inactive['ADM_TABLE_ROW'] .= "</tr>";            
         }
@@ -150,4 +156,9 @@ function SMBasic_UserList() {
 function SMBasic_DeleteUser($uid) {
     global $db;    
     $db->delete("users", array("uid" => $uid), "LIMIT 1");
+}
+
+function SMBasic_ActivateUser($uid) {
+    global $db;    
+    $db->update("users", array("active" => 0), array("uid" => $uid), "LIMIT 1");
 }
