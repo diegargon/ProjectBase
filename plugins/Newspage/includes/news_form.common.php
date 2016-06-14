@@ -77,8 +77,7 @@ function news_form_process() {
 
     //USERNAME/AUTHOR
     if (empty($news_data['author']) ) {
-        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonimous its allowed
-        //$news_data['username'] = S_VAR_CHAR_AZ_NUM($_SESSION['username']);
+        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonimous its allowed        
     }           
     if ($news_data['author'] == false) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR']);    

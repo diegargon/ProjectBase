@@ -78,16 +78,6 @@ function news_create_new($news_data) {
         "moderation" => $moderation
     );
     $db->insert("news", $insert_ary);
-/*    
-    $q = "INSERT INTO {$config['DB_PREFIX']}news ("
-        . "nid, lang_id, title, lead, text,  featured, author, author_id, category, lang, acl, moderation"    
-        . ") VALUES ("
-        . "'$nid', '$lang_id', '{$news_data['title']}', '{$news_data['lead']}', '{$news_data['text']}', "         
-        . "'{$news_data['featured']}', '{$news_data['author']}', '$uid', '{$news_data['category']}', '{$news_data['lang']}', '$acl', '$moderation'"       
-        . ");";       
-    $query = $db->query($q);    
- * 
- */
     
     if (!empty($news_data['main_media'])) {
         $source_id = $nid;
@@ -102,15 +92,6 @@ function news_create_new($news_data) {
             "itsmain" => 1
         );
         $db->insert("links", $insert_ary);
-        /*
-        $q = "INSERT INTO {$config['DB_PREFIX']}links ("
-            . "source_id, plugin, type, link, itsmain"
-            . ") VALUES ("
-            . "'$source_id', '$plugin', '$type', '{$news_data['main_media']}', '1'"
-            . ");";    
-        $query = $db->query($q);
-         * 
-         */
     }
     return true;
 }
