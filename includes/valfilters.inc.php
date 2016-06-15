@@ -76,6 +76,14 @@ function S_POST_INT($var, $max_size = null, $min_size = null) {
     
     return S_VAR_INTEGER($_POST[$var], $max_size, $min_size);    
 }
+
+function S_POST_URL($var, $max_size = null, $min_size = null) { 
+    if($empty($_POST[$var])) {
+        return false;
+    }
+    return S_VAR_URL($var, $max_size, $min_size);
+}
+
 //$_SERVER
 function S_SERVER_USER_AGENT () {
     if(empty($_SERVER['HTTP_USER_AGENT'])) {
@@ -120,6 +128,20 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
     
     return $var;
 
+}
+
+function S_VAR_URL($var, $max_size = null, $min_size = null) {
+    if(empty($var)) {
+        return false;        
+    }
+    if (!empty($max_size) && (strlen($var) > $max_size) ) {
+        return false;
+    }
+    if (!empty($min_size) && (strlen($var) < $min_size)) {
+        return false;
+    }
+    //TODO REMOTE CHECK VALIDATOR
+    return filter_var($var, FILTER_SANITIZE_URL);  
 }
 
 function S_VAR_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
