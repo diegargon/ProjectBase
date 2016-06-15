@@ -9,7 +9,7 @@ html, body {
     height:100%;
     /* font-family:Georgia,"Times New Roman",Times,serif;color:#919191;background-color:#232323; */
     font: 13px/16.999999992px "Guardian Sans", Tahoma, Trebuchet MS, TrebuchetMS, sans-serif;
-    background-color: #e5e5e5;
+    background-color: #000;
 }
 .container {
     border: 0px solid blue;

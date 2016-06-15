@@ -23,12 +23,16 @@
     .submit_items {
         width: 100%;
     }
+
 }
 
 @media only screen and (max-width: 630px) {
     .submit_auth, .submit_lead, .submit_text, .submit_title {
         width:300px;
     }
+    .feature_article{
+        display:block;
+    }    
 }
 
 @media only screen and (max-width: 400px) {
