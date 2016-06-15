@@ -87,9 +87,9 @@ function S_POST_URL($var, $max_size = null, $min_size = null) {
             $ret = S_VAR_URL($value, $max_size, $min_size);
             if (!$ret) {
                 echo "INVALID!<br>";
-                $var_ary[$key][$value] = $ret;
+                $var_ary[$key] = false;
             }  else {
-                echo "VALID! $ret<br>";
+                $var_ary[$key] = $ret;
             }
         }
         return $var_ary;
