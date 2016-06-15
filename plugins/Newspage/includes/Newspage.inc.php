@@ -103,3 +103,23 @@ function news_check_display_submit () {
         }
     }    
 }
+
+function news_get_related($nid) {
+    global $db;
+    $plugin = "Newspage";
+    $type = "related";
+    
+    $query = $db->select_all("links", array("source_id" => $nid, "plugin" => $plugin, "type" => $type));
+    if ($db->num_rows($query) > 0) {
+        while ($relate_row = $db->fetch($query)) {
+            $related[] = array (
+                "rid"  => $relate_row['rid'],
+                "link" => $relate_row['link'],
+                "type" => $relate_row['type']
+            );
+        }
+    } else {
+        return false;
+    }
+    return $related;
+}

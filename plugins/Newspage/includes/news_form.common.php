@@ -66,7 +66,9 @@ function news_form_getPost() {
     !empty($_POST['news_update']) ? $data['update'] = S_POST_INT("news_update", 11, 1) : $data['update'] = 0;
     !empty($_POST['news_current_langid']) ? $data['current_langid'] = S_POST_INT("news_current_langid", 8, 1) : $data['current_langid'] = 0;
     !empty($_POST['news_source']) ? $data['news_source'] = S_POST_URL("news_source") : false;
-    
+    !empty($_POST['news_new_related']) ? $data['news_new_related'] = S_POST_URL("news_new_related") : false;
+    !empty($_POST['news_related']) ? $data['news_related'] = S_POST_URL("news_related") : false;
+
     return $data;
 }
 

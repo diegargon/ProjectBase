@@ -78,6 +78,7 @@ function S_POST_INT($var, $max_size = null, $min_size = null) {
 }
 
 function S_POST_URL($var, $max_size = null, $min_size = null) { 
+        
     if(empty($_POST[$var])) {
         return false;
     }
@@ -86,7 +87,6 @@ function S_POST_URL($var, $max_size = null, $min_size = null) {
         foreach ($var_ary as $key => $value) {
             $ret = S_VAR_URL($value, $max_size, $min_size);
             if (!$ret) {
-                echo "INVALID!<br>";
                 $var_ary[$key] = false;
             }  else {
                 $var_ary[$key] = $ret;
@@ -110,6 +110,12 @@ function S_SERVER_REMOTE_ADDR () {
         return false;
     }
     return filter_input(INPUT_SERVER, 'REMOTE_ADDR',FILTER_VALIDATE_IP);
+}
+function S_SERVER_URL($var) {
+    if(empty($_SERVER[$var])) {
+        return false;
+    }
+    return S_VAR_URL($_SERVER[$var]);
 }
 //VAR
 function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
@@ -155,6 +161,8 @@ function S_VAR_URL($var, $max_size = null, $min_size = null) {
         return false;
     }
     //TODO REMOTE CHECK VALIDATOR
+    //WARN that not check protocols and validate url like http://test/
+    //remote check can fix this and allow only working urls
     $url = filter_var($var, FILTER_SANITIZE_URL);  
     return filter_var($url, FILTER_VALIDATE_URL);
 }

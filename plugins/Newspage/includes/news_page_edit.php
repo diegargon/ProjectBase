@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
  
 function news_page_edit() {
-    global $LANGDATA, $acl_auth, $tpl, $db;    
+    global $config, $LANGDATA, $acl_auth, $tpl, $db;    
     
     $nid = S_GET_INT("newsedit");
     $lang_id = S_GET_INT("lang_id");
@@ -42,6 +42,17 @@ function news_page_edit() {
     if ( ($news_source = get_news_source_byID($news_data['nid'])) != false) {
         $news_data['news_source'] = $news_source['link'];
     }
+    
+    if($config['NEWS_RELATED']) {        
+        $news_related = news_get_related($news_data['nid']);
+        if($news_related) {
+            $news_data['news_related'] = "";
+            $counter = 1;
+            foreach ($news_related as $related)  {
+                $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+            }
+        }
+    }    
     $news_data['update'] = $nid;  
     $news_data['current_langid'] = $news_data['lang_id'];
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));     
@@ -90,14 +101,14 @@ function news_update($news_data) {
         $type = "image";
 
         $query = $db->select_all("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin, "itsmain" => 1 ));
-        if ($db->num_rows($query) > 0) {        
-            $db->update("links", array("link" => $news_data['main_media']), array("source_id" => $source_id));
+        if ($db->num_rows($query) > 0) {       
+            $db->update("links", array("link" => $news_data['main_media']), array("source_id" => $source_id, "type" => $type, "itsmain" => 1));
         } else {
             $insert_ary = array ( 
                 "source_id" => $source_id, "plugin" => $plugin,
                 "type" => $type, "link" => $news_data['main_media'],
                 "itsmain" => 1
-            );
+            );            
             $db->insert("links", $insert_ary);
         }
     }        
@@ -118,7 +129,25 @@ function news_update($news_data) {
             );
             $db->insert("links", $insert_ary);
         }
-    }        
-    
+    }            
+    //NEW RELATED
+    if (!empty($news_data['news_new_related'])) {
+        $source_id = $nid;
+        $plugin = "Newspage";
+        $type = "related";
+        $insert_ary = array ( 
+            "source_id" => $source_id, "plugin" => $plugin,
+            "type" => $type, "link" => $news_data['news_new_related'],
+        );
+        $db->insert("links", $insert_ary);        
+    }
+    //OLD RELATED
+    if(!empty($news_data['news_related'])) {
+        foreach($news_data['news_related'] as $rid => $value) {
+            if (S_VAR_INTEGER($rid) && !empty($value)) { //value its checked on post $rid no                
+                $db->update("links", array("link" => $value), array("rid" => $rid));
+            }
+        }
+    }
     return true;
 }

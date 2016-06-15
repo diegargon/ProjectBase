@@ -40,7 +40,15 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
 <?php } ?>                
                 <div class="article_text">
                     <?php isset($tpldata['NEWS_TEXT']) ? print $tpldata['NEWS_TEXT']:false ?>
-                </div>      
+                </div>     
+<?php if(!empty($tpldata['NEWS_RELATED'])) {
+?>
+                <div class="related">
+                    <ul>
+                   <?php  print $tpldata['NEWS_RELATED'] ?>
+                    </ul>
+                </div>                
+<?php } ?>                 
                 <?php isset($tpldata['ADD_TO_NEWSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM']:false ?>
             </div>
             <div class="article_side">

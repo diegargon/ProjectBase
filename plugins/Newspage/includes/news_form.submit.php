@@ -105,6 +105,17 @@ function news_create_new($news_data) {
             "link" => $news_data['news_source']
         );
         $db->insert("links", $insert_ary);        
-    }
+    }    
+   //NEW RELATED
+    if (!empty($news_data['news_new_related'])) {
+        $source_id = $nid;
+        $plugin = "Newspage";
+        $type = "related";
+        $insert_ary = array ( 
+            "source_id" => $source_id, "plugin" => $plugin,
+            "type" => $type, "link" => $news_data['news_new_related'],
+        );
+        $db->insert("links", $insert_ary);        
+    }    
     return true;
 }

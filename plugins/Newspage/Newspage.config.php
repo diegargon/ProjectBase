@@ -27,5 +27,6 @@ $config['NEWS_MAIN_MEDIA_REQUIRED'] = 1;
 $config['NEWS_SELECTED_FRONTPAGE'] = 1;
 $config['NEWS_ACL_PREVIEW_CHECK'] = 0;
 $config['NEWS_SOURCE'] = 1;
+$config['NEWS_RELATED'] = 1;
 //$config['NEWS_SUBMIT_URL'] = 1;
 //$config['NEWS_PRIMARY_SOURCE'] = 1;

@@ -92,6 +92,13 @@ function news_page_main() {
     if ( ($news_source = get_news_source_byID($nid)) != false  && $config['NEWS_SOURCE'] ) {
         $tpl->addto_tplvar("NEWS_SOURCE", news_format_media($news_source));
     }
+    if ( $config['NEWS_RELATED'] && ($news_related = news_get_related($nid)) != false) {
+        $related_content = "<span>{$LANGDATA['L_NEWS_RELATED']}:</span>";
+        foreach ($news_related as $related) {
+            $related_content .= "<li><a rel='nofollow' target='_blank' href='{$related['link']}'>{$related['link']}</a></li>";
+        }
+        $tpl->addto_tplvar("NEWS_RELATED", $related_content);
+    }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body"));                                               
 }
 
@@ -182,6 +189,7 @@ function news_redirect()  {
     if(!empty($_GET['return_home'])) {
         header("Location: / ");                
     } else {        
-        header("Location: {$_SERVER['HTTP_REFERER']} ");  //TODO FILTER
+        //header("Location: {$_SERVER['HTTP_REFERER']} ");  //TODO FILTER
+        header("Location: ". S_SERVER_URL("HTTP_REFERER")." ");
     }    
 }
