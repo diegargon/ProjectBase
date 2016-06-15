@@ -78,10 +78,10 @@ function S_POST_INT($var, $max_size = null, $min_size = null) {
 }
 
 function S_POST_URL($var, $max_size = null, $min_size = null) { 
-    if($empty($_POST[$var])) {
+    if(empty($_POST[$var])) {
         return false;
     }
-    return S_VAR_URL($var, $max_size, $min_size);
+    return S_VAR_URL($_POST[$var], $max_size, $min_size);
 }
 
 //$_SERVER
