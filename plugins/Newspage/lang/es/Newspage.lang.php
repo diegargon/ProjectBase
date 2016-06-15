@@ -58,3 +58,4 @@ $LANGDATA['L_NEWS_CATEGORIES'] = "Categorias";
 $LANGDATA['L_NEWS_INFRONTPAGE'] = "En portada";
 $LANGDATA['L_NEWS_INFRONTPAGE_DESC'] = "Aquí podras ver y cambiar la lista de noticias en portada";
 $LANGDATA['L_NEWS_BACKPAGE'] = "Contraportada";
+$LANGDATA['L_NEWS_SOURCE'] = "Fuente";

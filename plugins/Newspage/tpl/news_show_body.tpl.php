@@ -18,7 +18,16 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 <div class="article_title">
                     <?php isset($tpldata['NEWS_TITLE']) ? print $tpldata['NEWS_TITLE']:false ?>
                 </div>
-                <div class="extra-small"><?php print($tpldata['NEWS_DATE'])?> | <a href='/profile.php?lang=<?php print $config['WEB_LANG']?>&viewprofile=<?php print $tpldata['NEWS_AUTHOR_UID'] ?>'><?php print $tpldata['NEWS_AUTHOR'] ?></a></div>                
+                <div class="extra-small">
+                    <?php print($tpldata['NEWS_DATE'])?> | 
+                    <a href='/profile.php?lang=<?php print $config['WEB_LANG']?>&viewprofile=<?php print $tpldata['NEWS_AUTHOR_UID'] ?>'>
+                        <?php print $tpldata['NEWS_AUTHOR'] ?>
+                    </a> 
+<?php if(isset($tpldata['NEWS_SOURCE'])) { ?>
+                    | <span><?php print $LANGDATA['L_NEWS_SOURCE'] .": ";  print $tpldata['NEWS_SOURCE'] ?> </span>
+<?php } ?>                    
+                </div>     
+                
                 <div class="article_lead">
                     <?php isset($tpldata['NEWS_LEAD']) ? print $tpldata['NEWS_LEAD']:false ?>
                 </div>                                
@@ -26,7 +35,7 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
 <?php if(!empty($tpldata['NEWS_MAIN_MEDIA'])) {
 ?>
                 <div class="article_main_media">
-                   <?php isset($tpldata['NEWS_MAIN_MEDIA']) ? print $tpldata['NEWS_MAIN_MEDIA']:false ?>
+                   <?php  print $tpldata['NEWS_MAIN_MEDIA'] ?>
                 </div>                
 <?php } ?>                
                 <div class="article_text">

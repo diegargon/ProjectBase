@@ -85,14 +85,13 @@ function news_page_main() {
     $tpl_data['NEWS_AUTHOR_UID'] = $news_row['author_id'];       
     $tpl_data['NEWS_TEXT']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
     $tpl->addtpl_array($tpl_data);
-    
-    if ( ($allmedia = get_news_media_byID($nid)) != false) {
-        foreach ($allmedia as $media) {
-            if($media['itsmain'] == 1 ) {
-                 $tpl->addto_tplvar("NEWS_MAIN_MEDIA", news_format_media($media));
-            }
-        }
+
+    if ( ($media = get_news_main_link_byID($nid)) != false) {
+        $tpl->addto_tplvar("NEWS_MAIN_MEDIA", news_format_media($media));
     }    
+    if ( ($news_source = get_news_source_byID($nid)) != false  && $config['NEWS_SOURCE'] ) {
+        $tpl->addto_tplvar("NEWS_SOURCE", news_format_media($news_source));
+    }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body"));                                               
 }
 

@@ -78,7 +78,7 @@ function news_create_new($news_data) {
         "moderation" => $moderation
     );
     $db->insert("news", $insert_ary);
-    
+    //MEDIA LINK
     if (!empty($news_data['main_media'])) {
         $source_id = $nid;
         $plugin = "Newspage";
@@ -92,6 +92,19 @@ function news_create_new($news_data) {
             "itsmain" => 1
         );
         $db->insert("links", $insert_ary);
+    }
+    //SOURCE LINK
+    if (!empty($news_data['news_source'])) {
+        $source_id = $nid;
+        $plugin = "Newspage";
+        $type = "source";
+        $insert_ary = array (
+            "source_id" => $source_id,
+            "plugin" => $plugin,
+            "type" => $type,
+            "link" => $news_data['news_source']
+        );
+        $db->insert("links", $insert_ary);        
     }
     return true;
 }
