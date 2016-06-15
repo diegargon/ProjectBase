@@ -118,9 +118,9 @@ function news_update($news_data) {
         $plugin = "Newspage";
         $type = "source";
 
-        $query = $db->select_all("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin ));
+        $query = $db->select_all("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin ), "LIMIT 1");
         if ($db->num_rows($query) > 0) {        
-            $db->update("links", array("link" => $news_data['news_source']), array("source_id" => $source_id, "type" => $type));
+            $db->update("links", array("link" => $news_data['news_source']), array("source_id" => $source_id, "type" => $type, "plugin" => $plugin));
         } else {
             $insert_ary = array ( 
                 "source_id" => $source_id, "plugin" => $plugin,
@@ -128,9 +128,14 @@ function news_update($news_data) {
             );
             $db->insert("links", $insert_ary);
         }
-    }            
+    } else {
+        $source_id = $nid;
+        $plugin = "Newspage";
+        $type = "source";
+        $db->delete("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin), "LIMIT 1");
+    }         
     //NEW RELATED
-    if (!empty($news_data['news_new_related'])) {
+    if (!empty($news_data['news_new_related'])) {      
         $source_id = $nid;
         $plugin = "Newspage";
         $type = "related";
@@ -141,10 +146,14 @@ function news_update($news_data) {
         $db->insert("links", $insert_ary);        
     }
     //OLD RELATED
-    if(!empty($news_data['news_related'])) {
+    if(!empty($news_data['news_related'])) {        
         foreach($news_data['news_related'] as $rid => $value) {
-            if (S_VAR_INTEGER($rid) && !empty($value)) { //value its checked on post $rid no                
-                $db->update("links", array("link" => $value), array("rid" => $rid));
+            if (S_VAR_INTEGER($rid)) { //value its checked on post $rid no 
+                if(empty($value)) {
+                    $db->delete("links", array("rid" => $rid), "LIMIT 1");
+                } else {
+                    $db->update("links", array("link" => $value), array("rid" => $rid), "LIMIT 1");
+                }
             }
         }
     }

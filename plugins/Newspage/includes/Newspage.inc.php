@@ -11,7 +11,7 @@ function news_format_media($media) {
     } else if ($media['type'] == 'source') {
         $url = parse_url($media['link']);        
         $domain = $url['host'];
-        $result = "<a href='{$media['link']}'>$domain</a>";
+        $result = "<a rel='nofollow' target='_blank' href='{$media['link']}'>$domain</a>";
     } else {
         return false;
     }
