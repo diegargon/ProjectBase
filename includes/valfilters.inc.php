@@ -81,7 +81,21 @@ function S_POST_URL($var, $max_size = null, $min_size = null) {
     if(empty($_POST[$var])) {
         return false;
     }
-    return S_VAR_URL($_POST[$var], $max_size, $min_size);
+    if(is_array($_POST[$var])) {
+        $var_ary = $_POST[$var];
+        foreach ($var_ary as $key => $value) {
+            $ret = S_VAR_URL($value, $max_size, $min_size);
+            if (!$ret) {
+                echo "INVALID!<br>";
+                $var_ary[$key][$value] = $ret;
+            }  else {
+                echo "VALID! $ret<br>";
+            }
+        }
+        return $var_ary;
+    } else {
+        return S_VAR_URL($_POST[$var], $max_size, $min_size);
+    }
 }
 
 //$_SERVER
@@ -132,7 +146,7 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
 
 function S_VAR_URL($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
-        return false;        
+       return false;        
     }
     if (!empty($max_size) && (strlen($var) > $max_size) ) {
         return false;
@@ -141,7 +155,8 @@ function S_VAR_URL($var, $max_size = null, $min_size = null) {
         return false;
     }
     //TODO REMOTE CHECK VALIDATOR
-    return filter_var($var, FILTER_SANITIZE_URL);  
+    $url = filter_var($var, FILTER_SANITIZE_URL);  
+    return filter_var($url, FILTER_VALIDATE_URL);
 }
 
 function S_VAR_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
