@@ -20,7 +20,7 @@ function SMBasic_Login() {
         }
         $response = [];       
         $query = $db->select_all("users", array("email" => "$email", "password" => "$password"), "LIMIT 1");
-        if ($user = $db->fetch($query)) {
+        if ( ($user = $db->fetch($query)) ) {
             if($user['active'] == 0) {
                 if ($user['disable'] == 1) {
                     $response[] = array("status" => "error", "msg" => $LANGDATA['L_SM_E_DISABLE'] );
@@ -50,7 +50,7 @@ function SMBasic_Login() {
 
 
 function SMBasic_user_activate_account() {
-    global $config, $db;
+    global $db;
     
     if ( ($active = S_GET_INT("active", 12)) == false) {
         return false;

@@ -47,7 +47,6 @@ function news_page_edit() {
         $news_related = news_get_related($news_data['nid']);
         if($news_related) {
             $news_data['news_related'] = "";
-            $counter = 1;
             foreach ($news_related as $related)  {
                 $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
             }

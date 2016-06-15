@@ -31,7 +31,7 @@ function news_layout_select() {
     if(empty($_POST['news_switch']) || $_POST['news_switch'] > $config['NEWS_BODY_STYLES']) {
         $news_switch = 1;
     } else{
-        $news_switch = S_VAR_INTEGER($_POST['news_switch'],1);        
+        $news_switch = S_POST_INT("news_switch", 1); 
     }
     return $news_switch;    
 }
@@ -47,7 +47,7 @@ function news_layout_switcher() {
 }
 
 function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
-    global $config, $db, $tpl;
+    global $config, $db, $tpl, $ml;
         
     $content = "";         
    
@@ -60,7 +60,6 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     }
         
     if (defined('MULTILANG') && 'MULTILANG') {
-        global $ml;
         $site_langs = $ml->get_site_langs();
         
         foreach ($site_langs as $site_lang) {
@@ -107,13 +106,12 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
 }
 
 function get_news_featured() {
-    global $config, $db, $tpl;
+    global $config, $db, $tpl, $ml;
 
     //INFO: news_featured skip moderation bit
     $content = "";        
     $where_ary['featured'] = 1;
     if (defined('MULTILANG') && 'MULTILANG') {
-        global $ml;
         $site_langs = $ml->get_site_langs();
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
@@ -158,9 +156,10 @@ function fetch_news_data($row) {
     $data['ALT_TITLE'] = htmlspecialchars($row['title']);            
 
     if ($config['FRIENDLY_URL']) {   
-        //FIX: one line str_replace?        
-        $friendly_url = str_replace(' ', "-", $row['title']); 
-        $friendly_url = str_replace('"', "", $friendly_url);        
+        //FIX: better way for clean all those character?
+        $friendly_filter = array('"','\'','?','$',',','.','‘','’',':',';','[',']','{','}','*','!','¡','¿','+','<','>','#','@','|','~','%','&','(',')','=','`','´','/','º','ª','\\');
+        $friendly_url = str_replace(' ', "-", $row['title']);
+        $friendly_url = str_replace($friendly_filter, "", $friendly_url);
         $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";  
     } else {            
         $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
@@ -176,7 +175,7 @@ function fetch_news_data($row) {
 }
 
 function get_category_name($cid, $lang_id = null) {
-    global $config, $db; 
+    global $db; 
     
     $where_ary['cid'] = $cid;
     if (defined('MULTILANG') && 'MULTILANG' && $lang_id != null) {

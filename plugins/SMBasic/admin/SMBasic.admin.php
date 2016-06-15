@@ -73,7 +73,7 @@ function SMBasic_UserSearch() {
 
 
     if (!empty($_POST['btnSearchUser']) && !empty($s_string)) {
-        if ($users_ary = $sm->searchUser($s_string, $email, $glob)) {
+        if ( ($users_ary = $sm->searchUser($s_string, $email, $glob)) ) {
             $table['ADM_TABLE_TH'] = "<th>". $LANGDATA ['L_SM_USERNAME'] ."</th>";
             $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_EMAIL'] ."</th>";
             $table['ADM_TABLE_TH'] .= "<th>". $LANGDATA ['L_SM_REGISTERED'] ."</th>";
