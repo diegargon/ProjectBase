@@ -217,8 +217,9 @@ function news_new_lang() {
         $news_related = news_get_related($news_data['nid']);
         if($news_related) {
             $news_data['news_related'] = "";
-            foreach ($news_related as $related)  {
-                $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+            foreach ($news_related as $related)  {                
+                $news_data['news_related'] .= "<input disabled type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+                $news_data['news_related'] .= "<input type='hidden' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
             }
         }
     }    
