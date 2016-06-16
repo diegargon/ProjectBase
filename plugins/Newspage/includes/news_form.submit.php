@@ -54,7 +54,9 @@ function news_create_new($news_data) {
         $moderation = 0;
     } else if ($config['NEWS_MODERATION'] == 1){
         $moderation = 1;
-    }    
+    } else {
+        $moderation = 0;
+    }
     
     $news_data['title'] = $db->escape_strip($news_data['title']);
     $news_data['lead'] = $db->escape_strip($news_data['lead']);

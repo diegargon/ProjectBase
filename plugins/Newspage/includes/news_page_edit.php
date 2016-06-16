@@ -258,7 +258,9 @@ function news_translate($news_data) {
         $moderation = 0;
     } else if ($config['NEWS_MODERATION'] == 1){
         $moderation = 1;
-    }        
+    }  else {
+        $moderation = 0;
+    }
     
     $insert_ary = array (
       "nid" => $nid, "lang_id" => $lang_id, "translator" => $news_data['news_translator'], "title" => $news_data['title'], 
