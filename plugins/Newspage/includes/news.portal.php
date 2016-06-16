@@ -52,12 +52,9 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     $content = "";         
    
     $where_ary['featured'] = array("value" => "1", "operator" => "<>");
-    if ($config['NEWS_SELECTED_FRONTPAGE']) {               
-        $where_ary['frontpage'] = $frontpage;
-    }
-    if( $config['NEWS_MODERATION'] == 1) {       
-        $where_ary['moderation'] = 0;
-    }
+
+    $config['NEWS_SELECTED_FRONTPAGE'] ? $where_ary['frontpage'] = $frontpage : false;    
+    $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : false;
         
     if (defined('MULTILANG') && 'MULTILANG') {
         $site_langs = $ml->get_site_langs();
@@ -74,10 +71,8 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     if ((!empty($category)) && ($category != 0 )) {        
         $where_ary['category'] = $category;
     }       
-    $q_extra = " ORDER BY date DESC";
-    if ($limit > 0) {       
-        $q_extra .= " LIMIT $limit";
-    }
+    $q_extra = " ORDER BY date DESC";    
+    $limit > 0 ? $q_extra .= " LIMIT $limit" : false;
     
     $query = $db->select_all("news", $where_ary, $q_extra);
     if ($db->num_rows($query) <= 0) {

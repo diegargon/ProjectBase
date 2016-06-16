@@ -28,8 +28,7 @@ function news_get_categories() {
         $lang_id = $ml->iso_to_id($config['WEB_LANG']); 
     } else {
         $lang_id = $config['WEB_LANG_ID'];
-    }
-    
+    }   
     $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id"));
     
     return $query;
@@ -159,7 +158,7 @@ function news_form_process() {
 
     //ALL OK SUBMIT or UPDATE
 
-    if($news_data['update'] > 0) {
+    if($news_data['update'] > 0) { 
         if (news_update($news_data)) {
             $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
         } else {
@@ -222,11 +221,7 @@ function news_get_available_langs($news_data) {
     $site_langs = $ml->get_site_langs();
     if (empty($site_langs)) { return false; }
     
-    if (!empty($news_data['lang'])) {
-        $match_lang = $news_data['lang'];
-    } else {
-        $match_lang = $config['WEB_LANG'];
-    }
+    empty($news_data['lang']) ? $match_lang = $news_data['lang'] : $match_lang = $config['WEB_LANG'];
     
     $select = "<select name='news_lang' id='news_lang'>";     
     foreach ($site_langs as $site_lang) {
@@ -261,9 +256,6 @@ function news_get_missed_langs($nid) {
             }
     }       
     $select .= "</select>";
-    if ($nolang) {
-        return false;
-    } else {
-        return $select;
-    }
+
+    return (!empty($nolang)) ? false : $select;
 }

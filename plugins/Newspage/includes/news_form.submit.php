@@ -28,18 +28,15 @@ function news_new_form($post_data = null) {
         }
     } 
     empty($can_change_author) ?  $data['can_change_author'] = "disabled" : $data['can_change_author'] = "";    
-    $data['select_categories'] = news_get_categories_select();    
+    $data['select_categories'] = news_get_categories_select();          
+    !empty($post_data) ? $data = array_merge($data, $post_data) : false;
       
-    if(!empty($post_data)) {
-        $data = array_merge($data, $post_data);
-    }  
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $data));     
 }
 
 function news_create_new($news_data) {
     global $config, $ml, $db, $sm;
-    
-    //$nid = db_get_next_num("nid", $config['DB_PREFIX']."news"); 
+        
     $nid = $db->get_next_num("news", "nid");
     if (defined('MULTILANG') && 'MULTILANG') {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
