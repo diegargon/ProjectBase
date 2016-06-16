@@ -32,7 +32,7 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                     <?php print $tpldata['NEWS_AUTHOR'] ?>
                     </a> 
                     <?php 
-                        isset($tpldata['NEWS_TRANSLATOR']) ? print $LANGDATA['L_NEWS_TRANSLATE_BY'] . $tpldata['NEWS_TRANSLATOR'] : false ; 
+                        isset($tpldata['NEWS_TRANSLATOR']) ? print " | ". $LANGDATA['L_NEWS_TRANSLATE_BY'] . $tpldata['NEWS_TRANSLATOR'] : false ; 
                     ?>                    
 <?php if(isset($tpldata['NEWS_SOURCE'])) { ?>
                     | <span><?php print $LANGDATA['L_NEWS_SOURCE'] .": ";  print $tpldata['NEWS_SOURCE'] ?> </span>

@@ -62,4 +62,4 @@ $LANGDATA['L_NEWS_RELATED'] = "Relacionadas";
 $LANGDATA['L_NEWS_NEWLANG'] = "Nuevo lenguaje";
 $LANGDATA['L_NEWS_TRANSLATOR'] = "Traductor";
 $LANGDATA['L_NEWS_TRANSLATE_SUCESSFUL'] = "Noticia traducida enviada con exito";
-$LANGDATA['L_NEWS_TRANSLATE_BY'] = "Traducido por:";
+$LANGDATA['L_NEWS_TRANSLATE_BY'] = "Traducido por ";
