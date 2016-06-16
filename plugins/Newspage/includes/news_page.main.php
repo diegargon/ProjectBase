@@ -137,7 +137,7 @@ function news_delete($nid, $lang_id) {
     
     if (empty($nid) || empty($lang_id)) {
         return false;
-    }    
+    }
     $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
     
     $query = $db->select_all("news", array("nid" => $nid));
@@ -184,10 +184,12 @@ function news_frontpage($nid, $lang_id, $frontpage_state) {
 }
 
 function news_redirect()  {
+    global $config;
+    
     if(!empty($_GET['return_home'])) {
-        header("Location: / ");                
+        header("Location: /{$config['WEB_LANG']} ");                
     } else {        
         //header("Location: {$_SERVER['HTTP_REFERER']} ");  //TODO FILTER
-        header("Location: ". S_SERVER_URL("HTTP_REFERER")." ");
+        header("Location: ". S_SERVER_URL("HTTP_REFERER")."/{$config['WEB_LANG']} ");
     }    
 }
