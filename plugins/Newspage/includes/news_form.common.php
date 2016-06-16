@@ -211,8 +211,36 @@ function news_get_sitelangs($news_data = null) {
     foreach ($site_langs as $site_lang) {
         if($site_lang['iso_code'] == $match_lang) {
             $select .= "<option selected value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
-        } else {
+        } else {            
             $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
+        }
+    }        
+    $select .= "</select>";
+
+    return $select;
+}
+
+function news_get_free_sitelangs($news_data) { 
+    global $config, $ml, $db; 
+
+    $site_langs = $ml->get_site_langs();
+    if (empty($site_langs)) { return false; }
+    
+    if ($news_data != null && !empty($news_data['lang'])) {
+        $match_lang = $news_data['lang'];
+    } else {
+        $match_lang = $config['WEB_LANG'];
+    }
+    
+    $select = "<select name='news_lang' id='news_lang'>";     
+    foreach ($site_langs as $site_lang) {
+        if($site_lang['iso_code'] == $match_lang) {
+            $select .= "<option selected value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
+        } else {
+            $query = $db->select_all("news", array("nid" => $news_data['nid'], "lang_id" => $site_lang['lang_id']), "LIMIT 1");
+            if ($db->num_rows($query) <= 0) {
+                $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
+            }
         }
     }        
     $select .= "</select>";

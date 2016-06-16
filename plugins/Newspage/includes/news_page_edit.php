@@ -32,7 +32,7 @@ function news_page_edit() {
     $news_data['select_categories'] = news_get_categories_select($news_data);
     
     if (defined('MULTILANG') && 'MULTILANG') {
-        if ( ($site_langs = news_get_sitelangs($news_data)) != false ) {
+        if ( ($site_langs = news_get_free_sitelangs($news_data)) != false ) {
             $news_data['select_langs'] = $site_langs;
         }
     }  
