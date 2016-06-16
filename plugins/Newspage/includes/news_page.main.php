@@ -135,49 +135,47 @@ function Newspage_AdminOptions($news) {
 function news_delete($nid, $lang_id) {
     global $db;
     
-    if (!empty($nid) && !empty($lang_id)) {    
-        $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
-        $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
-    } else {
+    if (empty($nid) || empty($lang_id)) {
         return false;
-    }
+    }    
+    $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
+    $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
+    
     return true;
 }
 
 function news_approved($nid, $lang_id) {
     global $db;
     
-    if (!empty($nid) && !empty($lang_id) ) {           
-        $db->update("news", array("moderation" => 0), array("nid" => $nid, "lang_id" => $lang_id));        
-    } else {
+    if (empty($nid) || empty($lang_id) ) {
         return false;
-    }
+    }    
+    $db->update("news", array("moderation" => 0), array("nid" => $nid, "lang_id" => $lang_id));        
+
     return true;    
 }
 
 function news_featured($nid, $featured, $lang_id) {
     global $db;
     
-    if (!empty($nid) && !empty($lang_id)) {         
-        $featured == 1 ? news_clean_featured($lang_id) : false;
-        $db->update("news", array("featured" => $featured), array("nid" => $nid, "lang_id" => $lang_id));
-    } else {
+    if (empty($nid) || empty($lang_id)) {
         return false;
     }
+    $featured == 1 ? news_clean_featured($lang_id) : false;
+    $db->update("news", array("featured" => $featured), array("nid" => $nid, "lang_id" => $lang_id));
+
     return true;    
 }
 
 function news_frontpage($nid, $lang_id, $frontpage_state) {
     global $db;
 
-    if (empty($frontpage_state)) {
-        $frontpage_state = 0;
-    }
-    if (!empty($nid) && isset($frontpage_state) && !empty($lang_id) && $nid > 0 && $lang_id > 0) {            
-        $db->update("news", array("frontpage" => $frontpage_state), array("nid" => $nid, "lang_id" => $lang_id));
-    } else {
+    empty($frontpage_state) ? $frontpage_state = 0 : false;
+
+    if (empty($nid) || empty($lang_id) || $nid <= 0 && $lang_id <= 0) {            
         return false;
     }
+    $db->update("news", array("frontpage" => $frontpage_state), array("nid" => $nid, "lang_id" => $lang_id));
     
     return true;    
 }
