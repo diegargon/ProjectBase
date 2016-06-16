@@ -12,10 +12,12 @@ function news_page_edit() {
     
     if ($nid == false || $lang_id == false) {
         echo "ERROR 1";  //TODO error mesage
+        exit();
     }    
     $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id"), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
-        echo "ERROR 2"; //TODO error mesage
+        echo "ERROR 2: No existe esa noticia"; //TODO error mesage
+        exit();
     }
     $news_data = $db->fetch($query);    
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_EDIT_NEWS'];
