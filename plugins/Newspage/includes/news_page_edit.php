@@ -76,7 +76,7 @@ function news_update($news_data) {
         return false;
     }
 
-    !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 
+    !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = ""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
 
     $news_data['title'] = $db->escape_strip($news_data['title']);
@@ -227,18 +227,19 @@ function news_new_lang() {
 }
 
 
-function news_translate($news_data) {
-
-    
+function news_translate($news_data) {    
     global $config, $db, $ml;
 
     $nid = $news_data['post_newlang'];
-
     
     if (defined('MULTILANG') && 'MULTILANG') {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
     } else {
         $lang_id  = $config['WEB_LANG_ID'];        
+    }
+    
+    if(empty($nid) || empty($lang_id)) {
+        return false;
     }
 
     $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id"));
@@ -258,9 +259,8 @@ function news_translate($news_data) {
       "lead" => $news_data['lead'],  "text" => $news_data['text'],  
       "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
       "lang" => $news_data['lang'], "acl" => $acl
-    );
-
-
+    );   
     $db->insert("news", $insert_ary);
+    
     return true;
 }
