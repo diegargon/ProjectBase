@@ -29,8 +29,11 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 <div class="extra-small">
                     <?php print($tpldata['NEWS_DATE'])?> | 
                     <a href='/profile.php?lang=<?php print $config['WEB_LANG']?>&viewprofile=<?php print $tpldata['NEWS_AUTHOR_UID'] ?>'>
-                        <?php print $tpldata['NEWS_AUTHOR'] ?>
+                    <?php print $tpldata['NEWS_AUTHOR'] ?>
                     </a> 
+                    <?php 
+                        isset($tpldata['NEWS_TRANSLATOR']) ? print $LANGDATA['L_NEWS_TRANSLATE_BY'] . $tpldata['NEWS_TRANSLATOR'] : false ; 
+                    ?>                    
 <?php if(isset($tpldata['NEWS_SOURCE'])) { ?>
                     | <span><?php print $LANGDATA['L_NEWS_SOURCE'] .": ";  print $tpldata['NEWS_SOURCE'] ?> </span>
 <?php } ?>                    
@@ -57,10 +60,10 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                     </ul>
                 </div>                
 <?php } ?>                 
-                <?php isset($tpldata['ADD_TO_NEWSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM']:false ?>
+                <?php isset($tpldata['ADD_TO_NEWSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM']:false ?>            
             </div>
             <div class="article_side">
                 <?php isset($tpldata['ADD_TO_NEWS_SIDE']) ? print $tpldata['ADD_TO_NEWSHOW_SIDE']:false ?>
-            </div>
+            </div>       
         </div>
     </div>

@@ -17,7 +17,7 @@ function news_new_form($post_data = null) {
     $data['author'] = $user['username'];    
     
     if (defined('MULTILANG') && 'MULTILANG') {
-        if ( ($site_langs = news_get_sitelangs()) != false ) {
+        if ( ($site_langs = news_get_all_sitelangs()) != false ) {
             $data['select_langs'] = $site_langs;
         }
     }    
@@ -51,7 +51,7 @@ function news_create_new($news_data) {
         $uid = 0;
     }    
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 
-    empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($news_data['lang']) ;
+    empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
 
     if ($news_data['featured'] == 1 && $config['NEWS_MODERATION'] == 1) {
         $moderation = 0;

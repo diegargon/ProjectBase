@@ -40,7 +40,7 @@ function news_form_getPost() {
        
     if (defined('ACL') && 'ACL') { //if admin can change author if not ignore news_author
         if( ( $acl_auth->acl_ask('news_admin') ) == true || ( $acl_auth->acl_ask('admin_all') ) == true ) {            
-            isset($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author") : false;
+            isset($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author", 25,3) : false;
             if (!empty($data['author'])) {               
                 if( ($selected_user = $sm->getUserByUsername($data['author'])) ) {
                     $data['author_id'] = $selected_user['uid'];                
@@ -68,7 +68,8 @@ function news_form_getPost() {
     !empty($_POST['news_source']) ? $data['news_source'] = S_POST_URL("news_source") : false;
     !empty($_POST['news_new_related']) ? $data['news_new_related'] = S_POST_URL("news_new_related") : false;
     !empty($_POST['news_related']) ? $data['news_related'] = S_POST_URL("news_related") : false;
-
+    !empty($_POST['news_translator']) ? $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3) : false;
+    !empty($_POST['post_newlang']) ? $data['post_newlang'] = S_POST_INT("post_newlang") : false;
     return $data;
 }
 
@@ -77,10 +78,9 @@ function news_form_process() {
     global $LANGDATA, $config;
     
     $news_data = news_form_getPost();
-
     //USERNAME/AUTHOR
     if (empty($news_data['author']) ) {
-        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonimous its allowed        
+        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonymous its allowed        
     }           
     if ($news_data['author'] == false) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR']);    
@@ -165,6 +165,12 @@ function news_form_process() {
         } else {
             $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
         }
+    } else if($news_data['post_newlang'] > 0) {
+        if (news_translate($news_data)) {
+            $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_TRANSLATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
+        } else {
+            $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
+        }        
     } else {
         if(news_create_new($news_data)) {
             $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'], "url" => $config['WEB_URL']);
@@ -189,27 +195,17 @@ function Newspage_FormScript() {
     
     return $script;
 }
-
-function news_get_sitelangs($news_data = null) { 
+//Used when submit new news, get all site available langs and selected the default/user lang
+function news_get_all_sitelangs() {  
     global $config, $ml; 
-    if(defined('MULTILANG') && 'MULTILANG') {
-        $site_langs = $ml->get_site_langs();
-    } else {
-        $site_langs['lang_id'] = $config['WEB_LANG_ID'];
-        $site_langs['lang_name'] = $config['WEB_LANG_NAME'];
-        $site_langs['iso_code'] = $config['WEB_LANG'];
-    }
+
+    $site_langs = $ml->get_site_langs();
+
     if (empty($site_langs)) { return false; }
-    
-    if ($news_data != null && !empty($news_data['lang'])) {
-        $match_lang = $news_data['lang'];
-    } else {
-        $match_lang = $config['WEB_LANG'];
-    }
     
     $select = "<select name='news_lang' id='news_lang'>";     
     foreach ($site_langs as $site_lang) {
-        if($site_lang['iso_code'] == $match_lang) {
+        if($site_lang['iso_code'] == $config['WEB_LANG']) {
             $select .= "<option selected value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
         } else {            
             $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
@@ -219,14 +215,14 @@ function news_get_sitelangs($news_data = null) {
 
     return $select;
 }
-
-function news_get_free_sitelangs($news_data) { 
+//used when edit news, omit langs that already have this news translate
+function news_get_available_langs($news_data) {  
     global $config, $ml, $db; 
 
     $site_langs = $ml->get_site_langs();
     if (empty($site_langs)) { return false; }
     
-    if ($news_data != null && !empty($news_data['lang'])) {
+    if (!empty($news_data['lang'])) {
         $match_lang = $news_data['lang'];
     } else {
         $match_lang = $config['WEB_LANG'];
@@ -247,15 +243,27 @@ function news_get_free_sitelangs($news_data) {
 
     return $select;
 }
+//used when translate a news, omit all already translate langs include original
+function news_get_missed_langs($nid) { 
+    global $config, $ml, $db; 
 
-function news_clean_featured($lang) {
-    global $db;
-       
-    $where_ary['featured'] = '0';
-    if (defined('MULTILANG') && 'MULTILANG') {
-
-        $where_ary['lang'] = $lang;
+    $nolang = 1;
+    
+    $site_langs = $ml->get_site_langs();
+    if (empty($site_langs)) { return false; }
+    
+    $select = "<select name='news_lang' id='news_lang'>";     
+    foreach ($site_langs as $site_lang) {
+            $query = $db->select_all("news", array("nid" => $nid, "lang_id" => $site_lang['lang_id']), "LIMIT 1");
+            if ($db->num_rows($query) <= 0) {
+                $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
+                $nolang = 0;
+            }
+    }       
+    $select .= "</select>";
+    if ($nolang) {
+        return false;
+    } else {
+        return $select;
     }
-    $db->update("news", $where_ary);
-
 }

@@ -20,13 +20,12 @@ function news_format_media($media) {
 
 function get_news_byId($nid, $lang = null){
     global $acl_auth, $ml, $db;         
-
+    
     $where_ary['nid'] = $nid;
     if (defined('MULTILANG') && 'MULTILANG' && $lang != null) {        
         $site_langs = $ml->get_site_langs();
         foreach ($site_langs as $site_lang) {
             if($site_lang['iso_code'] == $lang) {
-                //$q .= "AND lang_id = '{$site_lang['lang_id']}'";
                 $where_ary['lang_id'] = $site_lang['lang_id'];
                 break;
             }
@@ -34,19 +33,19 @@ function get_news_byId($nid, $lang = null){
     }                
     $query = $db->select_all("news", $where_ary, "LIMIT 1");
     
-    if($db->num_rows($query) == 0 ) {        
+    if($db->num_rows($query) <= 0 ) {        
         return false;
     }
-    $row = $db->fetch($query);
+    $news_row = $db->fetch($query);
     
-    if( 'ACL' && !empty($acl_auth) && !empty($row['acl'])) {
-        if(!$acl_auth->acl_ask($row['acl'])) {
+    if( 'ACL' && !empty($acl_auth) && !empty($news_row['acl'])) {
+        if(!$acl_auth->acl_ask($news_row['acl'])) {
             return 403;
         }
     } 
     $db->free($query);
 
-    return $row;
+    return $news_row;
 }
 
 function get_news_main_link_byID($nid) {
@@ -88,16 +87,13 @@ function news_menu_submit_news() {
 function news_check_display_submit () {
     global $config, $acl_auth;
     
-    if(
-            (empty($_SESSION['isLogged'])  && $config['NEWS_SUBMIT_ANON'] == 1) ||  // Anon can send
-            ( !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1 && $config['NEWS_SUBMIT_REGISTERED'] = 1) // Registered can send
-                ){       
+    if( (empty($_SESSION['isLogged'])  && $config['NEWS_SUBMIT_ANON'] == 1) ||  // Anon can send
+         ( !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1 && $config['NEWS_SUBMIT_REGISTERED'] == 1) // Registered can send
+      ){       
             return true;
     } else {
         if(defined('ACL') && 'ACL') {
-            if ( $acl_auth->acl_ask("news_submit") ||
-                 $acl_auth->acl_ask("admin_all")
-                    ) {
+            if ( $acl_auth->acl_ask("news_submit||admin_all") ) {
                 return true;
             }
         }
@@ -122,4 +118,15 @@ function news_get_related($nid) {
         return false;
     }
     return $related;
+}
+
+function news_clean_featured($lang_id) {
+    global $db;
+       
+    $set_ary['featured'] = '0';
+    if (defined('MULTILANG') && 'MULTILANG') {
+        $where_ary['lang_id'] = $lang_id;
+    }
+    $db->update("news", $set_ary, $where_ary);
+
 }

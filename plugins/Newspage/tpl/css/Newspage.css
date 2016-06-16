@@ -134,7 +134,9 @@
     font-style: italic; 
     padding: 5px;
 }
-.article_text {}
+.article_text {
+    min-height: 330px;
+}
 .article_main_media {
     float:right;
 }

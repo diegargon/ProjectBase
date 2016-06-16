@@ -59,3 +59,7 @@ $LANGDATA['L_NEWS_INFRONTPAGE_DESC'] = "Aquí podras ver y cambiar la lista de n
 $LANGDATA['L_NEWS_BACKPAGE'] = "Contraportada";
 $LANGDATA['L_NEWS_SOURCE'] = "Fuente";
 $LANGDATA['L_NEWS_RELATED'] = "Relacionadas";
+$LANGDATA['L_NEWS_NEWLANG'] = "Nuevo lenguaje";
+$LANGDATA['L_NEWS_TRANSLATOR'] = "Traductor";
+$LANGDATA['L_NEWS_TRANSLATE_SUCESSFUL'] = "Noticia traducida enviada con exito";
+$LANGDATA['L_NEWS_TRANSLATE_BY'] = "Traducido por:";

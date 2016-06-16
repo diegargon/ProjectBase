@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function news_page_main() {
-    global $config, $LANGDATA, $acl_auth, $tpl;
+    global $config, $LANGDATA, $acl_auth, $tpl, $sm;
     
     //TODO: Split/simplified in functions
     
@@ -13,7 +13,7 @@ function news_page_main() {
         $tpl->addto_tplvar("E_MSG", $LANGDATA['L_NEWS_NOT_EXIST']);
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
         return false;
-    }
+    }    
     if ( S_GET_INT("admin") && ( $newslang = S_GET_CHAR_AZ("newslang", 2, 1) ) ) {
        if (defined("ACL") && "ACL") {
            if($acl_auth->acl_ask("admin_all||news_admin")){// || $acl_auth->acl_ask("news_admin")) {
@@ -65,13 +65,13 @@ function news_page_main() {
                 news_redirect();
             }
             if (isset($_GET['news_featured']) && !empty($_GET['lang_id'] && !empty($_GET['nid']))) {
-                empty($_GET['news_featured']) ? $news_featured = 0: $news_featured =1;                
+                empty($_GET['news_featured']) ? $news_featured = 0: $news_featured = 1;                
                 news_featured(S_GET_INT("nid", 11, 1), $news_featured, S_GET_INT("lang_id"));
                 news_redirect();
             }
 
-            if (isset($_GET['news_frontpage'])  && !empty($_GET['lang_id'])) {
-               news_frontpage(S_GET_INT("nid", 11, 1), S_GET_INT("lang_id"), S_GET_INT("news_frontpage", 1, 1));
+            if ( isset($_GET['news_frontpage']) && !empty($_GET['lang_id']) ) {
+               news_frontpage( S_GET_INT("nid", 11, 1), S_GET_INT("lang_id"), S_GET_INT("news_frontpage", 1, 1));
                news_redirect();    
             }             
         }
@@ -84,6 +84,10 @@ function news_page_main() {
     $tpl_data['NEWS_AUTHOR'] = $news_row['author'];
     $tpl_data['NEWS_AUTHOR_UID'] = $news_row['author_id'];       
     $tpl_data['NEWS_TEXT']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
+    if (!empty ($news_row['translator'])) {
+        $translator = $sm->getUserByUsername($news_row['translator']);        
+        $tpl_data['NEWS_TRANSLATOR'] = "<a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
+    }
     $tpl->addtpl_array($tpl_data);
 
     if ( ($media = get_news_main_link_byID($nid)) != false) {
@@ -106,6 +110,7 @@ function Newspage_AdminOptions($news) {
     global $LANGDATA, $config;
 
     $content = "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
+    $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_new_lang={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
     if ($news['featured'] == 1) {
         $content .= "<li><a class='link_active' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=0&featured_value=0&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
     } else {
@@ -153,11 +158,9 @@ function news_approved($nid, $lang_id) {
 function news_featured($nid, $featured, $lang_id) {
     global $db;
     
-    if (!empty($nid) && !empty($lang_id)) {            
+    if (!empty($nid) && !empty($lang_id)) {         
+        $featured == 1 ? news_clean_featured($lang_id) : false;
         $db->update("news", array("featured" => $featured), array("nid" => $nid, "lang_id" => $lang_id));
-        if($featured == 1) {
-            $db->update("news", array("featured" => 0), array("lang_id" => $lang_id, "nid" => array("value" => $nid, "operator" => "!=" ) ));
-        }
     } else {
         return false;
     }
