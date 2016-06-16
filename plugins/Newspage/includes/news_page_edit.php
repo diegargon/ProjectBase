@@ -252,13 +252,19 @@ function news_translate($news_data) {
 
     $news_data['title'] = $db->escape_strip($news_data['title']);
     $news_data['lead'] = $db->escape_strip($news_data['lead']);
-    $news_data['text'] = $db->escape_strip($news_data['text']);    
+    $news_data['text'] = $db->escape_strip($news_data['text']);
+
+    if ($news_data['featured'] == 1 && $config['NEWS_MODERATION'] == 1) {
+        $moderation = 0;
+    } else if ($config['NEWS_MODERATION'] == 1){
+        $moderation = 1;
+    }        
     
     $insert_ary = array (
       "nid" => $nid, "lang_id" => $lang_id, "translator" => $news_data['news_translator'], "title" => $news_data['title'], 
       "lead" => $news_data['lead'],  "text" => $news_data['text'],  
       "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
-      "lang" => $news_data['lang'], "acl" => $acl
+      "lang" => $news_data['lang'], "acl" => $acl, "moderation" => $moderation
     );   
     $db->insert("news", $insert_ary);
     
