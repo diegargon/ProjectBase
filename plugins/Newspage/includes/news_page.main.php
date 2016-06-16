@@ -139,8 +139,11 @@ function news_delete($nid, $lang_id) {
         return false;
     }    
     $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
-    $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
     
+    $query = $db->select_all("news", array("nid" => $nid));
+    if ($db->num_rows($query) <= 0) {
+        $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
+    }
     return true;
 }
 
