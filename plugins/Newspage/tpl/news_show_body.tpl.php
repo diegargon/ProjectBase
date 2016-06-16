@@ -12,7 +12,15 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
             <div class="news_msg"><p><?php print $tpldata['NEWS_MSG']?></p></div>
 <?php } ?>
             <div class="article_body">
-                <?php isset($tpldata['NEWS_ADMIN_NAV']) ? print $tpldata['NEWS_ADMIN_NAV']:false ?>                                
+<?php  if(!empty($tpldata['NEWS_ADMIN_NAV'])) { ?>
+                <div id='adm_nav_container'>
+                <nav id='adm_nav'>
+                    <ul>
+                        <?php print $tpldata['NEWS_ADMIN_NAV'] ?>
+                    </ul>
+                </nav>
+                </div>                    
+<?php } ?>                                
                 <?php isset($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
 
                 <div class="article_title">

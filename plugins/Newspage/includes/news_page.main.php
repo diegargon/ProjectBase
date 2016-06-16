@@ -104,10 +104,8 @@ function news_page_main() {
 
 function Newspage_AdminOptions($news) {
     global $LANGDATA, $config;
-    $content = "<div id='adm_nav_container'>";
-    $content .= "<nav id='adm_nav'>";
-    $content .= "<ul>";
-    $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
+
+    $content = "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
     if ($news['featured'] == 1) {
         $content .= "<li><a class='link_active' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=0&featured_value=0&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
     } else {
@@ -126,10 +124,6 @@ function Newspage_AdminOptions($news) {
             $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_frontpage=1&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
         }
     }
-    $content .= "</ul>";
-    $content .= "</nav>";
-    $content .= "</div>";
-
     return $content;
 }
 
