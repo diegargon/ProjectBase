@@ -52,8 +52,8 @@ function news_page() {
                     $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());
                     news_page_edit();              
                 }
-            } else {                
-                $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_NEWS_NO_EDIT_PERMISS'];
+            } else {               
+                $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_NEWS_NO_EDIT_PERMISS']);
                 do_action("error_message_page");
             }
         }
@@ -70,6 +70,6 @@ function news_page() {
     } else {
         require_once("includes/news_page.main.php");   
         do_action("common_web_structure");
-        news_page_main();
+        news_show_page();
     }
 }

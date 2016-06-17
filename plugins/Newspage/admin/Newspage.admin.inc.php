@@ -43,13 +43,10 @@ function Newspage_AdminCategories() {
         $content .= "<input type='hidden' name='cid' value='{$cat_grouped['cid']}' />" ;                   
         $content .= "<input type='submit' name='ModCatSubmit' value='{$LANGDATA['L_NEWS_MODIFY']}' />" ;   
         $content .= "</div></form>";
-    }
-            
-    $content .= "</div>";
-    
+    }            
+    $content .= "</div>";   
     //NEW CAT
-    $content .= "<div>";
-    
+    $content .= "<div>";    
     $content .= "<p>{$LANGDATA['L_NEWS_CREATE_CAT']}</p>";
     $content .= "<form id='cat_new' method='post' action=''>";
     $content .= "<div>";
@@ -67,7 +64,6 @@ function Newspage_AdminCategories() {
     $content .= "<input type='submit' name='NewCatSubmit' value='{$LANGDATA['L_NEWS_CREATE']}' />" ;
     $content .= "</div>";        
     $content .= "</form>";
-
     $content .= "</div>";
     
     return $content;
@@ -134,7 +130,7 @@ function Newspage_AdminModeration() {
             $content .= "<p>"                    
                     . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete={$news_row['nid']}&lang_id={$news_row['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_DELETE']}</a>]"
                     . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_approved={$news_row['nid']}&lang_id={$news_row['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a>]"                        
-                    . "<a href='/newspage.php?nid={$news_row['nid']}&admin=1&newslang={$news_row['lang']}' target='_blank'>{$news_row['title']}</a>"
+                    . "<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&admin=1' target='_blank'>{$news_row['title']}</a>"
                     . "</p>";
         }
     }
@@ -159,13 +155,11 @@ function Newspage_InFrontpage () {
         } else {
             $backpage .= "<li><span> [". format_date($news_row['date'])."]  [{$news_row['lang']}] </span><a href='/newspage.php?lang={$news_row['lang']}&nid={$news_row['nid']}'>{$news_row['title']}</a> </li>";
         }
-    }
-        
+    }        
     $content = "<div>";
     $content .= "<section><ul>$frontpage</ul></section>";
     $content .= "<section><ul>$backpage</ul></section>";
     $content .= "</div>";
     
     return $content;
-
 }
