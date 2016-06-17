@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_Login() {
-    global $config, $LANGDATA, $db;
+    global $config, $LANGDATA, $db, $sm;
     
     if ( (($email = S_POST_EMAIL("email")) != false) &&
         ($email != null) &&
@@ -24,9 +24,9 @@ function SMBasic_Login() {
                 if ($user['disable'] == 1) {
                     $response[] = array("status" => "error", "msg" => $LANGDATA['L_SM_E_DISABLE'] );
                 } else {
-                    SMBasic_setSession($user);
+                    $sm->setSession($user);
                     if ( ($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])  ){                                 
-                        SMBasic_setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11));
+                        $sm->setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11));
                     }                    
                     $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);                
                 }

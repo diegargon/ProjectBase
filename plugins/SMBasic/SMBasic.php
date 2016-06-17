@@ -27,7 +27,7 @@ function SMBasic_Init() {
     } else {
         if($config['smbasic_session_persistence']) {
             print_debug("Checkcookies trigged", "SM_DEBUG"); 
-            SMBasic_checkCookies();
+            $sm->checkCookies();
         }
     }
     if( defined('SM_DEBUG') && !empty($_SESSION['isLogged'])) { // && $_SESSION['isLogged'] == 1 ) {
