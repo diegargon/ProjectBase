@@ -56,7 +56,7 @@ function SMBasic_checkSession() {
 }
 
 function SMBasic_checkCookies() {
-    global $config, $db;
+    global $config, $db, $sm;
 
     $cookie_uid = S_COOKIE_INT("{$config['smbasic_cookie_prefixname']}uid", 11);    
     $cookie_sid = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefixname']}sid", 32);        
@@ -72,29 +72,13 @@ function SMBasic_checkCookies() {
                 return true;
             }
         } else { 
-            SMBasic_sessionDestroy();
+            $sm->sessionDestroy();
         }
     }
    
     return false;
 }
 
-function SMBasic_sessionDestroy() {
-    // TODO 
-    $_SESSION = [];
-    session_destroy();
-    SMBasic_clearCookies();    
-}
-
-function SMBasic_clearCookies() {
-    global $config;
-    $cookie_name_sid = $config['smbasic_cookie_prefixname'] . "sid";
-    $cookie_name_uid = $config['smbasic_cookie_prefixname'] . "uid"; 
-    unset($_COOKIE[$cookie_name_sid]);
-    unset($_COOKIE[$cookie_name_uid]);
-    setcookie($cookie_name_sid, 0, time()-3600, '/');
-    setcookie($cookie_name_uid, 0, time()-3600, '/');
-}
 
 function SMBasic_sessionDebugDetails() { 
     global $db;

@@ -22,7 +22,7 @@ function SMBasic_Init() {
     if ( (S_SESSION_INT("uid") != false && S_SESSION_CHAR_AZNUM("sid") != false) ) {
         if(!SMBasic_checkSession()) {
             print_debug("Check session failed on SMBasic_Init destroy session", "SM_DEBUG");
-            SMBasic_sessionDestroy();
+            $sm->sessionDestroy();
         }           
     } else {
         if($config['smbasic_session_persistence']) {
@@ -83,9 +83,9 @@ function SMBasic_profilePage() {
         SMBasic_ViewProfile();
     } else {
         if( ($user = $sm->getSessionUser()) == false) {
-            //TODO error manager
-            echo "Error: 3242";
-            exit(0);        
+            $sm->sessionDestroy();
+            $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_SM_E_USER_NOT_EXISTS']);
+            do_action("error_message_page");   
         } else {        
             do_action("common_web_structure");       
             $tpl->getCSS_filePath("SMBasic");
@@ -142,6 +142,7 @@ function SMBasic_navLogReg() {
 }
 
 function SMBasic_logoutPage() {
-    SMBasic_sessionDestroy();
+    global $sm;
+    $sm->sessionDestroy();
     header('Location: ./');
 }

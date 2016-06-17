@@ -23,14 +23,19 @@ function SMBasic_ViewProfile() {
     
     $uid = S_GET_INT("viewprofile", 11, 1);
     if (empty($uid)) {
-        return false; 
+        $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_SM_E_USER_NOT_EXISTS']);
+        do_action("error_message_page");
     }
     $v_user = $sm->getUserbyID($uid);
-
-    do_action("common_web_structure");
-    $tpl->getCSS_filePath("SMBasic");
-    $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");    
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "viewprofile", $v_user));
+    if ($v_user) {        
+        do_action("common_web_structure");
+        $tpl->getCSS_filePath("SMBasic");
+        $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");    
+        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "viewprofile", $v_user));
+    } else {
+        $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_SM_E_USER_NOT_EXISTS']);
+        do_action("error_message_page");
+    }
 
 }
 function SMBasic_ProfileChange() {

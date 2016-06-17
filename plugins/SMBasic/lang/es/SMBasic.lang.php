@@ -88,4 +88,5 @@ $LANGDATA['L_SM_ACTIVATE'] = "Activar";
 $LANGDATA['L_SM_DISABLE'] = "Desabilitar";
 $LANGDATA['L_SM_ENABLE'] = "Abilitar";
 $LANGDATA['L_SM_E_DISABLE'] = "Tu cuenta esta deshabilitada, si no sabe por que contacte con el administrador";
+$LANGDATA['L_SM_E_USER_NOT_EXISTS'] = "Usuario no existe";
 //$LANGDATA['L_'] = "";

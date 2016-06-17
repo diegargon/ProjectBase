@@ -74,4 +74,21 @@ class SessionManager {
         }
         return false;
     }
+    
+    function sessionDestroy() {
+        $_SESSION = [];
+        session_destroy();
+        $this->clearCookies();  
+    }
+
+    function clearCookies() {
+        global $config;
+        
+        $cookie_name_sid = $config['smbasic_cookie_prefixname'] . "sid";
+        $cookie_name_uid = $config['smbasic_cookie_prefixname'] . "uid"; 
+        unset($_COOKIE[$cookie_name_sid]);
+        unset($_COOKIE[$cookie_name_uid]);
+        setcookie($cookie_name_sid, 0, time()-3600, '/');
+        setcookie($cookie_name_uid, 0, time()-3600, '/');
+    }    
 }
