@@ -10,7 +10,7 @@ class ACL {
     private $roles, $user_roles;
     
     function __construct() {     
-   }
+    }
    
     function acl_ask($roles_demand, $resource = null) {
         print_debug("ACL_ASK-> $roles_demand", "ACL_DEBUG"); 
@@ -33,17 +33,8 @@ class ACL {
         }
         //remove all white spaces since in next step when split not want check agains "admin_all " instead of "admin_all"
         $roles_demand = preg_replace('/\s+/', '', $roles_demand); 
-        return $this->check_demanding_roles($roles_demand);
-/*   OLD method conservar mientras se prueba nuevo     
-        list($role_group, $role_type) = preg_split("/_/", $roles_demand);                        
         
-        if (!$this->checkUserPerms($role_group, $role_type) ) {    
-            return false;            
-        } else {
-            return true;
-        }
- * 
- */
+        return $this->check_demanding_roles($roles_demand);
     }
 
     function get_roles_select($acl_group = null, $selected = null) {
@@ -78,17 +69,16 @@ class ACL {
             if(!$user_role_data = $this->getRoleByID($user_role['role_id'])) {
                 return false;
             }
-            if (
-                    ($user_role_data['role_id'] ==  $asked_role['role_id']) &&
-                    ($user_role_data['resource'] == $resource) //Used later                     
-                    ) {                
+            if ( ($user_role_data['role_id'] ==  $asked_role['role_id']) &&
+                 ($user_role_data['resource'] == $resource) //Used later                     
+                ) {                
                 return true; //its the exact role
             }                          
-            if ( //Look if role its upper level
-                    ( $asked_role['role_group'] == $user_role_data['role_group'] )&&
-                    ( $asked_role['level'] > $user_role_data['level'] ) &&
-                    ( $user_role_data['resource'] == $resource) //Used later 
-                    ) {
+            //Look if role its upper level
+            if ( ( $asked_role['role_group'] == $user_role_data['role_group'] )&&
+                 ( $asked_role['level'] > $user_role_data['level'] ) &&
+                 ( $user_role_data['resource'] == $resource) //Used later 
+                ) {
                 return true;
             }
         }
@@ -97,22 +87,18 @@ class ACL {
     
     private function getRoleDataByName($role_group, $role_type) {        
         foreach ($this->roles as $rol) {
-            if (
-                    ( ($rol['role_group'] == $role_group) && ($rol['role_type'] == $role_type) )
-                    ){
-                        return $rol;
-                    }
+            if ( ($rol['role_group'] == $role_group) && ($rol['role_type'] == $role_type) ){
+                return $rol;
+            }
         }
         return false;
     }    
     
     private function getRoleByID($role_id) {
         foreach ($this->roles as $role) {
-            if (
-                    ( ($role['role_id'] == $role_id))                    
-                    ){
-                        return $role;
-                    }
+            if ( ($role['role_id'] == $role_id)){
+                return $role;
+            }
         }
         return false;
     }
