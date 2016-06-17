@@ -35,7 +35,7 @@ function news_new_form($post_data = null) {
 }
 
 function news_create_new($news_data) {
-    global $config, $ml, $db, $sm;
+    global $config, $ml, $db;
         
     $nid = $db->get_next_num("news", "nid");
     if (defined('MULTILANG') && 'MULTILANG') {
@@ -43,10 +43,7 @@ function news_create_new($news_data) {
     } else {
         $lang_id  = $config['WEB_LANG_ID'];        
     }        
-    
-    if ( ($uid = $sm->getSessionUserID()) == false ) {
-        $uid = 0;
-    }    
+ 
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
 

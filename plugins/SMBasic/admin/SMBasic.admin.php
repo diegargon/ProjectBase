@@ -25,15 +25,14 @@ function SMBasic_AdminContent($params) {
 
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");  
-
-   $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n" );                               
+    $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n" );
     $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_SM_SEARCH_USER'] ."</a></li>\n");
     $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=3'>". $LANGDATA['L_SM_USERS_LIST'] ."</a></li>\n");
 
     $opt = S_GET_INT("opt");
     if ( $opt == 1 || $opt == false) {
         $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'] );
-        $tpl->addto_tplvar("ADM_CONTENT", Admin_GetPluginState("SMBasic"));       
+        $tpl->addto_tplvar("ADM_CONTENT", Admin_GetPluginState("SMBasic"));
     } else if ( $opt == 2) {
         SMBasic_UserSearch();
     } else if ( $opt == 3) {
@@ -70,7 +69,6 @@ function SMBasic_UserSearch() {
     isset($_POST['posted_glob']) ? $glob = 1 : $glob = 0;
     isset($_POST['posted_email']) ? $email = 1 : $email = 0;
     $s_string = S_POST_STRICT_CHARS("search_user", 32, 1);
-
 
     if (!empty($_POST['btnSearchUser']) && !empty($s_string)) {
         if ( ($users_ary = $sm->searchUser($s_string, $email, $glob)) ) {

@@ -15,48 +15,26 @@ class SessionManager {
         global $db;
                        
         $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
-    
-        if ($db->num_rows($query) <= 0) {
-            return false;        
-        } else {
-            return $db->fetch($query);
-        }        
+
+        return ($db->num_rows($query) <= 0) ? false : $db->fetch($query);
     }
     
     function getUserByUsername($username) {
         global $db;
         $query = $db->select_all("users", array("username" => $username), "LIMIT 1");
-        if ($db->num_rows($query) <= 0) {
-                return false;
-        } else {
-            return $db->fetch($query);
-        }
+
+        return ($db->num_rows($query) <= 0) ? false : $db->fetch($query);
     }
 
-    function getSessionUser() {  //TODO Recheck/rethink  THIS FUCTION logic
+    function getSessionUser() {  //TODO Recheck/rethink  THIS FUCTION logic SESSION THINK
         global $db;
                 
-        if (empty($this->user)) {            
-            if( ($uid = S_SESSION_INT("uid", 11, 1)) == false) {                
-                $this->user = false;
-            }            
+        if (empty($this->user)) {
+            ($uid = S_SESSION_INT("uid", 11, 1)) == false ? $this->user = false : false;
             $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
-    
-            if ($db->num_rows($query) <= 0) {                
-                $this->user = false;
-            } else {                
-                $this->user = $db->fetch($query);
-            }        
+            $db->num_rows($query) <= 0 ? $this->user = false : $this->user = $db->fetch($query);
         }
         return $this->user;    
-    }
-    function getSessionUserID () { 
-        //TODO use $user instead of $_SESSION?
-        if (S_SESSION_INT("isLogged", 1) == 1) {
-            return S_SESSION_INT("uid", 11, 1);
-        } else {
-            return false;
-        }
     }
 
     function getAllUsersArray($order_field = "regdate", $order = "ASC",  $limit = 20) {

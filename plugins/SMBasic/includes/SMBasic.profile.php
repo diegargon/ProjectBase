@@ -19,7 +19,7 @@ function SMBasic_ProfileScript() {
 }
 
 function SMBasic_ViewProfile() {
-    global $tpl, $db, $sm;
+    global $tpl, $sm;
     
     $uid = S_GET_INT("viewprofile", 11, 1);
     if (empty($uid)) {
@@ -36,7 +36,7 @@ function SMBasic_ViewProfile() {
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config, $db; 
     
-    if( empty($_POST['cur_password']) ||  strlen ($_POST['cur_password']) <  $config['smbasic_min_password']) {
+    if( empty($_POST['cur_password']) ||  strlen($_POST['cur_password']) <  $config['smbasic_min_password']) {
        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;

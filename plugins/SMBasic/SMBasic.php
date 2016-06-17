@@ -100,14 +100,12 @@ function SMBasic_loginPage () {
     global $tpl;
     require_once("includes/SMBasic.login.php");
     
-
     if( S_SESSION_INT("isLogged") == 1) {  
         $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA'];        
         $tpl->addto_tplvar("E_MSG",$GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED']);
         do_action("error_message_page");
         return false;
-    }
-    
+    }    
     if (isset($_GET['active'])) {
        SMBasic_user_activate_account();
        //TODO error msg on return false; and confirmation on true

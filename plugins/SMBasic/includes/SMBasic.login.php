@@ -9,8 +9,7 @@ function SMBasic_Login() {
     
     if ( (($email = S_POST_EMAIL("email")) != false) &&
         ($email != null) &&
-        (($password = SMBasic_validate_password($_POST['password']))!= false) &&
-        ($password != null)
+        ( ($password = S_POST_CHAR_AZNUM("password", $config['smbasic_max_password'], $config['smbasic_min_password'])) != false)
     ){
         $password = do_action("encrypt_password", $password);
         if(empty($password)) {
@@ -154,9 +153,4 @@ function SMBasic_LoginScript() {
     $script .= $tpl->getScript_fileCode("SMBasic", "login");
     
     return $script;
-}
-
-function SMBasic_validate_password($password) { //TODO FILTER VALFILTER CORE
-    global $config;
-    return S_VAR_CHAR_AZ_NUM($password, $config['smbasic_max_password'], $config['smbasic_min_password'] ); //FIX only AZ NUM no special
 }

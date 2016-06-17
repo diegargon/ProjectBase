@@ -164,7 +164,7 @@ function news_form_process() {
         } else {
             $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
         }
-    } else if($news_data['post_newlang'] > 0) {
+    } else if(!empty($news_data['post_newlang'])) {
         if (news_translate($news_data)) {
             $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_TRANSLATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
         } else {

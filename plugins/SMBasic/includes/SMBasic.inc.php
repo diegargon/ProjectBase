@@ -21,7 +21,7 @@ function SMBasic_checkSession() {
     $now = time();
     $next_expire = time() + $config['smbasic_session_expire'];
     
-    $query = $db->select_all("sessions", array("session_id" => "{$_SESSION['sid']}", "session_uid" => "{$_SESSION['uid']}"), "LIMIT 1"); //TODO filter SESSION
+    $query = $db->select_all("sessions", array("session_id" => S_SESSION_CHAR_AZNUM("sid"), "session_uid" => S_SESSION_INT("uid")), "LIMIT 1");
     
     if ($db->num_rows($query) <= 0) {        
         $db->free($query);
@@ -129,20 +129,12 @@ function SMBasic_sessionDebugDetails() {
 
 function SMBasic_check_IP($db_session_ip) { 
     $ip = S_SERVER_REMOTE_ADDR();
-    if($ip == $db_session_ip) {
-        return true;
-    }
-    
-    return false;    
+    return ($ip == $db_session_ip) ? true : false;
 }
 
 function SMBasic_check_user_agent($db_user_agent) { 
     $user_agent = S_SERVER_USER_AGENT();
-    if ($user_agent == $db_user_agent) {        
-        return true;
-    }
-    
-    return false;
+    return ($user_agent == $db_user_agent) ? true : false;
 }
 
 function SMBasic_setSession($user) { 
@@ -150,10 +142,10 @@ function SMBasic_setSession($user) {
 
     $session_expire = time() + $config['smbasic_session_expire'];
     $_SESSION['username'] = $user['username'];
-    $_SESSION['uid']  = $user['uid'];
+    $_SESSION['uid'] = $user['uid'];
     $_SESSION['sid'] = SMBasic_sessionToken();
     $_SESSION['isLogged'] = 1;
-    $ip =  $db->escape_strip( S_SERVER_REMOTE_ADDR());
+    $ip = $db->escape_strip( S_SERVER_REMOTE_ADDR());
     $user_agent = $db->escape_strip ( S_SERVER_USER_AGENT() );
     
     $db->delete("sessions", array("session_uid" => "{$user['uid']}"));
