@@ -9,16 +9,14 @@ function news_show_page() {
 
     if( (empty($_GET['nid'])) || ($nid = S_GET_INT("nid", 8, 1)) == false ||
         (empty($_GET['lang'])) || ($lang = S_GET_CHAR_AZ("lang", 2, 2)) == false) {
-        $tpl->addto_tplvar("E_MSG", $LANGDATA['L_NEWS_NOT_EXIST']); 
-        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
+        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box","L_NEWS_NOT_EXIST"));
         return false;
     }     
         
     if ( S_GET_INT("admin") ) {
         if (defined("ACL")) {
             if( !$acl_auth->acl_ask("admin_all||news_admin")) {
-                $tpl->addto_tplvar("E_MSG", $LANGDATA['L_ERROR_NOACCESS']);
-                $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box")); 
+                $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_ERROR_NOACCESS")); 
                 return false;                
             }
         } else {
@@ -66,27 +64,24 @@ function news_show_page() {
 }
 
 function news_get_page($nid, $lang) {
-    global $config, $LANGDATA, $tpl;    
+    global $config, $tpl;    
 
      //TODO errors to within get_news_byID function
     if ( ($news_row = get_news_byId($nid, $config['WEB_LANG'])) == 403)  {
-        $tpl->addto_tplvar("E_MSG", $LANGDATA['L_ERROR_NOACCESS']);
-        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box")); 
+        //$tpl->addto_tplvar("E_MSG", $LANGDATA['L_ERROR_NOACCESS']);
+        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_ERROR_NOACCESS")); 
         return false; 
     } else if ($news_row == false) {
         if( ($news_row = get_news_byId($nid)) == false) {
-            $tpl->addto_tplvar("E_MSG", $LANGDATA['L_NEWS_NOT_EXIST']);
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
+            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_NOT_EXIST"));
             return false;
         } else {
-            $tpl->addto_tplvar("E_MSG", $LANGDATA['L_NEWS_WARN_NOLANG']);
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
+            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_WARN_NOLANG"));
             return false;            
         }        
     }  
     if ($config['NEWS_MODERATION'] && $news_row['moderation'] && !S_GET_INT("admin") ) {
-            $tpl->addto_tplvar("E_MSG", $LANGDATA['L_NEWS_ERROR_WAITINGMOD']);
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box"));
+            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_ERROR_WAITINGMOD"));
             return false;        
     }     
 

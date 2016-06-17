@@ -41,12 +41,12 @@ function tplBasic_error_page() {
    
  }
 
- function tplBasic_error_box () {
+ function tplBasic_error_box ($e_msg = null) {
     global $tpl, $LANGDATA;
-    
+     
     $tpl->add_if_empty("E_TITLE", $LANGDATA['L_E_ERROR']);
     $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_BACK']);
-            
+    !empty($e_msg) ? $tpl->add_if_empty("E_MSG", $LANGDATA[$e_msg]) : false;
     $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "error"));
  }
  
