@@ -53,8 +53,7 @@ function news_page() {
                     news_page_edit();              
                 }
             } else {               
-                $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_NEWS_NO_EDIT_PERMISS']);
-                do_action("error_message_page");
+                do_action("error_message_page", "L_NEWS_NO_EDIT_PERMISS");
             }
         }
     } else if (!empty($_GET['news_new_lang'])) {

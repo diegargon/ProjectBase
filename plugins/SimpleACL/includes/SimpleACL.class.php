@@ -22,9 +22,8 @@ class ACL {
             $this->getRoles();
             $this->getUserRoles();   
         }
-        if ($this->roles == false) { 
-            $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ROLES_DB'];        
-            do_action("error_message_page");  //TODO RECHECK THAT
+        if ($this->roles == false) {             
+            do_action("error_message_page","L_ERROR_ROLES_DB");  //TODO RECHECK THAT
             return false;            
         }
 

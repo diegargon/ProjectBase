@@ -30,12 +30,12 @@ function tplBasic_index_page() {
     do_action("common_web_structure");        
 }
 
-function tplBasic_error_page() {        
+function tplBasic_error_page($e_msg = null) {        
     global $LANGDATA, $tpl;
             
     $tpl->add_if_empty("E_TITLE", $LANGDATA['L_E_ERROR']);        
     $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_BACK']);  
-
+    !empty($e_msg) ? $tpl->add_if_empty("E_MSG", $LANGDATA[$e_msg]) : false;
     do_action("common_web_structure");        
     $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "error"));
    

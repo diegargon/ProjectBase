@@ -46,9 +46,8 @@ function SMBasic_regPage() {
 
     require_once("includes/SMBasic.register.php");
     
-    if( S_SESSION_INT("isLogged") == 1) {
-        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED'];                
-        do_action("error_message_page");
+    if( S_SESSION_INT("isLogged") == 1) {                
+        do_action("error_message_page", "L_ERROR_ALREADY_LOGGED");
         return false;
     }
     
@@ -71,9 +70,8 @@ function SMBasic_profilePage() {
     global $tpl, $sm;    
     require_once("includes/SMBasic.profile.php");
     
-    if( S_SESSION_INT("isLogged") != 1) {                
-        $tpl->addto_tplvar("E_MSG",$GLOBALS['LANGDATA']['L_ERROR_NOT_LOGGED'] );
-        do_action("error_message_page");
+    if( S_SESSION_INT("isLogged") != 1) {                        
+        do_action("error_message_page","L_ERROR_NOT_LOGGED");
         return false;
     }
 
@@ -84,8 +82,7 @@ function SMBasic_profilePage() {
     } else {
         if( ($user = $sm->getSessionUser()) == false) {
             $sm->sessionDestroy();
-            $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_SM_E_USER_NOT_EXISTS']);
-            do_action("error_message_page");   
+            do_action("error_message_page", "L_SM_E_USER_NOT_EXISTS");   
         } else {        
             do_action("common_web_structure");       
             $tpl->getCSS_filePath("SMBasic");
@@ -101,9 +98,7 @@ function SMBasic_loginPage () {
     require_once("includes/SMBasic.login.php");
     
     if( S_SESSION_INT("isLogged") == 1) {  
-        $GLOBALS['tpldata']['E_MSG'] = $GLOBALS['LANGDATA'];        
-        $tpl->addto_tplvar("E_MSG",$GLOBALS['LANGDATA']['L_ERROR_ALREADY_LOGGED']);
-        do_action("error_message_page");
+        do_action("error_message_page","L_ERROR_ALREADY_LOGGED");
         return false;
     }    
     if (isset($_GET['active'])) {

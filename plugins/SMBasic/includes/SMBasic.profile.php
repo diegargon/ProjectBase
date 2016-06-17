@@ -23,8 +23,7 @@ function SMBasic_ViewProfile() {
     
     $uid = S_GET_INT("viewprofile", 11, 1);
     if (empty($uid)) {
-        $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_SM_E_USER_NOT_EXISTS']);
-        do_action("error_message_page");
+        do_action("error_message_page","L_SM_E_USER_NOT_EXISTS");
     }
     $v_user = $sm->getUserbyID($uid);
     if ($v_user) {        
@@ -33,8 +32,7 @@ function SMBasic_ViewProfile() {
         $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");    
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "viewprofile", $v_user));
     } else {
-        $tpl->addto_tplvar("E_MSG", $GLOBALS['LANGDATA']['L_SM_E_USER_NOT_EXISTS']);
-        do_action("error_message_page");
+        do_action("error_message_page","L_SM_E_USER_NOT_EXISTS");
     }
 
 }
