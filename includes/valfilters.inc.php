@@ -183,7 +183,7 @@ function S_VAR_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
         return false;
     }         
     
-    if (!preg_match("/^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$/", $var)) {       
+    if (!preg_match("/^[A-Za-z][A-Za-z0-9]*(?:_[A-Za-z0-9]+)*$/", $var)) {         
         return false;
     }    
     

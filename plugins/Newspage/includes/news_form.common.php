@@ -60,7 +60,7 @@ function news_form_getPost() {
     isset($_POST['news_category']) ? $data['category'] = S_POST_INT("news_category", 8) : false;
     isset($_POST['news_featured']) ? $data['featured'] = S_POST_INT("news_featured", 1) : false;     
     isset($_POST['news_lang']) ? $data['lang'] = S_POST_CHAR_AZ("news_lang", 2) : $data['lang'] = $config['WEB_LANG'];    
-    isset($_POST['news_acl']) ? $data['acl'] = S_POST_STRICT_CHARS($_POST['news_acl']) : false; 
+    isset($_POST['news_acl']) ? $data['acl'] = S_POST_STRICT_CHARS("news_acl") : false; 
     !empty($_POST['news_main_media']) ? $data['main_media'] = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']) : $data['main_media'] = "";
     !empty($_POST['news_update']) ? $data['update'] = S_POST_INT("news_update", 11, 1) : $data['update'] = 0;
     !empty($_POST['news_current_langid']) ? $data['current_langid'] = S_POST_INT("news_current_langid", 8, 1) : $data['current_langid'] = 0;
@@ -68,7 +68,7 @@ function news_form_getPost() {
     !empty($_POST['news_new_related']) ? $data['news_new_related'] = S_POST_URL("news_new_related") : false;
     !empty($_POST['news_related']) ? $data['news_related'] = S_POST_URL("news_related") : false;
     !empty($_POST['news_translator']) ? $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3) : false;
-    !empty($_POST['post_newlang']) ? $data['post_newlang'] = S_POST_INT("post_newlang") : false;
+    !empty($_POST['post_newlang']) ? $data['post_newlang'] = S_POST_INT("post_newlang") : false;     
     return $data;
 }
 
@@ -76,7 +76,7 @@ function news_form_getPost() {
 function news_form_process() {
     global $LANGDATA, $config;
     
-    $news_data = news_form_getPost();
+    $news_data = news_form_getPost();    
     //USERNAME/AUTHOR
     if (empty($news_data['author']) ) {
         $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonymous its allowed        
@@ -157,7 +157,7 @@ function news_form_process() {
     //
 
     //ALL OK SUBMIT or UPDATE
-
+    
     if($news_data['update'] > 0) { 
         if (news_update($news_data)) {
             $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    

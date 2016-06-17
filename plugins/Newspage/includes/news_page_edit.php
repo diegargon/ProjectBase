@@ -64,7 +64,7 @@ function news_update($news_data) {
 
     $nid = $news_data['update'];
     $current_langid = $news_data['current_langid'];
-    
+            
     if (defined('MULTILANG') && 'MULTILANG') {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
     } else {
@@ -78,17 +78,18 @@ function news_update($news_data) {
 
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = ""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
-
+    !isset($news_data['translator']) ? $news_data['translator'] = "" : false;
+    
     $news_data['title'] = $db->escape_strip($news_data['title']);
     $news_data['lead'] = $db->escape_strip($news_data['lead']);
     $news_data['text'] = $db->escape_strip($news_data['text']);    
-    
+        
     $set_ary = array (
       "lang_id" => $lang_id, "title" => $news_data['title'],  "lead" => $news_data['lead'],  "text" => $news_data['text'],  
         "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
-        "lang" => $news_data['lang'], "acl" => $acl
+        "lang" => $news_data['lang'], "acl" => $acl, "translator" => $news_data['news_translator']
     );
-
+    
     $where_ary = array ( 
         "nid" => "$nid", "lang_id" => "$current_langid"
     );
