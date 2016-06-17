@@ -68,7 +68,6 @@ function news_get_page($nid, $lang) {
 
      //TODO errors to within get_news_byID function
     if ( ($news_row = get_news_byId($nid, $config['WEB_LANG'])) == 403)  {
-        //$tpl->addto_tplvar("E_MSG", $LANGDATA['L_ERROR_NOACCESS']);
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_ERROR_NOACCESS")); 
         return false; 
     } else if ($news_row == false) {
