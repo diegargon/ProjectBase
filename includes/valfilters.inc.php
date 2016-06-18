@@ -181,6 +181,8 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
 }
 
 function S_VAR_URL($var, $max_size = null, $min_size = null) {
+    global $config;
+    
     if(empty($var)) {
        return false;        
     }
@@ -194,11 +196,14 @@ function S_VAR_URL($var, $max_size = null, $min_size = null) {
     if (!empty($min_size) && (strlen($var) < $min_size)) {
         return false;
     }
-    //TODO REMOTE CHECK VALIDATOR
-    //WARN that not check protocols and validate url like http://test/
-    //remote check can fix this and allow only working urls
+
     $url = filter_var($var, FILTER_SANITIZE_URL);  
-    return filter_var($url, FILTER_VALIDATE_URL);
+    $url = filter_var($url, FILTER_VALIDATE_URL);
+    
+    if ($config['REMOTE_CHECKS'] && (!remote_check($url)) ) {
+        $url = false;
+    }    
+    return $url;
 }
 
 function S_VAR_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
@@ -277,8 +282,7 @@ function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null) {
       return -1;
     }  
     if ($config['REMOTE_CHECKS']) {
-        $headers = get_headers($url);
-        if($headers['0'] == 'HTTP/1.1 404 Not Found') {
+        if (!remote_check($url)) {
             return -1;
         }
     }

@@ -94,3 +94,28 @@ function includePluginFiles($plugin, $admin = 0) {
         include_once($class_file);    
     }        
 }
+
+function remote_check($url) {
+    global $config;
+    
+    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) { 
+        $url = "http://" . $url;
+    }    
+
+    if ( strpos($url, 'https://') !== 0 ) {
+        stream_context_set_default(array('https' => array('method' => 'HEAD') ));    
+    } else {
+        stream_context_set_default(array('http' => array('method' => 'HEAD') ));
+    }
+    
+    $host = parse_url($url, PHP_URL_HOST);
+    if (gethostbyname($host) === $host) { //get host resolv ip if fail return the host
+        return false;
+    } else {
+        defined('DEBUG') ? $headers = get_headers($url) : $headers = @get_headers($url);
+        if($headers['0'] == 'HTTP/1.1 404 Not Found') {
+            return false;
+        }
+    }
+    return true;
+}
