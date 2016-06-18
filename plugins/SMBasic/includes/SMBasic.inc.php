@@ -66,7 +66,9 @@ function SMBasic_sessionDebugDetails() {
     print_debug("Session VAR Username: {$_SESSION['username']}", "SM_DEBUG");
     print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
     
-    $query = $db->select_all("sessions", array("session_uid" => "{$_SESSION['uid']}", "session_id" => "{$_SESSION['sid']}"), "LIMIT 1"); //TODO filter $_SESSION
+    $s_uid = S_SESSION_INT("uid");
+    $s_sid = S_SESSION_CHAR_AZNUM("sid");
+    $query = $db->select_all("sessions", array("session_uid" =>  "$s_uid", "session_id" => "$s_sid"), "LIMIT 1"); 
     $session = $db->fetch($query);    
     print_debug("Session DB IP: {$session['session_ip']}", "SM_DEBUG");
     print_debug("Session DB Browser: {$session['session_browser']}", "SM_DEBUG");
