@@ -10,14 +10,11 @@ class Multilang {
             
     function __construct() {
         $this->get_site_langs();
-   }
-    
-
+    }    
     function get_js() {
         $script = "";
     
-        if (!check_jsScript("jquery.min.js")) 
-        {
+        if (!check_jsScript("jquery.min.js")) {
             global $external_scripts;
             $external_scripts[] = "jquery.min.js";
             $script = "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
@@ -51,7 +48,7 @@ class Multilang {
                . "</form>"
                . "</li>";
     
-    return $mlnav;
+        return $mlnav;
     }    
     
     function get_site_langs($active = 1) {
@@ -62,25 +59,20 @@ class Multilang {
           $this->retrieve_db_langs(1);            
         }        
                 
-        if ($active) {
-            return $this->active_site_langs;
-        } else {
-            return $this->site_langs;
-        }
+        return ($active) ? $this->active_site_langs : $this->site_langs;
     }
 
-    function iso_to_id($isolang) {    
-        
+    function iso_to_id($isolang) {            
         foreach ($this->get_site_langs() as $lang) {
             if($lang['iso_code'] == $isolang) {
                 return $lang['lang_id'];
             }
         }    
-    return false;
+        return false;
     }    
     
     private function retrieve_db_langs($active= null) {
-        global $config, $db;
+        global $db;
 
         if (!empty($active)) {
             $query = $db->select_all("lang", array("active" => "$active"));
@@ -88,22 +80,12 @@ class Multilang {
             $query = $db->select_all("lang");
         }
         while($lang_row = $db->fetch($query)) {
-            if ($active) { //TODO better
-                $this->active_site_langs[] = array ("lang_id" => $lang_row['lang_id'],
-                             "lang_name" => $lang_row['lang_name'],
-                             "active" => $lang_row['active'],
-                             "iso_code" => $lang_row['iso_code'],
-                            );
+            if ($active) { 
+                $this->active_site_langs[] = $lang_row;
             } else {
-                $this->site_langs[] = array ("lang_id" => $lang_row['lang_id'],
-                             "lang_name" => $lang_row['lang_name'],
-                             "active" => $lang_row['active'],
-                             "iso_code" => $lang_row['iso_code'],
-                            );
-                
+                $this->site_langs[] = $lang_row;
             }
         }
-
         $db->free($query);
     }
 }

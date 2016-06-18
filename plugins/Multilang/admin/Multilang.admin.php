@@ -140,7 +140,7 @@ function Multilang_CreateLang() {
             
     if ($lang_name != false && $iso_code != false) {        
         
-        //Lang/ISo collation its utf8_general_ci (case insensitve), anway we use LIKE operator instead '=' 
+        //Lang/ISo collation its utf8_general_ci (case insensitve), anyway we use LIKE operator instead '=' 
         $where_ary = array (
             "lang_name" => array ("value" => "$lang_name", "operator" => "LIKE"),
             "iso_code" => array ("value" => "$iso_code", "operator" => "LIKE")
@@ -158,13 +158,13 @@ function Multilang_CreateLang() {
     }
 }
 function Multilang_DeleteLang() {
-    global $db, $LANGDATA;
+    global $db, $LANGDATA, $tpl;
     
     $lid = S_POST_INT("lang_id", 11);
     if ($lid != false) {
         $db->delete("lang", array("lang_id" => "$lid"));
         $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_DELETE_SUCCESS']);
     } else {
-         $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_INTERNAL_ID']);
+        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_INTERNAL_ID']);
     }
 }

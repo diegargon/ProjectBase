@@ -5,7 +5,6 @@
 if (!defined('IN_WEB')) { exit; }
 
 //$_GET
-
 function S_GET_INT($var, $max_size = null, $min_size = null) {
     if(empty($_GET[$var])) {
        return false;
@@ -104,8 +103,13 @@ function S_POST_URL($var, $max_size = null, $min_size = null) {
         return S_VAR_URL($_POST[$var], $max_size, $min_size);
     }
 }
-
 //$_SERVER
+function S_SERVER_REQUEST_URI() {
+    if(empty($_SERVER['REQUEST_URI'])) {
+        return false;
+    }
+    return filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL);
+}
 function S_SERVER_USER_AGENT () {
     if(empty($_SERVER['HTTP_USER_AGENT'])) {
         return false;
@@ -125,7 +129,6 @@ function S_SERVER_URL($var) {
     return S_VAR_URL($_SERVER[$var]);
 }
 //VAR
-
 function S_VAR_PASSWORD($var, $max_size = null, $min_size = null) {
     global $config;
     if(defined('SM') && empty ($max_size) && empty($min_size)) {
