@@ -184,6 +184,10 @@ function S_VAR_URL($var, $max_size = null, $min_size = null) {
     if(empty($var)) {
        return false;        
     }
+    if ( (strpos($var, 'http://') !== 0) && (strpos($var, 'https://') !== 0)) { 
+        $var = "http://" . $var;
+    }    
+    
     if (!empty($max_size) && (strlen($var) > $max_size) ) {
         return false;
     }
@@ -256,29 +260,17 @@ function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
     return $var;
 }
 
-function S_VALIDATE_URL($url, $max_size = null, $min_size = null) {
-    if (!empty($max_size) && (strlen($url) > $max_size) ) {
-        return false;
-    }
-    if (!empty($min_size) && (strlen($url) < $min_size) ) {
-        return false;
-    }
-    $url = filter_var($url, FILTER_SANITIZE_URL);
-
-    if ( filter_var($url, FILTER_VALIDATE_URL) === false) {
-        return false;
-    } else {
-        return $url;
-    }        
-}
-
 function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null) {
     global $config;
     //TODO make something good and optional better remote connection for check
-    //TODO add http if not provided
+
+    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) { 
+        $url = "http://" . $url;
+    }
+
     $regex = '/\.('. $config['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
     
-    if( ($url = S_VALIDATE_URL($url, $max_size, $min_size)) == false ) {
+    if( ($url = S_VAR_URL($url, $max_size, $min_size)) == false ) {
         return -1;
     }    
     if ( !preg_match($regex, $url) ) {

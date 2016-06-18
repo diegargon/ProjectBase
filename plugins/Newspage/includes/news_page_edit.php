@@ -78,7 +78,7 @@ function news_update($news_data) {
 
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = ""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
-    !isset($news_data['translator']) ? $news_data['translator'] = "" : false;
+    !isset($news_data['translator']) ? $news_data['news_translator'] = "" : false;
     
     $news_data['title'] = $db->escape_strip($news_data['title']);
     $news_data['lead'] = $db->escape_strip($news_data['lead']);
