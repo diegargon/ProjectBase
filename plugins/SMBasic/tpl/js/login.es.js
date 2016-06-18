@@ -23,7 +23,7 @@ $(document).ready(function(){
     $("#reset_password_btn").click(function(){           
            $.post("", $( "#login_form" ).serialize() ,
             function(data) {
-               //alert(data); //DEBUG
+                //alert(data); //DEBUG
                 var json = $.parseJSON(data);
                 if (json[0].status == 1) {
                     $('#email').css("border","2px solid red");

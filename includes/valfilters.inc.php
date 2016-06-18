@@ -38,7 +38,7 @@ function S_POST_PASSWORD($var, $max_size = null, $min_size = null) {
        return false;
     }        
     
-    return S_VAR_PASSWORD($var, $max_size = null, $min_size = null);
+    return S_VAR_PASSWORD($_POST[$var], $max_size = null, $min_size = null);
 }
 function S_POST_EMAIL($var) {
     if(empty($_POST[$var])) {
@@ -143,9 +143,10 @@ function S_VAR_PASSWORD($var, $max_size = null, $min_size = null) {
     No keywords requirements, since its more secure and easy remember 
     something like this_is_my_long_password than $12#45ab
  */
-    if (preg_match("/^(\S+)+$/", $var)) {
+    if (!preg_match("/^(\S+)+$/", $var)) {
         return false;
-    }    
+    }
+    return $var;
 }
 function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
     
