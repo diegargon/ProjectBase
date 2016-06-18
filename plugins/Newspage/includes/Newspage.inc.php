@@ -19,7 +19,7 @@ function news_format_media($media) {
 }
 
 function get_news_byId($nid, $lang = null){
-    global $acl_auth, $ml, $db;         
+    global $config, $acl_auth, $ml, $db, $tpl;         
     
     $where_ary['nid'] = $nid;
     if (defined('MULTILANG') && 'MULTILANG' && $lang != null) {        
@@ -33,17 +33,29 @@ function get_news_byId($nid, $lang = null){
     }                
     $query = $db->select_all("news", $where_ary, "LIMIT 1");
     
-    if($db->num_rows($query) <= 0 ) {        
-        return false;
+    if($db->num_rows($query) <= 0 ) {     
+        if( ($news_row = get_news_byId($nid)) == false) {
+            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_NOT_EXIST"));
+            return false;
+        } else {
+            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_WARN_NOLANG"));
+            return false;            
+        }
     }
     $news_row = $db->fetch($query);
     
     if( 'ACL' && !empty($acl_auth) && !empty($news_row['acl'])) {
         if(!$acl_auth->acl_ask($news_row['acl'])) {
-            return 403;
+            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_ERROR_NOACCESS")); 
+            return false;
         }
     } 
     $db->free($query);
+
+    if ($config['NEWS_MODERATION'] && $news_row['moderation'] && !S_GET_INT("admin") ) {
+            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_ERROR_WAITINGMOD"));
+            return false;        
+    }         
 
     return $news_row;
 }
@@ -96,8 +108,14 @@ function news_check_display_submit () {
             if ( $acl_auth->acl_ask("news_submit||admin_all") ) {
                 return true;
             }
+        } else {
+            $user = $sm->getSessionUser();
+            if ($user['isAdmin']) {
+                return true;
+            }
         }
     }    
+    return false;
 }
 
 function news_get_related($nid) {
@@ -117,6 +135,7 @@ function news_get_related($nid) {
     } else {
         return false;
     }
+    
     return $related;
 }
 
@@ -128,5 +147,4 @@ function news_clean_featured($lang_id) {
         $where_ary['lang_id'] = $lang_id;
     }
     $db->update("news", $set_ary, $where_ary);
-
 }

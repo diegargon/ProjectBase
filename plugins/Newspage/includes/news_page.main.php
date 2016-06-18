@@ -27,7 +27,7 @@ function news_show_page() {
     }       
     news_process_admin_actions(); 
     
-    if( ($news_row = news_get_page($nid, $lang)) == false) {
+    if( ($news_row = get_news_byId($nid, $lang)) == false) {
         return false;
     }
      
@@ -61,30 +61,6 @@ function news_show_page() {
         $tpl->addto_tplvar("NEWS_RELATED", $related_content);
     }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body"));                                               
-}
-
-function news_get_page($nid, $lang) {
-    global $config, $tpl;    
-
-     //TODO errors to within get_news_byID function
-    if ( ($news_row = get_news_byId($nid, $config['WEB_LANG'])) == 403)  {
-        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_ERROR_NOACCESS")); 
-        return false; 
-    } else if ($news_row == false) {
-        if( ($news_row = get_news_byId($nid)) == false) {
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_NOT_EXIST"));
-            return false;
-        } else {
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_WARN_NOLANG"));
-            return false;            
-        }        
-    }  
-    if ($config['NEWS_MODERATION'] && $news_row['moderation'] && !S_GET_INT("admin") ) {
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_ERROR_WAITINGMOD"));
-            return false;        
-    }     
-
-    return $news_row;
 }
 
 function news_process_admin_actions() {
