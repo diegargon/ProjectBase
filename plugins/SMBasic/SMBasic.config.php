@@ -10,8 +10,8 @@ define('SM_DEBUG', true);
 
 $config['smbasic_session_persistence'] = 1;
 $config['smbasic_max_email'] = 60;
-$config['smbasic_max_password'] = 60;
-$config['smbasic_min_password'] = 8;
+$config['sm_max_password'] = 60;
+$config['sm_min_password'] = 8;
 $config['smbasic_max_username'] = 32;
 $config['smbasic_min_username'] = 4;
 $config['smbasic_use_salt'] = 1;

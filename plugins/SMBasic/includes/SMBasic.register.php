@@ -39,12 +39,12 @@ function SMBasic_Register() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    if( ($password = S_POST_CHAR_AZNUM("password", $config['smbasic_max_password'] ) ) == false ) {  //FIX: Password not accept special
+    if( ($password = S_POST_PASSWORD("password")) == false ) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }    
-    if (strlen($_POST['password']) < $config['smbasic_min_password']) {
+    if (strlen($_POST['password']) < $config['sm_min_password']) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD_MIN']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        

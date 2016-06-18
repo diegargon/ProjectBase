@@ -9,7 +9,7 @@ function SMBasic_Login() {
     
     if ( (($email = S_POST_EMAIL("email")) != false) &&
         ($email != null) &&
-        ( ($password = S_POST_CHAR_AZNUM("password", $config['smbasic_max_password'], $config['smbasic_min_password'])) != false)
+        ( ($password = S_POST_PASSWORD("password")) != false)
     ){
         $password = do_action("encrypt_password", $password);
         if(empty($password)) {

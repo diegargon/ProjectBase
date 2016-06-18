@@ -39,12 +39,12 @@ function SMBasic_ViewProfile() {
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config, $db; 
     
-    if( empty($_POST['cur_password']) ||  strlen($_POST['cur_password']) <  $config['smbasic_min_password']) {
+    if( empty($_POST['cur_password']) ||  strlen($_POST['cur_password']) <  $config['sm_min_password']) {
        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;
     }    
-    if (!$password = S_POST_CHAR_AZNUM("cur_password", $config['smbasic_max_password'], $config['smbasic_min_password'] )) { //TODO only accept AZ_NUM no special chars
+    if (!$password = S_POST_PASSWORD("cur_password")) { 
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;        
@@ -57,8 +57,8 @@ function SMBasic_ProfileChange() {
         return false;                
     }
     if ( (!empty($_POST['new_password']) && !empty($_POST['r_password'])) &&
-            ((strlen($_POST['new_password']) < $config['smbasic_min_password']) ||
-            (strlen($_POST['r_password']) < $config['smbasic_min_password']))
+            ((strlen($_POST['new_password']) < $config['sm_min_password']) ||
+            (strlen($_POST['r_password']) < $config['sm_min_password']))
     ) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEWPASS_TOOSHORT']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
@@ -168,7 +168,7 @@ function SMBasic_ProfileChange() {
         $q_set_ary["email"] = $email;
     }       
     if (!empty($_POST['new_password'])) {
-        if  ( ($new_password = S_POST_CHAR_AZNUM("new_password", $config['smbasic_max_password'], $config['smbasic_min_password'] )) != false) { //TODO ONLY AZ NUM no special
+        if  ( ($new_password = S_POST_PASSWORD("new_password")) != false) {
             $new_password_encrypt = do_action("encrypt_password", $new_password);
             $q_set_ary['password'] = $new_password_encrypt;
         }

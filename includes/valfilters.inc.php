@@ -33,6 +33,13 @@ function S_GET_EMAIL($var) {
     return filter_input(INPUT_GET, $var, FILTER_VALIDATE_EMAIL);
 }
 //$_POST
+function S_POST_PASSWORD($var, $max_size = null, $min_size = null) {
+    if(empty($_POST[$var])) {
+       return false;
+    }        
+    
+    return S_VAR_PASSWORD($var, $max_size = null, $min_size = null);
+}
 function S_POST_EMAIL($var) {
     if(empty($_POST[$var])) {
        return false;
@@ -118,6 +125,28 @@ function S_SERVER_URL($var) {
     return S_VAR_URL($_SERVER[$var]);
 }
 //VAR
+
+function S_VAR_PASSWORD($var, $max_size = null, $min_size = null) {
+    global $config;
+    if(defined('SM') && empty ($max_size) && empty($min_size)) {
+        $max_size = $config['sm_max_password'];
+        $min_size = $config['sm_min_password'];
+    }
+    if (!empty($max_size) && (strlen($var) > $max_size) ) {        
+        return false;
+    }
+    if (!empty($min_size) && (strlen($var) < $min_size) ) {
+        return false;
+    }
+/*    
+    No spaces only... allow all characteres since we hash we not need restrict characters
+    No keywords requirements, since its more secure and easy remember 
+    something like this_is_my_long_password than $12#45ab
+ */
+    if (preg_match("/^(\S+)+$/", $var)) {
+        return false;
+    }    
+}
 function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
     
     if(empty($var)) {
