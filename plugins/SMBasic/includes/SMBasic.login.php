@@ -13,8 +13,7 @@ function SMBasic_Login() {
     ){
         $password = do_action("encrypt_password", $password);
         if(empty($password)) {
-            //TODO BETTER ERROR MSG
-            echo " {$LANGDATA['L_ERROR_INTERNAL']}: 001";
+            do_action("error_message_page","L_ERROR_INTERNAL");
             exit(0);
         }
         $response = [];       
@@ -106,7 +105,7 @@ function SMBasic_RequestResetOrActivation() {
     return false;                         
 }
 
-function SMBasic_user_reset_account() {
+function SMBasic_user_reset_password() {
     global $config, $LANGDATA, $db;
     
     $reset = S_GET_INT('reset');
