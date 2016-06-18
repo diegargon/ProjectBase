@@ -88,8 +88,14 @@ function SMBasic_UserSearch() {
                 $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid' value='{$user_match['uid']}' />";
                 $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user_match['disable']}' />";
                 $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
-                $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
-                $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
+                if($user_match['active'] > 0 ) {
+                    $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
+                }
+                if($user_match['disable']) {
+                    $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ENABLE']}' />";
+                } else {
+                    $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
+                }
                 $table['ADM_TABLE_ROW'] .= "</form></td>";
                 
                 $table['ADM_TABLE_ROW'] .= "</tr>";                
@@ -127,9 +133,10 @@ function SMBasic_UserList() {
     
     $active['ADM_TABLE_ROW'] = "";
     $inactive['ADM_TABLE_ROW'] = "";
+    $disable['ADM_TABLE_ROW'] = "";
             
     foreach ($users_list as $user) {
-        if ($user['active'] == 0) {  
+        if ($user['active'] == 0 && !$user['disable']) {  
             $active['ADM_TABLE_ROW'] .= "<tr>";
             $active['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
@@ -139,15 +146,10 @@ function SMBasic_UserList() {
             $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid'  value='{$user['uid']}' />";
             $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user['disable']}' />";
             $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";            
-            $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
-            if($user['disable'] == 0) {
-                $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
-            } else {
-                $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ENABLE']}' />";
-            }
+            $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
             $active['ADM_TABLE_ROW'] .= "</form></td>";
             $active['ADM_TABLE_ROW'] .= "</tr>";            
-        } else {
+        } else if ($user['active'] > 0 && !$user['disable'] ) {
             $inactive['ADM_TABLE_ROW'] .= "<tr>";
             $inactive['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
             $inactive['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
@@ -158,21 +160,35 @@ function SMBasic_UserList() {
             $inactive['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user['disable']}' />";
             $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";            
             $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
-            if($user['disable'] == 0) {
-                $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit'class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
-            } else {                
-                $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ENABLE']}' />";
-            }                
+            $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit'class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
             $inactive['ADM_TABLE_ROW'] .= "</form></td>";            
             $inactive['ADM_TABLE_ROW'] .= "</tr>";            
+        } else if ($user['disable']) {
+            $disable['ADM_TABLE_ROW'] .= "<tr>";
+            $disable['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
+            $disable['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
+            $disable['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
+            $disable['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
+            $disable['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
+            $disable['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid'  value='{$user['uid']}' />";
+            $disable['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user['disable']}' />";
+            $disable['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />"; 
+            if($user['active'] > 0) {
+                $disable['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
+            }
+            $disable['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit'class='btnSubmit' value='{$LANGDATA['L_SM_ENABLE']}' />";
+            $disable['ADM_TABLE_ROW'] .= "</form></td>";            
+            $disable['ADM_TABLE_ROW'] .= "</tr>";                        
         }
     }
     
     $active['ADM_TABLE_TITLE'] = "<h3>". $LANGDATA['L_SM_USERS_ACTIVE'] ."</h3>";
     $inactive['ADM_TABLE_TITLE'] = "<h3>". $LANGDATA['L_SM_USERS_INACTIVE'] . "</h3>";
+    $disable['ADM_TABLE_TITLE'] = "<h3>". $LANGDATA['L_SM_USERS_DISABLE'] . "</h3>";
     
     $content = $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $active));
     $content .= $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $inactive));
+    $content .= $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $disable));
     $tpl->addto_tplvar("ADM_CONTENT", $content); 
 }
 

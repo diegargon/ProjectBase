@@ -87,3 +87,6 @@ $LANGDATA['L_SM_DELETE'] = "Delete";
 $LANGDATA['L_SM_ACTIVATE'] = "Activate";
 $LANGDATA['L_SM_DISABLE'] = "Disable";
 $LANGDATA['L_SM_ENABLE'] = "Enable";
+$LANGDATA['L_SM_E_DISABLE'] = "Your acccount has been disable, contact with administration if you don't known why";
+$LANGDATA['L_SM_E_USER_NOT_EXISTS'] = "User not exists";
+$LANGDATA['L_SM_USERS_DISABLE'] = "Disabled users";
