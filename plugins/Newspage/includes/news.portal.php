@@ -155,9 +155,9 @@ function fetch_news_data($row) {
         $friendly_filter = array('"','\'','?','$',',','.','‘','’',':',';','[',']','{','}','*','!','¡','¿','+','<','>','#','@','|','~','%','&','(',')','=','`','´','/','º','ª','\\');
         $friendly_url = str_replace(' ', "-", $row['title']);
         $friendly_url = str_replace($friendly_filter, "", $friendly_url);
-        $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";  
+        $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";          
     } else {            
-        $data['URL'] = $config['WEB_LANG']. "/newspage.php?nid={$row['nid']}&title=" . str_replace(' ', "_", $row['title']);
+        $data['URL'] = "/newspage.php?nid={$row['nid']}&lang=".$config['WEB_LANG'];
     }
     $query = $db->select_all("links", array("source_id" => "{$row['nid']}", "plugin" => "Newspage", "itsmain" => "1"), "LIMIT 1");
     if ($db->num_rows($query) >= 0) {

@@ -24,11 +24,13 @@ function Multilang_init(){
         isset($lang) ? $config['WEB_LANG'] = $lang : false;
     }   
     if ($request_uri == '/') {
-        $request_uri = $config['WEB_URL'] . $config['WEB_LANG'] . $request_uri;        
+//        $request_uri = $config['WEB_URL'] . $config['WEB_LANG'] . $request_uri;
+        $request_uri = $config['WEB_URL'] . "?lang=" . $config['WEB_LANG'];
         header('Location:' .$request_uri);
     }
     if( isset($_POST['choose_lang']) && (($choose_lang = S_POST_CHAR_AZ("choose_lang", 2, 2)) != false)) {         
         $request_uri = str_replace("/". $config['WEB_LANG'], "/".$choose_lang, $request_uri); // FIX better method than can replace something not wanted.
+        $request_uri = str_replace("lang=". $config['WEB_LANG'], "lang=".$choose_lang, $request_uri);
         header('Location:' .$request_uri);
     }
     register_action("nav_element", array($ml, "get_nav"), 6);   

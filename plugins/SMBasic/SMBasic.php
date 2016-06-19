@@ -136,11 +136,11 @@ function SMBasic_navLogReg() {
     
     $elements = "";    
     if( S_SESSION_INT("isLogged") == 1) {
-        $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/logout.php'>{$LANGDATA['L_LOGOUT']}</a></li>\n";
-        $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/profile.php'>". $_SESSION['username']. "</a></li>\n";
+        $elements .= "<li class='nav_right'><a href='/logout.php?lang={$config['WEB_LANG']}'>{$LANGDATA['L_LOGOUT']}</a></li>\n";
+        $elements .= "<li class='nav_right'><a href='/profile.php?lang={$config['WEB_LANG']}'>". $_SESSION['username']. "</a></li>\n";
     } else {
-       $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/login.php'>{$LANGDATA['L_LOGIN']}</a></li>\n";
-       $elements .= "<li class='nav_right'><a href='/{$config['WEB_LANG']}/register.php'>{$LANGDATA['L_REGISTER']}</a></li>\n";
+       $elements .= "<li class='nav_right'><a href='/login.php?lang={$config['WEB_LANG']}'>{$LANGDATA['L_LOGIN']}</a></li>\n";
+       $elements .= "<li class='nav_right'><a href='/register.php?lang={$config['WEB_LANG']}'>{$LANGDATA['L_REGISTER']}</a></li>\n";
     }
     return $elements;
 }

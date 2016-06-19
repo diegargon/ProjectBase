@@ -8,7 +8,13 @@ if (!defined('IN_WEB')) { exit; }
         <header id="header" class="clear">
         <?php isset($tpldata['ADD_HEADER_BEGIN']) ? print $tpldata['ADD_HEADER_BEGIN'] : false ?>            
         <div id="logo">
-            <h1><a href="/<?php echo $config['WEB_LANG']?>"><?php echo $config['TITLE']?></a></h1>
+            <h1><a href="/<?php if ($config['FRIENDLY_URL']) {
+                    echo $config['WEB_LANG'];
+                } else {
+                    echo "?lang=". $config['WEB_LANG'];
+                }
+                ?>
+                "><?php echo $config['TITLE']?></a></h1>
             <h2><?php echo $config['WEB_DESC']?></h2>
         </div>
         <?php 
@@ -18,7 +24,13 @@ if (!defined('IN_WEB')) { exit; }
                 <?php 
                 if ($config['NAV_MENU_HOME']) { 
                   echo "<li class='nav_left'>";
-                  echo "<a href='/{$config['WEB_LANG']}'><img src='/plugins/tplBasic/images/home.png' alt='{$LANGDATA['L_HOME']}' />";                        
+                  echo "<a href='/";
+                  if ($config['FRIENDLY_URL']) {
+                    echo "{$config['WEB_LANG']}";
+                  } else {
+                    echo "?lang={$config['WEB_LANG']}";  
+                  }
+                  echo "'><img src='/plugins/tplBasic/images/home.png' alt='{$LANGDATA['L_HOME']}' />";                        
                   echo "</a></li>";           
                 }
                   isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false;

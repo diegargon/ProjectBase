@@ -45,7 +45,7 @@ function news_show_page() {
     $tpl_data['NEWS_TEXT']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
     if (!empty ($news_row['translator'])) {
         $translator = $sm->getUserByUsername($news_row['translator']);        
-        $tpl_data['NEWS_TRANSLATOR'] = "<a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
+        $tpl_data['NEWS_TRANSLATOR'] = "<a rel='nofollow' href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }
     $tpl->addtpl_array($tpl_data);
 
@@ -106,7 +106,7 @@ function news_nav_options($news) {
             || ($news['author'] == $user['username']) 
             || (!empty($news['translator']) && ($news['translator'] == $user['username']))
     ) {            
-        $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
     }
     // TRANSLATE ADMIN, ANON IF, REGISTERED IF
     if( $config['NEWS_ANON_TRANSLATE']
@@ -115,28 +115,28 @@ function news_nav_options($news) {
             ||  (!defined('ACL') && $user['isAdmin'] == 1)
             ||  (!defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && !empty($user)) //NO_ACL registered
     ) {        
-        $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_new_lang={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_new_lang={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
     }
     //REST ONLY ADMIN
     if( (defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin"))
         || (!defined('ACL') && $user['isAdmin'] == 1) 
     ) {
         if ($news['featured'] == 1) {
-            $content .= "<li><a class='link_active' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=0&featured_value=0&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
+            $content .= "<li><a class='link_active' rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=0&featured_value=0&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
         } else {
-            $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=1&featured_value=1&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
+            $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=1&featured_value=1&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
         }
         if ($news['moderation']) {
-            $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_approved={$news['nid']}&lang_id={$news['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a></li>";
+            $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_approved={$news['nid']}&lang_id={$news['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a></li>";
         }        
         //TODO  Add a menu for enable/disable news
         //$content .= "<li><a href=''>{$LANGDATA['L_NEWS_DISABLE']}</a></li>";
-        $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_delete={$news['nid']}&lang_id={$news['lang_id']}&admin=1&return_home=1' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";        
+        $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_delete={$news['nid']}&lang_id={$news['lang_id']}&admin=1&return_home=1' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";        
         if ($config['NEWS_SELECTED_FRONTPAGE'] ){
             if ($news['frontpage'] == 1) {
-                $content .= "<li><a class='link_active' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_frontpage=0&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";        
+                $content .= "<li><a class='link_active' rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_frontpage=0&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";        
             } else {
-                $content .= "<li><a href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_frontpage=1&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
+                $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_frontpage=1&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
             }
         }
     }
