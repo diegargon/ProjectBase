@@ -46,8 +46,9 @@ function SMBasic_regPage() {
 
     require_once("includes/SMBasic.register.php");
     
-    if( S_SESSION_INT("isLogged") == 1) {                
-        do_action("error_message_page", "L_ERROR_ALREADY_LOGGED");
+    if( S_SESSION_INT("isLogged") == 1) {
+        $msgbox['MSG'] = "L_ERROR_ALREADY_LOGGED";
+        do_action("message_page", $msgbox);
         return false;
     }
     
@@ -70,8 +71,9 @@ function SMBasic_profilePage() {
     global $tpl, $sm;    
     require_once("includes/SMBasic.profile.php");
     
-    if( S_SESSION_INT("isLogged") != 1) {                        
-        do_action("error_message_page","L_ERROR_NOT_LOGGED");
+    if( S_SESSION_INT("isLogged") != 1) {
+        $msgbox['MSG'] = "L_ERROR_NOT_LOGGED";
+        do_action("message_page", $msgbox);
         return false;
     }
 
@@ -82,7 +84,8 @@ function SMBasic_profilePage() {
     } else {
         if( ($user = $sm->getSessionUser()) == false) {
             $sm->sessionDestroy();
-            do_action("error_message_page", "L_SM_E_USER_NOT_EXISTS");   
+            $msgbox['MSG'] = "L_SM_E_USER_NOT_EXISTS";
+            do_action("message_page", $msgbox);
         } else {        
             do_action("common_web_structure");       
             $tpl->getCSS_filePath("SMBasic");
@@ -97,18 +100,21 @@ function SMBasic_loginPage () {
     global $tpl;
     require_once("includes/SMBasic.login.php");
     
-    if( S_SESSION_INT("isLogged") == 1) {  
-        do_action("error_message_page","L_ERROR_ALREADY_LOGGED");
+    if( S_SESSION_INT("isLogged") == 1) {
+        $msgbox['MSG'] = "L_ERROR_ALREADY_LOGGED";
+        do_action("message_page", $msgbox);
         return false;
     }    
     if (isset($_GET['active'])) {
        if(!SMBasic_user_activate_account()) {
-           do_action("error_message_page","L_SM_E_ACTIVATION");
+           $msgbox['MSG'] = "L_SM_E_ACTIVATION";
+           do_action("message_page", $msgbox);
        }       
     }
     if (isset($_GET['reset'])) {
        if(!SMBasic_user_reset_password()) {
-            do_action("error_message_page","L_SM_E_RESET");    
+            $msgbox['MSG'] = "L_SM_E_ACTIVATION";
+            do_action("message_page", $msgbox);
        }
        
     }

@@ -9,14 +9,16 @@ function news_show_page() {
 
     if( (empty($_GET['nid'])) || ($nid = S_GET_INT("nid", 8, 1)) == false ||
         (empty($_GET['lang'])) || ($lang = S_GET_CHAR_AZ("lang", 2, 2)) == false) {
-        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box","L_NEWS_NOT_EXIST"));
+        $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
+        do_action("message_box", $msgbox);
         return false;
     }     
         
     if ( S_GET_INT("admin") ) {
         if (defined("ACL")) {
             if( !$acl_auth->acl_ask("admin_all||news_admin")) {
-                $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_ERROR_NOACCESS")); 
+                $msgbox['MSG'] = "L_ERROR_NOACCESS";
+                do_action("message_box", $msgbox); 
                 return false;                
             }
         } else {

@@ -14,8 +14,9 @@ function Admin_init(){
 function Admin_main_page() {
     global $acl_auth, $tpl;    
               
-    if (!$acl_auth->acl_ask("admin_read")) {                
-        do_action("error_message_page", "L_ERROR_NOACCESS");        
+    if (!$acl_auth->acl_ask("admin_read")) {
+        $msgbox['MSG'] = "L_ERROR_NOACCESS";
+        do_action("message_page", $msgbox );        
         return false;
     }
     
@@ -33,7 +34,6 @@ function Admin_main_page() {
     $tpl->addto_tplvar("ADD_TOP_MENU", do_action("add_top_menu"));
     $tpl->addto_tplvar("ADD_BOTTOM_MENU", do_action("add_bottom_menu"));
 
-
     if($admtab == 1) {
         $tpl->addto_tplvar("ADD_ADMIN_CONTENT", Admin_generalContent($params));
     } else {
@@ -49,8 +49,7 @@ function Admin_generalContent($params) {
     $tpl_data['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n";
     $tpl_data['ADM_ASIDE_OPTION'] .=  "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>Opcion 2</a></li>\n";
     $tpl_data['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_GENERAL_OPT");
-    
-    
+  
     if ( (!$opt = S_GET_INT("opt")) || $opt == 1 ) {
         $tpl_data['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'];
         $tpl_data['ADM_CONTENT'] = Admin_GetPluginState("Admin");
@@ -60,6 +59,6 @@ function Admin_generalContent($params) {
         $tpl_data['ADM_CONTENT'] = "Content from other opt";
     }
     $tpl->addtpl_array($tpl_data);
+    
     return $tpl->getTPL_file("Admin", "admin_std_content");
-
 }

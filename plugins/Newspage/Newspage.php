@@ -53,7 +53,8 @@ function news_page() {
                     news_page_edit();              
                 }
             } else {               
-                do_action("error_message_page", "L_NEWS_NO_EDIT_PERMISS");
+                $msgbox['MSG'] = "L_NEWS_NO_EDIT_PERMISS";
+                do_action("message_page", $msgbox);
             }
         }
     } else if (!empty($_GET['news_new_lang'])) {

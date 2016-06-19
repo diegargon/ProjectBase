@@ -13,7 +13,8 @@ function SMBasic_Login() {
     ){
         $password = do_action("encrypt_password", $password);
         if(empty($password)) {
-            do_action("error_message_page","L_ERROR_INTERNAL");
+            $msgbox['MSG'] = "L_ERROR_INTERNAL";
+            do_action("message_page", $msgbox);
             exit(0);
         }
         $response = [];       

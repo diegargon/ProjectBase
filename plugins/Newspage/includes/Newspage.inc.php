@@ -35,10 +35,12 @@ function get_news_byId($nid, $lang = null){
     
     if($db->num_rows($query) <= 0 ) {     
         if( ($news_row = get_news_byId($nid)) == false) {
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_NOT_EXIST"));
+            $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
+            do_action("message_box", $msgbox);
             return false;
         } else {
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_WARN_NOLANG"));
+            $msgbox['MSG'] = "L_NEWS_WARN_NOLANG";
+            do_action("message_box", $msgbox);
             return false;            
         }
     }
@@ -46,15 +48,17 @@ function get_news_byId($nid, $lang = null){
     
     if( 'ACL' && !empty($acl_auth) && !empty($news_row['acl'])) {
         if(!$acl_auth->acl_ask($news_row['acl'])) {
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_ERROR_NOACCESS")); 
+            $msgbox['MSG'] = "L_ERROR_NOACCESS";
+            do_action("message_box", $msgbox); 
             return false;
         }
     } 
     $db->free($query);
 
     if ($config['NEWS_MODERATION'] && $news_row['moderation'] && !S_GET_INT("admin") ) {
-            $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY",  do_action("error_message_box", "L_NEWS_ERROR_WAITINGMOD"));
-            return false;        
+        $msgbox['MSG'] = "L_NEWS_ERROR_WAITINGMOD";
+        do_action("message_box", $msgbox);
+        return false;        
     }         
 
     return $news_row;

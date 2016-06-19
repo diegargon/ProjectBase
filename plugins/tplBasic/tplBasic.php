@@ -16,8 +16,8 @@ function tplBasic_init(){
     $tpl->getCSS_filePath("tplBasic", "basic-mobile");
     register_action("common_web_structure", "tplBasic_web_structure", "0");
     register_uniq_action("index_page", "tplBasic_index_page", "5");
-    register_uniq_action("error_message_page", "tplBasic_error_page");
-    register_uniq_action("error_message_box", "tplBasic_error_box");
+    register_uniq_action("message_page", "tplBasic_message_page");
+    register_uniq_action("message_box", "tplBasic_message_box");    
 }
 
 function tplBasic_web_structure() {
@@ -29,26 +29,32 @@ function tplBasic_web_structure() {
 function tplBasic_index_page() {
     do_action("common_web_structure");        
 }
+ 
+function tplBasic_message_page($box_data) {    
+    do_action("message_box", $box_data);
+    do_action("common_web_structure");  
+}
 
-function tplBasic_error_page($e_msg = null) {        
-    global $LANGDATA, $tpl;
-            
-    $tpl->add_if_empty("E_TITLE", $LANGDATA['L_E_ERROR']);        
-    $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_BACK']);  
-    !empty($e_msg) ? $tpl->add_if_empty("E_MSG", $LANGDATA[$e_msg]) : false;
-    do_action("common_web_structure");        
-    $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "error"));
-   
- }
-
- function tplBasic_error_box ($e_msg = null) {
-    global $tpl, $LANGDATA;
-     
-    $tpl->add_if_empty("E_TITLE", $LANGDATA['L_E_ERROR']);
-    $tpl->add_if_empty("E_BACKLINK_TITLE", $LANGDATA['L_BACK']);
-    !empty($e_msg) ? $tpl->add_if_empty("E_MSG", $LANGDATA[$e_msg]) : false;
-    $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "error"));
- }
+function tplBasic_message_box ($box_data) {
+    global $config, $tpl, $LANGDATA;
+    if (!empty($box_data['title'])) {
+        $data['BOX_TITLE'] = $LANGDATA[$box_data['title']];
+    } else {
+        $data['BOX_TITLE'] = $LANGDATA['L_E_ERROR'];
+    }
+    if (!empty($box_data['backlink'])) {
+        $data['BOX_BACKLINK'] = $LANGDATA[$box_data['backlink']];
+    } else {
+        $data['BOX_BACKLINK'] = $config['BACKLINK'];
+    }
+    if (!empty($box_data['backlink_title'])) {
+        $data['BOX_BACKLINK_TITLE'] = $LANGDATA[$box_data['backlink_title']];
+    } else {
+        $data['BOX_BACKLINK_TITLE'] = $LANGDATA['L_BACK'];
+    }    
+    $data['BOX_MSG'] = $LANGDATA[$box_data['MSG']];  
+    $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "msgbox", $data));
+}
  
 function tpl_basic_head() {
     global $tpl;
@@ -58,7 +64,6 @@ function tpl_basic_body() {
     global $tpl;
     return $tpl->getTPL_file("tplBasic", "body");    
 }
-
 function tpl_basic_footer() {
     global $tpl;    
     return $tpl->getTPL_file("tplBasic", "footer");
