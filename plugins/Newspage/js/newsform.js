@@ -3,6 +3,8 @@
  */
 $(document).ready(function(){
     $("#newsFormSubmit").click(function(){       
+        $('#newsFormSubmit').attr('disabled','disabled');
+        
         $('#news_author').css("border","1px solid black");
         $('#news_author').css("box-shadow","0 0 3px black");
         $('#news_title').css("border","1px solid black");          
@@ -16,7 +18,7 @@ $(document).ready(function(){
            
         $.post("", $( "#form_news" ).serialize() + '&newsFormSubmit_ST2=1' ,
         function(data) {                
-            alert(data); //DEBUG             
+            //alert(data); //DEBUG             
             var json = $.parseJSON(data);
             if(json[0].status === 'ok') {
                 alert(json[0].msg);
@@ -46,7 +48,8 @@ $(document).ready(function(){
                 alert(json[0].msg);                    
             } else {
                  alert(json[0].msg);
-            }                
+            }  
+            $('#newsFormSubmit').removeAttr("disabled");            
             });
         return false;
     });
