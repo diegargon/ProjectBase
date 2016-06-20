@@ -156,7 +156,7 @@ function news_form_process() {
     //NO CHECK ATM
     //
 
-    //ALL OK SUBMIT or UPDATE
+    //ALL OK, check if SUBMIT, UPDATE or translate
     
     if($news_data['update'] > 0) { 
         if (news_update($news_data)) {
@@ -238,7 +238,7 @@ function news_get_available_langs($news_data) {
 
     return $select;
 }
-//used when translate a news, omit all already translate langs include original
+//used when translate a news, omit all already translate langs, exclude original lang too. just missed news langs
 function news_get_missed_langs($nid) { 
     global $config, $ml, $db; 
 

@@ -37,26 +37,23 @@ function news_index_page (){
 }
 
 function news_page() {
-    global $acl_auth, $tpl;        
-
+    global $tpl;        
+ 
     if(!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
-        //TODO ADD AUTHOR EDITING
-        if(defined('ACL') && 'ACL') { 
-            if ($acl_auth->acl_ask("admin_all||news_admin")) { // || $acl_auth->acl_ask("news_admin")) {                
-                require_once 'includes/news_form.common.php';
-                require_once 'includes/news_page_edit.php';        
-                if (!empty($_POST['news_update']) && !empty($_POST['newsFormSubmit_ST2'])) {
-                    news_form_process();                    
-                } else {            
-                    do_action("common_web_structure");
-                    $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());
-                    news_page_edit();              
-                }
-            } else {               
-                $msgbox['MSG'] = "L_NEWS_NO_EDIT_PERMISS";
-                do_action("message_page", $msgbox);
-            }
-        }
+        require_once 'includes/news_form.common.php';
+        require_once 'includes/news_page_edit.php';          
+                        
+        if( ($news_data = news_check_edit_authorized()) != false) {
+            if (!empty($_POST['news_update']) && !empty($_POST['newsFormSubmit_ST2'])) {
+                news_form_process();                    
+            } else {            
+                do_action("common_web_structure");
+                $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());
+                news_page_edit($news_data);              
+            }               
+        } else {
+            do_action("common_web_structure"); // error messsage box already set 
+        }    
     } else if (!empty($_GET['news_new_lang'])) {
             require_once 'includes/news_form.common.php';
             require_once 'includes/news_page_edit.php';  

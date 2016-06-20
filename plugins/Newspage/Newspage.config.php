@@ -30,5 +30,7 @@ $config['NEWS_SOURCE'] = 1;
 $config['NEWS_RELATED'] = 1;
 $config['NEWS_ANON_TRANSLATE'] = 1;
 $config['NEWS_TRANSLATE_REGISTERED'] = 1;
+$config['NEWS_TRANSLATOR_CAN_EDIT'] = 1;
+$config['NEWS_AUTHOR_CAN_EDIT'] = 1;
 //$config['NEWS_SUBMIT_URL'] = 1;
 //$config['NEWS_PRIMARY_SOURCE'] = 1;
