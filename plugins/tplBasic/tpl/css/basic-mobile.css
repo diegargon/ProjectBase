@@ -21,6 +21,28 @@
     }
 }
 
+@media only screen and (max-width: 640px) {
+    #header nav li:not(:first-child) {
+        display: none; 
+        float:none;
+    }
+    .responsive li {
+        display: block !important;
+        float:none;
+    }    
+    .lihome {
+        display: inline-block !important;
+
+    }
+    .resp-icon {    
+        display: inline-block !important;
+        float:right !important;
+        margin-right: 10px;
+    } 
+
+
+}
+
 @media only screen and (max-width: 400px) {
     #col1, #col2, #col3 {
         width:98%;

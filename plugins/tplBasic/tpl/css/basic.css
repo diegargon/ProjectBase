@@ -150,7 +150,7 @@ h1,h2,h3,h4,h5,h6{
   text-decoration: none;
   padding: 8px 4px;
   transition: 0.3s;
-  font-size: 17px;
+  font-size: 1.5em;
   border: 0px solid red;
   color: inherit;
   background-color:#232323;  
@@ -222,4 +222,16 @@ h1,h2,h3,h4,h5,h6{
     text-align: center;
     font-size: 28px;
     line-height: 1em;    
+}
+
+.resp-icon {
+    display: none !important;
+    text-align: center;
+    font-size: 1.5em;
+    padding: 2px 4px;
+    transition: 0.3s;
+}
+
+.resp-icon:hover {
+    background-color: black;    
 }

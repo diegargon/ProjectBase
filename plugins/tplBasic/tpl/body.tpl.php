@@ -1,6 +1,11 @@
 <?php
 if (!defined('IN_WEB')) { exit; }
 ?>
+<script>
+function toggleMenu() {
+    document.getElementsByClassName("main-nav")[0].classList.toggle("responsive");
+}
+</script>
 <body id="Top">
 <div class="main_container">
 <div class="container">    
@@ -20,10 +25,11 @@ if (!defined('IN_WEB')) { exit; }
         <?php 
         if($config['NAV_MENU']) { ?>
         <nav>
-            <ul>
+            <ul class="main-nav">              
+                <li class="nav_right resp-icon"><a rel="nofollow" href="javascript:void(0);" onclick="toggleMenu()">&#9776;</a></li>                
                 <?php 
                 if ($config['NAV_MENU_HOME']) { 
-                  echo "<li class='nav_left'>";
+                  echo "<li class='nav_left lihome'>";
                   echo "<a href='/";
                   if ($config['FRIENDLY_URL']) {
                     echo "{$config['WEB_LANG']}";
@@ -34,7 +40,8 @@ if (!defined('IN_WEB')) { exit; }
                   echo "</a></li>";           
                 }
                   isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false;
-                ?>                
+                ?>
+
             </ul>
         </nav>            
         <?php } ?>
