@@ -26,13 +26,24 @@
 
 }
 
-@media only screen and (max-width: 630px) {
+@media only screen and (max-width: 640px) {
     .submit_auth, .submit_lead, .submit_text, .submit_title {
         width:300px;
     }
     .feature_article{
         display:block;
-    }    
+    }
+    .article_title {
+        font-size: 2.0em;
+    }
+    .article_body {
+        margin: 0px 0px 3px 3px;
+        width: 98%;
+    }
+    .article_side {
+        width: 98%;
+        margin: 3px 3px 3px 3px;
+    }
 }
 
 @media only screen and (max-width: 400px) {
