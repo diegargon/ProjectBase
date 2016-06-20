@@ -1,1 +1,6 @@
-this plugin provided the news portal and functions for show and manager news
+* This plugin provided the news portal and functions for show and manager news
+
+* Multilang its optional, must start before the news plugin
+
+* ACL its optional, must start before the news plugin, if not ACL this plugin check for isAdmin=1
+  on user table but you lost all ACL features. If ACL its present isAdmin is ignored

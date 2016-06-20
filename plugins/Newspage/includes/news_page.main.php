@@ -15,16 +15,15 @@ function news_show_page() {
     }     
         
     if ( S_GET_INT("admin") ) {
-        if (defined("ACL")) {
-            if( !$acl_auth->acl_ask("admin_all||news_admin")) {
+        if (defined("ACL") && !$acl_auth->acl_ask("admin_all||news_admin") ) {
                 $msgbox['MSG'] = "L_ERROR_NOACCESS";
                 do_action("message_box", $msgbox); 
                 return false;                
-            }
-        } else {
-            if ( ($user = $sm->getSessionUser()) == false || $user['isAdmin'] != 1) {
-                return false;
-            }
+        } 
+        if ( ($user = $sm->getSessionUser()) == false || ((!defined('ACL')) && $user['isAdmin'] != 1)) {
+            $msgbox['MSG'] = "L_ERROR_NOACCESS";
+            do_action("message_box", $msgbox);                 
+            return false;       
         }                
     }       
     news_process_admin_actions(); 
@@ -68,7 +67,7 @@ function news_show_page() {
 function news_process_admin_actions() {
     global $acl_auth, $sm;
     
-    //if we enter with &admin=1 already passing the admin check in news_show_page
+    //if we enter with &admin=1 already passing the admin check in news_show_page, check if not enter with admin=1
     if (defined("ACL") && !S_GET_INT("admin") ) { 
         if(!$acl_auth->acl_ask("admin_all || news_admin")) { 
            return false;

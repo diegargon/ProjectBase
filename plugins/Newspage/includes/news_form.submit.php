@@ -5,28 +5,33 @@
 if (!defined('IN_WEB')) { exit; }
  
 function news_new_form($post_data = null) {
-    global $LANGDATA, $acl_auth, $tpl, $sm;
+    global $LANGDATA, $config, $acl_auth, $tpl, $sm;
     
     $data['NEWS_FORM_TITLE'] = $LANGDATA['L_SEND_NEWS'];
-            
-    if (  isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {        
-        $user = $sm->getSessionUser();        
-    } else { 
-        $user['username'] = $LANGDATA['L_NEWS_ANONYMOUS'];
+
+    $user = $sm->getSessionUser();
+    if (!$user && $config['NEWS_SUBMIT_ANON']) {
+        $data['author'] = $LANGDATA['L_NEWS_ANONYMOUS'];
+    } else if ($user) {
+        $data['author'] = $user['username'];    
+    } else {
+        $msgbox['MSG'] = "L_ERROR_NOACCESS";
+        do_action("message_box", $msgbox);        
+        return false;
     }
-    $data['author'] = $user['username'];    
-    
-    if (defined('MULTILANG') && 'MULTILANG') {
+        
+    if (defined('MULTILANG')) {
         if ( ($site_langs = news_get_all_sitelangs()) != false ) {
             $data['select_langs'] = $site_langs;
         }
     }    
-    if (defined('ACL') && 'ACL') {        
-        if($acl_auth->acl_ask("news_admin||admin_all")) { //|| $acl_auth->acl_ask("admin_all")) {
-            $data['select_acl'] = $acl_auth->get_roles_select("news");
-            $can_change_author = 1;
-        }
+    if (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) {
+        $data['select_acl'] = $acl_auth->get_roles_select("news");
+        $can_change_author = 1;
     } 
+    if (!defined('ACL') && $user['isAdmin']) {
+        $can_change_author = 1;
+    }
     empty($can_change_author) ?  $data['can_change_author'] = "disabled" : $data['can_change_author'] = "";    
     $data['select_categories'] = news_get_categories_select();          
     !empty($post_data) ? $data = array_merge($data, $post_data) : false;

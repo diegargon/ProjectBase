@@ -5,8 +5,8 @@
     "function_init": "Admin_init",
     "function_install": "",
     "provided": "Admin1",
-    "depends" : "sessions acl1 tplbasic1 multilang1 SQL1",
+    "depends" : "sessions tplbasic1 SQL1",
     "autostart": "1",
     "priority" : "6", 
-    "optional": ""    
+    "optional": "acl1"    
 }

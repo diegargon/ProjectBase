@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
  
 function news_page_edit($news_data) {
-    global $config, $LANGDATA, $acl_auth, $tpl;    
+    global $config, $LANGDATA, $acl_auth, $tpl, $sm;    
 
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_EDIT_NEWS'];
     
@@ -13,6 +13,10 @@ function news_page_edit($news_data) {
         $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
         $can_change_author = 1;
     } 
+    $user = $sm->getSessionUser();
+    if (!defined('ACL') && $user['isAdmin']) {
+        $can_change_author = 1;
+    }    
     empty($can_change_author) ?  $news_data['can_change_author'] = "disabled" : $news_data['can_change_author'] = ""; 
     $news_data['select_categories'] = news_get_categories_select($news_data);
     
@@ -196,19 +200,24 @@ function news_new_lang() {
     $news_data = $db->fetch($query);    
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_NEWLANG'];
     
-    if (  isset($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1) {        
-        $translator = $sm->getSessionUser();        
-    } else { 
+    $translator = $sm->getSessionUser(); 
+    
+    if (empty($translator) && $config['NEWS_ANON_TRANSLATE'] ) {
         $translator['username'] = $LANGDATA['L_NEWS_ANONYMOUS'];
+    } else if (empty($translator)) {
+        $msgbox['MSG'] = "L_NEWS_NO_EDIT_PERMISS";
+        do_action("message_box", $msgbox);
+        return false;        
     }
     $news_data['translator'] = $translator['username'];  
     
-    if (defined('ACL')) {
-        if($acl_auth->acl_ask("news_admin||admin_all")) {
-            $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
-            $can_change_author = 1;
-        }
+    if (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) {
+        $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
+        $can_change_author = 1;
     } 
+    if (!defined('ACL') && $user['isAdmin']) {
+        $can_change_author = 1;
+    }
     empty($can_change_author) ?  $news_data['can_change_author'] = "disabled" : $news_data['can_change_author'] = ""; 
     $news_data['select_categories'] = news_get_categories_select($news_data);
     

@@ -107,23 +107,17 @@ function news_menu_submit_news() {
 }
 
 function news_check_display_submit () {
-    global $config, $acl_auth;
+    global $config, $acl_auth, $sm;
+    $user = $sm->getSessionUser();
     
-    if( (empty($_SESSION['isLogged'])  && $config['NEWS_SUBMIT_ANON'] == 1) ||  // Anon can send
-         ( !empty($_SESSION['isLogged']) && $_SESSION['isLogged'] == 1 && $config['NEWS_SUBMIT_REGISTERED'] == 1) // Registered can send
-      ){       
-            return true;
-    } else {
-        if(defined('ACL') && 'ACL') {
-            if ( $acl_auth->acl_ask("news_submit||admin_all") ) {
-                return true;
-            }
-        } else {
-            $user = $sm->getSessionUser();
-            if ($user['isAdmin']) {
-                return true;
-            }
-        }
+    if( (!empty($user) && $config['NEWS_SUBMIT_REGISTERED'])
+            || (empty($user) && $config['NEWS_SUBMIT_ANON'] ) ) {
+        return true;
+    }
+    if(defined('ACL') && ( $acl_auth->acl_ask("news_submit||admin_all") )) {
+        return true;
+    } else if(!defined('ACL') && !empty($user) && $user['isAdmin']) {
+        return true;
     }    
     return false;
 }

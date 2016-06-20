@@ -24,7 +24,7 @@ function news_get_categories_select($news_data = null) {
 function news_get_categories() {
     global $config, $ml, $db;
     
-    if (defined('MULTILANG') && 'MULTILANG') {
+    if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($config['WEB_LANG']); 
     } else {
         $lang_id = $config['WEB_LANG_ID'];
@@ -37,20 +37,20 @@ function news_get_categories() {
 function news_form_getPost() {
     global $acl_auth, $config, $sm;
        
-    if (defined('ACL') && 'ACL') { //if admin can change author if not ignore news_author
-        if( ( $acl_auth->acl_ask('news_admin') ) == true || ( $acl_auth->acl_ask('admin_all') ) == true ) {            
-            isset($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author", 25,3) : false;
-            if (!empty($data['author'])) {               
-                if( ($selected_user = $sm->getUserByUsername($data['author'])) ) {
-                    $data['author_id'] = $selected_user['uid'];                
-                } else {
-                    $data['author'] = false; // author not exists clear for use the session username.
-                }
+    $session_user = $sm->getSessionUser();    
+    if( (!defined('ACL') && $session_user['isAdmin'])
+        || ( defined('ACL') && ( $acl_auth->acl_ask('news_admin||admin_all') ) == true) ) {
+        isset($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author", 25,3) : false;
+        if (!empty($data['author'])) {
+            if( ($selected_user = $sm->getUserByUsername($data['author'])) ) {
+                $data['author_id'] = $selected_user['uid'];                
+            } else {
+                $data['author'] = false; // author not exists clear for use the session username.
             }
-        } 
+        }
     }
-    if(empty($data['author'])) { 
-        $session_user = $sm->getSessionUser();
+
+    if(empty($data['author'])) {
         $data['author'] = $session_user['username'];
         $data['author_id'] = $session_user['uid'];
     }
@@ -58,9 +58,9 @@ function news_form_getPost() {
     isset($_POST['news_lead']) ? $data['lead'] = S_POST_TEXT_UTF8("news_lead") : false;
     isset($_POST['news_text']) ? $data['text'] = S_POST_TEXT_UTF8("news_text") : false;
     isset($_POST['news_category']) ? $data['category'] = S_POST_INT("news_category", 8) : false;
-    isset($_POST['news_featured']) ? $data['featured'] = S_POST_INT("news_featured", 1) : false;     
-    isset($_POST['news_lang']) ? $data['lang'] = S_POST_CHAR_AZ("news_lang", 2) : $data['lang'] = $config['WEB_LANG'];    
-    isset($_POST['news_acl']) ? $data['acl'] = S_POST_STRICT_CHARS("news_acl") : false; 
+    isset($_POST['news_featured']) ? $data['featured'] = S_POST_INT("news_featured", 1) : false;
+    isset($_POST['news_lang']) ? $data['lang'] = S_POST_CHAR_AZ("news_lang", 2) : $data['lang'] = $config['WEB_LANG'];
+    isset($_POST['news_acl']) ? $data['acl'] = S_POST_STRICT_CHARS("news_acl") : false;
     !empty($_POST['news_main_media']) ? $data['main_media'] = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']) : $data['main_media'] = "";
     !empty($_POST['news_update']) ? $data['update'] = S_POST_INT("news_update", 11, 1) : $data['update'] = 0;
     !empty($_POST['news_current_langid']) ? $data['current_langid'] = S_POST_INT("news_current_langid", 8, 1) : $data['current_langid'] = 0;
@@ -68,7 +68,7 @@ function news_form_getPost() {
     !empty($_POST['news_new_related']) ? $data['news_new_related'] = S_POST_URL("news_new_related") : false;
     !empty($_POST['news_related']) ? $data['news_related'] = S_POST_URL("news_related") : false;
     !empty($_POST['news_translator']) ? $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3) : false;
-    !empty($_POST['post_newlang']) ? $data['post_newlang'] = S_POST_INT("post_newlang") : false;     
+    !empty($_POST['post_newlang']) ? $data['post_newlang'] = S_POST_INT("post_newlang") : false;
     return $data;
 }
 
