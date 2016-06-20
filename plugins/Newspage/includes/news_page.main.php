@@ -105,15 +105,16 @@ function news_nav_options($news) {
             || (!defined('ACL') && $user['isAdmin'] == 1) 
             || ($news['author'] == $user['username']) 
             || (!empty($news['translator']) && ($news['translator'] == $user['username']))
-    ) {            
+    ) {       
         $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
     }
     // TRANSLATE ADMIN, ANON IF, REGISTERED IF
-    if( $config['NEWS_ANON_TRANSLATE']
+    if(  (defined('MULTILANG')) && ( $config['NEWS_ANON_TRANSLATE']
             ||  (defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin"))
             ||  (defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && $acl_auth->acl_ask("registered_all"))
             ||  (!defined('ACL') && $user['isAdmin'] == 1)
             ||  (!defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && !empty($user)) //NO_ACL registered
+            )
     ) {        
         $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_new_lang={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
     }

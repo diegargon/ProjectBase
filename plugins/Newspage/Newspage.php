@@ -57,9 +57,9 @@ function news_page() {
     } else if (!empty($_GET['news_new_lang'])) {
             require_once 'includes/news_form.common.php';
             require_once 'includes/news_page_edit.php';  
-            if (!empty($_POST['post_newlang'])) {
+            if (!empty($_POST['post_newlang']) && defined('MULTILANG')) {
                 news_form_process();
-            } else {
+            } else if (defined('MULTILANG')) {
                 do_action("common_web_structure");
                 $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());            
                 news_new_lang();

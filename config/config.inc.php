@@ -7,7 +7,7 @@ if (!defined('IN_WEB')) { exit; }
 global $config;
 $config = [];
 define("DEBUG", true);
-//define("PLUGINS_LOAD", true);    
+//define("PLUGIN_LOAD", true);    
     
 $config['CHARSET'] = "UTF-8";
 $config['WEB_DESC'] = "Noticias";

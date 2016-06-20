@@ -80,7 +80,7 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     }
        
     if(!empty($category)) {
-        if (defined('MULTILANG') && 'MULTILANG') {
+        if (defined('MULTILANG')) {
             $catname = get_category_name($category, $lang_id);
         } else {
             $catname = get_category_name($category);    
@@ -106,7 +106,7 @@ function get_news_featured() {
     //INFO: news_featured skip moderation bit
     $content = "";        
     $where_ary['featured'] = 1;
-    if (defined('MULTILANG') && 'MULTILANG') {
+    if (defined('MULTILANG')) {
         $site_langs = $ml->get_site_langs();
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
@@ -122,10 +122,10 @@ function get_news_featured() {
 
     while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false ) {
-            if (defined('MULTILANG') && 'MULTILANG') {
+            if (defined('MULTILANG')) {
                 $content_data['CATEGORY'] = get_category_name($row['category'], $lang_id);       
             } else {
-                $content_data['CATEGORY'] = get_category_name($$row['category']);
+                $content_data['CATEGORY'] = get_category_name($row['category']);
             }            
             $content .= $tpl->getTPL_file("Newspage", "news_featured", $content_data);
         }
@@ -139,7 +139,7 @@ function fetch_news_data($row) {
     global $config, $acl_auth, $db;    
 
     
-    if( $config['NEWS_ACL_PREVIEW_CHECK']  && defined('ACL') && 'ACL' && 
+    if( $config['NEWS_ACL_PREVIEW_CHECK']  && defined('ACL') && 
             !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
         return false;
     }
@@ -173,7 +173,7 @@ function get_category_name($cid, $lang_id = null) {
     global $db; 
     
     $where_ary['cid'] = $cid;
-    if (defined('MULTILANG') && 'MULTILANG' && $lang_id != null) {
+    if (defined('MULTILANG') && $lang_id != null) {
         $where_ary['lang_id'] = $lang_id;
     }
     $query = $db->select_all("categories", $where_ary, "LIMIT 1");

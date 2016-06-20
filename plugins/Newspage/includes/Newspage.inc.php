@@ -153,8 +153,10 @@ function news_clean_featured($lang_id) {
     global $db;
        
     $set_ary['featured'] = '0';
-    if (defined('MULTILANG') && 'MULTILANG') {
+    if (defined('MULTILANG')) {
         $where_ary['lang_id'] = $lang_id;
+        $db->update("news", $set_ary, $where_ary);                
+    } else {
+        $db->update("news", $set_ary);
     }
-    $db->update("news", $set_ary, $where_ary);
 }
