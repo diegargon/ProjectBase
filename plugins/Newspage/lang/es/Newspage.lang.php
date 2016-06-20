@@ -63,3 +63,5 @@ $LANGDATA['L_NEWS_NEWLANG'] = "Nuevo lenguaje";
 $LANGDATA['L_NEWS_TRANSLATOR'] = "Traductor";
 $LANGDATA['L_NEWS_TRANSLATE_SUCESSFUL'] = "Noticia traducida enviada con exito";
 $LANGDATA['L_NEWS_TRANSLATE_BY'] = "Traducido por ";
+$LANGDATA['L_NEWS_E_RELATED'] = "Enlace relacionado incorrecto o no funciona, corrijalo o dejelo en blanco";
+$LANGDATA['L_NEWS_E_SOURCE'] = "Enlace fuente incorrecto o no funciona, corrijalo o dejelo en blanco";

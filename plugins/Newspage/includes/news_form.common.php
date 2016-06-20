@@ -149,6 +149,24 @@ function news_form_process() {
             return false;        
         }
     }
+    //Source check valid if input
+    if (!empty($_POST['news_source']) && $news_data['news_source'] == false && $config['NEWS_SOURCE']) {
+        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_SOURCE']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;                
+    }    
+    //New related   check valid if input 
+    if (!empty($_POST['news_new_related']) && $news_data['news_new_related'] == false && $config['NEWS_RELATED']) {
+        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;                
+    }
+    //Old related  if input
+    if (!empty($_POST['news_related']) && $news_data['news_related'] == false && $config['NEWS_RELATED']) {
+        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;                
+    }           
     //FEATURED
     //NOCHECK ATM
     //

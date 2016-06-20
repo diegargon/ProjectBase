@@ -109,6 +109,7 @@ function remote_check($url) {
     }
     
     $host = parse_url($url, PHP_URL_HOST);
+    //FIX: gethostbyname sometimes not reliable, sometimes or in some servers resolv things like this http://jeihfw and return a IP :/ :?
     if (gethostbyname($host) === $host) { //get host resolv ip if fail return the host
         return false;
     } else {
