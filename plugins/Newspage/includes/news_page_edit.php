@@ -183,13 +183,15 @@ function news_new_lang() {
     $lang_id = S_GET_INT("lang_id");
     
     if ($nid == false || $lang_id == false) {
-        echo "ERROR 1";  //TODO error mesage
-        exit();
+        $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
+        do_action("message_box", $msgbox);
+        return false;
     }    
     $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id"), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
-        echo "ERROR 2: No existe esa noticia"; //TODO error mesage
-        exit();
+        $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
+        do_action("message_box", $msgbox);
+        return false;
     }
     $news_data = $db->fetch($query);    
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_NEWLANG'];
@@ -202,7 +204,7 @@ function news_new_lang() {
     $news_data['translator'] = $translator['username'];  
     
     if (defined('ACL')) {
-        if($acl_auth->acl_ask("news_admin||admin_all")) {// || $acl_auth->acl_ask("admin_all")) {
+        if($acl_auth->acl_ask("news_admin||admin_all")) {
             $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
             $can_change_author = 1;
         }
@@ -210,14 +212,13 @@ function news_new_lang() {
     empty($can_change_author) ?  $news_data['can_change_author'] = "disabled" : $news_data['can_change_author'] = ""; 
     $news_data['select_categories'] = news_get_categories_select($news_data);
     
-    if (defined('MULTILANG')) {
-        if ( ($site_langs = news_get_missed_langs($news_data['nid'])) != false ) {
-            $news_data['select_langs'] = $site_langs;
-        } else {
-            echo "Error: 3 Already translate to all languages"; //TODO ERROR
-            exit();
-        }
-    }  
+    if ( ($site_langs = news_get_missed_langs($news_data['nid'])) != false ) {
+        $news_data['select_langs'] = $site_langs;
+    } else {
+        $msgbox['MSG'] = "L_NEWS_E_ALREADY_TRANSLATE_ALL";
+        do_action("message_box", $msgbox);
+        return false;
+    }
     
     if ( ($media = get_news_main_link_byID($news_data['nid'])) != false) {
         $news_data['main_media'] = $media['link'];
