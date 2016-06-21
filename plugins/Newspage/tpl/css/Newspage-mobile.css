@@ -54,6 +54,9 @@
 }
 
 @media only screen and (max-width: 400px) {
+    .newsbox {
+	margin-left: 1px;
+    }    
     #featured {
         margin-left: 2px;
     }    
@@ -62,5 +65,19 @@
     }  
     .submit_box h1 {
         font-size: 16px;
+    }
+    .article_main_media {
+	float:none;	
+    }    
+    .article_text {
+	padding: 5px;
+    }
+    .article_main_media img {
+	width: 300px;
+	padding: 1px;
+    }
+    .related ul {
+        padding-left: 10px;
+        list-style: none;
     }
 }
