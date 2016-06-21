@@ -31,7 +31,9 @@ function news_show_page() {
     if( ($news_row = get_news_byId($nid, $lang)) == false) {
         return false;
     }
-     
+    
+    do_action("news_page_begin", $news_row);    
+    
     $tpl->addto_tplvar("NEWS_ADMIN_NAV", news_nav_options($news_row));
     
     $tpl_data['NID'] = $news_row['nid'];    

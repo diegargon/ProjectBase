@@ -1,0 +1,26 @@
+/*
+ Copyright @ 2016 Diego Garcia
+*/
+#comments { 
+    border: 0px solid black;
+    margin-top: 10px;
+}
+#comments h2 {
+    border: 1px solid #0A4B48;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1em;    
+    padding: 5px;
+    background-color: #077A75;
+}
+#comments h4 {
+    text-transform: none;
+}
+#comments span {
+    font-size: 0.8em;
+}
+#comment { 
+    margin-top: 5px;
+    border: 1px solid #077A75;
+    padding: 4px;
+}

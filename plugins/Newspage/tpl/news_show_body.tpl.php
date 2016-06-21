@@ -60,7 +60,7 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                     </ul>
                 </div>                
 <?php } ?>                 
-                <?php isset($tpldata['ADD_TO_NEWSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM']:false ?>            
+                <?php isset($tpldata['ADD_TO_NEWSSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM']:false ?>            
             </div>
             <div class="article_side">
                 <?php isset($tpldata['ADD_TO_NEWS_SIDE']) ? print $tpldata['ADD_TO_NEWSHOW_SIDE']:false ?>

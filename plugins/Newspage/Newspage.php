@@ -65,7 +65,7 @@ function news_page() {
                 news_new_lang();
             }
     } else {
-        require_once("includes/news_page.main.php");   
+        require_once("includes/news_page.main.php");
         do_action("common_web_structure");
         news_show_page();
     }
