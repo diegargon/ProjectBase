@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 ?>
     <div  class="clear bodysize page">   
         <div class="login_box">
-            <form  id="login_form" action="" autocomplete="off" method="post"> 
+            <form  id="login_form" action=""  method="post"> 
 				<h1><?php print $LANGDATA['L_LOGIN']?></h1> 
 				<p> 
 					<label for="email"><?php print $LANGDATA['L_EMAIL']?></label>
@@ -14,7 +14,7 @@ if (!defined('IN_WEB')) { exit; }
 				</p>
 				<p> 
 					<label id="label_password" for="password"><?php print $LANGDATA['L_PASSWORD']?></label>
-                                        <input id="password" name="password" required="required" type="password" autocomplete="off" placeholder="<?php print $LANGDATA['L_PASSWORD_EXAMPLE']?>" /> 
+                                        <input id="password" name="password" required="required" type="password"  placeholder="<?php print $LANGDATA['L_PASSWORD_EXAMPLE']?>" /> 
 				</p>
                                 <p class="rememberme">                                 
                                 <?php if($config['smbasic_session_persistence']) {?>

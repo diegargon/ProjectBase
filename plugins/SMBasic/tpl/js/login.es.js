@@ -81,7 +81,7 @@ $(document).ready(function(){
                 //alert(data); //DEBUG
                 var json = $.parseJSON(data);
                 if(json[0].status == 'ok') {
-                    $("form")[0].reset();                
+                    $("#login_form")[0].reset();
                     $(location).attr('href', json[0].msg);
                 } else if (json[0].status == 1) {
                     $('#email').css("border","2px solid red");
