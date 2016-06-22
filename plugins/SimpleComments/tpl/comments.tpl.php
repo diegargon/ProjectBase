@@ -10,9 +10,8 @@ if( !empty($data['TPL_FIRST'])) {?>
         <h2><?php print $LANGDATA['L_SC_COMMENTS']?></h2>
 <?php }?>
             <div id="comment">
-            <h4><?php print $data['author']?></h4>
-            <span><?php print format_date($data['date']) ?></span>
-            <p><?php print $data['message']?></p>
+                <p><span class="c_author"><?php print $data['author']?></span><span class="c_date"><?php print format_date($data['date'])?></span></p>
+                <p><?php print $data['message']?></p>
             </div>
 <?php if(!empty($data['TPL_LAST'])) {?>
     </section>

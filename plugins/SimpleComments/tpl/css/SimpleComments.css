@@ -13,12 +13,23 @@
     padding: 5px;
     background-color: #077A75;
 }
-#comments h4 { text-transform: none; }
-#comments span { font-size: 0.8em; }
+.c_author { 
+    font-size: 1.2em; 
+    font-weight: bold;
+}
+.c_date {
+    margin-left: 5px;
+    font-size: 0.8em;
+}
 #comment { 
     margin-top: 5px;
     border: 1px solid #077A75;
-    padding: 4px;
+    padding-left: 5px;
+}
+#comment p {
+    line-height: 1.0em;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 .btnShow {
     display: block;
@@ -29,11 +40,12 @@
     text-align: center;
     border-radius: 1px;
     color: black;
-    font-weight: bold;    
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
 }
 #new_comment_wrap { display:none; }
 #new_comment_wrap:target { display:block; }
-
 #new_comment_wrap textarea {    
     width: 99%;
     height: 200px;
