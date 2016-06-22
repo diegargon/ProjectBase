@@ -25,7 +25,6 @@ function ex_index_page(){
 }
 
 function ex_news_page() {
-    global $tpl;
     plugin_manual_start("Newspage");
     plugin_manual_start("NewsComments");
     news_page();   

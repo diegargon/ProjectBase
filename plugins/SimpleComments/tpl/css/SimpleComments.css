@@ -13,14 +13,29 @@
     padding: 5px;
     background-color: #077A75;
 }
-#comments h4 {
-    text-transform: none;
-}
-#comments span {
-    font-size: 0.8em;
-}
+#comments h4 { text-transform: none; }
+#comments span { font-size: 0.8em; }
 #comment { 
     margin-top: 5px;
     border: 1px solid #077A75;
     padding: 4px;
 }
+.btnShow {
+    display: block;
+    border: 1px solid #0A4B48;
+    font-size: 1em;    
+    background: #077A75;
+    padding: 5px;
+    text-align: center;
+    border-radius: 1px;
+    color: black;
+    font-weight: bold;    
+}
+#new_comment_wrap { display:none; }
+#new_comment_wrap:target { display:block; }
+
+#new_comment_wrap textarea {    
+    width: 99%;
+    height: 200px;
+}
+#btnSendNewComment { margin-left:50%; }

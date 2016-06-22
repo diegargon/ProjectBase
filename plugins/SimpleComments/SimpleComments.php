@@ -15,7 +15,7 @@ function SC_corefiles() {
     $tpl->getCSS_filePath("SimpleComments");    
 }
 
-function SC_AddComments($plugin, $resource_id, $lang_id = null, $limit = null) {
+function SC_GetComments($plugin, $resource_id, $lang_id = null, $limit = null) {
     global $tpl, $db;
     $content = "";
     $select_ary = array (
@@ -44,9 +44,30 @@ function SC_AddComments($plugin, $resource_id, $lang_id = null, $limit = null) {
 }
 
 function SC_NewComment($plugin, $resource_id, $lang_id = null) {
-    global $tpl, $db;
+    global $tpl;
     $content = "";
     
-    //$content = $tpl->getTPL_file("SimpleComments", "newcomment");
-    return $test = "<div><p>Test: $resource_id, $lang_id</p></div>";
+    $content .= $tpl->getTPL_file("SimpleComments", "new_comment");
+    return $content;
+}
+
+function SC_AddComment($plugin, $comment, $resource_id, $lang_id = null) {
+    global $sm, $db, $LANGDATA;
+    
+    $user = $sm->getSessionUser();
+    if (empty($user)) {
+        $user['username'] = $LANGDATA['L_SC_ANONYMOUS'];
+        $user['uid'] = -1;
+    }
+    $new_ary = array (
+        "plugin" => "$plugin",
+        "resource_id" => "$resource_id",
+        "lang_id" => "$lang_id",
+        "message" => $db->escape_strip($comment),
+        "author" => "{$user['username']}",
+        "author_id" => $user['uid']
+    );
+
+    $db->insert("comments", $new_ary);
+            
 }
