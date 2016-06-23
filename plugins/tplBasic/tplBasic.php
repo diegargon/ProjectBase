@@ -5,10 +5,13 @@
 if (!defined('IN_WEB')) { exit; }
 
 function tplBasic_init(){   
-    global $tpl;    
+    global $tpl, $config;    
     print_debug ("tplBasic initialized", "PLUGIN_LOAD");
 
     includePluginFiles("tplBasic");
+    
+    $custom_lang = "tpl/lang/". $config['WEB_LANG'] . "/custom.lang.php";
+    file_exists($custom_lang) ? require_once($custom_lang) : false;
     
     $tpl = new TPL;
    

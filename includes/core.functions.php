@@ -50,13 +50,11 @@ function check_jsScript($script) {
     global $external_scripts;
         
     foreach ($external_scripts as $value) {
-
       if ($value == $script) {
             return true;
-        }
-
+      }
     }
- 
+    
     return false;
 }
 
@@ -69,17 +67,13 @@ function includePluginFiles($plugin, $admin = 0) {
     //CONFIG FILES
     $config_plugin = "plugins/$plugin/$plugin.config.php";
     $config_plugin_user = "config/$plugin.config.php";
-    if (file_exists($config_plugin)) {
-        require_once($config_plugin);
-    }
-    if (file_exists($config_plugin_user)) { //User Overdrive
-        require_once($config_plugin_user); 
-    }    
+    file_exists($config_plugin) ? require_once($config_plugin) : false;
+    file_exists($config_plugin_user) ? require_once($config_plugin_user) : false;  //User Overdrive
+  
     //LANG FILES;
     $lang_file = "plugins/$plugin/lang/" . $config['WEB_LANG'] . "/$plugin.lang.php";
-    if (file_exists($lang_file)) {
-        include_once($lang_file);
-    }     
+    file_exists($lang_file) ? include_once($lang_file) : false;
+    
     //INC FILE
     if ($admin == 0) {
         $inc_file = "plugins/$plugin/includes/$plugin.inc.php";
@@ -87,12 +81,8 @@ function includePluginFiles($plugin, $admin = 0) {
     } else {
         $inc_file = "plugins/$plugin/admin/$plugin.admin.inc.php";
     }
-    if (!empty($inc_file) && file_exists($inc_file)) {
-        include_once($inc_file);
-    }     
-    if (!empty($inc_file) && file_exists($class_file)) {
-        include_once($class_file);    
-    }        
+    !empty($inc_file) && file_exists($inc_file) ? include_once($inc_file) : false;
+    !empty($inc_file) && file_exists($class_file) ? include_once($class_file) : false;
 }
 
 function remote_check($url) {
