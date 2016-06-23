@@ -5,7 +5,7 @@
     "function_init": "SMBasic_init",
     "function_admin_init": "SMBasic_AdminInit",
     "function_install": "",
-    "provided": "sessions",
+    "provided": "sessions1",
     "depends" : "SQL1",
     "autostart": "1",
     "priority" : "3",   
