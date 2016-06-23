@@ -16,6 +16,10 @@ EXAMPLE SITE
 ============
 Early example  http://projectbase.envigo.net (sometimes not work since its the production web)
 
+BUGS
+=========
+Android: JQUERY/JS Login, not prompt for remember.
+
 LICENSING
 =========
 TODO

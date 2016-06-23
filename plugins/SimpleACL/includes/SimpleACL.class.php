@@ -13,10 +13,16 @@ class ACL {
     }
    
     function acl_ask($roles_demand, $resource = null) {
+        global $sm;
+        
         print_debug("ACL_ASK-> $roles_demand", "ACL_DEBUG"); 
  
-        if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {          
-            return false;
+        if ( defined('SM') && !($user = $sm->getSessionUser()) ) {
+            return false;                    
+        } else {
+            if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {          
+                return false;
+            }
         }
         if (empty($this->roles) || empty($this->user_roles)) {
             $this->getRoles();

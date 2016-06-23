@@ -8,5 +8,6 @@
     "provided": "acl1",
     "depends" : "sessions SQL1",
     "autostart": "1",
-    "priority" : "4"   
+    "priority" : "4",
+    "optional" : ""
 }
