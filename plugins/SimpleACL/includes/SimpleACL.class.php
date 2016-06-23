@@ -25,8 +25,8 @@ class ACL {
             }
         }
         if (empty($this->roles) || empty($this->user_roles)) {
-            $this->getRoles();
-            $this->getUserRoles();   
+            $this->SetRoles();
+            $this->SetUserRoles();   
         }
         if ($this->roles == false) {
             return false;            
@@ -62,8 +62,37 @@ class ACL {
         } 
         $select .= "</select>";
         return $select;        
-    }   
+    }
+
+    function getUserRoles($uid) {
+        global $db;
+
+        $query = $db->select_all("acl_users", array("uid" => "$uid"));
+        if ($db->num_rows($query) > 0) {
+            while ($row = $db->fetch($query)) {
+                $user_roles[] = $row;
+            }
+        } else {
+            $user_roles = false;
+        }
+        $db->free($query);
+        return $user_roles;
+    }
+
+    function getRoleByID($role_id) {
+        empty($this->roles) ? $this->getRoles(): false;
         
+        foreach ($this->roles as $role) {
+            if ( ($role['role_id'] == $role_id)){
+                return $role;
+            }
+        }
+        return false;
+    }    
+
+    function retrieveRoles() {
+        return $this->roles;
+    }
     private function checkUserPerms($role_group, $role_type, $resource = "ALL") {
         if(!$asked_role = $this->getRoleDataByName($role_group, $role_type)) {
             return false;
@@ -97,20 +126,11 @@ class ACL {
         }
         return false;
     }    
-    
-    private function getRoleByID($role_id) {
-        foreach ($this->roles as $role) {
-            if ( ($role['role_id'] == $role_id)){
-                return $role;
-            }
-        }
-        return false;
-    }
-    
-    private function getRoles() {
+       
+    private function SetRoles() {
         global $db;
         
-        $query = $db->select_all("acl_roles"); 
+        $query = $db->select_all("acl_roles");
         if ($db->num_rows($query) > 0) {
             while ($row = $db->fetch($query)) {
                 $this->roles[] = $row;
@@ -121,7 +141,7 @@ class ACL {
         $db->free($query);        
     }
 
-    private function getUserRoles() {
+    private function SetUserRoles() {
         global $db;
 
         if(!$uid = S_VAR_INTEGER($_SESSION['uid'], 11, 0)) { //TODO change to a global user variable?                                
