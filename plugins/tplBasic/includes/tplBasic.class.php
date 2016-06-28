@@ -120,7 +120,10 @@ class TPL {
             $this->tpldata[$tplvar] .= $data;     
         }     
     
-    }  
+    }
+    function addto_tplvar_uniq ($tplvar, $data) {        
+        $this->tpldata[$tplvar] = $data;        
+    }     
     function add_if_empty($tplvar, $data) {
 
         if(empty($this->tpldata[$tplvar])) {
