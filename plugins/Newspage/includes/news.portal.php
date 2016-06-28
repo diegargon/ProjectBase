@@ -19,7 +19,7 @@ function news_portal() {
     $tpl_data['COL1_ARTICLES'] .= get_news(2,0);
     $tpl_data['COL2_ARTICLES'] = get_news(2,0);
     $tpl_data['COL3_ARTICLES'] = get_news(1,0,1,0);  
-    $tpl_data['COL3_ARTICLES'].= get_news(2,0,1,0);    
+    $tpl_data['COL3_ARTICLES'].= get_news(2,0,1,0);         
     $tpl->addtpl_array($tpl_data);
     
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", $news_layout_tpl));     
