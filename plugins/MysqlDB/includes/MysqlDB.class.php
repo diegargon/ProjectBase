@@ -115,7 +115,7 @@ class Database {
     /*
      *
      */
-    function update($table, $set, $where = null, $extra = null) {
+    function update($table, $set, $where = null, $extra = null, $logic = "AND") {
         global $config;
 
         $q = "UPDATE {$config['DB_PREFIX']}$table SET ";
@@ -138,7 +138,7 @@ class Database {
                     $q_where_fields[] = "$field {$value['operator']} " . "'". $value['value'] ."'";
                 }
             }
-            $q .= implode( ' AND ', $q_where_fields );
+            $q .= implode( ' $logic ', $q_where_fields );
         } 
         !empty($extra) ? $q .= " $extra" : false;
         return $this->query($q);
@@ -161,7 +161,7 @@ class Database {
         return $this->query($q);
     }
     
-    function delete($table, $where, $extra = null) {
+    function delete($table, $where, $extra = null, $logic = 'AND') {
         global $config;
                
         if(empty($table) || empty($where) ) { return false; }
@@ -171,7 +171,7 @@ class Database {
         foreach ($where as $field => $value) {
              $q_where_fields[] = "$field = " . "'". $value ."'";
         } 
-        $q .= implode( ' AND ', $q_where_fields );        
+        $q .= implode( ' $logic ', $q_where_fields );        
         !empty($extra) ? $q .= " $extra" : false;
         
         return $this->query($q);
