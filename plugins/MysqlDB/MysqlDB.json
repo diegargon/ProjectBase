@@ -8,5 +8,6 @@
     "depends" : "",
     "autostart": "1",
     "priority" : "4",
-    "optional": ""    
+    "optional": "",
+    "conflicts": ""
 }

@@ -9,5 +9,6 @@
     "depends" : "sessions1 SQL1",
     "autostart": "1",
     "priority" : "4",
-    "optional" : ""
+    "optional" : "",
+    "conflicts": ""
 }

@@ -7,5 +7,6 @@
     "provided": "tplbasic1",
     "depends" : "",
     "autostart": "1",
-    "priority" : "5"   
+    "priority" : "5",
+    "conflicts": ""
 }

@@ -8,5 +8,6 @@
     "depends" : "sessions1 tplbasic1 SQL1",
     "autostart": "1",
     "priority" : "6", 
-    "optional": "acl1"    
+    "optional": "acl1",
+    "conflicts": ""
 }
