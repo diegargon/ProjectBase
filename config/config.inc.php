@@ -8,7 +8,7 @@ global $config;
 $config = [];
 define("DEBUG", true);
 //define("PLUGIN_LOAD", true);    
-    
+
 $config['CHARSET'] = "UTF-8";
 $config['WEB_DESC'] = "Noticias";
 $config['TITLE'] = "Project Base";
@@ -25,5 +25,4 @@ $config['DEFAULT_TIMEZONE'] = "UTC";
 $config['DEFAULT_DATEFORMAT'] = "d/m/y H:i";
 $config['BACKLINK'] = "javascript:history.go(-1)";
 $config['REMOTE_CHECKS'] = 1;
-$config['ACCEPTED_MEDIA_REGEX'] = "jpe?g|bmp|png|JPE?G|BMP|PNG";
 //$config['']

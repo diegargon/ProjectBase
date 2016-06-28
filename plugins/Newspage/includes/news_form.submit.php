@@ -35,7 +35,9 @@ function news_new_form($post_data = null) {
     empty($can_change_author) ?  $data['can_change_author'] = "disabled" : $data['can_change_author'] = "";    
     $data['select_categories'] = news_get_categories_select();          
     !empty($post_data) ? $data = array_merge($data, $post_data) : false;
-      
+
+    do_action("news_new_form_add", $data);
+    
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $data));     
 }
 
@@ -79,21 +81,10 @@ function news_create_new($news_data) {
         "moderation" => $moderation
     );
     $db->insert("news", $insert_ary);
-    //MEDIA LINK
-    if (!empty($news_data['main_media'])) {
-        $source_id = $nid;
-        $plugin = "Newspage";
-        //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
-        $type = "image";
-        $insert_ary = array (
-            "source_id" => $source_id,
-            "plugin" => $plugin,
-            "type" => $type,
-            "link" => $news_data['main_media'],
-            "itsmain" => 1
-        );
-        $db->insert("links", $insert_ary);
-    }
+    
+    /* Custom / MOD */
+    do_action("news_create_new_insert", $nid);
+ 
     //SOURCE LINK
     if (!empty($news_data['news_source'])) {
         $source_id = $nid;

@@ -91,6 +91,7 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false) {
             if ($headlines == 1) { $content_data['headlines'] = 1; }
+            do_action("news_get_news_mod", $content_data);
             $content .= $tpl->getTPL_file("Newspage", "news_preview", $content_data);        
         }
     }
@@ -104,7 +105,7 @@ function get_news_featured() {
     global $config, $db, $tpl, $ml;
 
     //INFO: news_featured skip moderation bit
-    $content = "";        
+    $content = "";
     $where_ary['featured'] = 1;
     if (defined('MULTILANG')) {
         $site_langs = $ml->get_site_langs();
@@ -112,21 +113,22 @@ function get_news_featured() {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
                 $lang_id = $site_lang['lang_id'];
                 $where_ary['lang_id'] = $lang_id;
-            } 
+            }
         }
-    }    
+    }
     $query = $db->select_all("news", $where_ary, "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
         return false;
-    }    
+    }
 
     while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false ) {
             if (defined('MULTILANG')) {
-                $content_data['CATEGORY'] = get_category_name($row['category'], $lang_id);       
+                $content_data['CATEGORY'] = get_category_name($row['category'], $lang_id);
             } else {
                 $content_data['CATEGORY'] = get_category_name($row['category']);
-            }            
+            }
+            do_action("news_featured_mod" ,$row);
             $content .= $tpl->getTPL_file("Newspage", "news_featured", $content_data);
         }
     }    
@@ -159,12 +161,6 @@ function fetch_news_data($row) {
     } else {            
         $data['URL'] = "/newspage.php?nid={$row['nid']}&lang=".$config['WEB_LANG'];
     }
-    $query = $db->select_all("links", array("source_id" => "{$row['nid']}", "plugin" => "Newspage", "itsmain" => "1"), "LIMIT 1");
-    if ($db->num_rows($query) >= 0) {
-        $media_row = $db->fetch($query);
-        $data['MEDIA'] = news_format_media($media_row);
-    }
-    $db->free($query);
 
     return $data;
 }

@@ -60,8 +60,7 @@ function news_form_getPost() {
     isset($_POST['news_category']) ? $data['category'] = S_POST_INT("news_category", 8) : false;
     isset($_POST['news_featured']) ? $data['featured'] = S_POST_INT("news_featured", 1) : false;
     isset($_POST['news_lang']) ? $data['lang'] = S_POST_CHAR_AZ("news_lang", 2) : $data['lang'] = $config['WEB_LANG'];
-    isset($_POST['news_acl']) ? $data['acl'] = S_POST_STRICT_CHARS("news_acl") : false;
-    !empty($_POST['news_main_media']) ? $data['main_media'] = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']) : $data['main_media'] = "";
+    isset($_POST['news_acl']) ? $data['acl'] = S_POST_STRICT_CHARS("news_acl") : false;    
     !empty($_POST['news_update']) ? $data['update'] = S_POST_INT("news_update", 11, 1) : $data['update'] = 0;
     !empty($_POST['news_current_langid']) ? $data['current_langid'] = S_POST_INT("news_current_langid", 8, 1) : $data['current_langid'] = 0;
     !empty($_POST['news_source']) ? $data['news_source'] = S_POST_URL("news_source") : false;
@@ -141,14 +140,6 @@ function news_form_process() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }
-    //MEDIA    
-    if ( $config['NEWS_MAIN_MEDIA_REQUIRED'] || !empty($news_data['main_media'])) {
-        if($news_data['main_media'] == -1 || empty($news_data['main_media'])) {
-            $response[] = array("status" => "6", "msg" => $LANGDATA['L_NEWS_MEDIALINK_ERROR']);    
-            echo json_encode($response, JSON_UNESCAPED_SLASHES);
-            return false;        
-        }
-    }
     //Source check valid if input
     if (!empty($_POST['news_source']) && $news_data['news_source'] == false && $config['NEWS_SOURCE']) {
         $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_SOURCE']);    
@@ -163,10 +154,16 @@ function news_form_process() {
     }
     //Old related  if input
     if (!empty($_POST['news_related']) && $news_data['news_related'] == false && $config['NEWS_RELATED']) {
-        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
+        $response[] = array("status" => "8", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;                
-    }           
+    }       
+    /* Custom /Mod Validators */
+    if( ( ($return = do_action("news_form_add_check", $news_data)) != "ok") && !empty($return) ) {
+        $response[] = array("status" => "9", "msg" => $return);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;         
+    }
     //FEATURED
     //NOCHECK ATM
     //
@@ -258,7 +255,7 @@ function news_get_available_langs($news_data) {
 }
 //used when translate a news, omit all already translate langs, exclude original lang too. just missed news langs
 function news_get_missed_langs($nid) { 
-    global $config, $ml, $db; 
+    global $ml, $db; 
 
     $nolang = 1;
     

@@ -23,11 +23,7 @@ function news_page_edit($news_data) {
     if (defined('MULTILANG') && ($site_langs = news_get_available_langs($news_data)) != false) {
         $news_data['select_langs'] = $site_langs;
     }  
-    
-    if ( ($media = get_news_main_link_byID($news_data['nid'])) != false) {
-        $news_data['main_media'] = $media['link'];
-    }  
-    
+        
     if ( ($news_source = get_news_source_byID($news_data['nid'])) != false) {
         $news_data['news_source'] = $news_source['link'];
     }
@@ -40,6 +36,9 @@ function news_page_edit($news_data) {
     }    
     $news_data['update'] = $news_data['nid'];  
     $news_data['current_langid'] = $news_data['lang_id'];
+    
+    do_action("news_edit_form_add", $news_data);
+    
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));     
 }
 
@@ -113,25 +112,9 @@ function news_update($news_data) {
     );
     $db->update("news", $set_ary, $where_ary);
 
-    //MEDIA
-    if (!empty($news_data['main_media'])) {        
-        //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
-        $source_id = $nid;
-        $plugin = "Newspage";
-        $type = "image";
-
-        $query = $db->select_all("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin, "itsmain" => 1 ));
-        if ($db->num_rows($query) > 0) {       
-            $db->update("links", array("link" => $news_data['main_media']), array("source_id" => $source_id, "type" => $type, "itsmain" => 1));
-        } else {
-            $insert_ary = array ( 
-                "source_id" => $source_id, "plugin" => $plugin,
-                "type" => $type, "link" => $news_data['main_media'],
-                "itsmain" => 1
-            );            
-            $db->insert("links", $insert_ary);
-        }
-    }            
+    //Custom/MOD
+    do_action("news_form_update", $nid);
+  
     //SOURCE LINK
     if (!empty($news_data['news_source'])) {                
         $source_id = $nid;
@@ -229,10 +212,6 @@ function news_new_lang() {
         return false;
     }
     
-    if ( ($media = get_news_main_link_byID($news_data['nid'])) != false) {
-        $news_data['main_media'] = $media['link'];
-    }  
-    
     if ( ($news_source = get_news_source_byID($news_data['nid'])) != false) {
         $news_data['news_source'] = $news_source['link'];
     }
@@ -247,7 +226,10 @@ function news_new_lang() {
             }
         }
     }    
-    $news_data['post_newlang'] = $nid;  
+    $news_data['post_newlang'] = $nid; 
+    
+    do_action("news_newlang_form_add", $news_data);
+    
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));            
 }
 
@@ -290,7 +272,7 @@ function news_translate($news_data) {
     $insert_ary = array (
       "nid" => $nid, "lang_id" => $lang_id, "translator" => $news_data['news_translator'], "title" => $news_data['title'], 
       "lead" => $news_data['lead'],  "text" => $news_data['text'],  
-      "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
+      "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
       "lang" => $news_data['lang'], "acl" => $acl, "moderation" => $moderation
     );   
     $db->insert("news", $insert_ary);

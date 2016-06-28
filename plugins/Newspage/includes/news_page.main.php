@@ -50,11 +50,8 @@ function news_show_page() {
     }
     $tpl->addtpl_array($tpl_data);
 
-    if ( ($media = get_news_main_link_byID($news_row['nid'])) != false) {
-        $tpl->addto_tplvar("NEWS_MAIN_MEDIA", news_format_media($media));
-    }    
     if ( ($news_source = get_news_source_byID($news_row['nid'])) != false  && $config['NEWS_SOURCE'] ) {
-        $tpl->addto_tplvar("NEWS_SOURCE", news_format_media($news_source));
+        $tpl->addto_tplvar("NEWS_SOURCE", news_format_source($news_source));
     }
     if ( $config['NEWS_RELATED'] && ($news_related = news_get_related($news_row['nid'])) != false) {
         $related_content = "<span>{$LANGDATA['L_NEWS_RELATED']}:</span>";
@@ -152,11 +149,14 @@ function news_delete($nid, $lang_id) {
         return false;
     }
     $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
-    
+            
     $query = $db->select_all("news", array("nid" => $nid));
     if ($db->num_rows($query) <= 0) {
-        $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
+        $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));        
     }
+    //ATM by default delete all "links" if no exists the same news in other lang, mod not need clean "links"
+    do_action("news_delete_mod", $nid); 
+    
     return true;
 }
 

@@ -15,9 +15,11 @@ if (!defined('IN_WEB')) { exit; }
         }
     ?>
     
-    <?php if (!isset($data['headlines'])) {
-        echo $data['MEDIA'];
+    <?php 
+    if (!isset($data['headlines'])) {
+        !empty($tpldata['news_preview_lead_pre']) ? print $tpldata['news_preview_lead_pre'] : false;
         echo "<p>{$data['LEAD']}</p>";
+        !empty($tpldata['news_preview_lead_after']) ? print $tpldata['news_preview_lead_after'] : false;
     } 
     ?>
 </article>

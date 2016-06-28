@@ -4,14 +4,11 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function news_format_media($media) {
-    //TODO MEDIA TYPES   
-    if ($media['type'] == 'image') {
-        $result =  "<img src=" . $media['link'] ." alt=". $media['link'] . "/>"; //TODO FIX ALT        
-    } else if ($media['type'] == 'source') {
-        $url = parse_url($media['link']);        
+function news_format_source($link) {
+    if ($link['type'] == 'source') {
+        $url = parse_url($link['link']);        
         $domain = $url['host'];
-        $result = "<a rel='nofollow' target='_blank' href='{$media['link']}'>$domain</a>";
+        $result = "<a rel='nofollow' target='_blank' href='{$link['link']}'>$domain</a>";
     } else {
         return false;
     }
@@ -19,7 +16,7 @@ function news_format_media($media) {
 }
 
 function get_news_byId($nid, $lang = null){
-    global $config, $acl_auth, $ml, $db, $tpl;         
+    global $config, $acl_auth, $ml, $db;         
     
     $where_ary['nid'] = $nid;
     if (defined('MULTILANG') && 'MULTILANG' && $lang != null) {        
@@ -62,20 +59,6 @@ function get_news_byId($nid, $lang = null){
     }         
 
     return $news_row;
-}
-
-function get_news_main_link_byID($nid) {
-    global $db;
-    
-    $query = $db->select_all("links", array("source_id" => "$nid", "itsmain" => 1), "LIMIT 1");    
-    if ($db->num_rows($query) <= 0) {
-        return false;
-    } else {
-        $media = $db->fetch($query);
-    }
-    $db->free($query);
-
-    return $media;   
 }
 
 function get_news_source_byID($nid) {

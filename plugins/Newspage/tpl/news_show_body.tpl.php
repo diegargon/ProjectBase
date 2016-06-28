@@ -42,16 +42,12 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 <div class="article_lead">
                     <?php isset($tpldata['NEWS_LEAD']) ? print $tpldata['NEWS_LEAD']:false ?>
                 </div>                                
-                <hr/>
-<?php if(!empty($tpldata['NEWS_MAIN_MEDIA'])) {
-?>
-                <div class="article_main_media">
-                   <?php  print $tpldata['NEWS_MAIN_MEDIA'] ?>
-                </div>                
-<?php } ?>                
+                <hr/>            
+                <?php !empty($tpldata['news_main_pre_text']) ? print $tpldata['news_main_pre_text'] : false; ?>
                 <div class="article_text">
                     <?php isset($tpldata['NEWS_TEXT']) ? print $tpldata['NEWS_TEXT']:false ?>
                 </div>     
+                <?php !empty($tpldata['news_main_after_text']) ? print $tpldata['news_main__pre_text'] : false; ?>
 <?php if(!empty($tpldata['NEWS_RELATED'])) {
 ?>
                 <div class="related">

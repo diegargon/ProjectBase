@@ -1,0 +1,36 @@
+/*
+ Copyright @ 2016 Diego Garcia
+*/
+.newsbox:hover img {
+    opacity: 0.4;
+}
+.newsbox img{
+    float:left;
+    width:100px;
+    height:75px;
+    margin:0 10px 10px 0;    
+    border:0px solid black;
+    box-shadow: 3px 3px 4px black;
+}
+#featured  img {
+    margin-right: 5px;
+    float:left;
+    width: 100%;
+    max-height: 300px;
+    box-shadow: 3px 3px 4px black;
+}
+.feature_image{
+    display: table-cell;
+    border:0px solid blue;
+    width:50%;
+}
+#featured:hover img{
+    opacity: 0.8; 
+}
+.article_main_media {
+    float:right;
+}
+.article_main_media img {
+    width: 400px;
+    padding: 10px;
+}

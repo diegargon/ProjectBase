@@ -1,0 +1,13 @@
+{
+    "plugin_name": "NewsMedia",
+    "enabled": "1",
+    "main_file" : "NewsMedia.php",
+    "function_init": "NewsMedia_init",
+    "function_install": "",
+    "provided": "",
+    "depends" : "",
+    "autostart": "0",
+    "priority" : "4",
+    "optional": "",
+    "conflicts": ""
+}

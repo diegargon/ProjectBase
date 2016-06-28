@@ -138,7 +138,7 @@ class Database {
                     $q_where_fields[] = "$field {$value['operator']} " . "'". $value['value'] ."'";
                 }
             }
-            $q .= implode( ' $logic ', $q_where_fields );
+            $q .= implode( " $logic ", $q_where_fields );
         } 
         !empty($extra) ? $q .= " $extra" : false;
         return $this->query($q);
@@ -171,7 +171,7 @@ class Database {
         foreach ($where as $field => $value) {
              $q_where_fields[] = "$field = " . "'". $value ."'";
         } 
-        $q .= implode( ' $logic ', $q_where_fields );        
+        $q .= implode( " $logic ", $q_where_fields );        
         !empty($extra) ? $q .= " $extra" : false;
         
         return $this->query($q);

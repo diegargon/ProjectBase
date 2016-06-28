@@ -10,7 +10,7 @@ function Newspage_init(){
     
     includePluginFiles("Newspage"); 
     $tpl->getCSS_filePath("Newspage");
-    $tpl->getCSS_filePath("Newspage", "Newspage-mobile");  
+    $tpl->getCSS_filePath("Newspage", "Newspage-mobile");
 
     if (news_check_display_submit()) {
         register_action("nav_element", "news_menu_submit_news");

@@ -268,30 +268,6 @@ function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
     return $var;
 }
 
-function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null) {
-    global $config;
-    //TODO make something good and optional better remote connection for check
-
-    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) { 
-        $url = "http://" . $url;
-    }
-
-    $regex = '/\.('. $config['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
-    
-    if( ($url = S_VAR_URL($url, $max_size, $min_size)) == false ) {
-        return -1;
-    }    
-    if ( !preg_match($regex, $url) ) {
-      return -1;
-    }  
-    if ($config['REMOTE_CHECKS']) {
-        if (!remote_check($url)) {
-            return -1;
-        }
-    }
- 
-    return $url;
-}
 //SESSION
 function S_SESSION_INT($var, $max_size = null, $min_size = null) {
     if (empty($_SESSION[$var])) { 
