@@ -1,11 +1,6 @@
 <?php
 if (!defined('IN_WEB')) { exit; }
 ?>
-<script>
-function toggleMenu() {
-    document.getElementsByClassName("main-nav")[0].classList.toggle("responsive");
-}
-</script>
 <body id="Top">
 <div class="main_container">
 <div class="container">    

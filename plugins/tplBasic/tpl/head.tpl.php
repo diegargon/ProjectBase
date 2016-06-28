@@ -17,7 +17,12 @@ if (!defined('IN_WEB')) { exit; }
         isset($tpldata['HEAD']) ? print $tpldata['HEAD'] : false;
         isset($tpldata['META']) ? print $tpldata['META'] : false;
         isset($tpldata['LINK']) ? print $tpldata['LINK'] : false;
-        isset($tpldata['SCRIPTS']) ? print $tpldata['SCRIPTS'] : false;
+        isset($tpldata['SCRIPTS']) ? print $tpldata['SCRIPTS'] : false;  
         ?>
+        <script>
+            function toggleMenu() {
+            document.getElementsByClassName("main-nav")[0].classList.toggle("responsive");
+        }
+        </script>        
     </head>
 
