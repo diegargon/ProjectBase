@@ -150,13 +150,13 @@ function news_delete($nid, $lang_id) {
     }
     $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
             
-    $query = $db->select_all("news", array("nid" => $nid));
+    $query = $db->select_all("news", array("nid" => $nid), "LIMIT 1"); //check if other lang
     if ($db->num_rows($query) <= 0) {
-        $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));        
-    }
-    //ATM by default delete all "links" if no exists the same news in other lang, mod not need clean "links"
-    do_action("news_delete_mod", $nid); 
-    
+        $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
+        //ATM by default this fuction delete all "links" if no exists the same news in other lang, mod like 
+        //NewsMedia not need clean his "links"
+        do_action("news_delete_mod", $nid);         
+    } 
     return true;
 }
 
@@ -203,6 +203,6 @@ function news_redirect()  {
         header("Location: /{$config['WEB_LANG']} ");                
     } else {        
         //header("Location: {$_SERVER['HTTP_REFERER']} ");  //TODO FILTER
-        header("Location: ". S_SERVER_URL("HTTP_REFERER")."/{$config['WEB_LANG']} ");
-    }    
+        header("Location: ". S_SERVER_URL("HTTP_REFERER")."");
+    }        
 }
