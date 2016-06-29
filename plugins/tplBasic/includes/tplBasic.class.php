@@ -40,9 +40,8 @@ class TPL {
     function getTPL_file($plugin, $filename = null, $data = null) {
         global $config;
 
-        if(empty($filename)) {
-            $filename = $plugin;
-        }        
+        empty($filename) ? $filename = $plugin : false;
+        
         print_debug("getTPL_file called by-> $plugin for get a $filename", "TPL_DEBUG");
 
         $USER_PATH = "tpl/{$config['THEME']}/$filename.tpl.php";
@@ -62,9 +61,8 @@ class TPL {
     function getCSS_filePath($plugin, $filename = null) {
         global $config;
     
-        if(empty($filename)) {
-            $filename = $plugin;
-        }    
+        empty($filename) ? $filename = $plugin : false;
+
         print_debug("Get CSS called by-> $plugin for get a $filename", "TPL_DEBUG");
 
         $USER_PATH = "tpl/{$config['THEME']}/css/$filename.css";
@@ -81,18 +79,44 @@ class TPL {
         }
     }
 
+    function AddScriptFile($plugin, $filename = null ) {
+        global $config;
+        print_debug("AddScriptFile called by-> $plugin for get a $filename", "TPL_DEBUG");
+        empty($filename) ? $filename = $plugin : false;
+        
+        $USER_LANG_PATH = "tpl/{$config['THEME']}/js/$filename.{$config['WEB_LANG']}.js"; 
+        $DEFAULT_LANG_PATH = "plugins/$plugin/js/$filename.{$config['WEB_LANG']}.js";     
+        $USER_PATH = "tpl/{$config['THEME']}/js/$filename.js";
+        $DEFAULT_PATH = "plugins/$plugin/js/$filename.js"; 
+    
+        if (file_exists($USER_LANG_PATH))  { //TODO Recheck priority later
+            $SCRIPT_PATH = $USER_LANG_PATH;
+        } else if (file_exists($USER_PATH)) {
+            $SCRIPT_PATH = $USER_PATH;
+        } else if (file_exists($DEFAULT_LANG_PATH))  {
+            $SCRIPT_PATH = $DEFAULT_LANG_PATH;
+        } else if (file_exists($DEFAULT_PATH)) {
+            $SCRIPT_PATH = $DEFAULT_PATH;
+        } 
+        if (!empty($SCRIPT_PATH)) {
+            $script = "<script type='text/javascript' src='$SCRIPT_PATH'></script>\n";
+        } else {
+            print_debug("AddScriptFile called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
+            return false;
+        }        
+        echo '$script';
+        $this->addto_tplvar("SCRIPTS", $script);
+    }
     function getScript_fileCode($plugin, $filename = null) {
         global $config;
     
-        if(empty($filename)) {
-            $filename = $plugin;
-        }    
-        print_debug("Get Script called by-> $plugin for get a $filename", "TPL_DEBUG");
+        empty($filename) ? $filename = $plugin : false;
+        print_debug("getScript_fileCode called by-> $plugin for get a $filename", "TPL_DEBUG");
 
         $USER_LANG_PATH = "tpl/{$config['THEME']}/js/$filename.{$config['WEB_LANG']}.js"; 
-        $DEFAULT_LANG_PATH = "plugins/$plugin/tpl/js/$filename.{$config['WEB_LANG']}.js";     
+        $DEFAULT_LANG_PATH = "plugins/$plugin/js/$filename.{$config['WEB_LANG']}.js";     
         $USER_PATH = "tpl/{$config['THEME']}/js/$filename.js";
-        $DEFAULT_PATH = "plugins/$plugin/tpl/js/$filename.js"; 
+        $DEFAULT_PATH = "plugins/$plugin/js/$filename.js"; 
     
         if (file_exists($USER_LANG_PATH))  { //TODO Recheck priority later
             $SCRIPT_PATH = $USER_LANG_PATH;
