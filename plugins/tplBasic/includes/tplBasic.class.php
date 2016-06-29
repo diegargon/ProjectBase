@@ -104,7 +104,6 @@ class TPL {
             print_debug("AddScriptFile called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
             return false;
         }        
-        echo '$script';
         $this->addto_tplvar("SCRIPTS", $script);
     }
     function getScript_fileCode($plugin, $filename = null) {
