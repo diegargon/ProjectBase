@@ -190,7 +190,8 @@
     height: 200px;
 }
 .news_link {
-    width: 500px;
+    width: 94%;
+    margin-top: 5px;
 }
 .news_submit_center_wrapper {    
     border:0px solid black;  
