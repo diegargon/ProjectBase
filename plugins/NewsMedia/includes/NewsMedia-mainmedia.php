@@ -25,7 +25,7 @@ function NewsMediaCheck() {
     
     if(!empty($_POST['news_main_media'])) {
         $link = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']); 
-        (empty($link) || $link == -1) ? $error_msg = $LANGDATA['L_NEWS_MAIN_MEDIALINK_ERROR'].":\n". $_POST['news_main_media'] ."\n" : false;
+        ($link == -1) ? $error_msg = $LANGDATA['L_NEWS_MAIN_MEDIALINK_ERROR'].":\n". $_POST['news_main_media'] ."\n" : false;
     } 
     
     return (!empty($error_msg)) ? $error_msg : false;
