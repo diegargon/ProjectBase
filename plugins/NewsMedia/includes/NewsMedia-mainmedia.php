@@ -18,7 +18,7 @@ function NewsEditFormMediaTpl($news_data) {
     $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMedia", "NewsMediaItems", $news_data)); 
 }
 
-function NewsMediaCheck() {
+function NewsMediaCheck(&$news_data) {
     global $config, $LANGDATA;
     
     $error_msg = "";
@@ -26,22 +26,23 @@ function NewsMediaCheck() {
     if(!empty($_POST['news_main_media'])) {
         $link = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']); 
         ($link == -1) ? $error_msg = $LANGDATA['L_NEWS_MAIN_MEDIALINK_ERROR'].":\n". $_POST['news_main_media'] ."\n" : false;
+        (!empty($link) && $link != -1) ? $news_data['news_main_media'] = $link: false;
     } 
     
     return (!empty($error_msg)) ? $error_msg : false;
 }
 
-function NewsMediaInsertNew($source_id) {
+function NewsMediaInsertNew($news_data) {
     global $db, $config;
-    $news_media = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT'], 1);
+    //$news_media = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT'], 1);
     $plugin = "Newspage";
     //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
     $type = "image";
     $insert_ary = array (
-        "source_id" => $source_id,
+        "source_id" => $news_data['nid'],
         "plugin" => $plugin,
         "type" => $type,
-        "link" => $news_media,
+        "link" => $news_data['news_main_media'],
         "itsmain" => 1
     );
     
