@@ -159,7 +159,7 @@ function news_form_process() {
         return false;                
     }       
     /* Custom /Mod Validators */
-    if( ( ($return = do_action("news_form_add_check", $news_data)) != "ok") && !empty($return) ) {
+    if( ($return = do_action("news_form_add_check", $news_data)) && !empty($return) ) {
         $response[] = array("status" => "9", "msg" => $return);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;         
