@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 
 function NewsComments_init() {
     print_debug("NewsComments initiated", "PLUGIN_LOAD"); 
-    register_action("news_page_begin", "News_Comments");
+    register_action("news_show_page", "News_Comments");
 }
 
 function News_Comments($news) {
