@@ -21,7 +21,7 @@ function NewsMedia_init() {
 }
 
 function register_main_media() {
-    required_once("NewsMedia-mainmedia.php");
+    require_once("includes/NewsMedia-mainmedia.php");
     register_action("news_edit_form_add", "NewsEditFormMediaTpl");
     register_action("news_new_form_add", "NewsFormMediaTpl");
     register_action("news_newlang_form_add", "NewsEditFormMediaTpl");
@@ -34,7 +34,7 @@ function register_main_media() {
 }
 
 function register_extra_media() {
-    required_once("NewsMedia-extramedia.php");
+    require_once("includes/NewsMedia-extramedia.php");
     
 }
 
