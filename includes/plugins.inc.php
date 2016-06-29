@@ -28,7 +28,7 @@ function register_uniq_action($event, $func, $priority = 0) {
     
 } 
 
-function do_action($event, $params = null) {
+function do_action($event, &$params = null) {
     global $actions;
      
     if(isset($actions[$event]))
@@ -43,17 +43,17 @@ function do_action($event, $params = null) {
             if (is_array($func['function_name'])) {
                 if (method_exists($func['function_name'][0], $func['function_name'][1])) {
                     if (isset($return)) {
-                        $return .= call_user_func($func['function_name'], $params);                        
+                        $return .= call_user_func_array($func['function_name'], array(&$params));                        
                     } else {
-                        $return = call_user_func($func['function_name'], $params);
+                        $return = call_user_func_array($func['function_name'], array(&$params));
                     }
                 }                
             } else {
                 if(function_exists($func['function_name'])) {
                     if (isset($return)) {
-                    $return .= call_user_func($func['function_name'], $params);
+                    $return .= call_user_func_array($func['function_name'], array(&$params));
                     } else {
-                    $return = call_user_func($func['function_name'], $params); 
+                    $return = call_user_func_array($func['function_name'], array(&$params)); 
                     }
                 }
             }
