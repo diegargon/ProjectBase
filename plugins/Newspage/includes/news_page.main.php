@@ -32,7 +32,7 @@ function news_show_page() {
         return false;
     }
     
-    do_action("news_page_begin", $news_row);    
+    do_action("news_show_page", $news_row);    
     
     $tpl->addto_tplvar("NEWS_ADMIN_NAV", news_nav_options($news_row));
     

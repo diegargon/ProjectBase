@@ -5,14 +5,19 @@
 if (!defined('IN_WEB')) { exit; }
 
 function NewsMedia_init() { 
-    global $tpl;
+    global $tpl, $config;
     print_debug("NewsMedia initiated", "PLUGIN_LOAD");
     includePluginFiles("NewsMedia");
     
     $tpl->getCSS_filePath("NewsMedia");
     $tpl->getCSS_filePath("NewsMedia", "NewsMedia-mobile");
 
-    
+    if ($config['NEWS_ADD_MAIN_MEDIA']) {
+        register_main_media();
+    }
+}
+
+function register_main_media() {
     register_action("news_edit_form_add", "NewsEditFormMediaTpl");
     register_action("news_new_form_add", "NewsFormMediaTpl");
     register_action("news_newlang_form_add", "NewsEditFormMediaTpl");
@@ -21,10 +26,8 @@ function NewsMedia_init() {
     register_action("news_form_update", "news_form_media_update");
     register_action("news_featured_mod", "news_media_featured_mod");
     register_action("news_get_news_mod", "news_media_getnews_mod");
-    register_action("news_page_begin", "news_media_page_mod");
+    register_action("news_show_page", "news_media_page_mod");    
 }
-
-
 function NewsFormMediaTpl($news_data) {
     global $tpl;
     $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMedia", "NewsMediaItems", $news_data)); 
@@ -92,7 +95,7 @@ function news_form_media_update($source_id) {
 }
 
 function news_media_featured_mod($news) {
-    global $db, $tpl;
+    global $tpl;
     
     if ( ($media = get_news_main_link_byID($news['nid'])) != false) {
         $media_content = news_format_media($media);
