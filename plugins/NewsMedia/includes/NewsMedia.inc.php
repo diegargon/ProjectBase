@@ -22,7 +22,7 @@ function get_news_main_link_byID($nid) {
     return ($db->num_rows($query) <= 0) ? false : $db->fetch($query);     
 }
 
-function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null) {
+function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null, $force_no_remote_check = null) {
     global $config;
 
     if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) { 
@@ -37,7 +37,7 @@ function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null) {
     if ( !preg_match($regex, $url) ) {
       return -1;
     }  
-    if ($config['REMOTE_CHECKS']) {
+    if ($config['REMOTE_CHECKS'] && empty($force_no_remote_check)) {
         if (!remote_check($url)) {
             return -1;
         }
