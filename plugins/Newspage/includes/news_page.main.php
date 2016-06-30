@@ -36,17 +36,17 @@ function news_show_page() {
     
     $tpl->addto_tplvar("NEWS_ADMIN_NAV", news_nav_options($news_row));
     
-    $tpl_data['NID'] = $news_row['nid'];    
-    $tpl_data['NEWS_TITLE'] = str_replace('\r\n', '', $news_row['title']);    
-    $tpl_data['NEWS_LEAD'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);    
-    $tpl_data['NEWS_URL'] = "news.php?nid=$news_row[nid]";
-    $tpl_data['NEWS_DATE'] = format_date($news_row['date']);
-    $tpl_data['NEWS_AUTHOR'] = $news_row['author'];
-    $tpl_data['NEWS_AUTHOR_UID'] = $news_row['author_id'];       
-    $tpl_data['NEWS_TEXT']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
+    $tpl_data['nid'] = $news_row['nid'];    
+    $tpl_data['news_title'] = str_replace('\r\n', '', $news_row['title']);    
+    $tpl_data['news_lead'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);    
+    $tpl_data['news_url'] = "news.php?nid=$news_row[nid]";
+    $tpl_data['news_date'] = format_date($news_row['date']);
+    $tpl_data['news_author'] = $news_row['author'];
+    $tpl_data['news_author_uid'] = $news_row['author_id'];       
+    $tpl_data['news_text']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
     if (!empty ($news_row['translator'])) {
         $translator = $sm->getUserByUsername($news_row['translator']);        
-        $tpl_data['NEWS_TRANSLATOR'] = "<a rel='nofollow' href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
+        $tpl_data['news_translator'] = "<a rel='nofollow' href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }
     $tpl->addtpl_array($tpl_data);
 

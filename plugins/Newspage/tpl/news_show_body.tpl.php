@@ -24,15 +24,15 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 <?php isset($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
 
                 <div class="article_title">
-                    <?php isset($tpldata['NEWS_TITLE']) ? print $tpldata['NEWS_TITLE']:false ?>
+                    <?php isset($tpldata['news_title']) ? print $tpldata['news_title']:false ?>
                 </div>
                 <div class="extra-small">
-                    <?php print($tpldata['NEWS_DATE'])?> | 
-                    <a href='/profile.php?lang=<?php print $config['WEB_LANG']?>&viewprofile=<?php print $tpldata['NEWS_AUTHOR_UID'] ?>'>
-                    <?php print $tpldata['NEWS_AUTHOR'] ?>
+                    <?php print($tpldata['news_date'])?> | 
+                    <a href='/profile.php?lang=<?php print $config['WEB_LANG']?>&viewprofile=<?php print $tpldata['news_author_uid'] ?>'>
+                    <?php print $tpldata['news_author'] ?>
                     </a> 
                     <?php 
-                        isset($tpldata['NEWS_TRANSLATOR']) ? print " | ". $LANGDATA['L_NEWS_TRANSLATE_BY'] . $tpldata['NEWS_TRANSLATOR'] : false ; 
+                        isset($tpldata['news_translator']) ? print " | ". $LANGDATA['L_NEWS_TRANSLATE_BY'] . $tpldata['news_translator'] : false ; 
                     ?>                    
 <?php if(isset($tpldata['NEWS_SOURCE'])) { ?>
                     | <span><?php print $LANGDATA['L_NEWS_SOURCE'] .": ";  print $tpldata['NEWS_SOURCE'] ?> </span>
@@ -40,12 +40,12 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 </div>     
                 
                 <p class="article_lead">
-                    <?php isset($tpldata['NEWS_LEAD']) ? print $tpldata['NEWS_LEAD']:false ?>
+                    <?php isset($tpldata['news_lead']) ? print $tpldata['news_lead']:false ?>
                 </p>                                
                 <hr/>            
                 <?php !empty($tpldata['news_main_pre_text']) ? print $tpldata['news_main_pre_text'] : false; ?>
                 <p class="article_text">
-                    <?php isset($tpldata['NEWS_TEXT']) ? print $tpldata['NEWS_TEXT']:false ?>
+                    <?php isset($tpldata['news_text']) ? print $tpldata['news_text']:false ?>
                 </p>     
                 <?php !empty($tpldata['news_main_after_text']) ? print $tpldata['news_main__pre_text'] : false; ?>
 <?php if(!empty($tpldata['NEWS_RELATED'])) {

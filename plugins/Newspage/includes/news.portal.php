@@ -124,9 +124,9 @@ function get_news_featured() {
     while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false ) {
             if (defined('MULTILANG')) {
-                $content_data['CATEGORY'] = get_category_name($row['category'], $lang_id);
+                $content_data['category'] = get_category_name($row['category'], $lang_id);
             } else {
-                $content_data['CATEGORY'] = get_category_name($row['category']);
+                $content_data['category'] = get_category_name($row['category']);
             }
             do_action("news_featured_mod" ,$row);
             $content .= $tpl->getTPL_file("Newspage", "news_featured", $content_data);
@@ -138,7 +138,7 @@ function get_news_featured() {
 }
 
 function fetch_news_data($row) {
-    global $config, $acl_auth, $db;    
+    global $config, $acl_auth;    
 
     
     if( $config['NEWS_ACL_PREVIEW_CHECK']  && defined('ACL') && 
@@ -146,20 +146,20 @@ function fetch_news_data($row) {
         return false;
     }
     
-    $data['NID'] = $row['nid'];
-    $data['TITLE'] = $row['title'];
-    $data['LEAD'] = $row['lead'];                
+    $data['nid'] = $row['nid'];
+    $data['title'] = $row['title'];
+    $data['lead'] = $row['lead'];                
     $data['date'] = format_date($row['date']);    
-    $data['ALT_TITLE'] = htmlspecialchars($row['title']);            
+    $data['alt_title'] = htmlspecialchars($row['title']);            
 
     if ($config['FRIENDLY_URL']) {   
         //FIX: better way for clean all those character?
         $friendly_filter = array('"','\'','?','$',',','.','‘','’',':',';','[',']','{','}','*','!','¡','¿','+','<','>','#','@','|','~','%','&','(',')','=','`','´','/','º','ª','\\');
         $friendly_url = str_replace(' ', "-", $row['title']);
         $friendly_url = str_replace($friendly_filter, "", $friendly_url);
-        $data['URL'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";          
+        $data['url'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/$friendly_url";          
     } else {            
-        $data['URL'] = "/newspage.php?nid={$row['nid']}&lang=".$config['WEB_LANG'];
+        $data['url'] = "/newspage.php?nid={$row['nid']}&lang=".$config['WEB_LANG'];
     }
 
     return $data;

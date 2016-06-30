@@ -85,7 +85,7 @@ function news_media_featured_mod($news) {
 function news_media_getnews_mod ($news) {
     global $tpl;
         
-    if ( ($media_ary = get_links($news['NID'], "image", array("itsmain" => 1), "LIMIT 1")) != false ) { //FIX NID to nid
+    if ( ($media_ary = get_links($news['nid'], "image", array("itsmain" => 1), "LIMIT 1")) != false ) { 
         $media_content = news_format_media($media_ary);
         $tpl->addto_tplvar_uniq("news_preview_lead_pre", $media_content);
     }
