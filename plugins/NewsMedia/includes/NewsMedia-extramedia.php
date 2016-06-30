@@ -118,6 +118,9 @@ function NewsExtraMediaUpdate($news_data) {
 function NewsEditExtraFormMediaTpl($news_data) {
     global $tpl;
 
+    if (!empty($news_data['limited_edit'])) {
+        return false;
+    }
     $extra_ary = array(
        "itsmain" => array("operator" => "!=", "value" => "1")
     );

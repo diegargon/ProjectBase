@@ -31,7 +31,12 @@ function news_page_edit($news_data) {
     if($config['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid'])) ) {        
         $news_data['news_related'] = "";
         foreach ($news_related as $related)  {
-            $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+            if(empty($news_data['limited_edit'])) {
+                $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+            } else {
+                $news_data['news_related'] .= "<input disabled type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+                $news_data['news_related'] .= "<input  type='hidden' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+            }
         }
     }    
     $news_data['update'] = $news_data['nid'];  
@@ -60,10 +65,14 @@ function news_check_edit_authorized() {
         $msgbox['MSG'] = "L_ERROR_NOACCESS";
         do_action("message_box", $msgbox);        
     } 
-    if ( (($news_data['author'] == $user['username']) && $config['NEWS_AUTHOR_CAN_EDIT'])
-            || (($news_data['translator'] == $user['username']) && $config['NEWS_TRANSLATOR_CAN_EDIT']) ) {
+    if ( (($news_data['author'] == $user['username']) && $config['NEWS_AUTHOR_CAN_EDIT']) ) {
         return $news_data;
-    }    
+    } 
+
+    if ( (($news_data['translator'] == $user['username']) && $config['NEWS_TRANSLATOR_CAN_EDIT']) ) {
+        $news_data['limited_edit'] = 1;
+        return $news_data;
+    }
     if(defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin") ) { 
         return $news_data;
     } 
@@ -228,6 +237,7 @@ function news_new_lang() {
     }    
     $news_data['post_newlang'] = $nid; 
     
+    $news_data['limited_edit'] = 1; 
     do_action("news_newlang_form_add", $news_data);
     
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));            

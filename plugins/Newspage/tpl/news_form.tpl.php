@@ -55,7 +55,7 @@ if ($config['NEWS_SOURCE']) { ?>
         <div class="submit_items">
             <p> 
                 <label for="news_source"><?php print $LANGDATA['L_NEWS_SOURCE'] ?> </label>
-                <input <?php !empty($data['post_newlang']) ? print "disabled": false ?>  value="<?php isset($data['news_source']) ? print $data['news_source'] : false ?>"  minlength="<?php print $config['NEWS_LINK_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LINK_MAX_LENGHT']?>" id="news_source" class="news_link" name="news_source" type="text" placeholder="http://site.com"/>
+                <input <?php !empty($data['limited_edit']) ? print "disabled": false ?>  value="<?php isset($data['news_source']) ? print $data['news_source'] : false ?>"  minlength="<?php print $config['NEWS_LINK_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LINK_MAX_LENGHT']?>" id="news_source" class="news_link" name="news_source" type="text" placeholder="http://site.com"/>
             </p>
         </div>             
 <?php } ?>
@@ -64,7 +64,7 @@ if ($config['NEWS_RELATED']) { ?>
         <div class="submit_items">
             <p>
                 <label for="news_new_related"><?php print $LANGDATA['L_NEWS_RELATED'] ?> </label>
-                <input <?php !empty($data['post_newlang']) ? print "disabled": false ?> value="<?php isset($data['news_new_related']) ? print $data['news_new_related'] : false ?>"  minlength="<?php print $config['NEWS_LINK_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LINK_MAX_LENGHT']?>" id="news_new_related" class="news_link" name="news_new_related" type="text" placeholder="http://site.com"/>
+                <input <?php !empty($data['limited_edit']) ? print "disabled": false ?> value="<?php isset($data['news_new_related']) ? print $data['news_new_related'] : false ?>"  minlength="<?php print $config['NEWS_LINK_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LINK_MAX_LENGHT']?>" id="news_new_related" class="news_link" name="news_new_related" type="text" placeholder="http://site.com"/>
                 <?php isset($data['news_related']) ? print $data['news_related'] : false ?>
             </p>
         </div>             
