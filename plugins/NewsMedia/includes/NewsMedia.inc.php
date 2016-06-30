@@ -4,12 +4,15 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function news_format_media($media) {
+function news_format_media($media_ary) {
+    $result = "";
     //TODO MEDIA TYPES   
-    if ($media['type'] == 'image') {
-        $result =  "<img src=" . $media['link'] ." alt=". $media['link'] . "/>"; //TODO FIX ALT        
-    } else {
-        return false;
+    foreach ($media_ary as $media) {
+        if ($media['type'] == 'image') {
+            $result .=  "<img src=" . $media['link'] ." alt=". $media['link'] . "/>"; //TODO FIX ALT        
+        } else {
+            return false;
+        }
     }
     return $result;
 }
@@ -33,13 +36,6 @@ function get_links($source_id, $type, $extra_ary = null, $extra_db = null) {
         $links[] = $links_row;
     }
     return $links;
-}
-function get_news_main_link_byID($nid) { //TODO CHANGE FOR ANOTHER "GET FROM TABLE LINKS" (get_links()) more standard and remove
-    global $db;
-    
-    $query = $db->select_all("links", array("source_id" => "$nid", "itsmain" => 1), "LIMIT 1");
-    
-    return ($db->num_rows($query) <= 0) ? false : $db->fetch($query);     
 }
 
 function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null, $force_no_remote_check = null) {
