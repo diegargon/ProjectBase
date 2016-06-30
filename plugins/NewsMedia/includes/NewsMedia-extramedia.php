@@ -133,7 +133,6 @@ function NewsEditExtraFormMediaTpl($news_data) {
             $news_data['extra_media'] .=  "<input type=\"button\" onclick='removeParent(this)' value=\"-\" />";
             $news_data['extra_media'] .= "</div>";
         }
-        $news_data['extra_media'] .= "</div>";
     }
     $tpl->AddScriptFile("NewsMedia", "addmediafield");
     $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMedia", "NewsMediaExtraItems", $news_data));    

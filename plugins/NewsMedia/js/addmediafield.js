@@ -9,7 +9,7 @@ $(function()
     var fieldWrapper = $("<div class=\"fieldwrapper\" id=\"field" + intId + "\"/>");
     var input = $("<input type=\"text\" class=\"news_extra_link\"  name=\"news_new_extra_media[]\"/>");
     var removeButton = $("<input type=\"button\" class=\"remove\" value=\"-\" />");
-
+    
     removeButton.click(function() {
         $(this).parent().remove();
     });                    
