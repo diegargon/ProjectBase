@@ -34,3 +34,9 @@
     width: 400px;
     padding: 10px;
 }
+.center {
+    text-align: center;
+}
+.news_extra_link {
+    width: 85%;
+}
