@@ -15,7 +15,7 @@ class Database {
         }   
         $this->query("SET NAMES ". DB_CHARSET ."");
     
-    return true;
+        return true;
     }
 
     function query($string) {        
@@ -66,8 +66,7 @@ class Database {
     }
 
     function free(& $query) {
-        $query->free();
-        
+        $query->free();        
     }
 
     function get_next_num ($table, $field) {
@@ -169,7 +168,11 @@ class Database {
         $q = "DELETE FROM {$config['DB_PREFIX']}$table WHERE ";
 
         foreach ($where as $field => $value) {
-             $q_where_fields[] = "$field = " . "'". $value ."'";
+            if(!is_array($value)) {
+                $q_where_fields[] = "$field = " . "'". $value ."'";
+            } else {
+                $q_where_fields[] = "$field {$value['operator']} " . "'". $value['value'] ."'";                
+            }
         } 
         $q .= implode( " $logic ", $q_where_fields );        
         !empty($extra) ? $q .= " $extra" : false;
