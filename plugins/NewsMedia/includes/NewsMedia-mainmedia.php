@@ -33,10 +33,9 @@ function NewsMediaCheck(&$news_data) {
 }
 
 function NewsMediaInsertNew($news_data) {
-    global $db, $config;
-    //$news_media = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT'], 1);
-    $plugin = "Newspage";
-    //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
+    global $db;
+    
+    $plugin = "Newspage";    
     $type = "image";
     $insert_ary = array (
         "source_id" => $news_data['nid'],
@@ -49,27 +48,26 @@ function NewsMediaInsertNew($news_data) {
     $db->insert("links", $insert_ary);        
 }
 
-function news_form_media_update($source_id) {
-    global $db, $config;
-    //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
+function news_form_media_update($news_data) {
+    global $db;    
     $plugin = "Newspage";
     $type = "image";
 
-    $news_media = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']);
-    
-    $query = $db->select_all("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin, "itsmain" => 1 ));
-    if ($db->num_rows($query) > 0) {       
-        $db->update("links", array("link" => $news_media), array("source_id" => $source_id, "type" => $type, "itsmain" => 1));
-    } else {
-        $insert_ary = array ( 
-            "source_id" => $source_id,
-            "plugin" => $plugin,
-            "type" => $type,
-            "link" => $news_media,
-            "itsmain" => 1
-        );            
-        $db->insert("links", $insert_ary);
-    }        
+    if(!empty($news_data['news_main_media'])) {
+        $query = $db->select_all("links", array("source_id" => $news_data['nid'], "type" => $type, "plugin" => $plugin, "itsmain" => 1 ), "LIMIT 1");
+        if ($db->num_rows($query) > 0) {       
+            $db->update("links", array("link" => $news_data['news_main_media']), array("source_id" => $news_data['nid'], "type" => $type, "itsmain" => 1));
+        } else {
+            $insert_ary = array ( 
+                "source_id" => $news_data['nid'],
+                "plugin" => $plugin,
+                "type" => $type,
+                "link" => $news_data['news_main_media'],
+                "itsmain" => 1
+            );            
+            $db->insert("links", $insert_ary);
+        }        
+    }
 }
 
 function news_media_featured_mod($news) {

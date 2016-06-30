@@ -79,7 +79,7 @@ function news_check_edit_authorized() {
 function news_update($news_data) {
     global $config, $db, $ml;
 
-    $nid = $news_data['update'];
+    $news_data['nid'] = $news_data['update'];
     $current_langid = $news_data['current_langid'];
             
     if (defined('MULTILANG')) {
@@ -88,7 +88,7 @@ function news_update($news_data) {
         $lang_id  = $config['WEB_LANG_ID'];        
     }
 
-    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$current_langid"));
+    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "$current_langid"));
     if ($db->num_rows($query) <= 0) {
         return false;
     }
@@ -108,16 +108,16 @@ function news_update($news_data) {
     );
     
     $where_ary = array ( 
-        "nid" => "$nid", "lang_id" => "$current_langid"
+        "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid"
     );
     $db->update("news", $set_ary, $where_ary);
 
     //Custom/MOD
-    do_action("news_form_update", $nid);
+    do_action("news_form_update", $news_data);
   
     //SOURCE LINK
     if (!empty($news_data['news_source'])) {                
-        $source_id = $nid;
+        $source_id = $news_data['nid'];
         $plugin = "Newspage";
         $type = "source";
 
@@ -132,14 +132,14 @@ function news_update($news_data) {
             $db->insert("links", $insert_ary);
         }
     } else {
-        $source_id = $nid;
+        $source_id = $news_data['nid'];
         $plugin = "Newspage";
         $type = "source";
         $db->delete("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin), "LIMIT 1");
     }         
     //NEW RELATED
     if (!empty($news_data['news_new_related'])) {      
-        $source_id = $nid;
+        $source_id = $news_data['nid'];
         $plugin = "Newspage";
         $type = "related";
         $insert_ary = array ( 
@@ -198,7 +198,7 @@ function news_new_lang() {
         $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
         $can_change_author = 1;
     } 
-    if (!defined('ACL') && $user['isAdmin']) {
+    if (!defined('ACL') && $translator['isAdmin']) {
         $can_change_author = 1;
     }
     empty($can_change_author) ?  $news_data['can_change_author'] = "disabled" : $news_data['can_change_author'] = ""; 

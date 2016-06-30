@@ -14,7 +14,27 @@ function news_format_media($media) {
     return $result;
 }
 
-function get_news_main_link_byID($nid) {
+function get_links($source_id, $type, $extra_ary = null, $extra_db = null) {
+    global $db;
+    $query_ary = array ( 
+        "source_id" => "$source_id",
+        "type" => "$type",        
+    );
+    if (!empty($extra_ary) && is_array($extra_ary)) {
+        $query_ary = array_merge($query_ary, $extra_ary);
+    }
+    $query = $db->select_all("links", $query_ary, "$extra_db");
+    
+    if ($db->num_rows($query) <= 0) {
+        return false;
+    }
+       
+    while( $links_row = $db->fetch($query) ) {
+        $links[] = $links_row;
+    }
+    return $links;
+}
+function get_news_main_link_byID($nid) { //TODO CHANGE FOR ANOTHER "GET FROM TABLE LINKS" (get_links()) more standard and remove
     global $db;
     
     $query = $db->select_all("links", array("source_id" => "$nid", "itsmain" => 1), "LIMIT 1");

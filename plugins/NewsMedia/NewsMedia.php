@@ -4,27 +4,23 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function NewsMedia_init() { 
+function NewsMedia_init() {
     global $tpl, $config;
     print_debug("NewsMedia initiated", "PLUGIN_LOAD");
     includePluginFiles("NewsMedia");
-    
+
     $tpl->getCSS_filePath("NewsMedia");
     $tpl->getCSS_filePath("NewsMedia", "NewsMedia-mobile");
 
-    if ($config['NEWS_ADD_MAIN_MEDIA']) {
-        register_main_media();
-    }
-    if ($config['NEWS_ADD_EXTRA_MEDIA']) {
-        register_extra_media();
-    }
+    $config['NEWS_ADD_EXTRA_MEDIA'] ? register_extra_media() : false;
+    $config['NEWS_ADD_MAIN_MEDIA'] ? register_main_media() : false;
+
 }
 
 function register_main_media() {
     require_once("includes/NewsMedia-mainmedia.php");
     register_action("news_edit_form_add", "NewsEditFormMediaTpl");
-    register_action("news_new_form_add", "NewsFormMediaTpl");
-    register_action("news_newlang_form_add", "NewsEditFormMediaTpl");
+    register_action("news_new_form_add", "NewsFormMediaTpl");    
     register_action("news_form_add_check", "NewsMediaCheck");
     register_action("news_create_new_insert", "NewsMediaInsertNew");
     register_action("news_form_update", "news_form_media_update");
@@ -35,6 +31,9 @@ function register_main_media() {
 
 function register_extra_media() {
     require_once("includes/NewsMedia-extramedia.php");
-    
+    register_action("news_edit_form_add", "NewsEditExtraFormMediaTpl");
+    register_action("news_new_form_add", "NewsFormExtraMediaTpl");
+    register_action("news_form_add_check", "NewsExtraMediaCheck");
+    register_action("news_create_new_insert", "NewsExtraMediaInsertNew");
+    register_action("news_form_update", "NewsExtraMediaUpdate");
 }
-

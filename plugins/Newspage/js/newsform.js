@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     $("#newsFormSubmit").click(function(){       
-        $('#newsFormSubmit').attr('disabled','disabled');
+       // $('#newsFormSubmit').attr('disabled','disabled');
         
         $('#news_author').css("border","1px solid black");
         $('#news_author').css("box-shadow","0 0 3px black");
