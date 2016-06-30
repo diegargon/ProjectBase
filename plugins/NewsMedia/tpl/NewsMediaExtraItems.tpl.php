@@ -12,7 +12,4 @@ if (!defined('IN_WEB')) { exit; }
                 <div id='extra_input'>
 <?php !empty($data['extra_media']) ? print $data['extra_media'] : false ?>
                 </div>
-                <?php if (!empty($data['post_newlang'])) { ?>
-                <input  value="<?php isset($data['extra_media']) ? print $data['extra_media'] : false ?>"  class="news_link" name="news_extra_media" type="hidden" />
-                <?php } ?>
         </div> 

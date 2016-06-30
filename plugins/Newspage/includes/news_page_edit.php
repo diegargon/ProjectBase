@@ -23,7 +23,7 @@ function news_page_edit($news_data) {
     if (defined('MULTILANG') && ($site_langs = news_get_available_langs($news_data)) != false) {
         $news_data['select_langs'] = $site_langs;
     }  
-    
+        
     if ( ($news_source = get_news_source_byID($news_data['nid'])) != false) {
         $news_data['news_source'] = $news_source['link'];
     }
