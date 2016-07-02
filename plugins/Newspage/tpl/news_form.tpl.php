@@ -72,11 +72,13 @@ if ($config['NEWS_RELATED']) { ?>
         <div class="submit_items">
             <p> 
                 <span class="submit_others_label"><?php print $LANGDATA['L_NEWS_OTHER_OPTIONS'] ?> </span>
+<?php if(!empty($data['select_categories'])) { ?>
                 <span  class="lang_label"><?php print $LANGDATA['L_NEWS_CATEGORY']?></span>
                     <?php print $data['select_categories'] ?>
+<?php } ?>                
                 
 <?php
-if(defined('MULTILANG')) {
+if(defined('MULTILANG') && !empty($data['select_langs'])) {
 ?>                
                 <span  class="lang_label"><?php print $LANGDATA['L_NEWS_LANG']?></span>
                     <?php print $data['select_langs'] ?>
@@ -99,6 +101,7 @@ if(!empty($data['select_acl'])) {
             <input type="hidden" value="<?php  !empty($data['update']) ? print $data['update']: false ?>"  name="news_update" id="news_update"/>
             <input type="hidden" value="<?php  !empty($data['post_newlang']) ? print $data['post_newlang']: false ?>"  name="post_newlang" id="post_newlang"/>
             <input type="hidden" value="<?php  !empty($data['current_langid']) ? print $data['current_langid']: false ?>"  name="news_current_langid" id="news_current_langid"/>
+            <?php !empty($tpldata['NEWS_FORM_INPUT_HIDDEN']) ? print $tpldata['NEWS_FORM_INPUT_HIDDEN'] : false; ?>
         </div>
 <?php !empty($tpldata['NEWS_FORM_BOTTOM_OPTION'])? print $tpldata['NEWS_FORM_BOTTOM_OPTION'] :false; ?>            
         <div class="submit_buttom">

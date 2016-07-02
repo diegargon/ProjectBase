@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
  
-function news_page_edit($news_data) {
+function news_edit($news_data) {
     global $config, $LANGDATA, $acl_auth, $tpl, $sm;    
 
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_EDIT_NEWS'];
@@ -50,15 +50,16 @@ function news_page_edit($news_data) {
 function news_check_edit_authorized() {
     global $config, $sm, $acl_auth;
     
-    $nid = S_GET_INT("newsedit");
+    $nid = S_GET_INT("newsedit", 11, 1);
     $lang = S_GET_CHAR_AZ("lang", 2, 2);
+    $page = S_GET_INT("page", 11, 1);
     
-    if ($nid == false || $lang == false) {
+    if ($nid == false || $lang == false || $page == false) {
         $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
         do_action("message_box", $msgbox);
         return false;
     }   
-    if( ! $news_data = get_news_byId($nid, $lang)) {
+    if( ! $news_data = get_news_byId($nid, $lang, $page)) {
         return false; //get_news... error already setting
     }  
     if ( (!$user = $sm->getSessionUser()) ) {
@@ -68,7 +69,6 @@ function news_check_edit_authorized() {
     if ( (($news_data['author'] == $user['username']) && $config['NEWS_AUTHOR_CAN_EDIT']) ) {
         return $news_data;
     } 
-
     if ( (($news_data['translator'] == $user['username']) && $config['NEWS_TRANSLATOR_CAN_EDIT']) ) {
         $news_data['limited_edit'] = 1;
         return $news_data;
@@ -77,7 +77,7 @@ function news_check_edit_authorized() {
         return $news_data;
     } 
     if (!defined('ACL') && $user['isAdmin']) {
-            return $news_data;
+        return $news_data;
     }
 
     $msgbox['MSG'] = "L_ERROR_NOACCESS";
@@ -88,6 +88,9 @@ function news_check_edit_authorized() {
 function news_update($news_data) {
     global $config, $db, $ml;
 
+    if(empty($news_data['page']) || empty($news_data['update']) || empty($news_data['current_langid'])) {
+        return false; //TODO ERROR?
+    }
     $news_data['nid'] = $news_data['update'];
     $current_langid = $news_data['current_langid'];
             
@@ -98,10 +101,10 @@ function news_update($news_data) {
     }
 
     $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "$current_langid"));
-    if ($db->num_rows($query) <= 0) {
+    if ( ($num_pages = $db->num_rows($query))  <= 0) {
         return false;
     }
-
+   
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = ""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
     !isset($news_data['translator']) ? $news_data['news_translator'] = "" : false;
@@ -117,10 +120,20 @@ function news_update($news_data) {
     );
     
     $where_ary = array ( 
-        "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid"
+        "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid", "page" => $news_data['page']
     );
     $db->update("news", $set_ary, $where_ary);
-
+    //UPDATE ACL/CATEGORY/LANG/FEATURE on pages;
+    if ($num_pages > 1) { 
+        $page_set_ary = array (
+            "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], 
+            "category" => $news_data['category'], "lang" => $news_data['lang']
+        );
+        $page_where_ary = array ( 
+            "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid", "page" => array("operator" => "!=", "value" => $news_data['page'])
+        );
+        $db->update("news", $page_set_ary, $page_where_ary);
+    }
     //Custom/MOD
     do_action("news_form_update", $news_data);
   
@@ -177,13 +190,19 @@ function news_new_lang() {
     
     $nid = S_GET_INT("news_new_lang");
     $lang_id = S_GET_INT("lang_id");
+    $page  = S_GET_INT("page", 11, 1);
     
+    if (empty($nid) || empty($lang_id) || empty($page)) {
+        $msgbox['MSG'] = "L_NEWS_INTERNAL_ERROR";
+        do_action("message_box", $msgbox);
+        return false;        
+    }
     if ($nid == false || $lang_id == false) {
         $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
         do_action("message_box", $msgbox);
         return false;
     }    
-    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id"), "LIMIT 1");
+    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id", "page" => "$page"), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
         $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
         do_action("message_box", $msgbox);
@@ -211,9 +230,9 @@ function news_new_lang() {
         $can_change_author = 1;
     }
     empty($can_change_author) ?  $news_data['can_change_author'] = "disabled" : $news_data['can_change_author'] = ""; 
-    $news_data['select_categories'] = news_get_categories_select($news_data);
+    $news_data['select_categories'] = news_get_categories_select($news_data, 1);
     
-    if ( ($site_langs = news_get_missed_langs($news_data['nid'])) != false ) {
+    if ( ($site_langs = news_get_missed_langs($news_data['nid'], $news_data['page'])) != false ) {
         $news_data['select_langs'] = $site_langs;
     } else {
         $msgbox['MSG'] = "L_NEWS_E_ALREADY_TRANSLATE_ALL";
@@ -259,7 +278,7 @@ function news_translate($news_data) {
         return false;
     }
 
-    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id"));
+    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id", "page" => "{$news_data['page']}"));
     if ($db->num_rows($query) > 0) {
         return false;
     }
@@ -280,7 +299,7 @@ function news_translate($news_data) {
     }
     
     $insert_ary = array (
-      "nid" => $nid, "lang_id" => $lang_id, "translator" => $news_data['news_translator'], "title" => $news_data['title'], 
+      "nid" => $nid, "lang_id" => $lang_id, "page" => $news_data['page'], "translator" => $news_data['news_translator'], "title" => $news_data['title'], 
       "lead" => $news_data['lead'],  "text" => $news_data['text'],  
       "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
       "lang" => $news_data['lang'], "acl" => $acl, "moderation" => $moderation

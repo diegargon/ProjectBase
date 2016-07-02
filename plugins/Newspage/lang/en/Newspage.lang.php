@@ -63,3 +63,5 @@ $LANGDATA['L_NEWS_TRANSLATE_BY'] = "Translate by ";
 $LANGDATA['L_NEWS_E_RELATED'] = "Incorrect/Not working related link, fix it or leave blank";
 $LANGDATA['L_NEWS_E_SOURCE'] = "Incorrect/Not working  source link, fix it or leave blank";
 $LANGDATA['L_NEWS_E_ALREADY_TRANSLATE_ALL'] = "News already translate to all active languages.";
+$LANGDATA['L_NEWS_NEW_PAGE'] = "New page";
+$LANGDATA['L_NEWS_CREATE_NEW_PAGE'] = "Create new page";

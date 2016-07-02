@@ -4,20 +4,25 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function news_get_categories_select($news_data = null) {
+function news_get_categories_select($news_data = null, $disabled = null) {
     global $db;
-    $query = news_get_categories();
-    
-    $select = "<select name='news_category' id='news_category'>";
-    while($row = $db->fetch($query)) {
-        if( ($news_data != null) && ($row['cid'] == $news_data['category']) ) {
-            $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>"; 
-        } else {
-            $select .= "<option value='{$row['cid']}'>{$row['name']}</option>"; 
-        }        
-    } 
-    $select .= "</select>";
-    
+    if (empty($disabled)) {
+        $query = news_get_categories();    
+        $select = "<select name='news_category' id='news_category'>";
+        while($row = $db->fetch($query)) {
+            if( ($news_data != null) && ($row['cid'] == $news_data['category']) ) {
+                $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>"; 
+            } else {
+                $select .= "<option value='{$row['cid']}'>{$row['name']}</option>"; 
+            }        
+        } 
+        $select .= "</select>";
+    } else {
+        $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => $news_data['lang_id'], "cid" => $news_data['category'] ), "LIMIT 1");
+        $cat = $db->fetch($query);
+        $select = "<input type='text' value='{$cat['name']}' readonly />";
+        $select .= "<input type='hidden' name='news_category' value='{$news_data['category']}' />";
+    }
     return $select;
 }
 
@@ -68,6 +73,7 @@ function news_form_getPost() {
     !empty($_POST['news_related']) ? $data['news_related'] = S_POST_URL("news_related") : false;
     !empty($_POST['news_translator']) ? $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3) : false;
     !empty($_POST['post_newlang']) ? $data['post_newlang'] = S_POST_INT("post_newlang") : false;
+    !empty($_GET['page']) ? $data['page'] = S_GET_INT("page", 11, 1) : false;
     return $data;
 }
 
@@ -254,7 +260,7 @@ function news_get_available_langs($news_data) {
     return $select;
 }
 //used when translate a news, omit all already translate langs, exclude original lang too. just missed news langs
-function news_get_missed_langs($nid) { 
+function news_get_missed_langs($nid, $page) { 
     global $ml, $db; 
 
     $nolang = 1;
@@ -264,7 +270,7 @@ function news_get_missed_langs($nid) {
     
     $select = "<select name='news_lang' id='news_lang'>";     
     foreach ($site_langs as $site_lang) {
-            $query = $db->select_all("news", array("nid" => $nid, "lang_id" => $site_lang['lang_id']), "LIMIT 1");
+            $query = $db->select_all("news", array("nid" => $nid, "lang_id" => $site_lang['lang_id'], "page" => "$page"), "LIMIT 1");
             if ($db->num_rows($query) <= 0) {
                 $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
                 $nolang = 0;

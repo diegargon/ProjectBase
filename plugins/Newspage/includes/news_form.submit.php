@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
  
-function news_new_form($post_data = null) {
+function news_new_form() {
     global $LANGDATA, $config, $acl_auth, $tpl, $sm;
     
     $data['NEWS_FORM_TITLE'] = $LANGDATA['L_SEND_NEWS'];
@@ -46,7 +46,7 @@ function news_create_new($news_data) {
             
     $news_data['nid'] = $db->get_next_num("news", "nid");
     
-    if (defined('MULTILANG') && 'MULTILANG') {
+    if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
     } else {
         $lang_id  = $config['WEB_LANG_ID'];        
@@ -70,6 +70,7 @@ function news_create_new($news_data) {
     $insert_ary = array (
         "nid" => $news_data['nid'],
         "lang_id" => $lang_id,
+        "page" => 1,
         "title" => $db->escape_strip($news_data['title']),
         "lead" => $db->escape_strip($news_data['lead']),
         "text" => $db->escape_strip($news_data['text']),
