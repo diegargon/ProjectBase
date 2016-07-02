@@ -82,63 +82,9 @@ function news_form_process() {
     global $LANGDATA, $config;
     
     $news_data = news_form_getPost();    
-    //USERNAME/AUTHOR
-    if (empty($news_data['author']) ) {
-        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonymous its allowed        
-    }           
-    if ($news_data['author'] == false) {
-        $response[] = array("status" => "2", "msg" => $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+
+    if(news_form_common_field_check($news_data) == false) {
         return false;
-    }    
-    //UID/AUTHORUID       
-    if  ( !empty($_SESSION['uid'])) {
-        if (($news_data['uid'] = S_VAR_INTEGER($_SESSION['uid'])) == false ) {
-            $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);    
-            echo json_encode($response, JSON_UNESCAPED_SLASHES);
-            return false;        
-        }
-    } else {
-        $news_data['uid'] = 0;
-    } 
-    //TITLE        
-    if($news_data['title'] == false) {
-        $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }
-    if( (strlen($news_data['title']) > $config['NEWS_TITLE_MAX_LENGHT']) || 
-            (strlen($news_data['title']) < $config['NEWS_TITLE_MIN_LENGHT'])
-            ){
-        $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_MINMAX_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }
-    //LEAD    
-    if($news_data['lead'] == false) {
-        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }    
-    if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT']) || 
-            (strlen($news_data['lead']) < $config['NEWS_LEAD_MIN_LENGHT'])
-            ){
-        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }
-    //TEXT
-    if($news_data['text'] == false) {
-        $response[] = array("status" => "5", "msg" => $LANGDATA['L_NEWS_TEXT_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }    
-    if( (strlen($news_data['text']) > $config['NEWS_TEXT_MAX_LENGHT']) || 
-            (strlen($news_data['text']) < $config['NEWS_TEXT_MIN_LENGHT'])
-            ){
-        $response[] = array("status" => "5", "msg" => $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
     }
     //CATEGORY
     if($news_data['category'] == false) {
@@ -201,6 +147,61 @@ function news_form_process() {
      echo json_encode($response, JSON_UNESCAPED_SLASHES);    
 
      return true;
+}
+
+function news_form_common_field_check($news_data) {
+    global $sm;
+    
+    //USERNAME/AUTHOR
+    if (empty($news_data['author']) ) {
+        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonymous its allowed        
+    }           
+    if ($news_data['author'] == false) {
+        $response[] = array("status" => "2", "msg" => $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;
+    }    
+    //TITLE        
+    if($news_data['title'] == false) {
+        $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    if( (strlen($news_data['title']) > $config['NEWS_TITLE_MAX_LENGHT']) || 
+            (strlen($news_data['title']) < $config['NEWS_TITLE_MIN_LENGHT'])
+            ){
+        $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_MINMAX_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    //LEAD    
+    if($news_data['lead'] == false) {
+        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }    
+    if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT']) || 
+            (strlen($news_data['lead']) < $config['NEWS_LEAD_MIN_LENGHT'])
+            ){
+        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    //TEXT
+    if($news_data['text'] == false) {
+        $response[] = array("status" => "5", "msg" => $LANGDATA['L_NEWS_TEXT_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }    
+    if( (strlen($news_data['text']) > $config['NEWS_TEXT_MAX_LENGHT']) || 
+            (strlen($news_data['text']) < $config['NEWS_TEXT_MIN_LENGHT'])
+            ){
+        $response[] = array("status" => "5", "msg" => $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    
+    return true;
 }
 
 function Newspage_FormScript() {
