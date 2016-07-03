@@ -34,7 +34,6 @@ function NewsExtraMediaCheck(&$news_data) {
    global $config, $LANGDATA;
 
    $error_msg = "";
-   $data = "";
     if(!empty($_POST['news_new_extra_media'])) {
         $urls = $_POST['news_new_extra_media'];
         $first = 1;
@@ -63,13 +62,13 @@ function NewsExtraMediaCheck(&$news_data) {
                 ($link == -1) ? $error_msg .= "\n" . $url : false;
                 (!empty($link) && $link != -1) ? $news_data['news_extra_media'][$key] = $url : false;
             }
-        }                      
-    }    
+        }
+    }
     return (!empty($error_msg)) ? $error_msg : false;
 }
 
 function NewsExtraMediaUpdate($news_data) {
-    global $db;    
+    global $db;
 
     $plugin = "Newspage";
     $type = "image";
@@ -121,11 +120,11 @@ function NewsEditExtraFormMediaTpl($news_data) {
     if($news_data['news_auth'] == "translator") {
         return false;
     }
-    
+
     $extra_ary = array(
        "itsmain" => array("operator" => "!=", "value" => "1")
     );
-    
+
     $links = get_links($news_data['nid'], "image", $extra_ary);
 
     if(!empty($links)) {
@@ -140,28 +139,4 @@ function NewsEditExtraFormMediaTpl($news_data) {
     }
     $tpl->AddScriptFile("NewsMedia", "addmediafield");
     $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMedia", "NewsMediaExtraItems", $news_data));    
-}
-
-
-function NewsFormExtraMediaUpdate($news_data) {
-    global $db, $config;
-    //TODO DETERMINE IF OTS IMAGE OR VIDEO ATM VALIDATOR ONLY ACCEPT IMAGES, IF ITS NOT A IMAGE WE MUST  CHECK IF ITS A VIDEO OR SOMETHING LIKE THAT
-    $plugin = "Newspage";
-    $type = "image";
-
-    $news_media = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']);
-
-    $query = $db->select_all("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin, "itsmain" => 1 ));
-    if ($db->num_rows($query) > 0) {
-        $db->update("links", array("link" => $news_media), array("source_id" => $source_id, "type" => $type, "itsmain" => 1));
-    } else {
-        $insert_ary = array (
-            "source_id" => $source_id,
-            "plugin" => $plugin,
-            "type" => $type,
-            "link" => $news_media,
-            "itsmain" => 1
-        );
-        $db->insert("links", $insert_ary);
-    }
 }
