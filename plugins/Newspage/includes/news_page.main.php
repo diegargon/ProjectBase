@@ -15,9 +15,9 @@ function news_show_page() {
     }     
 
     if($config['NEWS_MULTIPLE_PAGES'] && !empty($_GET['page'])) {
-        $page = S_GET_INT("page", 11, 1);   
+        $page = S_GET_INT("page", 11, 1);  
     } else {
-        $page = 1;
+        $page = 1; 
     }
     
     if ( S_GET_INT("admin") ) {
@@ -177,7 +177,7 @@ function news_pager($news_page) {
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/1/$friendly_title'>1</a></li>";
     } else {
         $news_page['page'] == 1 ? $a_class = "class='active'" : $a_class = "";
-        $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=1>1</a></li>";
+        $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=1'>1</a></li>";
     }
 
     $pager = page_pager($config['NEWS_PAGER_MAX'], $num_pages, $news_page['page']);
@@ -189,7 +189,7 @@ function news_pager($news_page) {
             $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$i/$friendly_title'>$i</a></li>";
         } else {
             $news_page['page'] == $i ? $a_class = "class='active'" : $a_class = "";
-            $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=$i>$i</a></li>";
+            $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=$i'>$i</a></li>";
         }
     }
     if ($config['FRIENDLY_URL']) {
@@ -198,7 +198,7 @@ function news_pager($news_page) {
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$num_pages/$friendly_title'>$num_pages</a></li>";
     } else {
         $news_page['page'] == $num_pages ? $a_class = "class='active'" : $a_class = "";
-        $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=$num_pages>$num_pages</a></li>";
+        $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=$num_pages'>$num_pages</a></li>";
     }        
     $content .= "</ul></div>";
     
