@@ -25,9 +25,9 @@ function news_index_page (){
         if (empty($_POST['newsFormSubmit_ST2'])) {
             do_action("common_web_structure");
             $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());
-            news_new_form();
+            news_form_new();
         } else {
-            news_form_process();
+            news_form_process("admin"); //if author admin options ins't submited
         }
     } else {
         require_once("includes/news.portal.php");
@@ -44,8 +44,8 @@ function news_page() {
         require_once ("includes/news_page_edit.php");
 
         if( ($news_data = news_check_edit_authorized()) != false) {
-            if (!empty($_POST['news_update']) && !empty($_POST['newsFormSubmit_ST2'])) {
-                news_form_process();
+            if (!empty($_POST['newsFormSubmit_ST2'])) {
+                news_form_process($news_data['news_auth']);
             } else {
                 do_action("common_web_structure");
                 $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());
@@ -56,9 +56,9 @@ function news_page() {
         }
     } else if (!empty($_GET['news_new_lang'])) {
         require_once ("includes/news_form.common.php");
-        require_once ("includes/news_page_edit.php");
+        require_once ("includes/news_new_lang.php");
         if (defined('MULTILANG') && !empty($_POST['post_newlang'])) {
-            news_form_process();
+            news_form_newlang_process();
         } else if (defined('MULTILANG')) {
             do_action("common_web_structure");
             $tpl->addto_tplvar("SCRIPTS", Newspage_FormScript());

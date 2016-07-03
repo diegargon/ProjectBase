@@ -69,7 +69,7 @@ function NewsExtraMediaCheck(&$news_data) {
 }
 
 function NewsExtraMediaUpdate($news_data) {
-    global $db;
+    global $db;    
 
     $plugin = "Newspage";
     $type = "image";
@@ -97,7 +97,7 @@ function NewsExtraMediaUpdate($news_data) {
             ($found_rid == 0) ? $db->delete("links", array("rid" => $link_row['rid'])) : false;
         }
     } else {
-        $db->delete("links", array("source_id" => $news_data['nid'], "itsmain" => array("operator" => "!=", "value" => 1)));
+        $db->delete("links", array("source_id" => $news_data['nid'], "type" => "image", "itsmain" => array("operator" => "!=", "value" => 1)));
     }
 
     if(!empty($news_data['news_new_extra_media'])) {
@@ -118,9 +118,10 @@ function NewsExtraMediaUpdate($news_data) {
 function NewsEditExtraFormMediaTpl($news_data) {
     global $tpl;
 
-    if (!empty($news_data['limited_edit'])) {
+    if($news_data['news_auth'] == "translator") {
         return false;
     }
+    
     $extra_ary = array(
        "itsmain" => array("operator" => "!=", "value" => "1")
     );

@@ -10,3 +10,4 @@ $config['NEWS_MEDIA_MIN_LENGHT'] = 10;
 $config['NEWS_ADD_MAIN_MEDIA'] = 1;
 //$config['NEWS_MAIN_MEDIA_REQUIRED'] = 1;
 $config['NEWS_ADD_EXTRA_MEDIA'] = 1;
+$config['NEWS_MAIN_MEDIA_REQUIRED'] = 1;

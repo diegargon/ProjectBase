@@ -16,7 +16,7 @@ $(document).ready(function(){
            
         $.post("", $( "#form_news" ).serialize() + '&newsFormSubmit_ST2=1' ,
         function(data) {                
-            //alert(data); //DEBUG             
+            alert(data); //DEBUG             
             var json = $.parseJSON(data);
             if(json[0].status === 'ok') {
                 alert(json[0].msg);

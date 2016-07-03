@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 ?>
 <div  class="clear bodysize page">
-    <div class="standard_box submit_box">        
+    <div class="standard_box submit_box">
         <form  id="form_news" action="" autocomplete="on" method="post">         
         <section>
         <h1><?php print  $data['NEWS_FORM_TITLE'] ?></h1>  
@@ -51,31 +51,34 @@ if (!defined('IN_WEB')) { exit; }
         </div>
 <?php !empty($tpldata['NEWS_FORM_MIDDLE_OPTION'])? print $tpldata['NEWS_FORM_MIDDLE_OPTION'] :false; ?>
 <?php
-if ($config['NEWS_SOURCE']) { ?>
+if ($config['NEWS_SOURCE'] && !empty($data['news_auth']) && $data['news_auth'] != "translator") { ?>
         <div class="submit_items">
             <p> 
                 <label for="news_source"><?php print $LANGDATA['L_NEWS_SOURCE'] ?> </label>
-                <input <?php !empty($data['limited_edit']) ? print "disabled": false ?>  value="<?php isset($data['news_source']) ? print $data['news_source'] : false ?>"  minlength="<?php print $config['NEWS_LINK_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LINK_MAX_LENGHT']?>" id="news_source" class="news_link" name="news_source" type="text" placeholder="http://site.com"/>
+                <input  value="<?php isset($data['news_source']) ? print $data['news_source'] : false ?>"  minlength="<?php print $config['NEWS_LINK_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LINK_MAX_LENGHT']?>" id="news_source" class="news_link" name="news_source" type="text" placeholder="http://site.com"/>
             </p>
         </div>             
 <?php } ?>
 <?php
-if ($config['NEWS_RELATED']) { ?>
+if ($config['NEWS_RELATED'] && !empty($data['news_auth']) && $data['news_auth'] != "translator") { ?>
         <div class="submit_items">
             <p>
                 <label for="news_new_related"><?php print $LANGDATA['L_NEWS_RELATED'] ?> </label>
-                <input <?php !empty($data['limited_edit']) ? print "disabled": false ?> value="<?php isset($data['news_new_related']) ? print $data['news_new_related'] : false ?>"  minlength="<?php print $config['NEWS_LINK_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LINK_MAX_LENGHT']?>" id="news_new_related" class="news_link" name="news_new_related" type="text" placeholder="http://site.com"/>
+                <input  value="<?php isset($data['news_new_related']) ? print $data['news_new_related'] : false ?>"  minlength="<?php print $config['NEWS_LINK_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LINK_MAX_LENGHT']?>" id="news_new_related" class="news_link" name="news_new_related" type="text" placeholder="http://site.com"/>
                 <?php isset($data['news_related']) ? print $data['news_related'] : false ?>
             </p>
         </div>             
 <?php } ?>             
+            
+
         <div class="submit_items">
             <p> 
                 <span class="submit_others_label"><?php print $LANGDATA['L_NEWS_OTHER_OPTIONS'] ?> </span>
-<?php if(!empty($data['select_categories'])) { ?>
+    <?php if(!empty($data['select_categories']) && $data['news_auth'] != "translator") { ?>
                 <span  class="lang_label"><?php print $LANGDATA['L_NEWS_CATEGORY']?></span>
                     <?php print $data['select_categories'] ?>
-<?php } ?>                
+    <?php } ?>
+
                 
 <?php
 if(defined('MULTILANG') && !empty($data['select_langs'])) {
@@ -93,15 +96,11 @@ if(!empty($data['select_acl'])) {
 
                 <span  class="featured_label"><?php print $LANGDATA['L_NEWS_FEATURED']?></span>
                 <input <?php  !empty($data['featured']) ? print "checked": false ?> type="checkbox" name="news_featured" id="news_featured" value="1"/>
-
+                
 <?php                
 }
 ?>
-            </p>
-            <input type="hidden" value="<?php  !empty($data['update']) ? print $data['update']: false ?>"  name="news_update" id="news_update"/>
-            <input type="hidden" value="<?php  !empty($data['post_newlang']) ? print $data['post_newlang']: false ?>"  name="post_newlang" id="post_newlang"/>
-            <input type="hidden" value="<?php  !empty($data['current_langid']) ? print $data['current_langid']: false ?>"  name="news_current_langid" id="news_current_langid"/>
-            <?php !empty($tpldata['NEWS_FORM_INPUT_HIDDEN']) ? print $tpldata['NEWS_FORM_INPUT_HIDDEN'] : false; ?>
+            </p>                       
         </div>
 <?php !empty($tpldata['NEWS_FORM_BOTTOM_OPTION'])? print $tpldata['NEWS_FORM_BOTTOM_OPTION'] :false; ?>            
         <div class="submit_buttom">

@@ -40,12 +40,12 @@ function news_get_categories() {
 }
 
 function news_form_getPost() {
-    global $acl_auth, $config, $sm;
+    global $acl_auth, $sm;
        
     $session_user = $sm->getSessionUser();    
     if( (!defined('ACL') && $session_user['isAdmin'])
         || ( defined('ACL') && ( $acl_auth->acl_ask('news_admin||admin_all') ) == true) ) {
-        isset($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author", 25,3) : false;
+        !empty($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author", 25,3) : false;
         if (!empty($data['author'])) {
             if( ($selected_user = $sm->getUserByUsername($data['author'])) ) {
                 $data['author_id'] = $selected_user['uid'];                
@@ -59,84 +59,56 @@ function news_form_getPost() {
         $data['author'] = $session_user['username'];
         $data['author_id'] = $session_user['uid'];
     }
-    isset($_POST['news_title']) ? $data['title'] = S_POST_TEXT_UTF8("news_title") : false;
-    isset($_POST['news_lead']) ? $data['lead'] = S_POST_TEXT_UTF8("news_lead") : false;
-    isset($_POST['news_text']) ? $data['text'] = S_POST_TEXT_UTF8("news_text") : false;
-    isset($_POST['news_category']) ? $data['category'] = S_POST_INT("news_category", 8) : false;
-    isset($_POST['news_featured']) ? $data['featured'] = S_POST_INT("news_featured", 1) : false;
-    isset($_POST['news_lang']) ? $data['lang'] = S_POST_CHAR_AZ("news_lang", 2) : $data['lang'] = $config['WEB_LANG'];
-    isset($_POST['news_acl']) ? $data['acl'] = S_POST_STRICT_CHARS("news_acl") : false;    
-    !empty($_POST['news_update']) ? $data['update'] = S_POST_INT("news_update", 11, 1) : $data['update'] = 0;
-    !empty($_POST['news_current_langid']) ? $data['current_langid'] = S_POST_INT("news_current_langid", 8, 1) : $data['current_langid'] = 0;
-    !empty($_POST['news_source']) ? $data['news_source'] = S_POST_URL("news_source") : false;
-    !empty($_POST['news_new_related']) ? $data['news_new_related'] = S_POST_URL("news_new_related") : false;
-    !empty($_POST['news_related']) ? $data['news_related'] = S_POST_URL("news_related") : false;
-    !empty($_POST['news_translator']) ? $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3) : false;
-    !empty($_POST['post_newlang']) ? $data['post_newlang'] = S_POST_INT("post_newlang") : false;
-    !empty($_GET['page']) ? $data['page'] = S_GET_INT("page", 11, 1) : false;
+    $data['nid'] = S_GET_INT("nid", 11, 1);
+    $data['title'] = S_POST_TEXT_UTF8("news_title");
+    $data['lead'] = S_POST_TEXT_UTF8("news_lead");
+    $data['text'] = S_POST_TEXT_UTF8("news_text");
+    $data['category'] = S_POST_INT("news_category", 8);
+    $data['featured'] = S_POST_INT("news_featured", 1, 1);
+    $data['lang'] = S_POST_CHAR_AZ("news_lang", 2);
+    $data['acl'] = S_POST_STRICT_CHARS("news_acl");
+    $data['current_langid'] = S_POST_INT("news_current_langid", 8, 1);
+    $data['news_source'] = S_POST_URL("news_source");
+    $data['news_new_related'] = S_POST_URL("news_new_related");
+    $data['news_related'] = S_POST_URL("news_related");
+    $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
+    $data['post_newlang'] = S_POST_INT("post_newlang");
+    $data['page'] = S_GET_INT("page", 11, 1);
     return $data;
 }
 
 
-function news_form_process() {
+function news_form_process($news_auth) {
     global $LANGDATA, $config;
     
-    $news_data = news_form_getPost();    
+    $news_data = news_form_getPost();
 
     if(news_form_common_field_check($news_data) == false) {
         return false;
     }
-    //CATEGORY
-    if($news_data['category'] == false) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }
-    //Source check valid if input
-    if (!empty($_POST['news_source']) && $news_data['news_source'] == false && $config['NEWS_SOURCE']) {
-        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_SOURCE']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                
-    }    
-    //New related   check valid if input 
-    if (!empty($_POST['news_new_related']) && $news_data['news_new_related'] == false && $config['NEWS_RELATED']) {
-        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                
-    }
-    //Old related  if input
-    if (!empty($_POST['news_related']) && $news_data['news_related'] == false && $config['NEWS_RELATED']) {
-        $response[] = array("status" => "8", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                
-    }       
-    /* Custom /Mod Validators */
-    if( ($return = do_action("news_form_add_check", $news_data)) && !empty($return) ) {
-        $response[] = array("status" => "9", "msg" => $return);    
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;         
-    }
-    //FEATURED
-    //NOCHECK ATM
-    //
-    //ACL
-    //NO CHECK ATM
-    //
 
+    if ($news_auth == "admin" || $news_auth == "author") {
+        if (news_form_extra_check($news_data) == false) {
+            return false;
+        }
+    }
+    
     //ALL OK, check if SUBMIT, UPDATE or translate
     
-    if($news_data['update'] > 0) { 
-        if (news_update($news_data)) {
-            $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
-        } else {
-            $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
+    if(S_POST_INT("news_update") > 0) {
+        if ($news_auth == "admin" || $news_auth == "author") {
+            if (news_full_update($news_data)) {
+                $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
+            } else {
+                $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
+            }
+        } else if ($news_auth == "translator") {
+            if (news_limited_update($news_data)) {
+                $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
+            } else {
+                $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
+            }            
         }
-    } else if(!empty($news_data['post_newlang']) && defined('MULTILANG')) {
-        if (news_translate($news_data)) {
-            $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_TRANSLATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
-        } else {
-            $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
-        }        
     } else {
         if(news_create_new($news_data)) {
             $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'], "url" => $config['WEB_URL']);
@@ -150,7 +122,7 @@ function news_form_process() {
 }
 
 function news_form_common_field_check($news_data) {
-    global $sm;
+    global $config, $LANGDATA;
     
     //USERNAME/AUTHOR
     if (empty($news_data['author']) ) {
@@ -200,6 +172,48 @@ function news_form_common_field_check($news_data) {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;        
     }
+    
+    return true;
+}
+
+function news_form_extra_check(&$news_data) {
+    global $config, $LANGDATA;
+    //CATEGORY
+    if($news_data['category'] == false) {
+        $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;        
+    }
+    //Source check valid if input
+    if (!empty($_POST['news_source']) && $news_data['news_source'] == false && $config['NEWS_SOURCE']) {
+        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_SOURCE']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;                
+    }    
+    //New related   check valid if input 
+    if (!empty($_POST['news_new_related']) && $news_data['news_new_related'] == false && $config['NEWS_RELATED']) {
+        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;                
+    }
+    //Old related  if input
+    if (!empty($_POST['news_related']) && $news_data['news_related'] == false && $config['NEWS_RELATED']) {
+        $response[] = array("status" => "8", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;                
+    }       
+    /* Custom /Mod Validators */
+    if( ($return = do_action("news_form_add_check", $news_data)) && !empty($return) ) {        
+        $response[] = array("status" => "9", "msg" => $return);    
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;         
+    }
+    //FEATURED
+    //NOCHECK ATM
+    //
+    //ACL
+    //NO CHECK ATM
+    // 
     
     return true;
 }

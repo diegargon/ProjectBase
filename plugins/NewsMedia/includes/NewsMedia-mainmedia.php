@@ -11,6 +11,10 @@ function NewsFormMediaTpl($news_data) {
 
 function NewsEditFormMediaTpl($news_data) {
     global $tpl;
+  
+    if(!empty($news_data['translator'])) { 
+        return false;
+    }
 
     if ( ($media_ary = get_links($news_data['nid'], "image", array("itsmain" => 1), "LIMIT 1")) != false ) {
         foreach ($media_ary as $media) {
@@ -29,6 +33,8 @@ function NewsMediaCheck(&$news_data) {
         $link = S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT']);
         ($link == -1) ? $error_msg = $LANGDATA['L_NEWS_MAIN_MEDIALINK_ERROR'].":\n". $_POST['news_main_media'] ."\n" : false;
         (!empty($link) && $link != -1) ? $news_data['news_main_media'] = $link: false;
+    } else if ($config['NEWS_MAIN_MEDIA_REQUIRED']) {
+        $error_msg = $LANGDATA['L_NEWS_MAIN_MEDIA_REQUIRED'];
     }
 
     return (!empty($error_msg)) ? $error_msg : false;
@@ -37,33 +43,30 @@ function NewsMediaCheck(&$news_data) {
 function NewsMediaInsertNew($news_data) {
     global $db;
 
-    $plugin = "Newspage";    
-    $type = "image";
-    $insert_ary = array (
-        "source_id" => $news_data['nid'],
-        "plugin" => $plugin,
-        "type" => $type,
-        "link" => $news_data['news_main_media'],
-        "itsmain" => 1
-    );
-
-    $db->insert("links", $insert_ary);        
+    if(!empty($news_data['news_main_media'])) {
+        $insert_ary = array (
+            "source_id" => $news_data['nid'],
+            "plugin" => "Newspage",
+            "type" => "image",
+            "link" => $news_data['news_main_media'],
+            "itsmain" => 1
+        );
+        $db->insert("links", $insert_ary);
+    }
 }
 
 function news_form_media_update($news_data) {
     global $db;    
-    $plugin = "Newspage";
-    $type = "image";
 
     if(!empty($news_data['news_main_media'])) {
-        $query = $db->select_all("links", array("source_id" => $news_data['nid'], "type" => $type, "plugin" => $plugin, "itsmain" => 1 ), "LIMIT 1");
+        $query = $db->select_all("links", array("source_id" => $news_data['nid'], "type" => "image", "plugin" => "Newspage", "itsmain" => 1 ), "LIMIT 1");
         if ($db->num_rows($query) > 0) {       
-            $db->update("links", array("link" => $news_data['news_main_media']), array("source_id" => $news_data['nid'], "type" => $type, "itsmain" => 1));
+            $db->update("links", array("link" => $news_data['news_main_media']), array("source_id" => $news_data['nid'], "type" => "image", "itsmain" => 1));
         } else {
             $insert_ary = array ( 
                 "source_id" => $news_data['nid'],
-                "plugin" => $plugin,
-                "type" => $type,
+                "plugin" => "Newspage",
+                "type" => "image",
                 "link" => $news_data['news_main_media'],
                 "itsmain" => 1
             );            

@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
  
-function news_new_form() {
+function news_form_new() {
     global $LANGDATA, $config, $acl_auth, $tpl, $sm;
     
     $data['NEWS_FORM_TITLE'] = $LANGDATA['L_SEND_NEWS'];
@@ -27,12 +27,16 @@ function news_new_form() {
     }    
     if (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) {
         $data['select_acl'] = $acl_auth->get_roles_select("news");
-        $can_change_author = 1;
-    } 
-    if (!defined('ACL') && $user['isAdmin']) {
-        $can_change_author = 1;
+        $data['news_auth'] = "admin";
+    } else {
+        $data['can_change_author'] = "disabled";
     }
-    empty($can_change_author) ?  $data['can_change_author'] = "disabled" : $data['can_change_author'] = "";    
+    if (!defined('ACL') && $user['isAdmin']) {
+        $data['news_auth'] = "admin";
+    } else {
+        $data['can_change_author'] = "disabled";
+    }
+
     $data['select_categories'] = news_get_categories_select();          
     !empty($post_data) ? $data = array_merge($data, $post_data) : false;
 
@@ -62,11 +66,7 @@ function news_create_new($news_data) {
     } else {
         $moderation = 0;
     }
-    
-    $news_data['title'] = $db->escape_strip($news_data['title']);
-    $news_data['lead'] = $db->escape_strip($news_data['lead']);
-    $news_data['text'] = $db->escape_strip($news_data['text']);
-    
+        
     $insert_ary = array (
         "nid" => $news_data['nid'],
         "lang_id" => $lang_id,

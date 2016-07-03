@@ -3,48 +3,42 @@
  *  Copyright @ 2016 Diego Garcia
  */
 if (!defined('IN_WEB')) { exit; }
- 
+
 function news_edit($news_data) {
-    global $config, $LANGDATA, $acl_auth, $tpl, $sm;    
+    global $config, $LANGDATA, $acl_auth, $tpl;    
 
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_EDIT_NEWS'];
     
-    if (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all") ) {        
+    if ($news_data['news_auth'] == "admin") {        
         $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
-        $can_change_author = 1;
+        $news_data['can_change_author'] = "";
+    } else {
+        $news_data['can_change_author'] = "disabled";
     } 
-    $user = $sm->getSessionUser();
-    if (!defined('ACL') && $user['isAdmin']) {
-        $can_change_author = 1;
-    }    
-    empty($can_change_author) ?  $news_data['can_change_author'] = "disabled" : $news_data['can_change_author'] = ""; 
-    $news_data['select_categories'] = news_get_categories_select($news_data);
     
+
+    if ( $news_data['news_auth'] == "admin" || $news_data['news_auth'] == "author") {        
+        $news_data['select_categories'] = news_get_categories_select($news_data);
+        if ( ($news_source = get_news_source_byID($news_data['nid'])) != false) {
+            $news_data['news_source'] = $news_source['link'];
+        }
+        if($config['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid'])) ) {        
+            $news_data['news_related'] = "";
+            foreach ($news_related as $related)  {
+                $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+            }
+        }                    
+    }    
     if (defined('MULTILANG') && ($site_langs = news_get_available_langs($news_data)) != false) {
         $news_data['select_langs'] = $site_langs;
     }  
         
-    if ( ($news_source = get_news_source_byID($news_data['nid'])) != false) {
-        $news_data['news_source'] = $news_source['link'];
-    }
-    
-    if($config['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid'])) ) {        
-        $news_data['news_related'] = "";
-        foreach ($news_related as $related)  {
-            if(empty($news_data['limited_edit'])) {
-                $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
-            } else {
-                $news_data['news_related'] .= "<input disabled type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
-                $news_data['news_related'] .= "<input  type='hidden' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
-            }
-        }
-    }    
-    $news_data['update'] = $news_data['nid'];  
-    $news_data['current_langid'] = $news_data['lang_id'];
-    
     do_action("news_edit_form_add", $news_data);
+
+    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION","<input type='hidden' value='1' name='news_update' />" );
+    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION","<input type='hidden' value='{$news_data['lang_id']}' name='news_current_langid' />" );
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));  
     
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));     
 }
 
 function news_check_edit_authorized() {
@@ -66,34 +60,38 @@ function news_check_edit_authorized() {
         $msgbox['MSG'] = "L_ERROR_NOACCESS";
         do_action("message_box", $msgbox);        
     } 
+
+    if( (defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin"))
+            || (!defined('ACL') && $user['isAdmin'])
+            ) { 
+        $news_data['news_auth'] = "admin";
+        return $news_data;
+    } 
+    
     if ( (($news_data['author'] == $user['username']) && $config['NEWS_AUTHOR_CAN_EDIT']) ) {
+        $news_data['news_auth'] = "author";
         return $news_data;
     } 
     if ( (($news_data['translator'] == $user['username']) && $config['NEWS_TRANSLATOR_CAN_EDIT']) ) {
-        $news_data['limited_edit'] = 1;
+        $news_data['news_auth'] = "translator";
         return $news_data;
     }
-    if(defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin") ) { 
-        return $news_data;
-    } 
-    if (!defined('ACL') && $user['isAdmin']) {
-        return $news_data;
-    }
-
+    
     $msgbox['MSG'] = "L_ERROR_NOACCESS";
     do_action("message_box", $msgbox); 
     return false;
 }
 
-function news_update($news_data) {
+function news_full_update($news_data) {
     global $config, $db, $ml;
 
-    if(empty($news_data['page']) || empty($news_data['update']) || empty($news_data['current_langid'])) {
+    if(empty($news_data['page']) || empty($news_data['current_langid'])) {
         return false; //TODO ERROR?
     }
-    $news_data['nid'] = $news_data['update'];
+
+    $news_data['nid'] = S_GET_INT("nid");    
     $current_langid = $news_data['current_langid'];
-            
+    
     if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
     } else {
@@ -107,7 +105,7 @@ function news_update($news_data) {
    
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = ""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
-    !isset($news_data['translator']) ? $news_data['news_translator'] = "" : false;
+    !isset($news_data['news_translator']) ? $news_data['news_translator'] = "" : false;
     
     $news_data['title'] = $db->escape_strip($news_data['title']);
     $news_data['lead'] = $db->escape_strip($news_data['lead']);
@@ -176,7 +174,7 @@ function news_update($news_data) {
             if (S_VAR_INTEGER($rid)) { //value its checked on post $rid no 
                 if(empty($value)) {
                     $db->delete("links", array("rid" => $rid), "LIMIT 1");
-                } else {
+                } else {                    
                     $db->update("links", array("link" => $value), array("rid" => $rid), "LIMIT 1");
                 }
             }
@@ -185,126 +183,39 @@ function news_update($news_data) {
     return true;
 }
 
-function news_new_lang() {
-   global $config, $LANGDATA, $acl_auth, $tpl, $db, $sm;    
-    
-    $nid = S_GET_INT("news_new_lang");
-    $lang_id = S_GET_INT("lang_id");
-    $page  = S_GET_INT("page", 11, 1);
-    
-    if (empty($nid) || empty($lang_id) || empty($page)) {
-        $msgbox['MSG'] = "L_NEWS_INTERNAL_ERROR";
-        do_action("message_box", $msgbox);
-        return false;        
-    }
-    if ($nid == false || $lang_id == false) {
-        $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
-        do_action("message_box", $msgbox);
-        return false;
-    }    
-    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id", "page" => "$page"), "LIMIT 1");
-    if ($db->num_rows($query) <= 0) {
-        $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
-        do_action("message_box", $msgbox);
-        return false;
-    }
-    $news_data = $db->fetch($query);    
-    $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_NEWLANG'];
-    
-    $translator = $sm->getSessionUser(); 
-    
-    if (empty($translator) && $config['NEWS_ANON_TRANSLATE'] ) {
-        $translator['username'] = $LANGDATA['L_NEWS_ANONYMOUS'];
-    } else if (empty($translator)) {
-        $msgbox['MSG'] = "L_NEWS_NO_EDIT_PERMISS";
-        do_action("message_box", $msgbox);
-        return false;        
-    }
-    $news_data['translator'] = $translator['username'];  
-    
-    if (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) {
-        $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
-        $can_change_author = 1;
-    } 
-    if (!defined('ACL') && $translator['isAdmin']) {
-        $can_change_author = 1;
-    }
-    empty($can_change_author) ?  $news_data['can_change_author'] = "disabled" : $news_data['can_change_author'] = ""; 
-    $news_data['select_categories'] = news_get_categories_select($news_data, 1);
-    
-    if ( ($site_langs = news_get_missed_langs($news_data['nid'], $news_data['page'])) != false ) {
-        $news_data['select_langs'] = $site_langs;
-    } else {
-        $msgbox['MSG'] = "L_NEWS_E_ALREADY_TRANSLATE_ALL";
-        do_action("message_box", $msgbox);
-        return false;
-    }
-    
-    if ( ($news_source = get_news_source_byID($news_data['nid'])) != false) {
-        $news_data['news_source'] = $news_source['link'];
-    }
-    
-    if($config['NEWS_RELATED']) {        
-        $news_related = news_get_related($news_data['nid']);
-        if($news_related) {
-            $news_data['news_related'] = "";
-            foreach ($news_related as $related)  {                
-                $news_data['news_related'] .= "<input disabled type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
-                $news_data['news_related'] .= "<input type='hidden' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
-            }
-        }
-    }    
-    $news_data['post_newlang'] = $nid; 
-    
-    $news_data['limited_edit'] = 1; 
-    do_action("news_newlang_form_add", $news_data);
-    
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));            
-}
-
-
-function news_translate($news_data) {    
+function news_limited_update($news_data) {
     global $config, $db, $ml;
 
-    $nid = $news_data['post_newlang'];
+    if(empty($news_data['page']) || empty($news_data['current_langid'])) {
+        return false; //TODO ERROR?
+    }
+    $news_data['nid'] = S_GET_INT("nid");    
+    $current_langid = $news_data['current_langid'];
     
     if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($news_data['lang']);        
     } else {
         $lang_id  = $config['WEB_LANG_ID'];        
     }
-    
-    if(empty($nid) || empty($lang_id)) {
+
+    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "$current_langid"));
+    if ( ($num_pages = $db->num_rows($query))  <= 0) {
         return false;
     }
-
-    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => "$lang_id", "page" => "{$news_data['page']}"));
-    if ($db->num_rows($query) > 0) {
-        return false;
-    }
-
-    !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl=""; 
-    empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
 
     $news_data['title'] = $db->escape_strip($news_data['title']);
     $news_data['lead'] = $db->escape_strip($news_data['lead']);
-    $news_data['text'] = $db->escape_strip($news_data['text']);
+    $news_data['text'] = $db->escape_strip($news_data['text']);    
+    
+    $set_ary = array (
+      "lang_id" => $lang_id, "title" => $news_data['title'],  "lead" => $news_data['lead'],  "text" => $news_data['text'],
+        "lang" => $news_data['lang']
+    );
+    
+    $where_ary = array ( 
+        "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid", "page" => $news_data['page']
+    );
+    $db->update("news", $set_ary, $where_ary);
 
-    if ($news_data['featured'] == 1 && $config['NEWS_MODERATION'] == 1) {
-        $moderation = 0;
-    } else if ($config['NEWS_MODERATION'] == 1){
-        $moderation = 1;
-    }  else {
-        $moderation = 0;
-    }
-    
-    $insert_ary = array (
-      "nid" => $nid, "lang_id" => $lang_id, "page" => $news_data['page'], "translator" => $news_data['news_translator'], "title" => $news_data['title'], 
-      "lead" => $news_data['lead'],  "text" => $news_data['text'],  
-      "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
-      "lang" => $news_data['lang'], "acl" => $acl, "moderation" => $moderation
-    );   
-    $db->insert("news", $insert_ary);
-    
-    return true;
+    return true;    
 }
