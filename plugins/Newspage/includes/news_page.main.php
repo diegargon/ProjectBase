@@ -33,7 +33,7 @@ function news_show_page() {
         }                
     }       
     news_process_admin_actions(); 
-    
+
     if( ($news_row = get_news_byId($nid, $lang, $page)) == false) {
         return false;
     }
@@ -73,8 +73,8 @@ function news_show_page() {
 }
 
 function news_process_admin_actions() {
-    global $acl_auth, $sm;
-    
+    global $config, $acl_auth, $sm, $ml;
+
     //if we enter with &admin=1 already passing the admin check in news_show_page, check if not enter with admin=1
     if (defined("ACL") && !S_GET_INT("admin") ) { 
         if(!$acl_auth->acl_ask("admin_all || news_admin")) { 
@@ -83,24 +83,30 @@ function news_process_admin_actions() {
     } else if (!defined("ACL") && !S_GET_INT("admin")) {
         if ( ($user = $sm->getSessionUser()) == false || $user['isAdmin'] != 1) {
             return false;
-        }        
-    }                                    
-    if (!empty($_GET['news_delete']) && !empty($_GET['lang_id']) &&
-        $_GET['news_delete'] > 0 && $_GET['lang_id'] > 0) {
-        news_delete(S_GET_INT("news_delete"), S_GET_INT("lang_id"));
-        news_redirect();
+        }
+    }
+    if (!empty($_GET['news_delete']) ) {
+        $delete_nid = S_GET_INT("nid", 11, 1); 
+        $delete_lang = S_GET_CHAR_AZ("lang", 2, 2);
+        if (!empty($delete_nid) && !empty($delete_lang)) {
+            defined('MULTILANG') ? $delete_lang_id = $ml->iso_to_id($delete_lang) : $delete_lang_id = $config['WEB_LANG_ID'];
+            news_delete($delete_nid, $delete_lang_id);
+            S_GET_CHAR_AZ("backlink") == "home" ? header("Location: /{$config['WEB_LANG']}") : header("Location: ". S_SERVER_URL("HTTP_REFERER") ."");
+        }
     }
     if (!empty($_GET['news_approved']) && !empty($_GET['lang_id']) &&
         $_GET['news_approved'] > 0 && $_GET['lang_id'] > 0) {
-        news_approved(S_GET_INT("news_approved"), S_GET_INT("lang_id"));             
+        news_approved(S_GET_INT("news_approved"), S_GET_INT("lang_id"));
     }
     if (isset($_GET['news_featured']) && !empty($_GET['lang_id'] && !empty($_GET['nid']))) {
-        empty($_GET['news_featured']) ? $news_featured = 0: $news_featured = 1;                
+        empty($_GET['news_featured']) ? $news_featured = 0: $news_featured = 1;
         news_featured(S_GET_INT("nid", 11, 1), $news_featured, S_GET_INT("lang_id"));
     }
     if ( isset($_GET['news_frontpage']) && !empty($_GET['lang_id']) ) {
         news_frontpage( S_GET_INT("nid", 11, 1), S_GET_INT("lang_id"), S_GET_INT("news_frontpage", 1, 1));  
-    }             
+    }
+
+    return true;
 }
  
 function news_nav_options($news) {
@@ -115,7 +121,6 @@ function news_nav_options($news) {
     ) {       
         $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&page={$news['page']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
     }
-
     //not translator
     if($config['NEWS_MULTIPLE_PAGES'] ) {
         if( (defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin"))
@@ -150,7 +155,7 @@ function news_nav_options($news) {
         //TODO  Add a menu for enable/disable news
         //$content .= "<li><a href=''>{$LANGDATA['L_NEWS_DISABLE']}</a></li>";
         if ($news['page'] == 1) {
-            $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_delete={$news['nid']}&lang_id={$news['lang_id']}&admin=1&return_home=1' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";        
+            $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_delete=1&admin=1&backlink=home' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";        
         }
         if ($config['NEWS_SELECTED_FRONTPAGE'] && $news['page'] == 1){
             if ($news['frontpage'] == 1) {
@@ -236,10 +241,7 @@ function page_pager($max_pages, $num_pages, $actual_page) {
 }
 function news_delete($nid, $lang_id) {
     global $db;
-    
-    if (empty($nid) || empty($lang_id)) {
-        return false;
-    }
+
     $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
             
     $query = $db->select_all("news", array("nid" => $nid), "LIMIT 1"); //check if other lang
@@ -286,15 +288,4 @@ function news_frontpage($nid, $lang_id, $frontpage_state) {
     $db->update("news", array("frontpage" => $frontpage_state), array("nid" => $nid, "lang_id" => $lang_id));
     
     return true;    
-}
-
-function news_redirect()  {
-    global $config;
-    
-    if(!empty($_GET['return_home'])) {
-        header("Location: /{$config['WEB_LANG']} ");                
-    } else {        
-        //header("Location: {$_SERVER['HTTP_REFERER']} ");  //TODO FILTER
-        header("Location: ". S_SERVER_URL("HTTP_REFERER")."");
-    }        
 }

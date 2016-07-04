@@ -34,19 +34,14 @@ function get_news_byId($nid, $lang = null, $page = null){
     $query = $db->select_all("news", $where_ary, "LIMIT 1");
 
     if($db->num_rows($query) <= 0 ) {
-        if( ($news_row = get_news_byId($nid)) == false) {
-            $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
-            do_action("message_box", $msgbox);
-            return false;
-        } else {
-            $msgbox['MSG'] = "L_NEWS_WARN_NOLANG";
-            do_action("message_box", $msgbox);
-            return false;
-        }
+        $query = $db->select_all("news", array("nid" => $nid, "page" => $page), "LIMIT 1");
+        $db->num_rows($query) > 0 ? $msgbox['MSG'] = "L_NEWS_WARN_NOLANG" : $msgbox['MSG'] = "L_NEWS_DELETE_NOEXISTS";
+        do_action("message_box", $msgbox);
+        return false;
     }
     $news_row = $db->fetch($query);
 
-    if( 'ACL' && !empty($news_row['acl']) && !$acl_auth->acl_ask($news_row['acl']) ) {        
+    if( 'ACL' && !empty($news_row['acl']) && !$acl_auth->acl_ask($news_row['acl']) ) {
             $msgbox['MSG'] = "L_ERROR_NOACCESS";
             do_action("message_box", $msgbox);
             return false;

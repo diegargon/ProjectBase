@@ -65,3 +65,4 @@ $LANGDATA['L_NEWS_E_SOURCE'] = "Incorrect/Not working  source link, fix it or le
 $LANGDATA['L_NEWS_E_ALREADY_TRANSLATE_ALL'] = "News already translate to all active languages.";
 $LANGDATA['L_NEWS_NEW_PAGE'] = "New page";
 $LANGDATA['L_NEWS_CREATE_NEW_PAGE'] = "Create new page";
+$LANGDATA['L_NEWS_DELETE_NOEXISTS'] = "News deleted or inexistent";

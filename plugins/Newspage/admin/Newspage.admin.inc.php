@@ -119,15 +119,13 @@ function Newspage_AdminModeration() {
     if ($db->num_rows($query) <= 0) {
         return false;
     }
-
     while ($news_row = $db->fetch($query)) {
         $content .= "<p>"
-        . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete={$news_row['nid']}&lang_id={$news_row['lang_id']}&page={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_DELETE']}</a>]"
+        . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete=1&page={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_DELETE']}</a>]"
         . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_approved={$news_row['nid']}&lang_id={$news_row['lang_id']}&page={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a>]"
         . "<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&page={$news_row['page']}&admin=1' target='_blank'>{$news_row['title']}</a>"
         . "</p>";
     }
-    
     $content .= "</div>";
 
     return $content;
