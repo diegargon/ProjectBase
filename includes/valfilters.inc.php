@@ -31,6 +31,12 @@ function S_GET_EMAIL($var) {
     }    
     return filter_input(INPUT_GET, $var, FILTER_VALIDATE_EMAIL);
 }
+function S_GET_URI($var) {
+    if(empty($_GET[$var])) {
+        return false;
+    }
+    return filter_input(INPUT_GET, $var,  FILTER_SANITIZE_URL);
+}
 //$_POST
 function S_POST_PASSWORD($var, $max_size = null, $min_size = null) {
     if(empty($_POST[$var])) {
