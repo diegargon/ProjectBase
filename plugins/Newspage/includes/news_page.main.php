@@ -12,49 +12,52 @@ function news_show_page() {
         $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
         do_action("message_box", $msgbox);
         return false;
-    }     
+    }
 
     if($config['NEWS_MULTIPLE_PAGES'] && !empty($_GET['page'])) {
         $page = S_GET_INT("page", 11, 1);  
     } else {
         $page = 1; 
     }
-    
+
     if ( S_GET_INT("admin") ) {
         if (defined("ACL") && !$acl_auth->acl_ask("admin_all||news_admin") ) {
                 $msgbox['MSG'] = "L_ERROR_NOACCESS";
                 do_action("message_box", $msgbox); 
-                return false;                
-        } 
-        if ( ($user = $sm->getSessionUser()) == false || ((!defined('ACL')) && $user['isAdmin'] != 1)) {
-            $msgbox['MSG'] = "L_ERROR_NOACCESS";
-            do_action("message_box", $msgbox);                 
-            return false;       
-        }                
-    }       
-    news_process_admin_actions(); 
+                return false;
+        }
+        if ( !defined('ACL')) {
+            $user = $sm->getSessionUser();
+            if (empty($user) || $user['isAdmin'] != 1)  {
+                $msgbox['MSG'] = "L_ERROR_NOACCESS";
+                do_action("message_box", $msgbox);
+                return false;
+            }
+        }
+    }
+    news_process_admin_actions();
 
     if( ($news_row = get_news_byId($nid, $lang, $page)) == false) {
         return false;
     }
-    
+
     if( $config['NEWS_MULTIPLE_PAGES']) {
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", news_pager($news_row));
     }
-    do_action("news_show_page", $news_row);    
-    
+    do_action("news_show_page", $news_row);
+
     $tpl->addto_tplvar("NEWS_ADMIN_NAV", news_nav_options($news_row));
-    
-    $tpl_data['nid'] = $news_row['nid'];    
-    $tpl_data['news_title'] = str_replace('\r\n', '', $news_row['title']);    
-    $tpl_data['news_lead'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);    
-    $tpl_data['news_url'] = "news.php?nid=$news_row[nid]";
+
+    $tpl_data['nid'] = $news_row['nid'];
+    $tpl_data['news_title'] = str_replace('\r\n', '', $news_row['title']);
+    $tpl_data['news_lead'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);
+    $tpl_data['news_url'] = "news.php?nid={$news_row['nid']}";
     $tpl_data['news_date'] = format_date($news_row['date']);
     $tpl_data['news_author'] = $news_row['author'];
-    $tpl_data['news_author_uid'] = $news_row['author_id'];       
+    $tpl_data['news_author_uid'] = $news_row['author_id'];
     $tpl_data['news_text']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
     if (!empty ($news_row['translator'])) {
-        $translator = $sm->getUserByUsername($news_row['translator']);        
+        $translator = $sm->getUserByUsername($news_row['translator']);
         $tpl_data['news_translator'] = "<a rel='nofollow' href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }
     $tpl->addtpl_array($tpl_data);
@@ -69,7 +72,7 @@ function news_show_page() {
         }
         $tpl->addto_tplvar("NEWS_RELATED", $related_content);
     }
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body"));                                               
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body"));
 }
 
 function news_process_admin_actions() {
