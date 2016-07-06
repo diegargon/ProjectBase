@@ -7,25 +7,22 @@ if (!defined('IN_WEB')) { exit; }
  *  Function: register_uniq_action("action", "function"))
  */
 
-function register_action($event, $func, $priority = 5)
-{
+function register_action($event, $func, $priority = 5) {
     global $actions;
-        $actions[$event][] = array ("function_name" => $func, "priority" => $priority);        
+
+    $actions[$event][] = array ("function_name" => $func, "priority" => $priority);
 }
 
 function register_uniq_action($event, $func, $priority = 0) {
      global $actions;
-    
+
     foreach($actions as $key => $value)  {
-        
         if ($key == $event) {
-            
             $actions[$key][0] = array("function_name" => $func, "protiry" => $priority);
             return;
         }
     }
-    $actions[$event][] = array ("function_name" => $func, "priority" => $priority);
-    
+    $actions[$event][] = array ("function_name" => $func, "priority" => $priority);    
 } 
 
 function do_action($event, &$params = null) {
@@ -33,7 +30,6 @@ function do_action($event, &$params = null) {
      
     if(isset($actions[$event]))
     {
-        
         usort($actions[$event], function($a, $b) {
              return $a['priority'] - $b['priority'];
         });
@@ -43,35 +39,37 @@ function do_action($event, &$params = null) {
             if (is_array($func['function_name'])) {
                 if (method_exists($func['function_name'][0], $func['function_name'][1])) {
                     if (isset($return)) {
-                        $return .= call_user_func_array($func['function_name'], array(&$params));                        
+                        $return .= call_user_func_array($func['function_name'], array(&$params));
                     } else {
                         $return = call_user_func_array($func['function_name'], array(&$params));
                     }
-                }                
+                }
             } else {
                 if(function_exists($func['function_name'])) {
                     if (isset($return)) {
                     $return .= call_user_func_array($func['function_name'], array(&$params));
                     } else {
-                    $return = call_user_func_array($func['function_name'], array(&$params)); 
+                    $return = call_user_func_array($func['function_name'], array(&$params));
                     }
                 }
             }
         }
-    } 
+    }
     if (isset($return)) {
         return $return;
+    } else {
+        return false;
     }
 }
 
 function action_isset($this_event) {
     global $actions;
-        
+
     foreach ($actions as $event=>$func) {
         if (($event == $this_event) && function_exists($func[0])) {
             return true;
         }
-        
-    }    
+    }
+
     return false;
 }

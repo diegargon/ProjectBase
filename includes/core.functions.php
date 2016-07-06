@@ -16,14 +16,13 @@ function print_debug($msg, $filter = null) {
     }
 }
 
-
 function getserverload() {
   if(file_exists("/proc/loadavg")) {
          $load = file_get_contents("/proc/loadavg");
          $load = explode(' ', $load);
          return $load[0];
   }
-	return 0;
+    return false;
 }
 
 function codetovar($path, $data = null) {
@@ -86,7 +85,6 @@ function includePluginFiles($plugin, $admin = 0) {
 }
 
 function remote_check($url) {
-    global $config;
     
     if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) { 
         $url = "http://" . $url;

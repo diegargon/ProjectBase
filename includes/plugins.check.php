@@ -93,8 +93,7 @@ function check_if_already_started($plugin) {
 }
 function check_provided_conflicts ($plugin){ 
     $allprovided = preg_split('/\s+/', $plugin->provided);
-    foreach ($allprovided as $provided) {
-        //echo "$plugin->plugin_name ($provided)";
+    foreach ($allprovided as $provided) {        
         if (empty($provided)) {
             return false;
         }        
