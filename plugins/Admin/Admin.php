@@ -29,9 +29,7 @@ function Admin_main_page() {
     includePluginFiles("Admin");
     admin_load_plugin_files();    
     
-    if (!$admtab = S_GET_INT("admtab")) {
-        $admtab = 1;        
-    }
+    !$admtab = S_GET_INT("admtab") ? $admtab = 1 : false;        
 
     $tpl->addto_tplvar("ADMIN_TAB_ACTIVE", $admtab);
     $tpl->getCSS_filePath("Admin");   

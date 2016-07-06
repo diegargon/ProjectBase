@@ -14,11 +14,11 @@ function SMBasic_Init() {
     includePluginFiles("SMBasic");
 
     $sm = new SessionManager;
-    
+
     if (action_isset("encrypt_password") == false) {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }
-       
+
     if ( (S_SESSION_INT("uid") != false && S_SESSION_CHAR_AZNUM("sid") != false) ) {
         if(!SMBasic_checkSession()) {
             print_debug("Check session failed on SMBasic_Init destroy session", "SM_DEBUG");
@@ -30,7 +30,7 @@ function SMBasic_Init() {
             $sm->checkCookies();
         }
     }
-    if( defined('SM_DEBUG') && !empty($_SESSION['isLogged'])) { // && $_SESSION['isLogged'] == 1 ) {
+    if( defined('SM_DEBUG') && !empty($_SESSION['isLogged'])) {
         SMBasic_sessionDebugDetails();
     }
 

@@ -46,13 +46,9 @@ function Admin_GetPluginConfigFiles($plugin) { //TODO BETTER CONFIG VIEW
     $config_plugin = "plugins/$plugin/$plugin.config.php"; 
     $config_plugin_user = "config/$plugin.config.php";
     $data = "";
-    if (file_exists($config_plugin)) {
-        $data .= file_get_contents($config_plugin);                        
-    }
-
-    if (file_exists($config_plugin_user)) { //User Overdrive
-       $data .= file_get_contents($config_plugin_user);                
-    }    
+    
+    file_exists($config_plugin) ? $data .= file_get_contents($config_plugin) : false;
+    file_exists($config_plugin_user) ? $data .= file_get_contents($config_plugin_user) : false;  //User Overdrive                       
     
     return $data;
 }

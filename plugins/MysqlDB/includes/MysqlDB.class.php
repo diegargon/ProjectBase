@@ -19,13 +19,11 @@ class Database {
     }
 
     function query($string) {        
-        $query = $this->dblink->query($string) or $this->dbdie($query);
-        return $query;
+        return $query = $this->dblink->query($string) or $this->dbdie($query);
     }
 
     function fetch($query) {
-    	$row = $query->fetch_assoc();
-	return $row;
+    	return $row = $query->fetch_assoc();	
     }
 
     function escape($var) { 
@@ -41,9 +39,7 @@ class Database {
     }
 
     function close() {    
-	if (!$this->dblink) {
-	    die('Could not connect: ' . $this->dblink->error);
-	}
+	!$this->dblink ?  die('Could not connect: ' . $this->dblink->error) : false;
 	$this->dblink->close();
     }
 
@@ -119,9 +115,7 @@ class Database {
 
         $q = "UPDATE {$config['DB_PREFIX']}$table SET ";
 
-        if(empty($set) || empty($table)) {
-            return false;
-        }
+        if(empty($set) || empty($table)) { return false; }
         
         foreach ($set as $field => $value) {
              $q_set_fields[] = "$field = " . "'". $value ."'";

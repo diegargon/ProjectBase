@@ -47,7 +47,7 @@ class SessionManager {
         return $users_ary;
     }
     
-    function searchUser($string, $email = 0, $glob = 0) {
+    function searchUser($string, $email = false, $glob = false) {
         global $db;
         
         $where_ary = [];
@@ -149,6 +149,5 @@ class SessionManager {
             }
         }   
         return false;
-    }
-    
+    }   
 }

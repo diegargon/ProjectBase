@@ -5,56 +5,51 @@
 if (!defined('IN_WEB')) { exit; }
 
 function Multilang_AdminInit() {
-    register_action("add_admin_menu", "Multilang_AdminMenu"); 
+    register_action("add_admin_menu", "Multilang_AdminMenu");
 }
 
 function Multilang_AdminMenu($params) {
     $tab_num = 103; //TODO: A WAY TO ASSIGN UNIQ NUMBERS
     if ($params['admtab'] == $tab_num) {
-        register_uniq_action("admin_get_content", "Multilang_AdminContent");        
+        register_uniq_action("admin_get_content", "Multilang_AdminContent");
         return "<li class='tab_active'><a href='?admtab=$tab_num'>Multilang</a></li>";
     } else {
         return "<li><a href='?admtab=$tab_num'>Multilang</a></li>";
     }
 }
 
-function Multilang_AdminContent($params) {   
-    global  $LANGDATA, $tpl;    
+function Multilang_AdminContent($params) {
+    global  $LANGDATA, $tpl;
     includePluginFiles("Multilang", 1);
     $tpl->getCSS_filePath("Multilang");
-    
+
     $tpl_data['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n";
     $tpl_data['ADM_ASIDE_OPTION'] .=  "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_ML_LANGS'] ."</a></li>\n";
     $tpl_data['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_MULTILANG_OPT");
     $tpl_data['ADM_CONTENT_H1'] = "Multilang";
 
     $tpl->addtpl_array($tpl_data);
-    
+
     if ( (!$opt = S_GET_INT("opt")) || $opt == 1 ) {
-        $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'] );                
-        $tpl->addto_tplvar("ADM_CONTENT", Admin_GetPluginState("Multilang"));        
-    } else if ($opt == 2) { 
-        if (!empty($_POST['btnModifyLang'])) {
-            Multilang_ModifyLang();
-        }
-        if (!empty($_POST['btnCreateLang'])) {
-            Multilang_CreateLang();
-        }        
-        if (!empty($_POST['btnDeleteLang'])) {
-            Multilang_DeleteLang();
-        }             
-        $tpl->addto_tplvar("ADM_CONTENT",  Multilang_AdminLangs());          
+        $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] .": ".  $LANGDATA['L_PL_STATE'] );
+        $tpl->addto_tplvar("ADM_CONTENT", Admin_GetPluginState("Multilang"));
+    } else if ($opt == 2) {
+        !empty($_POST['btnModifyLang']) ? Multilang_ModifyLang() : false;
+        !empty($_POST['btnCreateLang']) ? Multilang_CreateLang() : false;
+        !empty($_POST['btnDeleteLang']) ? Multilang_DeleteLang() : false;
+
+        $tpl->addto_tplvar("ADM_CONTENT",  Multilang_AdminLangs());
     } else {
         do_action("ADM_MULTILANG_OPT", $opt);
     }
-    return $tpl->getTPL_file("Admin", "admin_std_content");   
+    return $tpl->getTPL_file("Admin", "admin_std_content");
 }
 
 function Multilang_AdminLangs() {
     global $db, $LANGDATA, $tpl;
-    
+
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_ML_LANGS'] );
-    
+
     $query = $db->select_all("lang"); //change to $ml->get_site_langs(0)? but $ml class its init out of admin
     $modify = "";
     while ($lang_row = $db->fetch($query)) {
