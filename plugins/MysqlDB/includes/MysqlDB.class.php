@@ -23,7 +23,7 @@ class Database {
     }
 
     function fetch($query) {
-    	return $row = $query->fetch_assoc();	
+    	return $row = $query->fetch_assoc();		
     }
 
     function escape($var) { 
