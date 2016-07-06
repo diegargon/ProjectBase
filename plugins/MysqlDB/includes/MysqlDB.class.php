@@ -19,7 +19,8 @@ class Database {
     }
 
     function query($string) {        
-        return $query = $this->dblink->query($string) or $this->dbdie($query);
+        $query = $this->dblink->query($string) or $this->dbdie($query);
+        return $query;
     }
 
     function fetch($query) {
