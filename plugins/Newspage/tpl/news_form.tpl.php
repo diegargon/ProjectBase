@@ -74,7 +74,7 @@ if ($config['NEWS_RELATED'] && !empty($data['news_auth']) && $data['news_auth'] 
         <div class="submit_items">
             <p> 
                 <span class="submit_others_label"><?php print $LANGDATA['L_NEWS_OTHER_OPTIONS'] ?> </span>
-    <?php if(!empty($data['select_categories']) && $data['news_auth'] != "translator") { ?>
+    <?php if(!empty($data['select_categories']) && !empty($data['news_auth']) && $data['news_auth'] != "translator") { ?>
                 <span  class="lang_label"><?php print $LANGDATA['L_NEWS_CATEGORY']?></span>
                     <?php print $data['select_categories'] ?>
     <?php } ?>
