@@ -20,12 +20,14 @@ function ex_common_web_structure() {
 }
 
 function ex_index_page(){
+    plugin_manual_start("NewsAds");
     plugin_manual_start("NewsMedia");
     plugin_manual_start("Newspage");
     news_index_page();
 }
 
 function ex_news_page() {
+    plugin_manual_start("NewsAds");
     plugin_manual_start("NewsMedia");
     plugin_manual_start("Newspage");
     plugin_manual_start("NewsComments");

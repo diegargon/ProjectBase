@@ -11,6 +11,7 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
 ?>
             <div class="news_msg"><p><?php print $tpldata['NEWS_MSG']?></p></div>
 <?php } ?>
+                <?php isset($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
             <div class="article_body">
 <?php  if(!empty($tpldata['NEWS_ADMIN_NAV'])) { ?>
                 <div id='adm_nav_container'>
@@ -21,8 +22,6 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 </nav>
                 </div>                    
 <?php } ?>                                
-                <?php isset($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
-
                 <div class="article_title">
                     <?php isset($tpldata['news_title']) ? print $tpldata['news_title']:false ?>
                 </div>
@@ -56,10 +55,10 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                     </ul>
                 </div>                
 <?php } ?>                 
-                <?php isset($tpldata['ADD_TO_NEWSSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM']:false ?>            
+                <?php isset($tpldata['ADD_TO_NEWSSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM'] : false ?>            
             </div>
             <div class="article_side">
-                <?php isset($tpldata['ADD_TO_NEWS_SIDE']) ? print $tpldata['ADD_TO_NEWSHOW_SIDE']:false ?>
+                <?php !empty($tpldata['ADD_TO_NEWS_SIDE']) ? print $tpldata['ADD_TO_NEWS_SIDE'] : false ?>
             </div>       
         </div>
     </div>

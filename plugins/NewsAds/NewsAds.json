@@ -1,0 +1,13 @@
+{
+    "plugin_name": "NewsAds",
+    "enabled": "1",
+    "main_file" : "NewsAds.php",
+    "function_init": "NewsAds_init",
+    "function_install": "",
+    "provided": "",
+    "depends" : "news1 SQL1",
+    "autostart": "0",
+    "priority" : "6",
+    "optional": "",
+    "conflicts": ""
+}
