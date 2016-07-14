@@ -41,6 +41,9 @@ function news_show_page() {
         return false;
     }
 
+    if ($config['NEWS_STATS']) {
+        news_stats($nid, $lang, $page, $news_row['visits']);
+    }
     if( $config['NEWS_MULTIPLE_PAGES']) {
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", news_pager($news_row));
     }
@@ -291,4 +294,42 @@ function news_frontpage($nid, $lang_id, $frontpage_state) {
     $db->update("news", array("frontpage" => $frontpage_state), array("nid" => $nid, "lang_id" => $lang_id));
     
     return true;    
+}
+
+function  news_stats($nid, $lang, $page, $visits) {
+    global $db, $config;
+    // NOT WORK
+    //$db->update("news", array("visits" => "visits + 1 "), array("nid" => "$nid", "lang" => "$lang", "page" => "$page"), "LIMIT 1");
+    $db->update("news", array("visits" => ++$visits), array("nid" => "$nid", "lang" => "$lang", "page" => "$page"), "LIMIT 1");
+    if($config['NEWS_ADVANCED_STATS']) {
+        news_adv_stats($nid, $lang);
+    }
+}
+
+function news_adv_stats($nid, $lang) {
+    global $db, $sm;
+    
+    $plugin = "Newspage";
+    
+    $user = $sm->getSessionUser();
+    empty($user) ? $user['uid'] = 0 : false; //Anon        
+    $ip = S_SERVER_REMOTE_ADDR();        
+    $hostname = gethostbyaddr($ip);
+    $where_ary = array( 
+        "plugin" => "$plugin", 
+        "lang" => "$lang", 
+        "rid" => "$nid", 
+        "uid" => $user['uid']
+    );            
+    $user['uid'] == 0 ? $where_ary['ip'] = $ip : false;
+    
+    $query = $db->select_all("adv_stats", $where_ary, "LIMIT 1");
+    
+    if ($db->num_rows($query) > 0) {
+        $user_adv_stats = $db->fetch($query);
+        $counter = ++$user_adv_stats['counter'];
+        $db->update("adv_stats", array("counter" => "$counter"), array("plugin" => "$plugin", "lang" => "$lang", "rid" => "$nid", "uid" => $user['uid'], "ip" => "$ip"));
+    } else{
+        $db->insert("adv_stats", array("plugin" => "$plugin", "rid" => "$nid", "lang" => "$lang", "uid" => $user['uid'], "ip" => "$ip", "hostname" => $hostname, "counter" => 1));
+    }       
 }
