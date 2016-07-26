@@ -10,11 +10,6 @@ function Newspage_AdminCategories() {
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_CATEGORIES']);
     $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_CATEGORY_DESC']);
 
-    //MOD CAT
-    $content = "<div>";
-    $content .= "<p>{$LANGDATA['L_NEWS_MODIFIED_CATS']}</p>";
-    $query = $db->select_all("categories", array ("plugin" =>  "Newspage"), "GROUP BY cid");
-    
     if (defined('MULTILANG')) {
         $langs = $ml->get_site_langs();
     } else {
@@ -22,30 +17,40 @@ function Newspage_AdminCategories() {
         $langs['lang_name'] = $config['WEB_LANG'];
     }
 
-    while ($cat_grouped = $db->fetch($query)) {
-        $content .= "<form id='cat_mod' method='post' action=''>";
-        $content .= "<div>";
-
-        foreach ($langs as $lang) {
-            if ($lang['lang_id'] == $cat_grouped['lang_id']) {
-                $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='{$cat_grouped['name']}' />";
-            } else {                                   
-                $query2 = $db->select_all("categories", array ("plugin" =>  "Newspage", "cid" => "{$cat_grouped['cid']}", "lang_id" => "{$lang['lang_id']}"));
-                if($db->num_rows($query2) <= 0) {
-                    $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";
-                } else {
-                    $other_lang_cat = $db->fetch($query2);
-                    $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='{$other_lang_cat['name']}' />";
-                }
-            }
-        }
-        $content .= "<input type='hidden' name='cid' value='{$cat_grouped['cid']}' />";
-        $content .= "<input type='submit' name='ModCatSubmit' value='{$LANGDATA['L_NEWS_MODIFY']}' />";
-        $content .= "</div></form>";
+    $content = "<div class='catlist'>";     
+    $content .= "<p>{$LANGDATA['L_NEWS_MODIFIED_CATS']}</p>";
+    $query = $db->select_all("categories", array ("plugin" =>  "Newspage"), "ORDER BY cid"); 
+    
+    $cats = [];
+    $catsids = [];
+    while ($cats_row = $db->fetch($query)) {
+        $cats[] = $cats_row;  
+        $catsids[] = $cats_row['cid'];
     }
-    $content .= "</div>";
+    $catsids = array_unique($catsids);
+    $foundit = 0;
+    foreach ($catsids as $catid) {
+        $content .= "<form id='cat_mod' method='post' action=''>";
+        $content .= "<div>";         
+        foreach ($langs as $lang) {   
+            foreach ($cats as $cat) {                    
+                if (($catid == $cat['cid']) && ($cat['lang_id'] == $lang['lang_id'])) {
+                    $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='{$cat['name']}' />";
+                    $foundit = 1;
+                }                   
+            }
+            if ($foundit == 0) {
+                $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";
+            }                   
+            $foundit = 0;                
+        }
+        $content .= "<input type='hidden' name='cid' value='$catid' />";
+        $content .= "<input type='submit' name='ModCatSubmit' value='{$LANGDATA['L_NEWS_MODIFY']}' />";
+        $content .= "</div></form>";   
+    }
+
     //NEW CAT
-    $content .= "<div>";
+    $content .= "<div class='catlist'>";   
     $content .= "<p>{$LANGDATA['L_NEWS_CREATE_CAT']}</p>";
     $content .= "<form id='cat_new' method='post' action=''>";
     $content .= "<div>";

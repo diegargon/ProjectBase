@@ -15,15 +15,15 @@ function Newspage_AdminMenu($params) {
         return "<li class='tab_active'><a href='?admtab=$tab_num'>Newspage</a></li>";
     } else {
         return "<li><a href='?admtab=$tab_num'>Newspage</a></li>";
-    }
+    }    
 }
 
 function Newspage_AdminContent($params) {
    global $LANGDATA, $config, $tpl;    
    
    includePluginFiles("Newspage", 1);
-   //$tpl->getCSS_filePath("Newspage");
-   //$tpl->getCSS_filePath("Newspage", "Newspage-mobile");  
+   $tpl->getCSS_filePath("Newspage");
+   $tpl->getCSS_filePath("Newspage", "Newspage-mobile");  
    
     $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=1'>". $LANGDATA['L_PL_STATE'] ."</a></li>\n" );                               
     $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] ."&opt=2'>". $LANGDATA['L_NEWS_MODERATION'] ."</a></li>\n");
