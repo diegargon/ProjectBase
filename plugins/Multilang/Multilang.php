@@ -24,8 +24,11 @@ function Multilang_init(){
         isset($lang) ? $config['WEB_LANG'] = $lang : false;
     }   
     if ($request_uri == '/') {
-//        $request_uri = $config['WEB_URL'] . $config['WEB_LANG'] . $request_uri;
-        $request_uri = $config['WEB_URL'] . "?lang=" . $config['WEB_LANG'];
+        if ($config['FRIENDLY_URL']) {
+            $request_uri = $config['WEB_URL'] . $config['WEB_LANG'] ."/";
+        } else {
+        $request_uri = $config['WEB_URL'] . "?lang=" . $config['WEB_LANG'];    
+        }
         header('Location:' .$request_uri);
     }
     if( isset($_POST['choose_lang']) && (($choose_lang = S_POST_CHAR_AZ("choose_lang", 2, 2)) != false)) {         
