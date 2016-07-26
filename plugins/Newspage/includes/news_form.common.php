@@ -40,11 +40,12 @@ function news_get_categories() {
 }
 
 function news_form_getPost() {
-    global $acl_auth, $sm;
+    global $acl_auth, $sm, $LANGDATA;
        
     $session_user = $sm->getSessionUser();    
     if( (!defined('ACL') && $session_user['isAdmin'])
         || ( defined('ACL') && ( $acl_auth->acl_ask('news_admin||admin_all') ) == true) ) {
+        
         !empty($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author", 25,3) : false;
         if (!empty($data['author'])) {
             if( ($selected_user = $sm->getUserByUsername($data['author'])) ) {
@@ -52,13 +53,19 @@ function news_form_getPost() {
             } else {
                 $data['author'] = false; // author not exists clear for use the session username.
             }
-        }
+        }        
     }
 
     if(empty($data['author'])) {
-        $data['author'] = $session_user['username'];
-        $data['author_id'] = $session_user['uid'];
+        if (!empty($session_user)) {
+            $data['author'] = $session_user['username'];
+            $data['author_id'] = $session_user['uid'];
+        } else {
+            $data['author'] = $LANGDATA['L_NEWS_ANONYMOUS'];
+            $data['author_id'] = 0;
+        }
     }
+
     $data['nid'] = S_GET_INT("nid", 11, 1);
     $data['title'] = S_POST_TEXT_UTF8("news_title");
     $data['lead'] = S_POST_TEXT_UTF8("news_lead");
@@ -126,7 +133,8 @@ function news_form_common_field_check($news_data) {
     
     //USERNAME/AUTHOR
     if (empty($news_data['author']) ) {
-        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonymous its allowed        
+        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonymous its allowed 
+        $news_data['author_id'] = 0;
     }           
     if ($news_data['author'] == false) {
         $response[] = array("status" => "2", "msg" => $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR']);    

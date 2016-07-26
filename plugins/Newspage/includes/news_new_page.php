@@ -118,7 +118,7 @@ function news_newpage_submit_new($news_data) {
     if( ($db->num_rows($query)) <= 0) {
         return false;
     }
-
+    
     $news_father = $db->fetch($query);
 
     $insert_ary = array (
