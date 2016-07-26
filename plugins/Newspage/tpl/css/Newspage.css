@@ -188,8 +188,8 @@
     width: 99%;
     height: 200px;
 }
-.news_link {
-    width: 94%;
+.news_link, .news_tags {
+    width: 99%;
     margin-top: 5px;
 }
 .news_submit_center_wrapper {    

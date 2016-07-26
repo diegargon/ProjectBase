@@ -66,3 +66,5 @@ $LANGDATA['L_NEWS_E_ALREADY_TRANSLATE_ALL'] = "News already translate to all act
 $LANGDATA['L_NEWS_NEW_PAGE'] = "New page";
 $LANGDATA['L_NEWS_CREATE_NEW_PAGE'] = "Create new page";
 $LANGDATA['L_NEWS_DELETE_NOEXISTS'] = "News deleted or inexistent";
+$LANGDATA['L_NEWS_TAGS'] = "Tags";
+$LANGDATA['L_NEWS_TAGS_PLACEHOLDER'] = "Tags, comma separated";

@@ -66,3 +66,5 @@ $LANGDATA['L_NEWS_E_ALREADY_TRANSLATE_ALL'] = "La noticia ya esta traducida a to
 $LANGDATA['L_NEWS_NEW_PAGE'] = "Nueva pagina";
 $LANGDATA['L_NEWS_CREATE_NEW_PAGE'] = "Crear pagina nueva";
 $LANGDATA['L_NEWS_DELETE_NOEXISTS'] = "Noticia borrada o inexistente";
+$LANGDATA['L_NEWS_TAGS'] = "Tags";
+$LANGDATA['L_NEWS_TAGS_PLACEHOLDER'] = "Tags, separados por comas";

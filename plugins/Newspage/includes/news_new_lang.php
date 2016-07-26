@@ -57,7 +57,7 @@ function news_new_lang() {
      
     do_action("news_newlang_form_add", $news_data);
                 
-    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION","<input type='hidden' value='1' name='post_newlang' />" );
+    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION","<input type='hidden' value='1' name='post_newlang' />" );
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));            
 }
 
@@ -96,10 +96,6 @@ function news_translate($news_data) {
     if ($db->num_rows($query) > 0) { //already exist
         return false;
     }
-
-    $news_data['title'] = $db->escape_strip($news_data['title']);
-    $news_data['lead'] = $db->escape_strip($news_data['lead']);
-    $news_data['text'] = $db->escape_strip($news_data['text']);
 
     //GET original main news (page 1) for copy values
     $orig_news_nid = S_GET_INT("nid", 11, 1);

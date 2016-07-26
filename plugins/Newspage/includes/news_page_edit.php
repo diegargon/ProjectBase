@@ -32,11 +32,13 @@ function news_edit($news_data) {
     if (defined('MULTILANG') && ($site_langs = news_get_available_langs($news_data)) != false) {
         $news_data['select_langs'] = $site_langs;
     }  
-        
+
+    $config['NEWS_TAGS'] ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", news_tags_option($news_data['tags'])) : false;        
+    
     do_action("news_edit_form_add", $news_data);
 
-    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION","<input type='hidden' value='1' name='news_update' />" );
-    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION","<input type='hidden' value='{$news_data['lang_id']}' name='news_current_langid' />" );
+    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION","<input type='hidden' value='1' name='news_update' />" );
+    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION","<input type='hidden' value='{$news_data['lang_id']}' name='news_current_langid' />" );
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));  
     
 }
@@ -106,17 +108,16 @@ function news_full_update($news_data) {
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = ""; 
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
     !isset($news_data['news_translator']) ? $news_data['news_translator'] = "" : false;
-    
-    $news_data['title'] = $db->escape_strip($news_data['title']);
-    $news_data['lead'] = $db->escape_strip($news_data['lead']);
-    $news_data['text'] = $db->escape_strip($news_data['text']);    
+
         
     $set_ary = array (
       "lang_id" => $lang_id, "title" => $news_data['title'],  "lead" => $news_data['lead'],  "text" => $news_data['text'],  
         "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
         "lang" => $news_data['lang'], "acl" => $acl, "translator" => $news_data['news_translator']
     );
-    
+    if($config['NEWS_TAGS'] && !empty($news_data['news_tags'])) {
+        $set_ary['tags'] = $news_data['news_tags'];
+    }    
     $where_ary = array ( 
         "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid", "page" => $news_data['page']
     );
@@ -202,11 +203,7 @@ function news_limited_update($news_data) {
     if ( ($num_pages = $db->num_rows($query))  <= 0) {
         return false;
     }
-
-    $news_data['title'] = $db->escape_strip($news_data['title']);
-    $news_data['lead'] = $db->escape_strip($news_data['lead']);
-    $news_data['text'] = $db->escape_strip($news_data['text']);    
-    
+       
     $set_ary = array (
       "lang_id" => $lang_id, "title" => $news_data['title'],  "lead" => $news_data['lead'],  "text" => $news_data['text'],
         "lang" => $news_data['lang']

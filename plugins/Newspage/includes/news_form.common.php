@@ -40,7 +40,7 @@ function news_get_categories() {
 }
 
 function news_form_getPost() {
-    global $acl_auth, $sm, $LANGDATA;
+    global $acl_auth, $sm, $LANGDATA, $db;
        
     $session_user = $sm->getSessionUser();    
     if( (!defined('ACL') && $session_user['isAdmin'])
@@ -67,9 +67,9 @@ function news_form_getPost() {
     }
 
     $data['nid'] = S_GET_INT("nid", 11, 1);
-    $data['title'] = S_POST_TEXT_UTF8("news_title");
-    $data['lead'] = S_POST_TEXT_UTF8("news_lead");
-    $data['text'] = S_POST_TEXT_UTF8("news_text");
+    $data['title'] = $db->escape_strip(S_POST_TEXT_UTF8("news_title"));
+    $data['lead'] = $db->escape_strip(S_POST_TEXT_UTF8("news_lead"));
+    $data['text'] = $db->escape_strip(S_POST_TEXT_UTF8("news_text"));
     $data['category'] = S_POST_INT("news_category", 8);
     $data['featured'] = S_POST_INT("news_featured", 1, 1);
     $data['lang'] = S_POST_CHAR_AZ("news_lang", 2);
@@ -81,6 +81,8 @@ function news_form_getPost() {
     $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
     $data['post_newlang'] = S_POST_INT("post_newlang");
     $data['page'] = S_GET_INT("page", 11, 1);
+    $data['news_tags'] = $db->escape_strip(S_POST_TEXT_UTF8("news_tags"));
+    
     return $data;
 }
 
@@ -302,4 +304,12 @@ function news_get_missed_langs($nid, $page) {
     $select .= "</select>";
 
     return (!empty($nolang)) ? false : $select;
+}
+
+function news_tags_option($tags = null) {
+    global $LANGDATA, $config;
+    
+    $content = "<label for='news_tags'>{$LANGDATA['L_NEWS_TAGS']}</label>";    
+    $content .= "<input  value='$tags' maxlength='{$config['NEWS_TAGS_SIZE_LIMIT']}' id='news_tags' class='news_tags' name='news_tags' type='text' placeholder='{$LANGDATA['L_NEWS_TAGS_PLACEHOLDER']}' />";
+    return $content;
 }

@@ -68,9 +68,8 @@ if ($config['NEWS_RELATED'] && !empty($data['news_auth']) && $data['news_auth'] 
                 <?php isset($data['news_related']) ? print $data['news_related'] : false ?>
             </p>
         </div>             
-<?php } ?>             
-            
-
+<?php } ?>                         
+<?php !empty($tpldata['NEWS_FORM_BOTTOM_OPTION'])? print $tpldata['NEWS_FORM_BOTTOM_OPTION'] :false; ?>
         <div class="submit_items">
             <p> 
                 <span class="submit_others_label"><?php print $LANGDATA['L_NEWS_OTHER_OPTIONS'] ?> </span>
@@ -78,8 +77,6 @@ if ($config['NEWS_RELATED'] && !empty($data['news_auth']) && $data['news_auth'] 
                 <span  class="lang_label"><?php print $LANGDATA['L_NEWS_CATEGORY']?></span>
                     <?php print $data['select_categories'] ?>
     <?php } ?>
-
-                
 <?php
 if(defined('MULTILANG') && !empty($data['select_langs'])) {
 ?>                
@@ -97,19 +94,19 @@ if(!empty($data['select_acl'])) {
                 <span  class="featured_label"><?php print $LANGDATA['L_NEWS_FEATURED']?></span>
                 <input <?php  !empty($data['featured']) ? print "checked": false ?> type="checkbox" name="news_featured" id="news_featured" value="1"/>
                 
-<?php                
+<?php
 }
 ?>
-            </p>                       
+            </p>
         </div>
-<?php !empty($tpldata['NEWS_FORM_BOTTOM_OPTION'])? print $tpldata['NEWS_FORM_BOTTOM_OPTION'] :false; ?>            
+<?php !empty($tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'])? print $tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'] :false; ?>
         <div class="submit_buttom">
-            <p> 
-                <input type="submit" id="newsFormSubmit" name="newsFormSubmit" class="btnSubmitForm" value="<?php print $LANGDATA['L_SEND_NEWS']?>" /> 
+            <p>
+                <input type="submit" id="newsFormSubmit" name="newsFormSubmit" class="btnSubmitForm" value="<?php print $LANGDATA['L_SEND_NEWS']?>" />
             </p>             
-        </div>   
-        </div>                     
+        </div>
+        </div>
         </section>
-            </form>       
-    </div>       
+            </form>
+    </div>
 </div>

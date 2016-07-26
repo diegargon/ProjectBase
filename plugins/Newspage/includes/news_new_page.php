@@ -32,7 +32,7 @@ function news_new_page() {
     $form_data['can_change_author'] = "disabled";
     $form_data['author'] = $user['username'];
     
-    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", 
+    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION", 
               "<input type='hidden' name='nid' value='$nid'/>"
             . "<input type='hidden' name='news_lang' value='$lang'/>"
             . "<input type='hidden' name='num_pages' value='$num_pages'/>"
@@ -124,9 +124,9 @@ function news_newpage_submit_new($news_data) {
     $insert_ary = array (
         "nid" => $news_father['nid'],
         "lang_id" => $news_father['lang_id'],
-        "title" => $db->escape_strip($news_data['title']),
-        "lead" => $db->escape_strip($news_data['lead']),
-        "text" => $db->escape_strip($news_data['text']),
+        "title" => $news_data['title'],
+        "lead" => $news_data['lead'],
+        "text" => $news_data['text'],
         "featured" => $news_father['featured'],
         "author" => $news_father['author'],
         "author_id" => $news_father['author_id'],
