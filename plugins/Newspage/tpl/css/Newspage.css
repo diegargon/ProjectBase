@@ -152,7 +152,7 @@
 .submit_box label, .submit_others_label {
     font-size: 16px;
     background-color: #077A75;
-    width:94%;
+    width:99%;
     display: block;
     font-weight: bold;
     border: 0px solid blue;
@@ -169,7 +169,7 @@
 .submit_items {
     margin:0 auto;
     border:0px solid red;    
-    width:70%;
+    width:99%;
 }
 #news_author, #news_lead, #news_title, #news_text, #news_lang {
     box-shadow: 0 0 3px black
@@ -178,14 +178,14 @@
     width: 150px;
 }
 #news_lead {
-    width: 500px;
+    width: 99%;
     height: 100px;
 }
 #news_title {
-    width: 500px;
+    width: 99%;
 }
 #news_text {
-    width: 500px;
+    width: 99%;
     height: 200px;
 }
 .news_link {
