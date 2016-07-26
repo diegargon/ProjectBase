@@ -99,3 +99,15 @@ function SMBasic_check_user_agent($db_user_agent) {
     $user_agent = S_SERVER_USER_AGENT();
     return ($user_agent == $db_user_agent) ? true : false;
 }
+function SMBasic_create_reg_mail($active) {
+    global $LANGDATA, $config;
+    
+    if ($active > 1) {        
+        $URL = "{$config['WEB_URL']}"."login.php" . "?active=$active";
+        $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL";         
+    } else {        
+        $URL = "{$config['WEB_URL']}"."login.php";
+        $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
+    }      
+    return $msg;
+}

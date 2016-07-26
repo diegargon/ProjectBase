@@ -88,16 +88,3 @@ function SMBasic_Register() {
     
     return true;      
 }
-
-function SMBasic_create_reg_mail($active) {
-    global $LANGDATA, $config;
-    
-    if ($active > 1) {        
-        $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php" . "?active=$active";
-        $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" ."$URL";         
-    } else {        
-        $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/" . "login.php";
-        $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
-    }      
-    return $msg;
-}
