@@ -97,14 +97,15 @@ class ACL {
         if(!$asked_role = $this->getRoleDataByName($role_group, $role_type)) {
             return false;
         }        
-                     
+        
         foreach ($this->user_roles as $user_role) {
             if(!$user_role_data = $this->getRoleByID($user_role['role_id'])) {
                 return false;
             }
             if ( ($user_role_data['role_id'] ==  $asked_role['role_id']) &&
                  ($user_role_data['resource'] == $resource) //Used later                     
-                ) {                
+                ) { 
+                print_debug("Exact role found", "ACL_DEBUG");
                 return true; //its the exact role
             }                          
             //Look if role its upper level
@@ -112,6 +113,7 @@ class ACL {
                  ( $asked_role['level'] > $user_role_data['level'] ) &&
                  ( $user_role_data['resource'] == $resource) //Used later 
                 ) {
+                    print_debug("Role up found", "ACL_DEBUG");
                 return true;
             }
         }
