@@ -18,7 +18,7 @@ function Admin_main_page() {
         $msgbox['MSG'] = "L_ERROR_NOACCESS";
         do_action("message_page", $msgbox );        
         return false;
-    }
+    }    
     $user = $sm->getSessionUser();
     if (!defined('ACL') && $user['isAdmin'] != 1) {
         $msgbox['MSG'] = "L_ERROR_NOACCESS";
@@ -29,7 +29,7 @@ function Admin_main_page() {
     includePluginFiles("Admin");
     admin_load_plugin_files();    
     
-    !$admtab = S_GET_INT("admtab") ? $admtab = 1 : false;        
+    !($admtab = S_GET_INT("admtab")) ? $admtab = 1 : false;        
 
     $tpl->addto_tplvar("ADMIN_TAB_ACTIVE", $admtab);
     $tpl->getCSS_filePath("Admin");   
