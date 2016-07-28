@@ -9,7 +9,7 @@ function news_format_media($media_ary) {
     //TODO MEDIA TYPES   
     foreach ($media_ary as $media) {
         if ($media['type'] == 'image') {
-            $result .=  "<img src=" . $media['link'] ." alt=". $media['link'] . "/>"; //TODO FIX ALT        
+            $result .=  "<img class='image_link' src=" . $media['link'] ." alt=". $media['link'] . "/>"; //TODO FIX ALT        
         } else {
             return false;
         }

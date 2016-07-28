@@ -94,11 +94,12 @@ function news_media_getnews_mod ($news) {
     }
 }
 
-function news_media_page_mod($news) {
+function news_media_page_mod(& $news) {
     global $tpl;
-        
+           
     if ( ($media_ary = get_links($news['nid'], "image", array("itsmain" => 1), "LIMIT 1")) != false ) {
-        $content = "<div class='article_main_media'>". news_format_media($media_ary) ."</div>";
-        $tpl->addto_tplvar("news_main_pre_text", $content);
+        //$content = "<div class='article_main_media'>". news_format_media($media_ary) ."</div>";        
+        $content =  news_format_media($media_ary);        
+        $news['text'] = str_replace("[img:mainimage]", "$content" , $news['text']);
     }
 }

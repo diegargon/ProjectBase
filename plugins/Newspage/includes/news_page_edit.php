@@ -25,7 +25,7 @@ function news_edit($news_data) {
         if($config['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid'])) ) {        
             $news_data['news_related'] = "";
             foreach ($news_related as $related)  {
-                $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['rid']}]' value='{$related['link']}' />\n";
+                $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['link_id']}]' value='{$related['link']}' />\n";
             }
         }                    
     }    
@@ -171,12 +171,12 @@ function news_full_update($news_data) {
     }
     //OLD RELATED
     if(!empty($news_data['news_related'])) {        
-        foreach($news_data['news_related'] as $rid => $value) {
-            if (S_VAR_INTEGER($rid)) { //value its checked on post $rid no 
+        foreach($news_data['news_related'] as $link_id => $value) {
+            if (S_VAR_INTEGER($link_id)) { //value its checked on post $link_id no 
                 if(empty($value)) {
-                    $db->delete("links", array("rid" => $rid), "LIMIT 1");
+                    $db->delete("links", array("link_id" => $link_id), "LIMIT 1");
                 } else {                    
-                    $db->update("links", array("link" => $value), array("rid" => $rid), "LIMIT 1");
+                    $db->update("links", array("link" => $value), array("link_id" => $link_id), "LIMIT 1");
                 }
             }
         }
