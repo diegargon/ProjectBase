@@ -60,6 +60,7 @@ function news_show_page() {
 
     $tpl->addto_tplvar("NEWS_ADMIN_NAV", news_nav_options($news_row));
 
+    
     $tpl_data['nid'] = $news_row['nid'];
     $tpl_data['news_title'] = str_replace('\r\n', '', $news_row['title']);
     $tpl_data['news_lead'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);
@@ -67,7 +68,10 @@ function news_show_page() {
     $tpl_data['news_date'] = format_date($news_row['date']);
     $tpl_data['news_author'] = $news_row['author'];
     $tpl_data['news_author_uid'] = $news_row['author_id'];
-    $tpl_data['news_text']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
+    //$tpl_data['news_text']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
+    
+    !isset($bbcode) ? $bbcode = new bbcode : false;
+    $tpl_data['news_text']  = $bbcode->parse($news_row['text']);
     if (!empty ($news_row['translator'])) {
         $translator = $sm->getUserByUsername($news_row['translator']);
         $tpl_data['news_translator'] = "<a rel='nofollow' href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
