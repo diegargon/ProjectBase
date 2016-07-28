@@ -76,7 +76,7 @@ function news_page() {
         }
     } else {
         require_once("includes/news_page.main.php");
-        require_once("includes/bbcode.class.php");
+        require_once("includes/parser.class.php");
         do_action("common_web_structure");
         news_show_page();
     }

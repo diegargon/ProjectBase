@@ -70,8 +70,8 @@ function news_show_page() {
     $tpl_data['news_author_uid'] = $news_row['author_id'];
     //$tpl_data['news_text']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
     
-    !isset($bbcode) ? $bbcode = new bbcode : false;
-    $tpl_data['news_text']  = $bbcode->parse($news_row['text']);
+    !isset($news_parser) ? $news_parser = new parser : false;
+    $tpl_data['news_text']  = $news_parser->parse($news_row['text']);
     if (!empty ($news_row['translator'])) {
         $translator = $sm->getUserByUsername($news_row['translator']);
         $tpl_data['news_translator'] = "<a rel='nofollow' href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
