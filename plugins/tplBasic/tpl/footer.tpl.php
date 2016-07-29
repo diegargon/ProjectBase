@@ -13,5 +13,8 @@ if (!defined('IN_WEB')) { exit; }
 
 </div> <!-- Main Container ex_header.tpl -->
 </div> <!-- Container -->
+<?php
+isset($tpldata['SCRIPTS_BOTTOM']) ? print $tpldata['SCRIPTS_BOTTOM'] : false; 
+?>
 </body>
 </html>
