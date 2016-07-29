@@ -28,17 +28,17 @@ if (!defined('IN_WEB')) { exit; }
                 <?php if(!empty($data['can_change_author'])) { ?>
                 <input  name="news_translator"  type="hidden" value="<?php print $data['translator'] ?>"/>
                 <?php } ?>
-            </p>            
+            </p>
         </div>
-<?php } ?>            
+<?php } ?>
         <div class="submit_items">
-            <p> 
+            <p>
                 <label for="news_title"><?php print $LANGDATA['L_NEWS_TITLE'] ?> </label>
                 <input value="<?php isset($data['title']) ? print $data['title'] : false ?>"  minlength="<?php print $config['NEWS_TITLE_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TITLE_MAX_LENGHT']?>" id="news_title" name="news_title" required="required" type="text" placeholder=""/>
             </p>
         </div>
         <div class="submit_items">
-            <p> 
+            <p>
                 <label for="news_lead"><?php print $LANGDATA['L_NEWS_LEAD'] ?> </label>                
                 <textarea required="required"  minlength="<?php print $config['NEWS_LEAD_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LEAD_MAX_LENGHT']?>" id="news_lead" name="news_lead" ><?php isset($data['lead']) ? print $data['lead'] : false ?></textarea>                
             </p>            
@@ -46,7 +46,8 @@ if (!defined('IN_WEB')) { exit; }
         <div class="submit_items">
             <p> 
                 <label for="news_text"><?php print $LANGDATA['L_NEWS_TEXT'] ?> </label>
-                <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text"><?php isset($data['text']) ? print $data['text'] : false ?></textarea>
+<?php !empty($tpldata['NEWS_TEXT_BAR']) ? print $tpldata['NEWS_TEXT_BAR'] : false; ?>
+                <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text" /><?php isset($data['text']) ? print $data['text'] : false ?></textarea>
             </p>
         </div>
 <?php !empty($tpldata['NEWS_FORM_MIDDLE_OPTION'])? print $tpldata['NEWS_FORM_MIDDLE_OPTION'] :false; ?>

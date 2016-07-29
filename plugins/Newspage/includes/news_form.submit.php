@@ -3,10 +3,10 @@
  *  Copyright @ 2016 Diego Garcia
  */
 if (!defined('IN_WEB')) { exit; }
- 
+
 function news_form_new() {
     global $LANGDATA, $config, $acl_auth, $tpl, $sm;
-    
+
     $data['NEWS_FORM_TITLE'] = $LANGDATA['L_SEND_NEWS'];
 
     $user = $sm->getSessionUser();
@@ -19,12 +19,12 @@ function news_form_new() {
         do_action("message_box", $msgbox);        
         return false;
     }
-        
+
     if (defined('MULTILANG')) {
         if ( ($site_langs = news_get_all_sitelangs()) != false ) {
             $data['select_langs'] = $site_langs;
         }
-    }    
+    }
     if (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) {
         $data['select_acl'] = $acl_auth->get_roles_select("news");
         $data['news_auth'] = "admin";
@@ -36,11 +36,11 @@ function news_form_new() {
     } else {
         $data['can_change_author'] = "disabled";
     }
-    $data['select_categories'] = news_get_categories_select();          
-    $config['NEWS_TAGS'] ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", news_tags_option()) : false;        
-       
+    $data['select_categories'] = news_get_categories_select();
+    $config['NEWS_TAGS'] ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", news_tags_option()) : false;
+
     do_action("news_new_form_add", $data);
-    
+    news_text_get_bar();
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $data));
 }
 
@@ -54,8 +54,8 @@ function news_create_new($news_data) {
     } else {
         $lang_id  = $config['WEB_LANG_ID'];
     }
- 
-    !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl="";
+
+    !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = "";
     empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
 
     if ($news_data['featured'] == 1 && $config['NEWS_MODERATION'] == 1) {
@@ -107,7 +107,7 @@ function news_create_new($news_data) {
    //NEW RELATED
     if (!empty($news_data['news_new_related'])) {
         $type = "related";
-        $insert_ary = array ( 
+        $insert_ary = array (
             "source_id" => $news_data['nid'], "plugin" => $plugin,
             "type" => $type, "link" => $news_data['news_new_related'],
         );

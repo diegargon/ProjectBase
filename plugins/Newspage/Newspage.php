@@ -24,7 +24,7 @@ function news_index_page (){
         require_once("includes/news_form.submit.php");
         if (empty($_POST['newsFormSubmit_ST2'])) {
             do_action("common_web_structure");
-            $tpl->addto_tplvar("SCRIPTS_TOP", Newspage_FormScript());
+            $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
             news_form_new();
         } else {
             news_form_process("admin"); //if author admin options ins't submited
@@ -48,7 +48,7 @@ function news_page() {
                 news_form_process($news_data['news_auth']);
             } else {
                 do_action("common_web_structure");
-                $tpl->addto_tplvar("SCRIPTS_TOP", Newspage_FormScript());
+                $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
                 news_edit($news_data);
             }
         } else {
@@ -61,7 +61,7 @@ function news_page() {
             news_form_newlang_process();
         } else if (defined('MULTILANG')) {
             do_action("common_web_structure");
-            $tpl->addto_tplvar("SCRIPTS_TOP", Newspage_FormScript());
+            $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
             news_new_lang();
         }
     } else if (!empty($_GET['newpage'])) {
@@ -71,7 +71,7 @@ function news_page() {
             news_newpage_form_process();
         } else {
             do_action("common_web_structure");
-            $tpl->addto_tplvar("SCRIPTS_TOP", Newspage_FormScript());
+            $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
             news_new_page();
         }
     } else {

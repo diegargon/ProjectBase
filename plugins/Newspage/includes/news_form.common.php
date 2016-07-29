@@ -7,15 +7,15 @@ if (!defined('IN_WEB')) { exit; }
 function news_get_categories_select($news_data = null, $disabled = null) {
     global $db;
     if (empty($disabled)) {
-        $query = news_get_categories();    
+        $query = news_get_categories();
         $select = "<select name='news_category' id='news_category'>";
         while($row = $db->fetch($query)) {
             if( ($news_data != null) && ($row['cid'] == $news_data['category']) ) {
-                $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>"; 
+                $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>";
             } else {
-                $select .= "<option value='{$row['cid']}'>{$row['name']}</option>"; 
-            }        
-        } 
+                $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";
+            }
+        }
         $select .= "</select>";
     } else {
         $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => $news_data['lang_id'], "cid" => $news_data['category'] ), "LIMIT 1");
@@ -28,32 +28,32 @@ function news_get_categories_select($news_data = null, $disabled = null) {
 
 function news_get_categories() {
     global $config, $ml, $db;
-    
+
     if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($config['WEB_LANG']); 
     } else {
         $lang_id = $config['WEB_LANG_ID'];
-    }   
+    }
     $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id"));
-    
+
     return $query;
 }
 
 function news_form_getPost() {
     global $acl_auth, $sm, $LANGDATA, $db;
-       
-    $session_user = $sm->getSessionUser();    
+
+    $session_user = $sm->getSessionUser();
     if( (!defined('ACL') && $session_user['isAdmin'])
         || ( defined('ACL') && ( $acl_auth->acl_ask('news_admin||admin_all') ) == true) ) {
-        
+
         !empty($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author", 25,3) : false;
         if (!empty($data['author'])) {
             if( ($selected_user = $sm->getUserByUsername($data['author'])) ) {
-                $data['author_id'] = $selected_user['uid'];                
+                $data['author_id'] = $selected_user['uid'];
             } else {
                 $data['author'] = false; // author not exists clear for use the session username.
             }
-        }        
+        }
     }
 
     if(empty($data['author'])) {
@@ -82,14 +82,13 @@ function news_form_getPost() {
     $data['post_newlang'] = S_POST_INT("post_newlang");
     $data['page'] = S_GET_INT("page", 11, 1);
     $data['news_tags'] = $db->escape_strip(S_POST_TEXT_UTF8("news_tags"));
-    
+
     return $data;
 }
 
-
 function news_form_process($news_auth) {
     global $LANGDATA, $config;
-    
+
     $news_data = news_form_getPost();
 
     if(news_form_common_field_check($news_data) == false) {
@@ -101,22 +100,22 @@ function news_form_process($news_auth) {
             return false;
         }
     }
-    
+
     //ALL OK, check if SUBMIT, UPDATE or translate
-    
+
     if(S_POST_INT("news_update") > 0) {
         if ($news_auth == "admin" || $news_auth == "author") {
             if (news_full_update($news_data)) {
-                $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
+                $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);
             } else {
                 $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
             }
         } else if ($news_auth == "translator") {
             if (news_limited_update($news_data)) {
-                $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);    
+                $response[] = array("status" => "ok", "msg" => $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'], "url" => $config['WEB_URL']);
             } else {
                 $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
-            }            
+            }
         }
     } else {
         if(news_create_new($news_data)) {
@@ -125,64 +124,64 @@ function news_form_process($news_auth) {
             $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
         }
     }
-     echo json_encode($response, JSON_UNESCAPED_SLASHES);    
+     echo json_encode($response, JSON_UNESCAPED_SLASHES);
 
      return true;
 }
 
 function news_form_common_field_check($news_data) {
     global $config, $LANGDATA;
-    
+
     //USERNAME/AUTHOR
     if (empty($news_data['author']) ) {
         $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonymous its allowed 
         $news_data['author_id'] = 0;
-    }           
+    }
     if ($news_data['author'] == false) {
-        $response[] = array("status" => "2", "msg" => $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR']);    
+        $response[] = array("status" => "2", "msg" => $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;
-    }    
-    //TITLE        
+    }
+    //TITLE
     if($news_data['title'] == false) {
-        $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_ERROR']);    
+        $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_ERROR']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
+        return false;
     }
     if( (strlen($news_data['title']) > $config['NEWS_TITLE_MAX_LENGHT']) || 
             (strlen($news_data['title']) < $config['NEWS_TITLE_MIN_LENGHT'])
             ){
-        $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_MINMAX_ERROR']);    
+        $response[] = array("status" => "3", "msg" => $LANGDATA['L_NEWS_TITLE_MINMAX_ERROR']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
+        return false;
     }
-    //LEAD    
+    //LEAD
     if($news_data['lead'] == false) {
-        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_ERROR']);    
+        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_ERROR']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }    
-    if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT']) || 
+        return false;
+    }
+    if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT']) ||
             (strlen($news_data['lead']) < $config['NEWS_LEAD_MIN_LENGHT'])
             ){
-        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);    
+        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
+        return false;
     }
     //TEXT
     if($news_data['text'] == false) {
-        $response[] = array("status" => "5", "msg" => $LANGDATA['L_NEWS_TEXT_ERROR']);    
+        $response[] = array("status" => "5", "msg" => $LANGDATA['L_NEWS_TEXT_ERROR']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
-    }    
-    if( (strlen($news_data['text']) > $config['NEWS_TEXT_MAX_LENGHT']) || 
+        return false;
+    }
+    if( (strlen($news_data['text']) > $config['NEWS_TEXT_MAX_LENGHT']) ||
             (strlen($news_data['text']) < $config['NEWS_TEXT_MIN_LENGHT'])
             ){
-        $response[] = array("status" => "5", "msg" => $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR']);    
+        $response[] = array("status" => "5", "msg" => $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
+        return false;
     }
-    
+
     return true;
 }
 
@@ -190,33 +189,33 @@ function news_form_extra_check(&$news_data) {
     global $config, $LANGDATA;
     //CATEGORY
     if($news_data['category'] == false) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);    
+        $response[] = array("status" => "1", "msg" => $LANGDATA['L_NEWS_INTERNAL_ERROR']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
+        return false;
     }
     //Source check valid if input
     if (!empty($_POST['news_source']) && $news_data['news_source'] == false && $config['NEWS_SOURCE']) {
-        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_SOURCE']);    
+        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_SOURCE']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                
-    }    
+        return false;
+    }
     //New related   check valid if input 
     if (!empty($_POST['news_new_related']) && $news_data['news_new_related'] == false && $config['NEWS_RELATED']) {
-        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
+        $response[] = array("status" => "7", "msg" => $LANGDATA['L_NEWS_E_RELATED']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                
+        return false;
     }
     //Old related  if input
     if (!empty($_POST['news_related']) && $news_data['news_related'] == false && $config['NEWS_RELATED']) {
-        $response[] = array("status" => "8", "msg" => $LANGDATA['L_NEWS_E_RELATED']);    
+        $response[] = array("status" => "8", "msg" => $LANGDATA['L_NEWS_E_RELATED']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                
-    }       
+        return false;
+    }
     /* Custom /Mod Validators */
     if( ($return = do_action("news_form_add_check", $news_data)) && !empty($return) ) {        
         $response[] = array("status" => "9", "msg" => $return);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;         
+        return false;
     }
     //FEATURED
     //NOCHECK ATM
@@ -224,20 +223,20 @@ function news_form_extra_check(&$news_data) {
     //ACL
     //NO CHECK ATM
     // 
-    
+
     return true;
 }
 
 function Newspage_FormScript() {
     $script = "";
-    
+
     if (!check_jsScript("jquery.min.js")) {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }           
+    }
     $script .= "<script type=\"text/javascript\" src=\"plugins/Newspage/js/newsform.js\"></script>\n";
-    
+    $script .= "<script type=\"text/javascript\" src=\"plugins/Newspage/js/editor.js\"></script>\n";
     return $script;
 }
 //Used when submit new news, get all site available langs and selected the default/user lang
@@ -247,15 +246,15 @@ function news_get_all_sitelangs() {
     $site_langs = $ml->get_site_langs();
 
     if (empty($site_langs)) { return false; }
-    
-    $select = "<select name='news_lang' id='news_lang'>";     
+
+    $select = "<select name='news_lang' id='news_lang'>";
     foreach ($site_langs as $site_lang) {
         if($site_lang['iso_code'] == $config['WEB_LANG']) {
             $select .= "<option selected value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
         } else {            
             $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
         }
-    }        
+    }
     $select .= "</select>";
 
     return $select;
@@ -266,9 +265,9 @@ function news_get_available_langs($news_data) {
 
     $site_langs = $ml->get_site_langs();
     if (empty($site_langs)) { return false; }
-    
+
     empty($news_data['lang']) ? $match_lang = $news_data['lang'] : $match_lang = $config['WEB_LANG'];
-    
+
     $select = "<select name='news_lang' id='news_lang'>";     
     foreach ($site_langs as $site_lang) {
         if($site_lang['iso_code'] == $match_lang) {
@@ -279,7 +278,7 @@ function news_get_available_langs($news_data) {
                 $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
             }
         }
-    }        
+    }
     $select .= "</select>";
 
     return $select;
@@ -289,10 +288,10 @@ function news_get_missed_langs($nid, $page) {
     global $ml, $db; 
 
     $nolang = 1;
-    
+
     $site_langs = $ml->get_site_langs();
     if (empty($site_langs)) { return false; }
-    
+
     $select = "<select name='news_lang' id='news_lang'>";     
     foreach ($site_langs as $site_lang) {
             $query = $db->select_all("news", array("nid" => $nid, "lang_id" => $site_lang['lang_id'], "page" => "$page"), "LIMIT 1");
@@ -312,4 +311,10 @@ function news_tags_option($tags = null) {
     $content = "<label for='news_tags'>{$LANGDATA['L_NEWS_TAGS']}</label>";    
     $content .= "<input  value='$tags' maxlength='{$config['NEWS_TAGS_SIZE_LIMIT']}' id='news_tags' class='news_tags' name='news_tags' type='text' placeholder='{$LANGDATA['L_NEWS_TAGS_PLACEHOLDER']}' />";
     return $content;
+}
+
+function news_text_get_bar() {
+        global $tpl;
+        $content = $tpl->getTPL_file("Newspage", "NewsEditorBar");
+        $tpl->addto_tplvar("NEWS_TEXT_BAR", $content);
 }
