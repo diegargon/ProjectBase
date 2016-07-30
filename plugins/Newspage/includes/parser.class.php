@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-class parser_text {
+class parse_text {
     private $bbcode = array(
         '~\[p\](.*?)\[/p\]~si'                                              => '<p>$1</p>',
         '~\[b\](.*?)\[/b\]~si'                                              => '<b>$1</b>',
