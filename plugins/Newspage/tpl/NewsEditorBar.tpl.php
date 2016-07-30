@@ -7,8 +7,8 @@
 <?php !empty($tpldata['NEWS_EDITOR_BAR_PRE']) ? print $tpldata['NEWS_EDITOR_BAR_PRE'] : false ?>
 <button class="btnEditor" type="button" value="[b]$1[/b]"><?php print $LANGDATA['L_NEWS_EDITOR_BOLD'] ?></button>
 <button class="btnEditor" type="button" value="[i]$1[/i]"><?php print $LANGDATA['L_NEWS_EDITOR_ITALIC'] ?></button>
-<button class="btnEditor" type="button" value="[p]$1[/p]"><?php print $LANGDATA['L_NEWS_EDITOR_UNDERLINE'] ?></button>
-<button class="btnEditor" type="button" value="[u]$1[/u]"><?php print $LANGDATA['L_NEWS_EDITOR_PARAGRAPH'] ?></button>
+<button class="btnEditor" type="button" value="[u]$1[/u]"><?php print $LANGDATA['L_NEWS_EDITOR_UNDERLINE'] ?></button>
+<button class="btnEditor" type="button" value="[p]$1[/p]"><?php print $LANGDATA['L_NEWS_EDITOR_PARAGRAPH'] ?></button>
 <button class="btnEditor" type="button" value="[h2]$1[/h2]"><?php print $LANGDATA['L_NEWS_EDITOR_H2'] ?></button>
 <button class="btnEditor" type="button" value="[h3]$1[/h3]"><?php print $LANGDATA['L_NEWS_EDITOR_H3'] ?></button>
 <button class="btnEditor" type="button" value="[h4]$1[/h4]"><?php print $LANGDATA['L_NEWS_EDITOR_H4'] ?></button>
