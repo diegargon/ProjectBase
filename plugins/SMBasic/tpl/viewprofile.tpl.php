@@ -6,7 +6,18 @@ if (!defined('IN_WEB')) { exit; }
 ?>
 <div  class="clear bodysize page">   
     <div class="profile_box">        
-        <h1><?php print $LANGDATA['L_VIEWPROFILE']?></h1> 
+        <h1><?php print $LANGDATA['L_VIEWPROFILE']?></h1>
+            <div id="avatar">
+<?php
+if (!empty($data['avatar'])) {
+?>
+                <img width="125" height="150" src="<?php print $data['avatar'] ?>" alt="" />
+<?php
+} else {
+?>
+                <img width="125" height="150" src="plugins/SMBasic/tpl/img/avatar.png" alt="" />
+<?php } ?>
+            </div>
         <dl>
             <dt><span><?php print $LANGDATA['L_USERNAME']?> </span></dt>                           
             <dd><span><?php print $data['username'] ?> </span></dd>
