@@ -32,6 +32,8 @@ function news_new_page() {
     $form_data['can_change_author'] = "disabled";
     $form_data['author'] = $user['username'];
     
+    news_editor_getBar();
+    
     $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION", 
               "<input type='hidden' name='nid' value='$nid'/>"
             . "<input type='hidden' name='news_lang' value='$lang'/>"

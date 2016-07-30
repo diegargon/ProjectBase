@@ -73,8 +73,10 @@ function news_page() {
     } else if (!empty($_GET['newpage'])) {
         require_once ("includes/news_form.common.php");
         require_once ("includes/news_new_page.php");
-        if(!empty($_POST['num_pages'])) {
+        if(!empty($_POST['num_pages']) && empty($_POST['preview'])) {
             news_newpage_form_process();
+        } else if (!empty($_POST['preview'])) {
+            news_form_preview ();
         } else {
             do_action("common_web_structure");
             $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());

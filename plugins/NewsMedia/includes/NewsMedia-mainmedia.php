@@ -106,7 +106,7 @@ function news_media_page_mod(& $news) {
 function news_media_form_preview(& $news) {
     global $config;
 
-    if ($_POST['news_main_media']) {
+    if (!empty($_POST['news_main_media'])) {
         $media_ary[] = array (
             "type" => "image",
             "link" => S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT'])
