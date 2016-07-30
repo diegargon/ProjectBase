@@ -37,27 +37,3 @@ function get_links($source_id, $type, $extra_ary = null, $extra_db = null) {
     }
     return $links;
 }
-
-function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null, $force_no_remote_check = null) {
-    global $config;
-
-    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) { 
-        $url = "http://" . $url;
-    }
-
-    $regex = '/\.('. $config['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
-    
-    if( ($url = S_VAR_URL($url, $max_size, $min_size)) == false ) {
-        return -1;
-    }    
-    if ( !preg_match($regex, $url) ) {
-      return -1;
-    }  
-    if ($config['REMOTE_CHECKS'] && empty($force_no_remote_check)) {
-        if (!remote_check($url)) {
-            return -1;
-        }
-    }
- 
-    return $url;
-}

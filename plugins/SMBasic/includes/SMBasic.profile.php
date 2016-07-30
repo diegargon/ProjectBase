@@ -41,6 +41,14 @@ function SMBasic_ViewProfile() {
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config, $db; 
     
+    if (!empty($_POST['avatar'])) {
+        $avatar = S_VALIDATE_MEDIA($_POST['avatar'], 256);
+        if ($avatar < 0) {
+            $response[] = array("status" => "6", "msg" => $LANGDATA['L_SM_E_AVATAR'] . "\n" . $avatar );
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;
+        }
+    }
     if( empty($_POST['cur_password']) ||  strlen($_POST['cur_password']) <  $config['sm_min_password']) {
        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
@@ -153,15 +161,19 @@ function SMBasic_ProfileChange() {
             ($config['smbasic_can_change_email'] == 0) ||
             ($email == $user['email']) ) {
         unset($email);
-    }    
+    }
+    if($user['avatar'] == $avatar) {
+         unset($avatar);
+    }
     //CHECK if something need change
     if ( (empty($email)) && (empty($username)) && 
-            (empty($_POST['new_password'])) && (empty($_POST['r_password'])) ) {
-        $response[] = array("status" => "6", "msg" => $LANGDATA['L_NOTHING_CHANGE']);
+            (empty($_POST['new_password'])) && (empty($_POST['r_password'])) && 
+            empty($avatar)) {
+        $response[] = array("status" => "0", "msg" => $LANGDATA['L_NOTHING_CHANGE']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                     
+        return false;
     }
-    
+
     $q_set_ary = [];
     if (( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) && ( !empty($username) )) {
             $q_set_ary['username'] = $username;
@@ -175,8 +187,10 @@ function SMBasic_ProfileChange() {
             $q_set_ary['password'] = $new_password_encrypt;
         }
     }   
-    
-    $db->update("users", $q_set_ary, array("uid" => $user_id ), "LIMIT 1"); 
+
+    !empty($avatar) ? $q_set_ary['avatar'] = $avatar : false;
+
+    $db->update("users", $q_set_ary, array("uid" => $user_id ), "LIMIT 1");
 
     $profile_url = $config['WEB_URL'] . "profile.php";
     $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] , "url" => "$profile_url");    

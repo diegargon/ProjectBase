@@ -90,3 +90,6 @@ $LANGDATA['L_SM_ENABLE'] = "Enable";
 $LANGDATA['L_SM_E_DISABLE'] = "Your acccount has been disable, contact with administration if you don't known why";
 $LANGDATA['L_SM_E_USER_NOT_EXISTS'] = "User not exists";
 $LANGDATA['L_SM_USERS_DISABLE'] = "Disabled users";
+$LANGDATA['L_SM_E_ACTIVATION'] = "Activation error";
+$LANGDATA['L_SM_E_RESET'] = "failed reset password";
+$LANGDATA['L_SM_E_AVATAR'] = "Avatar incorrect";
