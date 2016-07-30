@@ -192,7 +192,6 @@ function S_VAR_URL($var, $max_size = null, $min_size = null) {
     if ( (strpos($var, 'http://') !== 0) && (strpos($var, 'https://') !== 0)) { 
         $var = "http://" . $var;
     }    
-    
     if ( (!empty($max_size) && (strlen($var) > $max_size) )
        || (!empty($min_size) && (strlen($var) < $min_size))
             ) {
@@ -200,7 +199,7 @@ function S_VAR_URL($var, $max_size = null, $min_size = null) {
     } 
     $url = filter_var($var, FILTER_SANITIZE_URL);  
     $url = filter_var($url, FILTER_VALIDATE_URL);
-    
+
     if ($config['REMOTE_CHECKS'] && (!remote_check($url)) ) {
         $url = false;
     }    
@@ -289,4 +288,28 @@ function S_COOKIE_CHAR_AZNUM($var, $max_size = null, $min_size = null) {
         return false;
     }    
     return S_VAR_CHAR_AZ_NUM ($_COOKIE[$var], $max_size, $min_size);
+}
+function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null, $force_no_remote_check = null) {
+    global $config;
+
+    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) {
+        $url = "http://" . $url;
+    }
+
+    $regex = '/\.('. $config['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
+
+    if( ($url = S_VAR_URL($url, $max_size, $min_size)) == false ) {
+        return -1;
+    }
+
+    if ( !preg_match($regex, $url) ) {
+      return -1;
+    }
+
+    if ($config['REMOTE_CHECKS'] && empty($force_no_remote_check)) {
+        if (!remote_check($url)) {
+            return -1;
+        }
+    }
+    return $url;
 }
