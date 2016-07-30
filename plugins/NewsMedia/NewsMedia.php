@@ -20,13 +20,15 @@ function NewsMedia_init() {
 function register_main_media() {
     require_once("includes/NewsMedia-mainmedia.php");
     register_action("news_edit_form_add", "NewsEditFormMediaTpl");
-    register_action("news_new_form_add", "NewsFormMediaTpl");    
+    register_action("news_new_form_add", "NewsFormMediaTpl");
     register_action("news_form_add_check", "NewsMediaCheck");
     register_action("news_create_new_insert", "NewsMediaInsertNew");
-    register_action("news_form_update", "news_form_media_update");        
+    register_action("news_form_update", "news_form_media_update");
     register_action("news_featured_mod", "news_media_featured_mod");
     register_action("news_get_news_mod", "news_media_getnews_mod");
-    register_action("news_show_page", "news_media_page_mod");    
+    register_action("news_show_page", "news_media_page_mod");
+    register_action("news_form_preview", "news_media_form_preview");
+    register_action("news_add_editor_item", "news_media_add_editor_item");
 }
 
 function register_extra_media() {

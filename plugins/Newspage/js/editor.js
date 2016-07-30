@@ -31,4 +31,14 @@ function new_tagged_text(tag) {
         var new_text = new_tagged_text(preTag + selection + postTag);
         $("#news_text").val(new_text);
     });
+   
+    $('#btnShowPreview').click(function() {        
+        $.post("", $( "#form_news" ).serialize() + '&preview=1' ,
+        function(data) {
+            $("#preview").html(data);
+        });
+    });
+    $('#btnHiddePreview').click(function() {        
+        $("#preview").html("");
+    });    
  });

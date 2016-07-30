@@ -8,14 +8,13 @@ function news_edit($news_data) {
     global $config, $LANGDATA, $acl_auth, $tpl;    
 
     $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_EDIT_NEWS'];
-    
+
     if ($news_data['news_auth'] == "admin") {        
         $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']);
         $news_data['can_change_author'] = "";
     } else {
         $news_data['can_change_author'] = "disabled";
     } 
-    
 
     if ( $news_data['news_auth'] == "admin" || $news_data['news_auth'] == "author") {        
         $news_data['select_categories'] = news_get_categories_select($news_data);
@@ -28,36 +27,34 @@ function news_edit($news_data) {
                 $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['link_id']}]' value='{$related['link']}' />\n";
             }
         }                    
-    }    
+    }
     if (defined('MULTILANG') && ($site_langs = news_get_available_langs($news_data)) != false) {
         $news_data['select_langs'] = $site_langs;
     }  
-
-    $config['NEWS_TAGS'] ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", news_tags_option($news_data['tags'])) : false;        
-    
+    $config['NEWS_TAGS'] ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", news_tags_option($news_data['tags'])) : false;
     do_action("news_edit_form_add", $news_data);
+    news_editor_getBar();
 
     $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION","<input type='hidden' value='1' name='news_update' />" );
     $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION","<input type='hidden' value='{$news_data['lang_id']}' name='news_current_langid' />" );
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));  
-    
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));
 }
 
 function news_check_edit_authorized() {
     global $config, $sm, $acl_auth;
-    
+
     $nid = S_GET_INT("newsedit", 11, 1);
     $lang = S_GET_CHAR_AZ("lang", 2, 2);
     $page = S_GET_INT("page", 11, 1);
-    
+
     if ($nid == false || $lang == false || $page == false) {
         $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
         do_action("message_box", $msgbox);
         return false;
-    }   
+    }
     if( ! $news_data = get_news_byId($nid, $lang, $page)) {
         return false; //get_news... error already setting
-    }  
+    }
     if ( (!$user = $sm->getSessionUser()) ) {
         $msgbox['MSG'] = "L_ERROR_NOACCESS";
         do_action("message_box", $msgbox);        
@@ -69,16 +66,16 @@ function news_check_edit_authorized() {
         $news_data['news_auth'] = "admin";
         return $news_data;
     } 
-    
+
     if ( (($news_data['author'] == $user['username']) && $config['NEWS_AUTHOR_CAN_EDIT']) ) {
         $news_data['news_auth'] = "author";
         return $news_data;
-    } 
+    }
     if ( (($news_data['translator'] == $user['username']) && $config['NEWS_TRANSLATOR_CAN_EDIT']) ) {
         $news_data['news_auth'] = "translator";
         return $news_data;
     }
-    
+
     $msgbox['MSG'] = "L_ERROR_NOACCESS";
     do_action("message_box", $msgbox); 
     return false;

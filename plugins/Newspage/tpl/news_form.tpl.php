@@ -49,6 +49,11 @@ if (!defined('IN_WEB')) { exit; }
 <?php !empty($tpldata['NEWS_TEXT_BAR']) ? print $tpldata['NEWS_TEXT_BAR'] : false; ?>
                 <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text" /><?php isset($data['text']) ? print $data['text'] : false ?></textarea>
             </p>
+            <div id="EditorBtnBottomContainer">
+                <input class="btnPreview" type='button' id="btnShowPreview" value="<?php print $LANGDATA['L_NEWS_PREVIEW'] ?>"/>
+                <input class="btnPreview" type='button' id="btnHiddePreview" value="<?php print $LANGDATA['L_NEWS_HIDDE_PREVIEW'] ?>"/>
+            </div>
+            <div id="preview"></div>
         </div>
 <?php !empty($tpldata['NEWS_FORM_MIDDLE_OPTION'])? print $tpldata['NEWS_FORM_MIDDLE_OPTION'] :false; ?>
 <?php
@@ -110,4 +115,5 @@ if(!empty($data['select_acl'])) {
         </section>
             </form>
     </div>
+        
 </div>

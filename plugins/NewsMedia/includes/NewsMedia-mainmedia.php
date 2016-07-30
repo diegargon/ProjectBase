@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 
 function NewsFormMediaTpl($news_data) {
     global $tpl;
-    $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMedia", "NewsMediaItems", $news_data)); 
+    $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMedia", "NewsMediaItems", $news_data));
 }
 
 function NewsEditFormMediaTpl($news_data) {
@@ -87,8 +87,8 @@ function news_media_featured_mod($news) {
 
 function news_media_getnews_mod ($news) {
     global $tpl;
-        
-    if ( ($media_ary = get_links($news['nid'], "image", array("itsmain" => 1), "LIMIT 1")) != false ) { 
+
+    if ( ($media_ary = get_links($news['nid'], "image", array("itsmain" => 1), "LIMIT 1")) != false ) {
         $media_content = news_format_media($media_ary);
         $tpl->addto_tplvar_uniq("news_preview_lead_pre", $media_content);
     }
@@ -96,10 +96,31 @@ function news_media_getnews_mod ($news) {
 
 function news_media_page_mod(& $news) {
     global $tpl;
-           
+
     if ( ($media_ary = get_links($news['nid'], "image", array("itsmain" => 1), "LIMIT 1")) != false ) {
-        //$content = "<div class='article_main_media'>". news_format_media($media_ary) ."</div>";        
-        $content =  news_format_media($media_ary);        
-        $news['text'] = str_replace("[img:mainimage]", "$content" , $news['text']);
+        $htmlLink =  news_format_media($media_ary);
+        $news['text'] = str_replace("[img:mainimage]", "$htmlLink" , $news['text']);
     }
+}
+
+function news_media_form_preview(& $news) {
+    global $config;
+
+    if ($_POST['news_main_media']) {
+        $media_ary[] = array (
+            "type" => "image",
+            "link" => S_VALIDATE_MEDIA($_POST['news_main_media'], $config['NEWS_MEDIA_MAX_LENGHT'], $config['NEWS_MEDIA_MIN_LENGHT'])
+            );
+        $news['news_main_media']  = news_format_media($media_ary);
+        if(!empty($news['news_main_media'])) {
+            $news['news_text'] = str_replace("[img:mainimage]", $news['news_main_media'] , $news['news_text']);
+        }
+    }
+}
+
+function news_media_add_editor_item () {
+    global $tpl, $LANGDATA;
+
+    $items = '<button class="btnEditor" type="button" value="[div_class=main_img_container][img:mainimage]$1[/div_class]">'. $LANGDATA['L_NEWS_EDITOR_MAINMEDIA'] .'</button>';
+    $tpl->addto_tplvar("NEWS_EDITOR_BAR_POST", $items);
 }

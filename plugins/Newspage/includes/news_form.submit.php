@@ -40,7 +40,7 @@ function news_form_new() {
     $config['NEWS_TAGS'] ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", news_tags_option()) : false;
 
     do_action("news_new_form_add", $data);
-    news_text_get_bar();
+    news_editor_getBar();
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $data));
 }
 

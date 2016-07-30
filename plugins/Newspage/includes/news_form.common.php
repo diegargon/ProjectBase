@@ -313,8 +313,27 @@ function news_tags_option($tags = null) {
     return $content;
 }
 
-function news_text_get_bar() {
+function news_editor_getBar() {
         global $tpl;
+        do_action("news_add_editor_item");
+        
         $content = $tpl->getTPL_file("Newspage", "NewsEditorBar");
         $tpl->addto_tplvar("NEWS_TEXT_BAR", $content);
+}
+
+function news_form_preview() {
+    //global $tpl;  
+    global $db;
+    require_once("parser.class.php");
+       
+    //$news_text = $_POST['news_text'];
+    $news['news_text'] = $db->escape_strip(S_POST_TEXT_UTF8("news_text"));
+    $news['news_text'] = stripcslashes($news['news_text']);
+    !isset($news_parser) ? $news_parser = new parse_text : false;
+    
+    do_action("news_form_preview", $news);
+    $content = $news_parser->parse($news['news_text']);
+    
+    echo $content;
+    
 }

@@ -11,3 +11,4 @@ $LANGDATA['L_NEWS_EXTRA_MEDIA'] = "Imagenes o videos adicionales";
 $LANGDATA['L_NEWS_ADDFIELD'] = "Añadir campo";
 $LANGDATA['L_NEWS_E_MEDIA_LINK'] = "Los siguientes enlaces no son validos o no funcionan:";
 $LANGDATA['L_NEWS_MAIN_MEDIA_REQUIRED'] = "La imagen principal es obligatoria";
+$LANGDATA['L_NEWS_EDITOR_MAINMEDIA'] = "IMG:main";

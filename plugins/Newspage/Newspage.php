@@ -19,15 +19,19 @@ function Newspage_init(){
 
 function news_index_page (){
     global $tpl;
+
     if(!empty($_GET['sendnews']) && empty($_POST['newsFormSubmit']) ) {
         require_once 'includes/news_form.common.php';
         require_once("includes/news_form.submit.php");
-        if (empty($_POST['newsFormSubmit_ST2'])) {
+
+        if (!empty($_POST['newsFormSubmit_ST2']) ) {
+            news_form_process("admin"); //if author admin options ins't submited
+        } else if(!empty($_POST['preview'])) {
+           news_form_preview();
+        } else {
             do_action("common_web_structure");
             $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
             news_form_new();
-        } else {
-            news_form_process("admin"); //if author admin options ins't submited
         }
     } else {
         require_once("includes/news.portal.php");
@@ -37,8 +41,8 @@ function news_index_page (){
 }
 
 function news_page() {
-    global $tpl;        
- 
+    global $tpl;       
+
     if(!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
         require_once ("includes/news_form.common.php");
         require_once ("includes/news_page_edit.php");
@@ -46,6 +50,8 @@ function news_page() {
         if( ($news_data = news_check_edit_authorized()) != false) {
             if (!empty($_POST['newsFormSubmit_ST2'])) {
                 news_form_process($news_data['news_auth']);
+            } else if (!empty($_POST['preview'])) {
+                news_form_preview();
             } else {
                 do_action("common_web_structure");
                 $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
