@@ -63,8 +63,10 @@ function news_page() {
     } else if (!empty($_GET['news_new_lang'])) {
         require_once ("includes/news_form.common.php");
         require_once ("includes/news_new_lang.php");
-        if (defined('MULTILANG') && !empty($_POST['post_newlang'])) {
+        if (defined('MULTILANG') && !empty($_POST['post_newlang']) && empty($_POST['preview']) ) {
             news_form_newlang_process();
+        } else if (!empty($_POST['preview'])) {
+            news_form_preview ();            
         } else if (defined('MULTILANG')) {
             do_action("common_web_structure");
             $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
