@@ -9,6 +9,8 @@ global $external_scripts;
 $debug = $external_scripts = [];
 
 require_once "config/config.inc.php";
+file_exists("tpl/config/config.php") ? require_once "tpl/config/config.inc.php" : false; //rewrite config
+
 require_once "includes/valfilters.inc.php";
 require_once "includes/core.functions.php";
 require_once "includes/plugins.php";
