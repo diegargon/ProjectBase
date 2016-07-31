@@ -48,6 +48,7 @@ function news_show_page() {
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", news_pager($news_row));
     }
     if (!empty($news_row['tags'])) {
+        $config['PAGE_KEYWORDS'] = $news_row['tags'];        
         $exploted_tags = explode(",", $news_row['tags']);
         $tag_data = "<p>". $LANGDATA['L_NEWS_TAGS'] . ": ";
         foreach ($exploted_tags as $tag) {
@@ -55,11 +56,18 @@ function news_show_page() {
         }
         $tag_data .= "</p>";
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", $tag_data);
+    } else {
+        $config['PAGE_KEYWORDS'] = $news_row['title'];
     }
+    
     do_action("news_show_page", $news_row);
 
+    if ($config['NEWS_SOCIAL_META']) {
+        news_add_social_meta($news_row);
+    }
     $tpl->addto_tplvar("NEWS_ADMIN_NAV", news_nav_options($news_row));
 
+    $config['PAGE_DESC'] = $news_row['title'] . ":" . $news_row['lead'];
     
     $tpl_data['nid'] = $news_row['nid'];
     $tpl_data['news_title'] = str_replace('\r\n', '', $news_row['title']);
@@ -77,7 +85,8 @@ function news_show_page() {
         $tpl_data['news_translator'] = "<a rel='nofollow' href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }   
     $author = $sm->getUserByID($news_row['author_id']);
-    $tpl_data['author_avatar'] = "<div class='avatar'><img width='50' src='{$author['avatar']}' /></div>";
+    $config['PAGE_AUTHOR'] = $author['username'];
+    $tpl_data['author_avatar'] = "<div class='avatar'><img width='50' src='{$author['avatar']}' alt='' /></div>";
     
     $tpl->addtpl_array($tpl_data);
 
@@ -348,4 +357,12 @@ function news_adv_stats($nid, $lang) {
     } else{
         $db->insert("adv_stats", array("plugin" => "$plugin", "rid" => "$nid", "lang" => "$lang", "uid" => $user['uid'], "ip" => "$ip", "hostname" => $hostname, "counter" => 1));
     }       
+}
+function news_add_social_meta($news) {
+    global $tpl, $config;
+    $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://';
+    $news['url'] = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    $news['web_title'] = $config['TITLE'];
+    $content = $tpl->getTPL_file("Newspage", "NewsSocialmeta", $news);
+    $tpl->addto_tplvar("META", $content);
 }

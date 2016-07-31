@@ -76,19 +76,21 @@ figure {
     padding-top: 10px;
     border: 0px solid blue;
 }
-#header  h1{
-    font-size:36px;
-    font-weight:normal;
-    text-transform:none;
-    
-}
 #header  h2{
-    font-size:13px;
-    font-weight:normal;
-    text-transform:none;
+    font-family: Rockwell, "Courier Bold", Courier, Georgia, Times, "Times New Roman", serif;
+    font-size:32px;
+    font-weight:bold;    
 }
-#logo {
-    padding-left: 5px;
+#header  h3{
+    font-family: Copperplate, "Copperplate Gothic Light", fantasy;
+    font-size:20px;
+    font-weight:normal;    
+}
+#header a {
+    text-decoration: none;
+}
+#brand {
+    padding-left: 30px;
     border: 0px solid red;
     margin-bottom: 20px;
 }

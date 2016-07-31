@@ -41,8 +41,13 @@
    border: 0px solid red;
    margin-left: 10px;   
 }
-#featured h3 {
+#featured h1 {
     color: #989898;
+}
+#featured h2, #featured h3 {
+    color: #989898;
+    font-size: 1.4em;
+    text-transform: none;
 }
 .feature_article {
     display:table-cell;
@@ -53,25 +58,23 @@
     box-shadow: 0 0 10px #ccc;  
     height:100%;
     vertical-align:top;
-    padding:5px;
-    padding-left:15px;
-    padding-right:10px;
+    padding-left:5px;
 }
 #featured:hover div{
     box-shadow: 0 0 10px gray;
     
 }
-#featured article:hover h3 {
+#featured:hover h1 {
     color: blue;
 }
-#featured h2 {
+.category h2 {
     color:#919191;
     background-color:#232323;
-    margin-bottom: 4px;
+    margin: 2px 10px 2px 10px;
     box-shadow: 0 0 10px #ccc; 
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;    
-    padding-left: 4px;
+    padding: 2px;
 }
 /* BUTTON */
 .button_switch {
@@ -92,17 +95,17 @@
 .article_body hr {
     border-top: 1px dotted gray;
 }
+.article_body h1 {
+   font-size: 3.5em;
+   font-weight: bold;
+   border:0px solid blue;
+   line-height: 1em;
+}
 .article_side {
     float:left;
     width: 31%;
     border:0px solid black;
     margin: 10px 10px 0px 10px;    
-}
-.article_title {
-   font-size: 3.5em; 
-   font-weight: bold;
-   border:0px solid blue;
-   line-height: 1em;
 }
 .article_lead {
     font-style: italic; 

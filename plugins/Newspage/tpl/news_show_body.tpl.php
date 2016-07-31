@@ -12,7 +12,10 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
             <div class="news_msg"><p><?php print $tpldata['NEWS_MSG']?></p></div>
 <?php } ?>
                 <?php isset($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP']:false ?>
-            <div class="article_body">
+            <section class="article_body">
+                <h1>
+                    <?php isset($tpldata['news_title']) ? print $tpldata['news_title']:false ?>
+                </h1>                
 <?php  if(!empty($tpldata['NEWS_ADMIN_NAV'])) { ?>
                 <div id='adm_nav_container'>
                 <nav id='adm_nav'>
@@ -22,9 +25,6 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 </nav>
                 </div>
 <?php } ?>
-                <div class="article_title">
-                    <?php isset($tpldata['news_title']) ? print $tpldata['news_title']:false ?>
-                </div>
                 <div class="extra-small">
                     <?php !empty($tpldata['author_avatar']) ? print $tpldata['author_avatar'] : false; ?>
                     <?php print($tpldata['news_date'])?> | 
@@ -56,7 +56,7 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 </div>
 <?php } ?>
                 <?php isset($tpldata['ADD_TO_NEWSSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM'] : false ?>
-            </div>
+            </section>
             <div class="article_side">
                 <?php !empty($tpldata['ADD_TO_NEWS_SIDE']) ? print $tpldata['ADD_TO_NEWS_SIDE'] : false ?>
             </div>

@@ -9,9 +9,10 @@ if (!defined('IN_WEB')) { exit; }
     <head>
         <title><?php echo $config['TITLE']?></title>
         <meta charset="<?php echo $config['CHARSET']?>">
-        <meta name="viewport" content="<?php print $config['WEB_VIEWPORT']?>">
-        <meta name="keywords" content="<?php print $config['WEB_KEYWORDS']?>">        
-        <meta name="description" content="<?php echo $config['WEB_DESC'] ?>">
+        <meta name="viewport" content="<?php print $config['PAGE_VIEWPORT']?>">
+        <meta name="keywords" content="<?php print $config['PAGE_KEYWORDS']?>">
+        <meta name="description" content="<?php echo $config['PAGE_DESC'] ?>">
+        <meta name="author" content="<?php print $config['PAGE_AUTHOR']?>">
         <?php
         
         isset($tpldata['HEAD']) ? print $tpldata['HEAD'] : false;
