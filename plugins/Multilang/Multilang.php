@@ -20,8 +20,12 @@ function Multilang_init(){
             $config['WEB_URL'] = $config['WEB_URL'] . "$lang/";
             $config['WEB_LANG'] = $lang;
     } else {
-        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2); 
-        isset($lang) ? $config['WEB_LANG'] = $lang : false;
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ) {
+            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2); 
+            isset($lang) ? $config['WEB_LANG'] = $lang : false;
+        } else {
+            $lang = $config['WEB_LANG'];
+        }
     }   
     if ($request_uri == '/') {
         if ($config['FRIENDLY_URL']) {
