@@ -371,7 +371,7 @@ function news_adv_stats($nid, $lang) {
             "ip" => "$ip", 
             "hostname" => $hostname, 
             "user_agent" => "$user_agent", 
-            "referer" => "referer",
+            "referer" => "$referer",
             "counter" => 1
             );
         $db->insert("adv_stats", $insert_ary );
