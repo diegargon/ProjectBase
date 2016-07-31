@@ -75,7 +75,10 @@ function news_show_page() {
     if (!empty ($news_row['translator'])) {
         $translator = $sm->getUserByUsername($news_row['translator']);
         $tpl_data['news_translator'] = "<a rel='nofollow' href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
-    }
+    }   
+    $author = $sm->getUserByID($news_row['author_id']);
+    $tpl_data['author_avatar'] = "<div class='avatar'><img width='50' src='{$author['avatar']}' /></div>";
+    
     $tpl->addtpl_array($tpl_data);
 
     if ( ($news_source = get_news_source_byID($news_row['nid'])) != false  && $config['NEWS_SOURCE'] ) {

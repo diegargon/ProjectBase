@@ -40,12 +40,13 @@
 .news_extra_link {
     width: 85%;
 }
-.image_link {
-    max-width: 100%;
-}
 .main_img_container {
     width:350px;
     float:right;
     padding-left:5px;  
 }
-
+.main_img_container img:hover{
+    position: absolute;
+    width: 50%;
+    left:25%;    
+}

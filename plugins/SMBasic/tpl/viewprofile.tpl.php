@@ -11,7 +11,7 @@ if (!defined('IN_WEB')) { exit; }
 <?php
 if (!empty($data['avatar'])) {
 ?>
-                <img width="125" height="150" src="<?php print $data['avatar'] ?>" alt="" />
+                <img class="image_link" width="125" height="150" src="<?php print $data['avatar'] ?>" alt="" />
 <?php
 } else {
 ?>

@@ -129,4 +129,11 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     padding: 5px;
+    max-width:100%;
+}
+#avatar img:hover {
+    position: absolute; 
+    width:25%;
+    height:50%;
+    left:35%;
 }
