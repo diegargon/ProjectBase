@@ -29,4 +29,6 @@ $config['DEFAULT_DATEFORMAT'] = "d/m/y H:i";
 $config['BACKLINK'] = "javascript:history.go(-1)";
 $config['REMOTE_CHECKS'] = 1;
 $config['ACCEPTED_MEDIA_REGEX'] = "jpe?g|bmp|png|JPE?G|BMP|PNG";
+$config['ADMIN_MAIL'] = "diego@envigo.net";
+$config['EMAIL_SENDMAIL'] = "no-reply@envigo.net";
 //$config['']

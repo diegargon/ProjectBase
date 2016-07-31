@@ -78,7 +78,7 @@ function SMBasic_Register() {
     $query = $db->insert("users", array("username" => "$username", "password" => "$password", "email" => "$email", "active" => "$active"));
     
     if($query) {       
-       mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg);       
+       mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");       
        $response[] = array("status" => "ok", "msg" => $register_message, "url" => $config['WEB_URL']);       
        echo json_encode($response, JSON_UNESCAPED_SLASHES); 
     } else {

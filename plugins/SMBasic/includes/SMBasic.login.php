@@ -31,11 +31,11 @@ function SMBasic_Login() {
                     $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);                
                 }
             } else {
-                $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
                 if($user['active'] > 0) { //-1 disable by admin not send email
                     $mail_msg = SMBasic_create_reg_mail($user['active']);
-                    mail($user['email'], $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg); 
-                }
+                    mail($user['email'], $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg, "From: {$config['EMAIL_SENDMAIL']} \r\n"); 
+                }                
+                $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
             }
         } else {            
             $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD'] );
@@ -46,7 +46,6 @@ function SMBasic_Login() {
     }
     echo json_encode($response, JSON_UNESCAPED_SLASHES);
 }
-
 
 function SMBasic_user_activate_account() {
     global $db;
@@ -86,7 +85,7 @@ function SMBasic_RequestResetOrActivation() {
         $user = $db->fetch($query);
         if($user['active'] > 1) {
             $mail_msg = SMBasic_create_reg_mail($user['active']);
-            mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg);            
+            mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg, "From: {$config['EMAIL_SENDMAIL']} \r\n"); 
             $response[] = array("status" => "2", "msg" => $LANGDATA['L_ACTIVATION_EMAIL']);
             echo json_encode($response, JSON_UNESCAPED_SLASHES);
             return false;             
@@ -96,7 +95,7 @@ function SMBasic_RequestResetOrActivation() {
             
             $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php" . "?reset=$reset&email=$email";
             $msg = $LANGDATA['L_RESET_EMAIL_MSG'] . "\n" ."$URL"; 
-            mail($email, $LANGDATA['L_RESET_EMAIL_SUBJECT'], $msg);
+            mail($email, $LANGDATA['L_RESET_EMAIL_SUBJECT'], $msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
             $response[] = array("status" => "2", "msg" => $LANGDATA['L_RESET_EMAIL']);
             echo json_encode($response, JSON_UNESCAPED_SLASHES);
             return false;  
@@ -122,7 +121,7 @@ function SMBasic_user_reset_password() {
         $db->update("users", array("password" => "$password_encrypted", "reset" => "0"), array("uid" => "{$user['uid']}") );
         $URL = "{$config['WEB_URL']}". "/{$config['WEB_LANG']}/". "login.php"; 
         $msg = $LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] . "\n" . "$password\n" ."$URL"; 
-        mail($email, $LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'], $msg);
+        mail($email, $LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'], $msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
         echo $LANGDATA['L_RESET_PASSWORD_SUCCESS']; 
         exit(0); // TODO MSG RESET OK
     } else {
