@@ -38,17 +38,14 @@ if (!defined('IN_WEB')) { exit; }
             </p>
         </div>
         <div class="submit_items">
-            <p>
                 <label for="news_lead"><?php print $LANGDATA['L_NEWS_LEAD'] ?> </label>                
                 <textarea required="required"  minlength="<?php print $config['NEWS_LEAD_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_LEAD_MAX_LENGHT']?>" id="news_lead" name="news_lead" ><?php isset($data['lead']) ? print $data['lead'] : false ?></textarea>                
-            </p>            
+        
         </div>
-        <div class="submit_items">
-            <p> 
+        <div class="submit_items">            
                 <label for="news_text"><?php print $LANGDATA['L_NEWS_TEXT'] ?> </label>
 <?php !empty($tpldata['NEWS_TEXT_BAR']) ? print $tpldata['NEWS_TEXT_BAR'] : false; ?>
-                <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text" /><?php isset($data['text']) ? print $data['text'] : false ?></textarea>
-            </p>
+                <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT']?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT']?>" id="news_text" name="news_text" ><?php isset($data['text']) ? print $data['text'] : false ?></textarea>            
             <div id="EditorBtnBottomContainer">
                 <input class="btnPreview" type='button' id="btnShowPreview" value="<?php print $LANGDATA['L_NEWS_PREVIEW'] ?>"/>
                 <input class="btnPreview" type='button' id="btnHiddePreview" value="<?php print $LANGDATA['L_NEWS_HIDDE_PREVIEW'] ?>"/>
