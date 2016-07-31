@@ -76,12 +76,12 @@ figure {
     padding-top: 10px;
     border: 0px solid blue;
 }
-#header  h2{
+#brand a{
     font-family: Rockwell, "Courier Bold", Courier, Georgia, Times, "Times New Roman", serif;
     font-size:32px;
     font-weight:bold;    
 }
-#header  h3{
+#brand span {
     font-family: Copperplate, "Copperplate Gothic Light", fantasy;
     font-size:20px;
     font-weight:normal;    

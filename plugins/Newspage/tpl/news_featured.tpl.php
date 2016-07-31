@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 ?>
 <div class="category">
-    <h2><?php isset($data['category']) ? print $data['category'] :false ?></h2>
+    <?php isset($data['category']) ? print $data['category'] :false ?>
 </div>
 <a href="<?php print $data['url'];?>">
     <section id="featured">

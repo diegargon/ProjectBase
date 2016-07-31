@@ -11,7 +11,7 @@ if (!defined('IN_WEB')) { exit; }
         if (empty($data['headlines'])) {
             echo "<h3>{$data['title']} </h3>";
         } else {
-            echo "<h4>{$data['title']} </h4>";            
+            echo "<h3>{$data['title']} </h3>";            
         }
     ?>
     

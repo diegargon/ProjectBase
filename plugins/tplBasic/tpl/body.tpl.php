@@ -8,10 +8,10 @@ if (!defined('IN_WEB')) { exit; }
         <header id="header" class="clear">
         <?php isset($tpldata['ADD_HEADER_BEGIN']) ? print $tpldata['ADD_HEADER_BEGIN'] : false ?>            
         <div id="brand">
-            <h2><a href="/<?php 
+            <a href="/<?php 
                 $config['FRIENDLY_URL'] ? print $config['WEB_LANG'] : print "?lang={$config['WEB_LANG']}"; 
-                ?>"><?php echo $config['TITLE']?></a></h2>
-            <h3><?php echo $config['WEB_DESC']?></h3>
+                ?>"><?php echo $config['TITLE']?></a><br/>
+                <span><?php echo $config['WEB_DESC']?></span>
         </div>
         <?php 
         if($config['NAV_MENU']) { ?>
