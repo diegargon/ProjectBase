@@ -36,4 +36,4 @@ $config['NEWS_STATS'] = 1;
 $config['NEWS_ADVANCED_STATS'] = 1;
 $config['NEWS_TAGS'] = 1;
 $config['NEWS_TAGS_SIZE_LIMIT'] = 256;
-$config['NEWS_SOCIAL_META'] = 1;
+$config['NEWS_META_OPENGRAPH'] = 1;

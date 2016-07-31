@@ -62,7 +62,7 @@ function news_show_page() {
     
     do_action("news_show_page", $news_row);
 
-    if ($config['NEWS_SOCIAL_META']) {
+    if ($config['NEWS_META_OPENGRAPH']) {
         news_add_social_meta($news_row);
     }
     $tpl->addto_tplvar("NEWS_ADMIN_NAV", news_nav_options($news_row));
