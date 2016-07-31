@@ -76,8 +76,8 @@ function NewsExtraMediaUpdate($news_data) {
     if(!empty($news_data['news_extra_media'])) {
         $media_links = $news_data['news_extra_media'];
         foreach($media_links as $key => $link) {
-            $rids[] = $key;
-            $db->update("links", array("link" => $link), array("rid" => $key));
+            $link_ids[] = $key;
+            $db->update("links", array("link" => $link), array("link_id" => $key));
         }
         //DELETE links not posted
         $select_ary = array(
@@ -89,11 +89,11 @@ function NewsExtraMediaUpdate($news_data) {
         $query = $db->select_all("links", $select_ary);
 
         while ($link_row = $db->fetch($query)) {
-            $found_rid = 0;
-            foreach($rids as $rid) {
-                ($link_row['rid'] == $rid) ? $found_rid = 1: false;
+            $found_link_id = 0;
+            foreach($link_ids as $link_id) {
+                ($link_row['link_id'] == $link_id) ? $found_link_id = 1: false;
             }
-            ($found_rid == 0) ? $db->delete("links", array("rid" => $link_row['rid'])) : false;
+            ($found_link_id == 0) ? $db->delete("links", array("link_id" => $link_row['link_id'])) : false;
         }
     } else {
         $db->delete("links", array("source_id" => $news_data['nid'], "type" => "image", "itsmain" => array("operator" => "!=", "value" => 1)));
@@ -132,7 +132,7 @@ function NewsEditExtraFormMediaTpl($news_data) {
         $counter = 1;
         foreach($links as $link) {
             $news_data['extra_media'] .= "<div class='wrapper' id='submited_field". $counter++ . "'>";
-            $news_data['extra_media'] .= "<input type=\"text\" class=\"news_extra_link\" value=\"{$link['link']}\" name=\"news_extra_media[{$link['rid']}]\"/>";
+            $news_data['extra_media'] .= "<input type=\"text\" class=\"news_extra_link\" value=\"{$link['link']}\" name=\"news_extra_media[{$link['link_id']}]\"/>";
             $news_data['extra_media'] .=  "<input type=\"button\" onclick='removeParent(this)' value=\"-\" />";
             $news_data['extra_media'] .= "</div>";
         }
