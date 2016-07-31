@@ -377,7 +377,7 @@ function news_adv_stats($nid, $lang) {
         $db->insert("adv_stats", $insert_ary );
     }
     
-    if( (!empty($referer)) && ( (strpos($referer, $_SERVER['SERVER_NAME']) )  === false) ) {
+    if( (!empty($referer)) && ( (strpos($referer, "://". $_SERVER['SERVER_NAME']) )  === false) ) {
         $query = $db->select_all("adv_stats", array("type" => "referers_only", "referer" => "$referer"), "LIMIT 1");
         if ($db->num_rows($query) > 0) {
             $allreferers = $db->fetch($query);
