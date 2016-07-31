@@ -341,6 +341,7 @@ function news_adv_stats($nid, $lang) {
     $ip = S_SERVER_REMOTE_ADDR();        
     $hostname = gethostbyaddr($ip);
     $where_ary = array( 
+        "type" => "user_visits_page",
         "plugin" => "$plugin", 
         "lang" => "$lang", 
         "rid" => "$nid", 
@@ -350,13 +351,49 @@ function news_adv_stats($nid, $lang) {
     
     $query = $db->select_all("adv_stats", $where_ary, "LIMIT 1");
     
+    $user_agent = S_SERVER_USER_AGENT();
+    $referer = S_SERVER_URL("HTTP_REFERER");
+    
+
+
     if ($db->num_rows($query) > 0) {
         $user_adv_stats = $db->fetch($query);
         $counter = ++$user_adv_stats['counter'];
-        $db->update("adv_stats", array("counter" => "$counter"), array("plugin" => "$plugin", "lang" => "$lang", "rid" => "$nid", "uid" => $user['uid'], "ip" => "$ip"));
+        //$db->update("adv_stats", array("counter" => "$counter", "user_agent" => "$user_agent", "referer" => "$referer"), array("plugin" => "$plugin", "lang" => "$lang", "rid" => "$nid", "uid" => $user['uid'], "ip" => "$ip"));
+        $db->update("adv_stats", array("counter" => "$counter", "user_agent" => "$user_agent", "referer" => "$referer"), array("advstatid" => $user_adv_stats['advstatid']));
     } else{
-        $db->insert("adv_stats", array("plugin" => "$plugin", "rid" => "$nid", "lang" => "$lang", "uid" => $user['uid'], "ip" => "$ip", "hostname" => $hostname, "counter" => 1));
-    }       
+        $insert_ary = array(
+            "plugin" => "$plugin", 
+            "type" => "user_visits_page",
+            "rid" => "$nid", 
+            "lang" => "$lang", 
+            "uid" => $user['uid'], 
+            "ip" => "$ip", 
+            "hostname" => $hostname, 
+            "user_agent" => "$user_agent", 
+            "referer" => "referer",
+            "counter" => 1
+            );
+        $db->insert("adv_stats", $insert_ary );
+    }
+    
+    if( (!empty($referer)) && ( (strpos($referer, $_SERVER['SERVER_NAME']) )  === false) ) {
+        $query = $db->select_all("adv_stats", array("type" => "referers_only", "referer" => "$referer"), "LIMIT 1");
+        if ($db->num_rows($query) > 0) {
+            $allreferers = $db->fetch($query);
+            $counter = ++$allreferers['counter'];
+            $db->update("adv_stats", array("counter" => "$counter") , array("advstatid" => $allreferers['advstatid']) );
+        } else {
+            $insert_ary = array(
+                "plugin" => "$plugin",
+                "type" => "referers_only",
+                "referer" => $referer,
+                "counter" => 1,
+            );
+            $db->insert("adv_stats", $insert_ary );
+        }
+    }    
+    
 }
 function news_add_social_meta($news) {
     global $tpl, $config;
