@@ -5,6 +5,11 @@ $(document).ready(function(){
     $("#newsFormSubmit").click(function(){       
         $('#newsFormSubmit').attr('disabled','disabled');
         
+        var news_author = $("#news_author").val();
+        var news_title = $("#news_title").val();
+        var news_lead = $("#news_lead").val();
+        var news_text = $("#news_text").val();
+
         $('#news_author').css("border","1px solid black");
         $('#news_author').css("box-shadow","0 0 3px black");
         $('#news_title').css("border","1px solid black");          
@@ -20,7 +25,33 @@ $(document).ready(function(){
         }
 
         $('#tos').css("box-shadow","0 0 0px black");
-        if (tos !== 1) {
+        $('#tos').css("border","1px solid black");
+        $('#news_author').css("box-shadow","0 0 0px black");
+        $('#news_author').css("border","1px solid black");
+        $('#news_title').css("box-shadow","0 0 0px black");
+        $('#news_title').css("border","1px solid black");
+        $('#news_lead').css("box-shadow","0 0 0px black");
+        $('#news_lead').css("border","1px solid black");
+        $('#news_text').css("box-shadow","0 0 0px black");
+        $('#news_text').css("border","1px solid black");
+
+        if (news_author == '') {
+            $('#news_author').css("border","5px solid red");
+            $('#news_author').css("box-shadow","0 0 5px red");
+            alert("Author can't be empty");
+        } else if (news_title == '') {
+            $('#news_title').css("border","5px solid red");
+            $('#news_title').css("box-shadow","0 0 5px red");
+            alert("Title can't be empty");
+        } else if (news_lead == '') {
+            $('#news_lead').css("border","5px solid red");
+            $('#news_lead').css("box-shadow","0 0 5px red");
+            alert("Lead can't be empty");
+        } else if (news_text == '') {
+            $('#news_text').css("border","5px solid red");
+            $('#news_text').css("box-shadow","0 0 5px red");
+            alert("Text can't be empty");
+        } else if (tos !== 1) {
             $('#tos').css("border","10px solid red");
             $('#tos').css("box-shadow","0 0 10px red");
             alert("You must accept the terms of service");                

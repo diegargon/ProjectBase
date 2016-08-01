@@ -1,6 +1,6 @@
 {
     "plugin_name": "DebugWindow",
-    "enabled": "1",
+    "enabled": "0",
     "main_file" : "DebugWindow.php",
     "function_init": "DebugWindow_init",
     "function_install": "",
