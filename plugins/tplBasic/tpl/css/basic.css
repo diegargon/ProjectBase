@@ -5,10 +5,10 @@ html, body {
     position:relative;
     margin:0;
     padding:0;
-    font-size:13px;
+    font-size:1.0em;
     height:100%;
     /* font-family:Georgia,"Times New Roman",Times,serif;color:#919191;background-color:#232323; */
-    font: 13px/16.999999992px "Guardian Sans", Tahoma, Trebuchet MS, TrebuchetMS, sans-serif;
+    font: 13px/16px "Guardian Sans", Tahoma, Trebuchet MS, TrebuchetMS, sans-serif;
     background-color: gray;
 }
 .container {
@@ -76,23 +76,25 @@ figure {
     padding-top: 10px;
     border: 0px solid blue;
 }
+#brand {
+    padding-left: 30px;
+    border: 0px solid red;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    line-height: 1.3em;
+}
 #brand a{
     font-family: Rockwell, "Courier Bold", Courier, Georgia, Times, "Times New Roman", serif;
-    font-size:32px;
-    font-weight:bold;    
+    font-size:3.0em;
+    font-weight:bold;
 }
 #brand span {
     font-family: Copperplate, "Copperplate Gothic Light", fantasy;
-    font-size:20px;
+    font-size: 1.5em;
     font-weight:normal;    
 }
 #header a {
     text-decoration: none;
-}
-#brand {
-    padding-left: 30px;
-    border: 0px solid red;
-    margin-bottom: 20px;
 }
 .row1, .row3 {
     margin: 0 auto;    
@@ -150,12 +152,13 @@ h1,h2,h3,h4,h5,h6{
   display: inline-block;
   text-align: center;
   text-decoration: none;
-  padding: 8px 4px;
+  padding: 4px;
   transition: 0.3s;
-  font-size: 1.5em;
+  font-size: 1.2em;
   border: 0px solid red;
   color: inherit;
-  background-color:#232323;  
+  background-color:#232323;
+  height: 20px;
 }
 #header nav li a:hover {background-color: black;}
 .nav_left {
@@ -170,18 +173,17 @@ h1,h2,h3,h4,h5,h6{
 #header nav select {
     -moz-appearance: none; 
     padding:0px;
-    font-size: 16px;
+    font-size: 1.2em;
     margin: 0;
     border-radius:3px;    
     background: transparent;
     color: inherit;
-    border: 1px solid #888;
+    border: 0px solid #888;
     cursor:pointer;
-    margin-top: 5px;
+    margin-top: 2px;
     overflow: hidden;
 }
 #header nav img {
-    padding:0;
     padding-left: 10px;
     padding-right: 10px;
     width:20px;
@@ -229,8 +231,8 @@ h1,h2,h3,h4,h5,h6{
 .resp-icon {
     display: none !important;
     text-align: center;
-    font-size: 1.5em;
-    padding: 2px 4px;
+    font-size: 1.2em;
+    padding-right: 4px;
     transition: 0.3s;
 }
 
