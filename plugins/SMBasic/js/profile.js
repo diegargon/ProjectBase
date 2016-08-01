@@ -63,8 +63,7 @@ $(document).ready(function(){
                 } else {
                     alert(json[0].msg);
                 }
-                $('#profile').removeAttr("disabled");
                 });
+            $('#profile').removeAttr("disabled");
             return false;
-    });    
-});
+    });

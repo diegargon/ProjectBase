@@ -11,7 +11,8 @@ define("DEBUG", true);
 
 $config['CHARSET'] = "UTF-8";
 $config['PAGE_DESC'] = "Noticias";
-$config['TITLE'] = "Project Base";
+$config['WEB_NAME'] = "Project Base";
+$config['TITLE'] = $config['WEB_NAME'];
 $config['PAGE_TITLE'] = $config['TITLE'];
 $config['THEME'] = "default";
 $config['WEB_URL'] = "http://projectbase.envigo.net/";

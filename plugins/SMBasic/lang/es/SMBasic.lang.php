@@ -93,3 +93,4 @@ $LANGDATA['L_SM_USERS_DISABLE'] = "Usuarios deshabilitados";
 $LANGDATA['L_SM_E_ACTIVATION'] = "Error en la activación";
 $LANGDATA['L_SM_E_RESET'] = "Error al reinicia la contraseña";
 $LANGDATA['L_SM_E_AVATAR'] = "Avatar erroneo";
+$LANGDATA['L_TOS'] = "Terminos de servicio";

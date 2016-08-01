@@ -3,14 +3,13 @@
  */
 
 $(document).ready(function(){
-    
     $('#reset_password_chk').click(function(){
         if(this.checked) {
             $('#login_form').trigger("reset");
-            $('#reset_password_chk').prop('checked', true); 
+            $('#reset_password_chk').prop('checked', true);
         } else {
             $('#login_form').trigger("reset");
-            $('#reset_password_chk').prop('checked', false);             
+            $('#reset_password_chk').prop('checked', false);
         }
         $('#password').toggle();
         $('#label_password').toggle();
@@ -18,9 +17,9 @@ $(document).ready(function(){
         $('#label_rememberme').toggle();
         $('#login').toggle();
         $('#reset_password_btn').toggle();
-    });    
+    });
 
-    $("#reset_password_btn").click(function(){           
+    $("#reset_password_btn").click(function(){
            $.post("", $( "#login_form" ).serialize() ,
             function(data) {
                //alert(data); //DEBUG
@@ -36,15 +35,14 @@ $(document).ready(function(){
                     $('#rememberme').toggle();
                     $('#label_rememberme').toggle();
                     $('#login').toggle();
-                    $('#reset_password_btn').toggle();                
-                    alert(json[0].msg)
+                    $('#reset_password_btn').toggle();
+                    alert(json[0].msg);
                     return true;
                 }
-                
             });                
         return false;
     });
-    
+
     $("#login").click(function(){
         $('#login').attr('disabled','disabled');
         //Email Validation        
@@ -57,47 +55,45 @@ $(document).ready(function(){
             $('#email').css("box-shadow","0 0 0px black");
             $('#password').css("border","1px solid black");
             $('#password').css("box-shadow","0 0 0px black");
-        // Checking for blank fields. 
-        if( email == '' ) {              
+        // Checking for blank fields.
+        if( email == '' ) {
             $('#email').css("border","2px solid red");
             $('#email').css("box-shadow","0 0 3px red");
             alert("Email is required");
         } else if(reg.test(email) == false ) {
             $('#email').css("border","2px solid red");
-            $('#email').css("box-shadow","0 0 3px red");     
-            alert("Email incorrect");        
+            $('#email').css("box-shadow","0 0 3px red");
+            alert("Email incorrect");
         } else if( password == '' ) {
             $('#password').css("border","2px solid red");
-            $('#password').css("box-shadow","0 0 3px red");                       
+            $('#password').css("box-shadow","0 0 3px red");
             alert("Password incorrect");
         } else if( password.length < 8 ){
             $('#password').css("border","2px solid red");
             $('#password').css("box-shadow","0 0 3px red");
-            alert("Password too small");                                
+            alert("Password too small");
         } else {
-            
             $.post("", $( "#login_form" ).serialize() + '&login=1',
             function(data) {
                 //alert(data); //DEBUG
                 var json = $.parseJSON(data);
                 if(json[0].status == 'ok') {
-                    $("form")[0].reset();                
+                    $("form")[0].reset();
                     $(location).attr('href', json[0].msg);
                 } else if (json[0].status == 1) {
                     $('#email').css("border","2px solid red");
-                    $('#email').css("box-shadow","0 0 3px red");                      
-                    alert(json[0].msg);                    
+                    $('#email').css("box-shadow","0 0 3px red");
+                    alert(json[0].msg);
                 } else if (json[0].status == 2) {
                     $('#password').css("border","2px solid red");
-                    $('#password').css("box-shadow","0 0 3px red");                       
-                    alert(json[0].msg);                                        
-                } else {                    
+                    $('#password').css("box-shadow","0 0 3px red");
+                    alert(json[0].msg);
+                } else {
                     alert(json[0].msg);
                 }
-                $('#login').removeAttr("disabled"); 
-            });            
+            });
         }
+        $('#login').removeAttr("disabled");
         return false;
     });
-
 });
