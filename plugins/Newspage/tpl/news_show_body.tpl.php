@@ -25,19 +25,23 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 </nav>
                 </div>
 <?php } ?>
+            <div id="news_info">
+<?php !empty($tpldata['author_avatar']) ? print $tpldata['author_avatar'] : false; ?>
+<?php isset($tpldata['ADD_NEWS_INFO_POST_AVATAR']) ? print $tpldata['ADD_NEWS_INFO_POST_AVATAR']:false ?>
                 <div class="extra-small">
-                    <?php !empty($tpldata['author_avatar']) ? print $tpldata['author_avatar'] : false; ?>
-                    <?php print($tpldata['news_date'])?> | 
+                    <?php print($tpldata['news_date'])?> |
                     <a href='/profile.php?lang=<?php print $config['WEB_LANG']?>&viewprofile=<?php print $tpldata['news_author_uid'] ?>'>
                     <?php print $tpldata['news_author'] ?>
-                    </a> 
-                    <?php 
-                        isset($tpldata['news_translator']) ? print " | ". $LANGDATA['L_NEWS_TRANSLATE_BY'] . $tpldata['news_translator'] : false ; 
+                    </a>
+                    <?php
+                        isset($tpldata['news_translator']) ? print " | ". $LANGDATA['L_NEWS_TRANSLATE_BY'] . $tpldata['news_translator'] : false ;
                     ?>
 <?php if(isset($tpldata['NEWS_SOURCE'])) { ?>
                     | <span><?php print $LANGDATA['L_NEWS_SOURCE'] .": ";  print $tpldata['NEWS_SOURCE'] ?> </span>
 <?php } ?>
-                </div>
+                </div>                
+<?php isset($tpldata['ADD_NEWS_INFO_BOTTOM']) ? print $tpldata['ADD_NEWS_INFO_BOTTOM']:false ?>
+            </div>
                 <p class="article_lead">
                     <?php isset($tpldata['news_lead']) ? print $tpldata['news_lead']:false ?>
                 </p>
