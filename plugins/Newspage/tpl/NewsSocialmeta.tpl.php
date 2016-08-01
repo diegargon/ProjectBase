@@ -5,6 +5,7 @@
  */
 
 ?>
+<meta name="news_keywords" content="<?php print $data['tags'] ?> " />
 <meta property="og:title" content="<?php print $data['title'] ?>"/>
 <meta property="og:url" content="<?php print $data['url'] ?>"/>
 <meta property="og:site_name" content="<?php print $data['web_title'] ?>"/>
