@@ -15,12 +15,14 @@ function NewsAds_ShowAds () {
     
     if ($config['newsads_main_ad']) {
         $ad_code = NewsAds_GetMainAd();
-        $tpl->addto_tplvar("ADD_TO_NEWSSHOW_TOP", $ad_code );
-        $tpl->addto_tplvar("ADD_TOP_NEWS", $ad_code );
+        $main_banner = "<div class='main_banner'>" . $ad_code ."</div>";
+        $tpl->addto_tplvar("ADD_TO_NEWSSHOW_TOP", $main_banner);
+        $tpl->addto_tplvar("ADD_TOP_NEWS", $main_banner );
     }
     
     if ( S_GET_INT("nid") && ($config['newsads_sponsors'] || $config['newsads_global_sponsors']) ) {
         $sponsors = NewsAdds_Sponsors();
+        $sponsors = "<div class='sponsors'>" . $sponsors ."</div>";
         !empty($sponsors) ? $tpl->addto_tplvar("ADD_TO_NEWS_SIDE", $sponsors) : false;                    
     }
 }
@@ -59,9 +61,9 @@ function NewsAdds_Sponsors() {
         $where_ary = array(
             "itsmain" => 0,
             "resource_id" => 0
-            );
+            );        
         $query = $db->select_all("news_ads", $where_ary);
-        if( ($db->num_rows($query)) > 0 ) {
+        if( ($db->num_rows($query)) > 0 ) {        
             while ($sponsor_row = $db->fetch($query)) {
                 $sponsors .= $sponsor_row['ad_code'];
             }
@@ -69,6 +71,6 @@ function NewsAdds_Sponsors() {
         unset($where_ary);
         $db->free($query);    
     }    
-
+    
     return $sponsors;
 }
