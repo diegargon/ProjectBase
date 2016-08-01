@@ -101,10 +101,11 @@
     border-top: 1px dotted gray;
 }
 .article_body h1 {
-   font-size: 3.5em;
+   font-size: 2.0em;
    font-weight: bold;
    border:0px solid blue;
    line-height: 1em;
+   margin-bottom: 10px;
 }
 .article_side {
     float:left;
@@ -122,17 +123,17 @@
     min-height: 330px;
 }
 .news_msg {
-    font-size:16px;
+    font-size:12em;
     font-weight: bold;
     color: red;
     text-align: center;
 }
 .p-extra-small {
-    font-size: 10px;
+    font-size: 0.9em;
     margin:0 auto;
 }
 .extra-small {
-    font-size: 12px;
+    font-size: 1.0em;
     margin-top: 10px;
     /* overflow: hidden; */
 }
@@ -161,7 +162,7 @@
     padding-bottom: 15px;
 }
 .submit_box label, .submit_others_label {
-    font-size: 16px;
+    font-size: 1.2em;
     background-color: #077A75;
     width:99%;
     display: block;
@@ -210,7 +211,7 @@
     text-align: center;    
 }
 .text_small {
-    font-size: 9px;      
+    font-size: 0.6em;      
 }
 /* ADMIN NAV */
 #adm_nav_container {
