@@ -5,13 +5,14 @@
 if (!defined('IN_WEB')) { exit; }
 ?>
 <a href="<?php echo $data['url']?>">
-<article class="newsbox">
-    <p class="p-extra-small"><?php print $data['date']?></p>
+<article class="newsbox">    
     <?php 
         if (empty($data['headlines'])) {
-            echo "<h3>{$data['title']} </h3>";
-        } else {
+            echo "<p class='p-small'>{$data['date']}</p>";
             echo "<h3>{$data['title']} </h3>";            
+        } else {
+            echo "<p class='p-extra-small'>{$data['date']}</p>";
+            echo "<h4>{$data['title']} </h4>";
         }
     ?>
     

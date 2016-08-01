@@ -12,7 +12,7 @@
     background-color: #FFFFFF;
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;
-    line-height: 1.2em;
+    /* line-height: 1.2em; */
     padding: 5px;
     box-shadow: 0 0 10px #ccc;
     width:96%;
@@ -23,16 +23,37 @@
 .newsbox:hover h3, .newsbox:hover h4{
     color: blue;
 }
+.newsbox h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;    
+}
 .newsbox h3 {
+    font-size: 1.4em;
     margin-bottom: 10px;
 }
 .newsbox h4 {
-    font-size: 0.8em;
+    font-size: 0.7em;
 }
 
 .newsbox p{
+    font-size: 1.2em;
     margin-top:0px;
 }
+
+.p-small {
+    font-size: 1.0em !important;
+    margin:0 auto;   
+}
+.p-extra-small {
+    font-size: 0.6em !important;
+    margin:0 auto;
+}
+.extra-small {
+    font-size: 0.6em !important;
+    margin-top: 10px;
+    /* overflow: hidden; */
+}
+
 /* FEATURED */
 #featured {
    display:table;
@@ -42,6 +63,7 @@
    margin-left: 10px;   
 }
 #featured h1 {
+    font-size: 1.4em;
     color: #989898;
 }
 #featured h2, #featured h3 {
@@ -54,7 +76,6 @@
     border: 0px solid red;    
     color: #989898;
     background-color: #DEDEDE;
-    line-height: 1.6em;
     box-shadow: 0 0 10px #ccc;  
     height:100%;
     vertical-align:top;
@@ -69,7 +90,7 @@
 }
 .category {
     font-weight: bold;
-    font-size: 1.0em;
+    font-size: 0.8em;
     border: 0px solid yellow;
     margin: 0px 10px 5px 10px;
     box-shadow: 0 0 10px #ccc;
@@ -128,16 +149,9 @@
     color: red;
     text-align: center;
 }
-.p-extra-small {
-    font-size: 0.9em;
-    margin:0 auto;
-}
-.extra-small {
-    font-size: 1.0em;
-    margin-top: 10px;
-    /* overflow: hidden; */
-}
-#col1 section h2, #col2  section h2, #col3 section h2 { 
+
+/* #col1 section h2, #col2  section h2, #col3 section h2 { */
+#col1 h2, #col2 h2, #col3 h2 { 
     float:left;
     width: 98%;
     color:#919191;
@@ -147,7 +161,6 @@
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;    
     padding-left: 4px;
-    font-size: 1.1em;
 }
 #news_menu {
     border: 1px solid black;

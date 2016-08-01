@@ -121,6 +121,6 @@ function news_media_form_preview(& $news) {
 function news_media_add_editor_item () {
     global $tpl, $LANGDATA;
 
-    $items = '<button class="btnEditor" type="button" value="[div_class=main_img_container][img:mainimage]$1[/div_class]">'. $LANGDATA['L_NEWS_EDITOR_MAINMEDIA'] .'</button>';
+    $items = '<button class="btnEditor" type="button" value="[div_class=main_img_container][p][img:mainimage]$1[/p][/div_class]">'. $LANGDATA['L_NEWS_EDITOR_MAINMEDIA'] .'</button>';
     $tpl->addto_tplvar("NEWS_EDITOR_BAR_POST", $items);
 }
