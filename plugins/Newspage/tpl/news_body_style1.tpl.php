@@ -5,9 +5,8 @@
 if (!defined('IN_WEB')) { exit; }
 ?>
         <div  class="clear bodysize page">   
-            <?php isset($tpldata['ADD_TOP_NEWS']) ? print $tpldata['ADD_TOP_NEWS']:false ?>
-            
-             <?php isset($tpldata['FEATURED']) ? print $tpldata['FEATURED'] : false ?> 
+            <?php isset($tpldata['ADD_TOP_NEWS']) ? print $tpldata['ADD_TOP_NEWS']:false ?>            
+            <?php isset($tpldata['FEATURED']) ? print $tpldata['FEATURED'] : false ?> 
             <section id="col1">
                <?php   isset($tpldata['COL1_ARTICLES']) ? print $tpldata['COL1_ARTICLES'] : false ?>
             </section>

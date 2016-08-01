@@ -15,7 +15,7 @@ function NewsAds_ShowAds () {
     
     if ($config['newsads_main_ad']) {
         $ad_code = NewsAds_GetMainAd();
-        $main_banner = "<div class='main_banner'>" . $ad_code ."</div>";
+        $main_banner = "<div id='main_banner'>" . $ad_code ."</div>";
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_TOP", $main_banner);
         $tpl->addto_tplvar("ADD_TOP_NEWS", $main_banner );
     }

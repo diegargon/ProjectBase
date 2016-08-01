@@ -88,8 +88,7 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
         } else {
             $catname = get_category_name($category);    
         }
-        //$content .= "<section><h2>$catname</h2>";
-       $content .= "<h2>$catname</h2>";
+        $content .= "<h2>$catname</h2>";
     }     
 
     while($row = $db->fetch($query)) {
@@ -98,8 +97,7 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
             do_action("news_get_news_mod", $content_data);
             $content .= $tpl->getTPL_file("Newspage", "news_preview", $content_data);        
         }
-    }
-    //$content .= "</section>";
+    }    
     $db->free($query);    
     
     return $content;

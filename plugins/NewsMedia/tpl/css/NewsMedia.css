@@ -23,7 +23,7 @@
     display: table-cell;
     border:0px solid blue;
     float:left;
-    margin-right: 10px;
+    margin: 10px;
 }
 #featured:hover img{
     opacity: 0.8; 
@@ -53,4 +53,7 @@
     left:25%;
     transition: all 0.5s linear;
     transition-delay:1s;
+}
+#main_banner img {
+    max-width: 100%;
 }

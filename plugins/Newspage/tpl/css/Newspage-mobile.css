@@ -73,4 +73,7 @@
         padding-left: 10px;
         list-style: none;
     }
+    .article_body h1 {
+        font-size: 1.5em;
+    }
 }

@@ -4,9 +4,10 @@
 */
 if (!defined('IN_WEB')) { exit; }
 ?>
-<div class="category">
+<div id="featured_wrap">
+    <span class="featured_category"><?php print $LANGDATA['L_NEWS_FEATURED'] ?>:
     <?php isset($data['category']) ? print $data['category'] :false ?>
-</div>
+    </span>
 <a href="<?php print $data['url'];?>">
     <section id="featured">
     <div class="feature_article">
@@ -21,3 +22,4 @@ if (!defined('IN_WEB')) { exit; }
     </div>
 </section>
 </a>
+</div>
