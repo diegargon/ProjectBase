@@ -101,12 +101,18 @@ if(!empty($data['select_acl'])) {
 }
 ?>
             </p>
+            <?php !empty($tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'])? print $tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'] :false; ?>
+            <p>
+                <a href="/terms.php" target="_blank"><?php print $LANGDATA['L_TOS'] ?></a><input id="tos" name="tos" required="required" type="checkbox"/>
+            </p>            
         </div>
-<?php !empty($tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'])? print $tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'] :false; ?>
+            
         <div class="submit_buttom">
             <p>
                 <input type="submit" id="newsFormSubmit" name="newsFormSubmit" class="btnSubmitForm" value="<?php print $LANGDATA['L_SEND_NEWS']?>" />
             </p>             
+
+            
         </div>
         </div>
         </section>

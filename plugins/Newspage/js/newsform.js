@@ -3,7 +3,7 @@
  */
 $(document).ready(function(){
     $("#newsFormSubmit").click(function(){       
-       // $('#newsFormSubmit').attr('disabled','disabled');
+        $('#newsFormSubmit').attr('disabled','disabled');
         
         $('#news_author').css("border","1px solid black");
         $('#news_author').css("box-shadow","0 0 3px black");
@@ -13,39 +13,50 @@ $(document).ready(function(){
         $('#news_lead').css("box-shadow","0 0 3px black");
         $('#news_text').css("border","1px solid black");
         $('#news_text').css("box-shadow","0 0 3px black");                      
-           
-        $.post("", $( "#form_news" ).serialize() + '&newsFormSubmit_ST2=1' ,
-        function(data) {                
-            alert(data); //DEBUG             
-            var json = $.parseJSON(data);
-            if(json[0].status === 'ok') {
-                alert(json[0].msg);
-                $("form")[0].reset();                
-                $(location).attr('href', json[0].url);
-            } else if (json[0].status == 1) { //Internal
+        if($("#tos").is(':checked')) {
+            var tos = 1;
+        } else {
+            var tos = 0;
+        }
+
+        $('#tos').css("box-shadow","0 0 0px black");
+        if (tos !== 1) {
+            $('#tos').css("border","10px solid red");
+            $('#tos').css("box-shadow","0 0 10px red");
+            alert("You must accept the terms of service");                
+        } else {
+            $.post("", $( "#form_news" ).serialize() + '&newsFormSubmit_ST2=1' ,
+            function(data) {                
+                alert(data); //DEBUG             
+                var json = $.parseJSON(data);
+                if(json[0].status === 'ok') {
                     alert(json[0].msg);
-            } else if (json[0].status == 2) {
-                $('#news_author').css("border","2px solid red");
-                $('#news_author').css("box-shadow","0 0 3px red");                    
-                alert(json[0].msg);
-            } else if (json[0].status == 3) {
-                $('#news_title').css("border","2px solid red");
-                $('#news_title').css("box-shadow","0 0 3px red");                    
-                alert(json[0].msg);
-            } else if (json[0].status == 4) {
-                $('#news_lead').css("border","2px solid red");
-                $('#news_lead').css("box-shadow","0 0 3px red");                    
-                alert(json[0].msg);
-            } else if (json[0].status == 5) {
-                $('#news_text').css("border","2px solid red");
-                $('#news_text').css("box-shadow","0 0 3px red");                    
-                alert(json[0].msg);                                     
-            } else {
-                 alert(json[0].msg);
-            }  
-            $('#newsFormSubmit').removeAttr("disabled");            
+                    $("form")[0].reset();                
+                    $(location).attr('href', json[0].url);
+                } else if (json[0].status == 1) { //Internal
+                        alert(json[0].msg);
+                } else if (json[0].status == 2) {
+                    $('#news_author').css("border","2px solid red");
+                    $('#news_author').css("box-shadow","0 0 3px red");                    
+                    alert(json[0].msg);
+                } else if (json[0].status == 3) {
+                    $('#news_title').css("border","2px solid red");
+                    $('#news_title').css("box-shadow","0 0 3px red");                    
+                    alert(json[0].msg);
+                } else if (json[0].status == 4) {
+                    $('#news_lead').css("border","2px solid red");
+                    $('#news_lead').css("box-shadow","0 0 3px red");                    
+                    alert(json[0].msg);
+                } else if (json[0].status == 5) {
+                    $('#news_text').css("border","2px solid red");
+                    $('#news_text').css("box-shadow","0 0 3px red");                    
+                    alert(json[0].msg);                                     
+                } else {
+                     alert(json[0].msg);
+                }  
             });
-        return false;
-    });
-    
+        }
+        $('#newsFormSubmit').removeAttr("disabled");            
+        return false;        
+    });    
 });

@@ -9,17 +9,17 @@
     border: 1px solid #0A4B48;
     text-align: center;
     font-weight: bold;
-    font-size: 1em;    
+    font-size: 0.8em;    
     padding: 5px;
     background-color: #077A75;
 }
 .c_author { 
-    font-size: 1.2em; 
+    font-size: 0.8em; 
     font-weight: bold;
 }
-.c_date {
+.c_date {    
     margin-left: 5px;
-    font-size: 0.8em;
+    font-size: 0.7em;
 }
 #comment { 
     margin-top: 5px;
@@ -34,7 +34,7 @@
 .btnShow {
     display: block;
     border: 1px solid #0A4B48;
-    font-size: 1em;    
+    font-size: 0.8em;    
     background: #077A75;
     padding: 5px;
     text-align: center;

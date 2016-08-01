@@ -31,11 +31,7 @@ $(document).ready(function(){
         if( username == '' && username != null) {
             $('#username').css("border","2px solid red");
             $('#username').css("box-shadow","0 0 3px red");
-            alert("Username required");
-        } else if (tos !== 1) {
-            $('#tos').css("border","2px solid red");
-            $('#tos').css("box-shadow","0 0 3px red");
-            alert("You must accept the terms of service for register");            
+            alert("Username required");        
         } else if( email == '' ) {
             $('#email').css("border","2px solid red");
             $('#email').css("box-shadow","0 0 3px red");
@@ -58,6 +54,10 @@ $(document).ready(function(){
             $('#rpassword').css("border","2px solid red");
             $('#rpassword').css("box-shadow","0 0 3px red");
             alert("Password not match");
+        } else if (tos !== 1) {
+            $('#tos').css("border","2px solid red");
+            $('#tos').css("box-shadow","0 0 3px red");
+            alert("You must accept the terms of service for register");                
         } else {
             $.post("", $( "#register_form" ).serialize() ,
             function(data) {
