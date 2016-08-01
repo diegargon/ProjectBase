@@ -1,0 +1,13 @@
+{
+    "plugin_name": "Template",
+    "enabled": "0",
+    "main_file" : "Template.php",
+    "function_init": "Template_init",
+    "function_install": "",
+    "provided": "",
+    "depends" : "tplbasic1",
+    "autostart": "0",
+    "priority" : "5",
+    "optional": "multilang1",
+    "conflicts": ""
+}
