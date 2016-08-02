@@ -1,0 +1,13 @@
+{
+    "plugin_name": "NewsVote",
+    "enabled": "1",
+    "main_file" : "NewsVote.php",
+    "function_init": "NewsVote_init",
+    "function_install": "",
+    "provided": "",
+    "depends" : "tplbasic1 news1",
+    "autostart": "0",
+    "priority" : "5",
+    "optional": "multilang1",
+    "conflicts": ""
+}
