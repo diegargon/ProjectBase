@@ -7,7 +7,7 @@ if (!defined('IN_WEB')) { exit; }
 
 $LANGDATA['L_NEWS_WARN_NOLANG'] = "Warning: No version of this page in your language";
 $LANGDATA['L_NEWS_NOT_EXIST'] = "News not exists";
-$LANGDATA['L_SEND_NEWS'] = "Send news";
+$LANGDATA['L_SEND_NEWS'] = "Send";
 $LANGDATA['L_NEWS_TITLE'] = "Title <span class='text_small'> (Max/Min ". $config['NEWS_TITLE_MAX_LENGHT'] ."/". $config['NEWS_TITLE_MIN_LENGHT'] ." characters)</span>";
 $LANGDATA['L_NEWS_LEAD'] = "Lead <span class='text_small'> (Max/Min ". $config['NEWS_LEAD_MAX_LENGHT'] ."/". $config['NEWS_LEAD_MIN_LENGHT'] ." characters)</span>";
 $LANGDATA['L_NEWS_TEXT'] = "News text <span class='text_small'> (Max/Min ". $config['NEWS_TEXT_MAX_LENGHT'] ."/". $config['NEWS_TEXT_MIN_LENGHT'] ." characters)</span>";

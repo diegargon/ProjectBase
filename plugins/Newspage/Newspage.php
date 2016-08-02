@@ -20,6 +20,8 @@ function Newspage_init(){
 function news_index_page (){
     global $tpl;
 
+    do_action("news_index_begin");
+    
     if(!empty($_GET['sendnews']) && empty($_POST['newsFormSubmit']) ) {
         require_once 'includes/news_form.common.php';
         require_once("includes/news_form.submit.php");
@@ -43,6 +45,8 @@ function news_index_page (){
 function news_page() {
     global $tpl;       
 
+    do_action("news_page_begin");
+    
     if(!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
         require_once ("includes/news_form.common.php");
         require_once ("includes/news_page_edit.php");
