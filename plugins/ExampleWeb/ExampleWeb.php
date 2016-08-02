@@ -28,8 +28,10 @@ function ex_index_page(){
 
 function ex_news_page() {
     plugin_manual_start("NewsAds");
+    plugin_manual_start("NewsVote");
     plugin_manual_start("NewsMedia");
     plugin_manual_start("Newspage");
     plugin_manual_start("NewsComments");
+    
     news_page();
 }
