@@ -51,7 +51,7 @@
 }
 .profile_box {
     margin:auto;
-    width: 50%;
+    width: 70%;
     background-color: #919191;
     background: rgb(247, 247, 247);
     border: 1px solid rgba(147, 184, 189,0.8);
@@ -63,8 +63,10 @@
     padding: 10px;
     padding-left: 10px;
     padding-bottom: 30px;
-    margin-top: 100px;
-    margin-bottom: 100px;   
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.0em;
+    line-height: 0.8em;
 }
 .profile_box h1{
 	font-size: 3.0em;
@@ -101,6 +103,15 @@
 }
 .profile_box p {
     margin-top: 0;
+}
+.profile_box span {
+    font-size: 0.7em;
+}
+#profile_fields {
+	border: 0px solid red;
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
 }
 .inputBtnSend {
     text-align: center;
