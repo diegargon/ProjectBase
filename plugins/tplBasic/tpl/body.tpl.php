@@ -23,7 +23,7 @@ if (!defined('IN_WEB')) { exit; }
                   <li class='nav_left lihome'>
                   <a href='/<?php
                   $config['FRIENDLY_URL'] ? print $config['WEB_LANG'] :  print "?lang={$config['WEB_LANG']}";  
-                  ?>'><img src='/plugins/tplBasic/images/home.png' alt='<?php print $LANGDATA['L_HOME']?>' />                        
+                  ?>'><img src='<?php print $config['IMG_HOME'] ?>' alt='<?php print $LANGDATA['L_HOME']?>' />                        
                   </a></li>           
                 <?php } ?>
                   <?php isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false; ?>

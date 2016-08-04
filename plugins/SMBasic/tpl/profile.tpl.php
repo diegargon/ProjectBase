@@ -16,7 +16,7 @@ if (!empty($data['avatar'])) {
 <?php
 } else {
 ?>
-                <img width="125" height="150" src="plugins/SMBasic/tpl/img/avatar.png" alt="" />
+                <img width="125" height="150" src="<?php print $config['IMG_DEFAULT_AVATAR']; ?>" alt="" />
 <?php } ?>
             </div>
             <dl>
