@@ -4,25 +4,25 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function NewsVote_check_if_vote($uid, $news) {
+function NewsVote_check_if_vote($uid, $rid, $lid, $section) {
     global $db;
     $where_ary = array (
         "uid" => $uid,
-        "section" => "news_rate",
-        "resource_id" => $news['nid'],
-        "lang_id"  => $news['lang_id'],
+        "section" => $section,
+        "resource_id" => $rid,
+        "lang_id"  => $lid,
     );
     $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
 
     return ($db->num_rows($query) == false ) ? false : true;
 }
 
-function NewsVote_Calc_NewsRating($news) {
+function NewsVote_Calc_Rating($rid, $lid, $section) {
     global $db;
     $where_ary = array (
-        "section" => "news_rate",
-        "resource_id" => $news['nid'],
-        "lang_id" => $news['lang_id'],
+        "section" => $section,
+        "resource_id" => $rid,
+        "lang_id" => $lid,
     );
     $query = $db->select_all("rating_track", $where_ary);
     $vote_sum = 0;
@@ -31,7 +31,11 @@ function NewsVote_Calc_NewsRating($news) {
             $vote_sum = $vote_sum + $vote_row['vote_value'];
         }
         $new_rate = $vote_sum / $num_votes;
-        $db->update("news", array("rating" => "$new_rate"), array("nid" => "{$news['nid']}", "lang_id" => "{$news['lang_id']}"));
+        if ($section == "news_comments_rate") {
+            $db->update("comments", array("rating" => "$new_rate"), array("cid" => "$rid", "lang_id" => "$lid"));
+        } else if ($section == "news_rate") {
+            $db->update("news", array("rating" => "$new_rate"), array("nid" => "$rid", "lang_id" => "$lid"));
+        }
     }
 }
 
