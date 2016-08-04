@@ -30,3 +30,4 @@ $config['smbasic_email_confirmation'] = 1;
 $config['smbasic_can_change_username'] = 1;
 $config['smbasic_can_change_email'] = 1;
 $config['IMG_DEFAULT_AVATAR'] = "/plugins/SMBasic/tpl/img/avatar.png";
+$config['smbasic_ask_realname'] = 1;

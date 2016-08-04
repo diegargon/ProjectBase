@@ -15,55 +15,64 @@ $(document).ready(function(){
         var new_password = $("#new_password").val();
         var r_password = $("#r_password").val();
 
-            $('#username').css("border","1px solid black");
-            $('#username').css("box-shadow","0 0 0px black");
-            $('#email').css("border","1px solid black");
-            $('#email').css("box-shadow","0 0 0px black");
-            $('#cur_password').css("border","1px solid black");
-            $('#cur_password').css("box-shadow","0 0 0px black");
-            $('#r_password').css("border","1px solid black");
-            $('#r_password').css("box-shadow","0 0 0px black");
-            $('#new_password').css("border","1px solid black");
-            $('#new_password').css("box-shadow","0 0 0px black");
-            $('.avatar').css("border","1px solid black");
-            $.post("", $( "#profile_form" ).serialize() + '&profile=1' ,
-            function(data) {
-                //alert(data); //DEBUG
-                var json = $.parseJSON(data);
-                if(json[0].status == 'ok') {
-                    alert(json[0].msg);
-                    $("form")[0].reset();
-                    $(location).attr('href', json[0].url);
-                } else if(json[0].status == 1) {
-                    $('#cur_password').css("border","2px solid red");
-                    $('#cur_password').css("box-shadow","0 0 3px red");
-                    alert(json[0].msg);
-                } else if(json[0].status == 2) {
-                    $('#cur_password').css("border","2px solid red");
-                    $('#cur_password').css("box-shadow","0 0 3px red");
-                    alert(json[0].msg);
-                } else if(json[0].status == 3) {
-                    $('#new_password').css("border","2px solid red");
-                    $('#new_password').css("box-shadow","0 0 3px red");
-                    $('#r_password').css("border","2px solid red");
-                    $('#r_password').css("box-shadow","0 0 3px red");
-                    alert(json[0].msg);
-                } else if(json[0].status == 4) {
-                    $('#username').css("border","2px solid red");
-                    $('#username').css("box-shadow","0 0 3px red");
-                    alert(json[0].msg);
-                } else if(json[0].status == 5) {
-                    $('#email').css("border","2px solid red");
-                    $('#email').css("box-shadow","0 0 3px red");
-                    alert(json[0].msg);
-                } else if(json[0].status == 6) {
-                    $('.avatar').css("border","2px solid red");
-                    $('.avatar').css("box-shadow","0 0 3px red");
-                    alert(json[0].msg);
-                } else {
-                    alert(json[0].msg);
-                }
-                });
-            $('#profile').removeAttr("disabled");
-            return false;
+        $('#username').css("border","1px solid black");
+        $('#username').css("box-shadow","0 0 0px black");
+        $('#email').css("border","1px solid black");
+        $('#email').css("box-shadow","0 0 0px black");
+        $('#cur_password').css("border","1px solid black");
+        $('#cur_password').css("box-shadow","0 0 0px black");
+        $('#r_password').css("border","1px solid black");
+        $('#r_password').css("box-shadow","0 0 0px black");
+        $('#new_password').css("border","1px solid black");
+        $('#new_password').css("box-shadow","0 0 0px black");
+        $('.avatar').css("border","1px solid black");
+        $.post("", $( "#profile_form" ).serialize() + '&profile=1' ,
+        function(data) {
+            //alert(data); //DEBUG
+            var json = $.parseJSON(data);
+            if(json[0].status == 'ok') {
+                alert(json[0].msg);
+                $("form")[0].reset();
+                $(location).attr('href', json[0].url);
+            } else if(json[0].status == 1) {
+                $('#cur_password').css("border","2px solid red");
+                $('#cur_password').css("box-shadow","0 0 3px red");
+                alert(json[0].msg);
+            } else if(json[0].status == 2) {
+                $('#cur_password').css("border","2px solid red");
+                $('#cur_password').css("box-shadow","0 0 3px red");
+                alert(json[0].msg);
+            } else if(json[0].status == 3) {
+                $('#new_password').css("border","2px solid red");
+                $('#new_password').css("box-shadow","0 0 3px red");
+                $('#r_password').css("border","2px solid red");
+                $('#r_password').css("box-shadow","0 0 3px red");
+                alert(json[0].msg);
+            } else if(json[0].status == 4) {
+                $('#username').css("border","2px solid red");
+                $('#username').css("box-shadow","0 0 3px red");
+                alert(json[0].msg);
+            } else if(json[0].status == 5) {
+                $('#email').css("border","2px solid red");
+                $('#email').css("box-shadow","0 0 3px red");
+                alert(json[0].msg);
+            } else if(json[0].status == 6) {
+                $('.avatar').css("border","2px solid red");
+                $('.avatar').css("box-shadow","0 0 3px red");
+                alert(json[0].msg);
+            } else {
+                alert(json[0].msg);
+            }
+        });
+        $('#profile').removeAttr("disabled");
+        return false;
     });
+ 
+    $('#optional_switcher').change(function() {
+        if($(this).is(":checked")) {
+            $('#optional_profile_fields').css("display","block");
+        } else {
+            $('#optional_profile_fields').css("display","none");
+        }
+    });
+});

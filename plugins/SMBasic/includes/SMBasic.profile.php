@@ -39,7 +39,7 @@ function SMBasic_ViewProfile() {
 
 }
 function SMBasic_ProfileChange() {
-    global $LANGDATA, $config, $db; 
+    global $LANGDATA, $config, $db, $sm; 
     
     if (!empty($_POST['avatar'])) {
         $avatar = S_VALIDATE_MEDIA($_POST['avatar'], 256);
@@ -113,23 +113,23 @@ function SMBasic_ProfileChange() {
            return false;
         }
     }
-       
+   
     $password_encrypted = do_action("encrypt_password", $password);
 
-    if ( (!$user_id = S_SESSION_INT("uid")) || ($user_id <= 0) ) {         
+    $user = $sm->getSessionUser();
+    if (empty($user)) {
         $response[] = array("status" => "0", "msg" => $LANGDATA['L_ERROR_INTERNAL'] );
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;        
+        return false;                
     }
-    
-    $query = $db->select_all("users", array("uid" => $user_id, "password" => "$password_encrypted"), "LIMIT 1");
+    //Check USER password
+    $query = $db->select_all("users", array("uid" => $user['uid'], "password" => "$password_encrypted"), "LIMIT 1");
     if($db->num_rows($query) <= 0) {
        $response[] = array("status" => "2", "msg" => $LANGDATA['L_WRONG_PASSWORD']);
        echo json_encode($response, JSON_UNESCAPED_SLASHES);
        return false;         
-    } else {
-        $user = $db->fetch($query);
     }        
+    //
     if ( ( $config['smbasic_need_username'] == 1) &&
             ( $config['smbasic_can_change_username'] == 1) &&
             ( $user['username'] != $_POST['username']) ){        
@@ -166,6 +166,7 @@ function SMBasic_ProfileChange() {
          unset($avatar);
     }
     //CHECK if something need change
+    /*
     if ( (empty($email)) && (empty($username)) && 
             (empty($_POST['new_password'])) && (empty($_POST['r_password'])) && 
             empty($avatar)) {
@@ -173,8 +174,17 @@ function SMBasic_ProfileChange() {
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false;
     }
-
+*/
+    
     $q_set_ary = [];
+    
+   if ($realname = S_POST_TEXT_UTF8("realname", 64)) {
+       $realname = $db->escape_strip($realname);
+       if ($user['realname'] != $realname) {
+           $q_set_ary['realname'] =  $realname;
+       }
+   }    
+
     if (( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) && ( !empty($username) )) {
             $q_set_ary['username'] = $username;
     }    
@@ -190,7 +200,7 @@ function SMBasic_ProfileChange() {
 
     !empty($avatar) ? $q_set_ary['avatar'] = $avatar : false;
 
-    $db->update("users", $q_set_ary, array("uid" => $user_id ), "LIMIT 1");
+    $db->update("users", $q_set_ary, array("uid" => $user['uid'] ), "LIMIT 1");
 
     $profile_url = $config['WEB_URL'] . "profile.php";
     $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] , "url" => "$profile_url");    
