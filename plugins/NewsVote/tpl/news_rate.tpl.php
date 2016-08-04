@@ -6,7 +6,6 @@ if (!defined('IN_WEB')) { exit; }
 ?>
     <div>
         <form id="form_news_rate" method="post" action="#">
-            <input type="hidden" class="rate_uid" name="rate_uid" value="<?php print $data['uid'] ?>" />
             <input type="hidden" class="rate_rid" name="rate_rid" value="<?php print $data['nid'] ?>" />
             <input type="hidden" class="rate_lid" name="rate_lid" value="<?php print $data['lang_id'] ?>" />
             &nbsp;

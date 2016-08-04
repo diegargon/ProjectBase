@@ -6,9 +6,8 @@ if (!defined('IN_WEB')) { exit; }
 ?>
     <div>
         <form id="form_comment_rate[<?php print $data['cid'] ?>]" method="post" action="#">
-            <input type="hidden" class="rate_uid" name="rate_uid"  value="<?php print $data['uid'] ?>" />
             <input type="hidden" class="rate_rid" name="rate_rid" value="<?php print $data['cid'] ?>" />
-            <input type="hidden" class="rate_lid" name="rate_lid"  value="<?php print $data['lang_id'] ?>" />
+            <input type="hidden" class="rate_lid" name="rate_lid" value="<?php print $data['lang_id'] ?>" />
             &nbsp;
             <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?>  class="btnCommentRate" title="rate 1" style="<?php print $data['rate_style']?>" value="1" type="button">
                 <img width="20" src="http://projectbase.envigo.net/plugins/NewsVote/tpl/images/<?php print $data['stars1'] ?>" alt="rate 1" />

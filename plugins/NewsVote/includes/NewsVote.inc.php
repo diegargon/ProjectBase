@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function NewsVote_check_if_vote($uid, $rid, $lid, $section) {
+function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
     global $db;
     $where_ary = array (
         "uid" => $uid,
@@ -14,7 +14,21 @@ function NewsVote_check_if_vote($uid, $rid, $lid, $section) {
     );
     $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
 
-    return ($db->num_rows($query) == false ) ? false : true;
+    if($db->num_rows($query) > 0 ) {
+        return false;
+    } else {
+        if ($section == "news_rate") {
+            $query = $db->select_all("news", array("nid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");            
+        } else if ($section == "news_comments_rate") {
+            $query = $db->select_all("comments", array("cid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");            
+        }
+        if ($rid_row = $db->fetch($query)) {
+            if ($rid_row['author_id'] == $uid) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 function NewsVote_Calc_Rating($rid, $lid, $section) {
