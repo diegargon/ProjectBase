@@ -5,7 +5,7 @@
     "function_init": "SimpleComments_init",
     "function_install": "",
     "provided": "sc1",
-    "depends" : "",
+    "depends" : "sessions1",
     "autostart": "0",
     "priority" : "5",
     "optional": ""    

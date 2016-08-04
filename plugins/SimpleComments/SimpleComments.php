@@ -16,8 +16,13 @@ function SC_corefiles() {
 }
 
 function SC_GetComments($plugin, $resource_id, $lang_id = null, $limit = null) {
-    global $tpl, $db;
+    global $tpl, $db, $sm;
     $content = "";
+    
+    if (empty($plugin) || empty($resource_id)) {
+        return false;
+    }
+    
     $select_ary = array (
         "plugin" => "$plugin", 
         "resource_id" => "$resource_id", 
@@ -38,6 +43,11 @@ function SC_GetComments($plugin, $resource_id, $lang_id = null, $limit = null) {
         $counter == 0 ? $comment_row['TPL_FIRST'] = 1 : false;
         $counter == ($num_comments -1 )? $comment_row['TPL_LAST'] = 1 : false;
         $counter++;
+        $author_data = $sm->getUserByID($comment_row['author_id']);
+        
+        do_action($plugin."_get_comments", $comment_row);
+        
+        $comment_row = array_merge($comment_row, $author_data);
         $content .= $tpl->getTPL_file("SimpleComments", "comments", $comment_row);
     }
     return $content;
