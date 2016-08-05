@@ -38,70 +38,114 @@ function SMBasic_ViewProfile() {
     }
 
 }
+
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config, $db, $sm; 
     
+    if( empty($_POST['cur_password']) ||  strlen($_POST['cur_password']) <  $config['sm_min_password']) {
+       $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;
+    }        
+    if (!$password = S_POST_PASSWORD("cur_password")) { 
+       $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;        
+    }  
+
+    $password_encrypted = do_action("encrypt_password", $password);
+
+    $user = $sm->getSessionUser();
+    if (empty($user)) {
+        $response[] = array("status" => "0", "msg" => $LANGDATA['L_ERROR_INTERNAL'] );
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;
+    }
+    //Check USER password
+    $query = $db->select_all("users", array("uid" => $user['uid'], "password" => "$password_encrypted"), "LIMIT 1");
+    if($db->num_rows($query) <= 0) {
+       $response[] = array("status" => "2", "msg" => $LANGDATA['L_WRONG_PASSWORD']);
+       echo json_encode($response, JSON_UNESCAPED_SLASHES);
+       return false;
+    }
+
+    $q_set_ary = [];
+
     if (!empty($_POST['avatar'])) {
         $avatar = S_VALIDATE_MEDIA($_POST['avatar'], 256);
         if ($avatar < 0) {
             $response[] = array("status" => "6", "msg" => $LANGDATA['L_SM_E_AVATAR'] . "\n" . $avatar );
             echo json_encode($response, JSON_UNESCAPED_SLASHES);
             return false;
+        } else {
+            $user['avatar'] != $avatar ? $q_set_ary['avatar'] = $db->escape_strip($avatar) : false;
         }
     }
-    if( empty($_POST['cur_password']) ||  strlen($_POST['cur_password']) <  $config['sm_min_password']) {
-       $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_PASSWORD_EMPTY_SHORT']);
-       echo json_encode($response, JSON_UNESCAPED_SLASHES);
-       return false;
-    }    
-    if (!$password = S_POST_PASSWORD("cur_password")) { 
-       $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
-       echo json_encode($response, JSON_UNESCAPED_SLASHES);
-       return false;        
-    }   
+
     if ( (!empty($_POST['new_password']) && empty($_POST['r_password']) ) ||
             (!empty($_POST['r_password']) && empty($_POST['new_password']) )
     ) {
         $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEW_BOTH_PASSWORD']);
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                
+        return false;
     }
-    if ( (!empty($_POST['new_password']) && !empty($_POST['r_password'])) &&
-            ((strlen($_POST['new_password']) < $config['sm_min_password']) ||
-            (strlen($_POST['r_password']) < $config['sm_min_password']))
-    ) {
-        $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEWPASS_TOOSHORT']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;         
-    }   
-    if ( $_POST['new_password'] != $_POST['r_password']) {
-       $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEW_PASSWORD_NOTMATCH']);
-       echo json_encode($response, JSON_UNESCAPED_SLASHES);
-       return false;           
-    } 
-    if ( ( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) ){
-        if(empty($_POST['username'])) {
+
+    if (!empty($_POST['new_password']) && !empty($_POST['r_password'])) {
+        if ( $_POST['new_password'] != $_POST['r_password']) {
+           $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEW_PASSWORD_NOTMATCH']);
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;
+        }
+        if ( (strlen($_POST['new_password']) < $config['sm_min_password']) ) {
+            $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_NEWPASS_TOOSHORT']);
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;
+        }
+        if  ( ($new_password = S_POST_PASSWORD("new_password")) != false) {
+            $new_password_encrypt = do_action("encrypt_password", $new_password);
+            $q_set_ary['password'] = $new_password_encrypt;
+        }
+    }
+
+    if ( ( $config['smbasic_can_change_username'] == 1) ){
+        if (empty($_POST['username']) && $config['smbasic_need_username'] == 1) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_EMPTY']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;                
-        } 
-        if (strlen($_POST['username']) < $config['smbasic_min_username'] ) {
-           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_SHORT']);
-           echo json_encode($response, JSON_UNESCAPED_SLASHES);
-           return false;                        
-        }
-        if (strlen($_POST['username']) > $config['smbasic_max_username'] ) {
-           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_LONG']);
-           echo json_encode($response, JSON_UNESCAPED_SLASHES);
-           return false;                        
+        } else if (empty($_POST['username']) && $config['smbasic_need_username'] == 0) {
+            $q_set_ary['username'] = '';
+        } else {
+            if (strlen($_POST['username']) < $config['smbasic_min_username'] ) {
+                $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_SHORT']);
+                echo json_encode($response, JSON_UNESCAPED_SLASHES);
+                return false;                        
+            }
+            if (strlen($_POST['username']) > $config['smbasic_max_username'] ) {
+                $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_LONG']);
+                echo json_encode($response, JSON_UNESCAPED_SLASHES);
+                return false;                        
+            }            
+            if ( ($username = S_POST_STRICT_CHARS("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false) { 
+                $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHARS']);
+                echo json_encode($response, JSON_UNESCAPED_SLASHES);
+                return false;                                    
+            } else {        
+                if ( $user['username'] != $username ) {
+                    $query = $db->select_all("users", array("username" => "$username"), "LIMIT 1");
+                    if ($db->num_rows($query) > 0) {
+                        $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);
+                        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+                        return false;             
+                    } else {
+                        $q_set_ary['username'] = $username;
+                    }
+                }
+            }
         }            
-        if ( ($username = S_POST_STRICT_CHARS("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false) { 
-           $response[] = array("status" => "4", "msg" => $LANGDATA['L_USERNAME_CHARS']);
-           echo json_encode($response, JSON_UNESCAPED_SLASHES);
-           return false;                                    
-        }
-    }   
-    if ( ( $config['smbasic_need_email'] == 1) && ( $config['smbasic_can_change_email'] == 1) ){
+    }
+
+    
+    if ( ( $config['smbasic_can_change_email'] == 1) ){
         if ( ($email = S_POST_EMAIL("email")) == false ) {
            $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_EMAIL']);
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
@@ -112,72 +156,18 @@ function SMBasic_ProfileChange() {
            echo json_encode($response, JSON_UNESCAPED_SLASHES);
            return false;
         }
+        if ($email != $user['email']) {
+            $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
+            if ($db->num_rows($query) > 0) {
+                $response[] = array("status" => "5", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);
+                echo json_encode($response, JSON_UNESCAPED_SLASHES);
+                return false;             
+            } else {       
+                $q_set_ary["email"] = $email;
+            }
+        }
     }
    
-    $password_encrypted = do_action("encrypt_password", $password);
-
-    $user = $sm->getSessionUser();
-    if (empty($user)) {
-        $response[] = array("status" => "0", "msg" => $LANGDATA['L_ERROR_INTERNAL'] );
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;                
-    }
-    //Check USER password
-    $query = $db->select_all("users", array("uid" => $user['uid'], "password" => "$password_encrypted"), "LIMIT 1");
-    if($db->num_rows($query) <= 0) {
-       $response[] = array("status" => "2", "msg" => $LANGDATA['L_WRONG_PASSWORD']);
-       echo json_encode($response, JSON_UNESCAPED_SLASHES);
-       return false;         
-    }        
-    //
-    if ( ( $config['smbasic_need_username'] == 1) &&
-            ( $config['smbasic_can_change_username'] == 1) &&
-            ( $user['username'] != $_POST['username']) ){        
-
-        $query = $db->select_all("users", array("username" => "$username"), "LIMIT 1");
-        if ($db->num_rows($query) > 0) {
-           $response[] = array("status" => "4", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);
-           echo json_encode($response, JSON_UNESCAPED_SLASHES);
-            return false;             
-        }
-    }        
-    if ( ( $config['smbasic_need_email'] == 1) &&
-            ( $config['smbasic_can_change_email'] == 1) &&
-            ( $user['email'] != $_POST['email'] )  ){        
-
-        $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
-        if ($db->num_rows($query) > 0) {
-           $response[] = array("status" => "5", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);
-           echo json_encode($response, JSON_UNESCAPED_SLASHES);
-            return false;             
-        }               
-    }     
-    if ( ($config['smbasic_need_username'] == 0) ||  
-            ($config['smbasic_can_change_username'] == 0) || 
-            ($username == $user['username']) ) {
-        unset($username);
-    }
-    if ( ($config['smbasic_need_email'] == 0) ||  
-            ($config['smbasic_can_change_email'] == 0) ||
-            ($email == $user['email']) ) {
-        unset($email);
-    }
-    if($user['avatar'] == $avatar) {
-         unset($avatar);
-    }
-    //CHECK if something need change
-    /*
-    if ( (empty($email)) && (empty($username)) && 
-            (empty($_POST['new_password'])) && (empty($_POST['r_password'])) && 
-            empty($avatar)) {
-        $response[] = array("status" => "0", "msg" => $LANGDATA['L_NOTHING_CHANGE']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
-    }
-*/
-    
-    $q_set_ary = [];
-    
    if ($realname = S_POST_TEXT_UTF8("realname", 64)) {
        $realname = $db->escape_strip($realname);
        if ($user['realname'] != $realname) {
@@ -185,25 +175,16 @@ function SMBasic_ProfileChange() {
        }
    }    
 
-    if (( $config['smbasic_need_username'] == 1) && ( $config['smbasic_can_change_username'] == 1) && ( !empty($username) )) {
-            $q_set_ary['username'] = $username;
-    }    
-    if (( $config['smbasic_need_email'] == 1) && ( $config['smbasic_can_change_email'] == 1) && ( !empty($email) )) {
-        $q_set_ary["email"] = $email;
-    }       
-    if (!empty($_POST['new_password'])) {
-        if  ( ($new_password = S_POST_PASSWORD("new_password")) != false) {
-            $new_password_encrypt = do_action("encrypt_password", $new_password);
-            $q_set_ary['password'] = $new_password_encrypt;
-        }
-    }   
-
-    !empty($avatar) ? $q_set_ary['avatar'] = $avatar : false;
-
+   if(empty($q_set_ary)) {
+        $response[] = array("status" => "0", "msg" => $LANGDATA['L_NOTHING_CHANGE']);
+        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        return false;       
+   }
     $db->update("users", $q_set_ary, array("uid" => $user['uid'] ), "LIMIT 1");
 
+    $test = print_r($q_set_ary, true);
     $profile_url = $config['WEB_URL'] . "profile.php";
-    $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] , "url" => "$profile_url");    
+    $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'] . $test , "url" => "$profile_url");    
     echo json_encode($response, JSON_UNESCAPED_SLASHES);
 
     return false;
