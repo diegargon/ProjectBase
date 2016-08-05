@@ -19,9 +19,24 @@ function print_debug($msg, $filter = null) {
 function getserverload() { // Return server load respect cpu's number 1.0 = 100% all cores
     $load = sys_getloadavg();
     $cmd = "cat /proc/cpuinfo | grep processor | wc -l"; 
-    $current_load = round($load[0] / trim(shell_exec($cmd)), 2);
-    
+    $num_cpus = trim(shell_exec($cmd), 2);
+    if (empty($load[0]) ||empty($num_cpus)) { return false; }
+    $current_load = round($load[0] / $num_cpus);
+
     return $current_load;
+}
+
+function its_server_stressed() {
+    global $config;
+
+    if ( ($current_load = getserverload()) != false ) {
+        if ($current_load >= $config['SERVER_STRESS']) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
 }
 
 function codetovar($path, $data = null) {
