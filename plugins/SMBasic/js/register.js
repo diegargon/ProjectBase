@@ -18,21 +18,24 @@ $(document).ready(function(){
         } else {
             var tos = 0;
         }
+        $('#username').css("border","1px solid black");
+        $('#username').css("box-shadow","0 0 0px black");
+        $('#email').css("border","1px solid black");
+        $('#email').css("box-shadow","0 0 0px black");
+        $('#password').css("border","1px solid black");
+        $('#password').css("box-shadow","0 0 0px black");
+        $('#rpassword').css("border","1px solid black");
+        $('#rpassword').css("box-shadow","0 0 0px black");
+        $('#tos').css("box-shadow","0 0 0px black");
         
-            $('#username').css("border","1px solid black");
-            $('#username').css("box-shadow","0 0 0px black");
-            $('#email').css("border","1px solid black");
-            $('#email').css("box-shadow","0 0 0px black");
-            $('#password').css("border","1px solid black");
-            $('#password').css("box-shadow","0 0 0px black");
-            $('#rpassword').css("border","1px solid black");
-            $('#rpassword').css("box-shadow","0 0 0px black");
-            $('#tos').css("box-shadow","0 0 0px black");
-        if( username == '' || username == null) {
-            $('#username').css("border","2px solid red");
-            $('#username').css("box-shadow","0 0 3px red");
-            alert("Username required");        
-        } else if( email == '' ) {
+        if( $('#username').length )
+            if ( username == '' || username == null) {
+                $('#username').css("border","2px solid red");
+                $('#username').css("box-shadow","0 0 3px red");
+                alert("Username required");
+            }
+        }
+        if( email == '' ) {
             $('#email').css("border","2px solid red");
             $('#email').css("box-shadow","0 0 3px red");
             alert("Email required");
@@ -57,7 +60,7 @@ $(document).ready(function(){
         } else if (tos !== 1) {
             $('#tos').css("border","2px solid red");
             $('#tos').css("box-shadow","0 0 3px red");
-            alert("You must accept the terms of service for register");                
+            alert("You must accept the terms of service for register");
         } else {
             $.post("", $( "#register_form" ).serialize() ,
             function(data) {
@@ -81,7 +84,7 @@ $(document).ready(function(){
                     alert(json[0].msg);
                 } else {
                     alert(json[0].msg);
-                }                
+                }
             });
         }
         $('#register').removeAttr("disabled");

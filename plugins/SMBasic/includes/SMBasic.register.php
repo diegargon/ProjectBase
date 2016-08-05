@@ -6,22 +6,20 @@ if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_RegisterScript() {
     global $tpl;
-    $script = "";
+    $script = $tpl->getScript_fileCode("SMBasic", "register");
     if (!check_jsScript("jquery.min.js")) {
         global $external_scripts;
         $external_scripts[] = "jquery.min.js";
         $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }               
-    $script .= $tpl->getScript_fileCode("SMBasic", "register");
-    
+    }
+
     return $script;
 }
 
 function SMBasic_Register() {
     global $config, $LANGDATA, $db;
     
-    if( ($config['smbasic_need_email'] == 1)  && 
-        (($email = S_POST_EMAIL("email")) == false)) {
+    if( ($email = S_POST_EMAIL("email")) == false) {
         $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);    
         echo json_encode($response, JSON_UNESCAPED_SLASHES);
         return false; 
