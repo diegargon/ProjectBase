@@ -22,7 +22,7 @@ if (!empty($data['avatar'])) {
             <div id="profile_fields">
                 <dl>
                     <dt><label><?php print $LANGDATA['L_USERNAME']?></label><br/>
-                        <span><?php print $LANGDATA['L_USERNAME_H']?> </span>
+                        <span class="profile_subtext"><?php print $LANGDATA['L_USERNAME_H']?> </span>
                     </dt>
                     <dd>
 <?php
@@ -46,7 +46,7 @@ if ($config['smbasic_can_change_username'] && isset($data['username'])) {
                 </dl>
                 <dl>
                 <dt><label><?php print $LANGDATA['L_EMAIL']?></label><br/>
-                    <span><?php print $LANGDATA['L_EMAIL_H']?> </span>
+                    <span class="profile_subtext"><?php print $LANGDATA['L_EMAIL_H']?> </span>
                 </dt>
                 <dd>
 <?php
@@ -64,7 +64,7 @@ if ($config['smbasic_can_change_email']) {
                 </dl>
                 <dl>
                 <dt><label><?php print $LANGDATA['L_NEW_PASSWORD']?> :</label><br/>
-                    <span><?php print $LANGDATA['L_NEW_PASSWORD_H']?> </span>
+                    <span class="profile_subtext"><?php print $LANGDATA['L_NEW_PASSWORD_H']?> </span>
                 </dt>
                 <dd>
                     <input  readonly onfocus="this.removeAttribute('readonly');"  type="password" name="new_password" id="new_password" title="<?php print $LANGDATA['L_NEW_PASSWORD_H']?>" autocomplete="off"/>
@@ -72,7 +72,7 @@ if ($config['smbasic_can_change_email']) {
                 </dl>
                 <dl>
                 <dt><label><?php print $LANGDATA['L_RPASSWORD']?></label><br/>
-                    <span><?php print $LANGDATA['L_R_PASSWORD_H']?> </span>
+                    <span class="profile_subtext"><?php print $LANGDATA['L_R_PASSWORD_H']?> </span>
                 </dt>
                 <dd>
                         <input  type="password" name="r_password" id="r_password" title="<?php print $LANGDATA['L_R_PASSWORD_H']?>" autocomplete="off"/>
@@ -80,14 +80,17 @@ if ($config['smbasic_can_change_email']) {
                 </dl> 
                 <dl>
                 <dt><label><?php print $LANGDATA['L_PASSWORD']?></label><br/>
-                    <span><?php print $LANGDATA['L_CUR_PASSWORD_H']?> </span>
+                    <span class="profile_subtext"><?php print $LANGDATA['L_CUR_PASSWORD_H']?> </span>
                 </dt>
                 <dd>                    
                     <input required type="password" name="cur_password" id="cur_password" title="<?php print $LANGDATA['L_CUR_PASSWORD_H']?>" autocomplete="off"/>
                 </dd>
                 </dl>
             </div>
-            <div id="field_switcher"><label for="optional_switcher"><?php print $LANGDATA['L_SM_PROFILE_OPTIONAL'] ?></label><input id="optional_switcher" name="optional_switcher" type="checkbox" /></div>
+            <div id="field_switcher">
+                <label for="optional_switcher"><?php print $LANGDATA['L_SM_PROFILE_OPTIONAL'] ?></label>
+                <input id="optional_switcher" name="optional_switcher" type="checkbox" />
+            </div>
             <div id="optional_profile_fields">
 <?php if($config['smbasic_ask_realname']) { ?>
                 <dl>

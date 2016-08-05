@@ -97,6 +97,7 @@
     color: #000;    
     border: 0px solid blue;
     margin-left: 4%;
+    min-height:15px;
 }
 .profile_box label {
     font-weight: bold;
@@ -104,7 +105,7 @@
 .profile_box p {
     margin-top: 0;
 }
-.profile_box span {
+.profile_subtext {
     font-size: 0.7em;
 }
 #profile_fields, #optional_profile_fields, #field_switcher {
