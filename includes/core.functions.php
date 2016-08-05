@@ -16,13 +16,12 @@ function print_debug($msg, $filter = null) {
     }
 }
 
-function getserverload() {
-  if(file_exists("/proc/loadavg")) {
-         $load = file_get_contents("/proc/loadavg");
-         $load = explode(' ', $load);
-         return $load[0];
-  }
-    return false;
+function getserverload() { // Return server load respect cpu's number 1.0 = 100% all cores
+    $load = sys_getloadavg();
+    $cmd = "cat /proc/cpuinfo | grep processor | wc -l"; 
+    $current_load = round($load[0] / trim(shell_exec($cmd)), 2);
+    
+    return $current_load;
 }
 
 function codetovar($path, $data = null) {
