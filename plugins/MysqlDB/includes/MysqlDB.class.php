@@ -109,6 +109,53 @@ class Database {
     }
     
     /*
+     * 
+     */   
+    function search($table, $s_fields, $searchText, $where, $extra = null) {
+        global $config;
+
+        $s_words_ary = explode(" ", $searchText);
+        $fields_ary = explode(" ", $s_fields);
+
+        $where_s_fields = "";
+        $where_s_tmp = "";
+        $q = "SELECT * FROM {$config['DB_PREFIX']}$table WHERE ";
+
+        if (!empty($where)) {
+            foreach ($where as $field => $value){
+                if (!is_array($value)) {
+                 $q_where_fields[] = "$field = " . "'". $value ."'";
+                } else {
+                    $q_where_fields[] = "$field {$value['operator']} " . "'". $value['value'] ."'";
+                }
+            }
+            $q .= implode( " AND ", $q_where_fields );
+            $q .= " AND ";
+        }
+        
+        foreach ($fields_ary as $field) {
+            !empty($where_s_fields) ? $where_s_fields .= " OR " : false;
+        
+            foreach ($s_words_ary as $s_word) {
+                if (mb_strlen($s_word) > $config['L_SEARCH_MIN_CHAR']) {
+                    !empty($where_s_tmp) ? $where_s_tmp .= " AND " : false;
+                    $where_s_tmp .= " $field LIKE '%$s_word%' ";
+                }
+            }
+            !empty($where_s_tmp) ? $where_s_fields .= $where_s_tmp : false;
+            $where_s_tmp = "";
+        }
+        
+        if (!empty($where_s_fields) ) {
+            $q .= "(". $where_s_fields .")";
+        } else {
+            return false;
+        }
+        !empty($extra) ? $q .= " $extra " : false;
+
+        return $this->query($q);
+    }
+    /*
      *
      */
     function update($table, $set, $where = null, $extra = null, $logic = "AND") {

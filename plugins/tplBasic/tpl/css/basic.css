@@ -26,7 +26,7 @@ html, body {
 .bodysize {
     display:block;
     margin:0 auto;
-    min-height: 800px;
+    min-height: 600px;
 }
 #col1, #col2, #col3{
     border: 0px solid red;

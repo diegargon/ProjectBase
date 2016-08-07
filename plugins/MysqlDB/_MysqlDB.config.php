@@ -14,3 +14,4 @@ define('DB_TYPE','mysql');
 define('DB_CHARSET','utf8');
 
 $config['DB_PREFIX'] = "pb_";
+$config['L_SEARCH_MIN_CHAR'] = 3;
