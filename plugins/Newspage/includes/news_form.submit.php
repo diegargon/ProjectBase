@@ -86,6 +86,7 @@ function news_create_new($news_data) {
         $insert_ary['tags'] = $news_data['news_tags'];
     }
 
+    do_action("news_mod_submit_insert", $insert_ary);
     $db->insert("news", $insert_ary);
 
     /* Custom / MOD */
