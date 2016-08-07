@@ -37,7 +37,6 @@ function news_form_new() {
         $data['can_change_author'] = "disabled";
     }
     $data['select_categories'] = news_get_categories_select();
-    $config['NEWS_TAGS'] ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", news_tags_option()) : false;
 
     do_action("news_new_form_add", $data);
     news_editor_getBar();
@@ -81,10 +80,6 @@ function news_create_new($news_data) {
         "acl" => $acl,
         "moderation" => $moderation
     );
-
-    if($config['NEWS_TAGS'] && !empty($news_data['news_tags'])) {
-        $insert_ary['tags'] = $news_data['news_tags'];
-    }
 
     do_action("news_mod_submit_insert", $insert_ary);
     $db->insert("news", $insert_ary);

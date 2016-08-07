@@ -31,7 +31,7 @@ function news_edit($news_data) {
     if (defined('MULTILANG') && ($site_langs = news_get_available_langs($news_data)) != false) {
         $news_data['select_langs'] = $site_langs;
     }  
-    $config['NEWS_TAGS'] ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", news_tags_option($news_data['tags'])) : false;
+
     do_action("news_edit_form_add", $news_data);
     news_editor_getBar();
 
@@ -112,9 +112,9 @@ function news_full_update($news_data) {
         "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
         "lang" => $news_data['lang'], "acl" => $acl, "translator" => $news_data['news_translator']
     );
-    if($config['NEWS_TAGS'] && !empty($news_data['news_tags'])) {
-        $set_ary['tags'] = $news_data['news_tags'];
-    }    
+
+    do_action("news_edit_mod_set", $set_ary);
+
     $where_ary = array ( 
         "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid", "page" => $news_data['page']
     );

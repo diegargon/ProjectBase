@@ -81,7 +81,6 @@ function news_form_getPost() {
     $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
     $data['post_newlang'] = S_POST_INT("post_newlang");
     $data['page'] = S_GET_INT("page", 11, 1);
-    $data['news_tags'] = $db->escape_strip(S_POST_TEXT_UTF8("news_tags"));
 
     return $data;
 }
@@ -305,14 +304,6 @@ function news_get_missed_langs($nid, $page) {
     return (!empty($nolang)) ? false : $select;
 }
 
-function news_tags_option($tags = null) {
-    global $LANGDATA, $config;
-    
-    $content = "<label for='news_tags'>{$LANGDATA['L_NEWS_TAGS']}</label>";    
-    $content .= "<input  value='$tags' maxlength='{$config['NEWS_TAGS_SIZE_LIMIT']}' id='news_tags' class='news_tags' name='news_tags' type='text' placeholder='{$LANGDATA['L_NEWS_TAGS_PLACEHOLDER']}' />";
-    return $content;
-}
-
 function news_editor_getBar() {
         global $tpl;
         do_action("news_add_editor_item");
@@ -321,8 +312,7 @@ function news_editor_getBar() {
         $tpl->addto_tplvar("NEWS_TEXT_BAR", $content);
 }
 
-function news_form_preview() {
-    //global $tpl;  
+function news_form_preview() { 
     global $db;
     require_once("parser.class.php");
        

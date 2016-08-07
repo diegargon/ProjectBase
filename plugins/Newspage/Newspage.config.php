@@ -34,6 +34,4 @@ $config['NEWS_MULTIPLE_PAGES'] = 1;
 $config['NEWS_PAGER_MAX'] = 4; //Pair >= 4
 $config['NEWS_STATS'] = 1;
 $config['NEWS_ADVANCED_STATS'] = 1;
-$config['NEWS_TAGS'] = 1;
-$config['NEWS_TAGS_SIZE_LIMIT'] = 256;
 $config['NEWS_META_OPENGRAPH'] = 1;

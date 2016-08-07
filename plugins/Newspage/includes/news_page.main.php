@@ -46,19 +46,8 @@ function news_show_page() {
     }
     if( $config['NEWS_MULTIPLE_PAGES']) {
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", news_pager($news_row));
-    }
-    if (!empty($news_row['tags'])) {
-        $config['PAGE_KEYWORDS'] = $news_row['tags'];        
-        $exploted_tags = explode(",", $news_row['tags']);
-        $tag_data = "<div class='tags'> <p>". $LANGDATA['L_NEWS_TAGS'] . ": ";
-        foreach ($exploted_tags as $tag) {
-            $tag_data .= "<a href=''>$tag</a> ";
-        }
-        $tag_data .= "</p></div>";
-        $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", $tag_data);
-    } else {
-        $config['PAGE_KEYWORDS'] = $news_row['title'];
-    }
+    }    
+
     $config['PAGE_TITLE'] = $news_row['title'] . ": ". $config['TITLE'];
     do_action("news_show_page", $news_row);
 
