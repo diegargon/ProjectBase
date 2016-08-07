@@ -23,6 +23,12 @@ function S_GET_CHAR_AZ($var, $max_size = null, $min_size = null) {
     }
     return S_VAR_CHAR_AZ($_GET[$var], $max_size, $min_size);    
 }
+function S_GET_TEXT_UTF8($var, $max_size = null, $min_size = null) {
+    if(empty($_GET[$var])) {
+       return false;
+    }
+    return S_VAR_TEXT_UTF8($_GET[$var], $max_size, $min_size);    
+}
 function S_GET_EMAIL($var) {
     if(empty($_GET[$var])) {
        return false;
