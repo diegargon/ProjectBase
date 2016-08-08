@@ -28,7 +28,7 @@ $(document).ready(function(){
         $('#rpassword').css("box-shadow","0 0 0px black");
         $('#tos').css("box-shadow","0 0 0px black");
         
-        if( $('#username').length )
+        if( $('#username').length ) {
             if ( username == '' || username == null) {
                 $('#username').css("border","2px solid red");
                 $('#username').css("box-shadow","0 0 3px red");

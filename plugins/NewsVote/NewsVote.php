@@ -8,16 +8,13 @@ function NewsVote_init() {
     global $tpl;
     print_debug("NewsVote initiated", "PLUGIN_LOAD");
 
+    $tpl->AddScriptFile("standard", "jquery.min", "TOP");
     $tpl->AddScriptFile("NewsVote", "newsvote", "BOTTOM");
     //NEWS
     register_action("news_show_page", "newsvote_addrate");
     register_action("news_page_begin", "newsvote_page_begin");
     //NEWS COMMENTS
     register_action("Newspage_get_comments", "newsvote_comment_addrate");
-}
-
-function NewsVote_script() {
-    return '<script type="text/javascript" src="/plugins/NewsVote/js/newsvote.js"></script>';
 }
 
 function newsvote_page_begin() {
