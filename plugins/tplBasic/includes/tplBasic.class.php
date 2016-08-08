@@ -221,7 +221,7 @@ class TPL {
             $css_code = $this->css_strip($css_code);
             file_put_contents("cache/css/$cssfile", $css_code);
         }
-        $this->addto_tplvar("LINK", "<link rel='stylesheet' href='/cache/css/$cssfile' async>\n");
+        $this->addto_tplvar("LINK", "<link rel='stylesheet' href='/cache/css/$cssfile'>\n");
     }
     private function css_strip($css) { #by nyctimus
         $preg_replace = array(
