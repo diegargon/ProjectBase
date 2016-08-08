@@ -32,7 +32,7 @@ function news_index_page (){
            news_form_preview();
         } else {
             do_action("common_web_structure");
-            $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
+            Newspage_FormScript();
             news_form_new();
         }
     } else {
@@ -58,7 +58,7 @@ function news_page() {
                 news_form_preview();
             } else {
                 do_action("common_web_structure");
-                $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
+                Newspage_FormScript();
                 news_edit($news_data);
             }
         } else {
@@ -73,7 +73,7 @@ function news_page() {
             news_form_preview ();            
         } else if (defined('MULTILANG')) {
             do_action("common_web_structure");
-            $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
+            Newspage_FormScript();
             news_new_lang();
         }
     } else if (!empty($_GET['newpage'])) {
@@ -85,7 +85,7 @@ function news_page() {
             news_form_preview ();
         } else {
             do_action("common_web_structure");
-            $tpl->addto_tplvar("SCRIPTS_BOTTOM", Newspage_FormScript());
+            Newspage_FormScript();
             news_new_page();
         }
     } else {

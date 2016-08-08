@@ -7,6 +7,10 @@ if (!defined('IN_WEB')) { exit; }
 
 class TPL {
     private $tpldata;
+    private $scripts = [];
+    private $standard_scripts = array ( //TODO LOAD LIST
+        "jquery.min" => "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n",
+    );
     
     function build_page() {
         global $config;
@@ -79,9 +83,34 @@ class TPL {
         }
     }
 
-    function AddScriptFile($plugin, $filename = null ) {
+    function AddScriptFile($plugin, $filename = null, $place = "TOP" ) {
         global $config;
-        print_debug("AddScriptFile called by-> $plugin for get a $filename", "TPL_DEBUG");
+        print_debug("AddScriptFile request -> $plugin for get a $filename", "TPL_DEBUG");
+        
+        if( !empty($plugin) && ($plugin == "standard") ) {
+            if(!$this->check_script($filename)) {
+                if(array_key_exists($filename, $this->standard_scripts))  {
+                    $this->addto_tplvar("SCRIPTS_".$place."", $this->standard_scripts[$filename]);
+                    $this->scripts[] = $filename;
+                    if(defined('TPL_DEBUG')) {
+                        $backtrace = debug_backtrace();
+                        print_debug("AddcriptFile:CheckScript setting first time * $filename * by ".$backtrace[1]['function']."", "TPL_DEBUG");
+                    }
+                } else {
+                    if (defined('TPL_DEBUG')) {
+                        $backtrace = debug_backtrace();
+                        print_debug("AddcriptFile:CheckScript standard script * $filename * not found called by ".$backtrace[1]['function']."", "TPL_DEBUG");
+                    }
+                }
+            } else {
+                if (defined('TPL_DEBUG')) {
+                    $backtrace = debug_backtrace();
+                    print_debug("AddcriptFile:CheckScript found coincidence * $filename * called by ".$backtrace[1]['function']."", "TPL_DEBUG");
+                }
+            }
+            return true;
+        }
+        
         empty($filename) ? $filename = $plugin : false;
         
         $USER_LANG_PATH = "tpl/{$config['THEME']}/js/$filename.{$config['WEB_LANG']}.js"; 
@@ -104,34 +133,7 @@ class TPL {
             print_debug("AddScriptFile called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
             return false;
         }        
-        $this->addto_tplvar("SCRIPTS_TOP", $script);
-    }
-    function getScript_fileCode($plugin, $filename = null) {
-        global $config;
-    
-        empty($filename) ? $filename = $plugin : false;
-        print_debug("getScript_fileCode called by-> $plugin for get a $filename", "TPL_DEBUG");
-
-        $USER_LANG_PATH = "tpl/{$config['THEME']}/js/$filename.{$config['WEB_LANG']}.js"; 
-        $DEFAULT_LANG_PATH = "plugins/$plugin/js/$filename.{$config['WEB_LANG']}.js";     
-        $USER_PATH = "tpl/{$config['THEME']}/js/$filename.js";
-        $DEFAULT_PATH = "plugins/$plugin/js/$filename.js"; 
-    
-        if (file_exists($USER_LANG_PATH))  { //TODO Recheck priority later
-            $SCRIPT_PATH = $USER_LANG_PATH;
-        } else if (file_exists($USER_PATH)) {
-            $SCRIPT_PATH = $USER_PATH;
-        } else if (file_exists($DEFAULT_LANG_PATH))  {
-            $SCRIPT_PATH = $DEFAULT_LANG_PATH;
-        } else if (file_exists($DEFAULT_PATH)) {
-            $SCRIPT_PATH = $DEFAULT_PATH;
-        }
-        if (!empty($SCRIPT_PATH)) {
-            return  "<script type='text/javascript' src='$SCRIPT_PATH'></script>\n";
-        } else {
-            print_debug("Get Script called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
-            return false;
-        }
+        $this->addto_tplvar("SCRIPTS_".$place."", $script);
     }
 
     function addto_tplvar ($tplvar, $data, $priority = 5) { // change name to appendTo_tplvar? priority support?
@@ -165,6 +167,15 @@ class TPL {
     }
     function get_tpldata() {
         return $this->tpldata;
+    }
+    
+    private function check_script($script) {
+        foreach ($this->scripts as $value) {
+            if ($value == $script) {
+                return true;
+            }
+        }    
+        return false;
     }
 }
 

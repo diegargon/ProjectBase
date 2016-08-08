@@ -137,19 +137,13 @@ function SMBasic_randomPassword() {
         $n = rand(0, $alphaLength);
         $pass[] = $alphabet[$n];
     }
-    
+
     return implode($pass);
 }
 
 function SMBasic_LoginScript() {
     global $tpl;
-    $script = "";    
-    if (!check_jsScript("jquery.min.js")) {
-        global $external_scripts;
-        $external_scripts[] = "jquery.min.js";
-        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }          
-    $script .= $tpl->getScript_fileCode("SMBasic", "login");
-    
-    return $script;
+
+    $tpl->AddScriptFile("standard", "jquery.min", "TOP" );
+    $tpl->AddScriptFile("SMBasic", "login", "BOTTOM" );
 }

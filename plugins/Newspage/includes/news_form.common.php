@@ -227,16 +227,11 @@ function news_form_extra_check(&$news_data) {
 }
 
 function Newspage_FormScript() {
-    $script = "";
+    global $tpl;
 
-    if (!check_jsScript("jquery.min.js")) {
-        global $external_scripts;
-        $external_scripts[] = "jquery.min.js";
-        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }
-    $script .= "<script type=\"text/javascript\" src=\"plugins/Newspage/js/newsform.js\"></script>\n";
-    $script .= "<script type=\"text/javascript\" src=\"plugins/Newspage/js/editor.js\"></script>\n";
-    return $script;
+    $tpl->AddScriptFile("standard", "jquery.min", "TOP" );
+    $tpl->AddScriptFile("Newspage", "news_form", "BOTTOM" );
+    $tpl->AddScriptFile("Newspage", "editor", "BOTTOM" );
 }
 //Used when submit new news, get all site available langs and selected the default/user lang
 function news_get_all_sitelangs() {  

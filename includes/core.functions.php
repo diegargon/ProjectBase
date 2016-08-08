@@ -53,30 +53,18 @@ function codetovar($path, $data = null) {
 function format_date($date, $timestamp = false) {
     global $config;
     if ($timestamp) {
-       return date($config['DEFAULT_DATEFORMAT'], $date);        
+       return date($config['DEFAULT_DATEFORMAT'], $date);
     } else {
        return date($config['DEFAULT_DATEFORMAT'], strtotime($date));
     }
 }
 
-function check_jsScript($script) {
-    global $external_scripts;
-        
-    foreach ($external_scripts as $value) {
-      if ($value == $script) {
-            return true;
-      }
-    }
-    
-    return false;
-}
-
 function includePluginFiles($plugin, $admin = 0) {
     global $config, $LANGDATA; 
-    
+
     $class_file ="";
     $inc_file ="";
-    
+
     //CONFIG FILES
     $config_plugin = "plugins/$plugin/$plugin.config.php";
     $config_plugin_user = "config/$plugin.config.php";
@@ -86,7 +74,7 @@ function includePluginFiles($plugin, $admin = 0) {
     //LANG FILES;
     $lang_file = "plugins/$plugin/lang/" . $config['WEB_LANG'] . "/$plugin.lang.php";
     file_exists($lang_file) ? include_once($lang_file) : false;
-    
+
     //INC FILE
     if ($admin == 0) {
         $inc_file = "plugins/$plugin/includes/$plugin.inc.php";
@@ -99,17 +87,17 @@ function includePluginFiles($plugin, $admin = 0) {
 }
 
 function remote_check($url) {
-    
-    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) { 
+
+    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) {
         $url = "http://" . $url;
-    }    
+    }
 
     if ( strpos($url, 'https://') !== 0 ) {
-        stream_context_set_default(array('https' => array('method' => 'HEAD') ));    
+        stream_context_set_default(array('https' => array('method' => 'HEAD') ));
     } else {
         stream_context_set_default(array('http' => array('method' => 'HEAD') ));
     }
-    
+
     $host = parse_url($url, PHP_URL_HOST);
     //FIX: gethostbyname sometimes not reliable, sometimes or in some servers resolv things like this http://jeihfw and return a IP :/ :?
     if (gethostbyname($host) === $host) { //get host resolv ip if fail return the host

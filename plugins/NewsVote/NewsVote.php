@@ -8,7 +8,7 @@ function NewsVote_init() {
     global $tpl;
     print_debug("NewsVote initiated", "PLUGIN_LOAD");
 
-    $tpl->addto_tplvar("SCRIPTS_BOTTOM", NewsVote_script());
+    $tpl->AddScriptFile("NewsVote", "newsvote", "BOTTOM");
     //NEWS
     register_action("news_show_page", "newsvote_addrate");
     register_action("news_page_begin", "newsvote_page_begin");

@@ -6,14 +6,8 @@ if (!defined('IN_WEB')) { exit; }
 
 function SMBasic_ProfileScript() {
     global $tpl;
-    $script = $tpl->getScript_fileCode("SMBasic", "profile");
-    if (!check_jsScript("jquery.min.js")) {
-        global $external_scripts;
-        $external_scripts[] = "jquery.min.js";
-        $script .= "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\"></script>\n";
-    }
-
-    return $script;
+    $tpl->AddScriptFile("standard", "jquery.min", "TOP" );
+    $tpl->AddScriptFile("SMBasic", "profile", "TOP" );
 }
 
 function SMBasic_ViewProfile() {

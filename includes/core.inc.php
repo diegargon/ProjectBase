@@ -5,8 +5,8 @@
 if (!defined('IN_WEB')) { exit; }
 
 global $debug;
-global $external_scripts;
-$debug = $external_scripts = [];
+
+$debug = [];
 
 require_once "config/config.inc.php";
 file_exists("tpl/config/config.php") ? require_once "tpl/config/config.inc.php" : false; //rewrite config

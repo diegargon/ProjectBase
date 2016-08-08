@@ -56,7 +56,7 @@ function SMBasic_regPage() {
         do_action("common_web_structure");
         $tpl->getCSS_filePath("SMBasic");
         $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
-        $tpl->addto_tplvar("SCRIPTS_TOP", SMBasic_RegisterScript());
+        SMBasic_RegisterScript();
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "register"));
     } else {
         SMBasic_Register();
@@ -86,7 +86,7 @@ function SMBasic_profilePage() {
             do_action("common_web_structure");
             $tpl->getCSS_filePath("SMBasic");
             $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
-            $tpl->addto_tplvar("SCRIPTS_TOP", SMBasic_ProfileScript());
+            SMBasic_ProfileScript();
             $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "profile", $user));
         }
     }
@@ -121,7 +121,7 @@ function SMBasic_loginPage () {
         do_action("common_web_structure");
         $tpl->getCSS_filePath("SMBasic");
         $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
-        $tpl->addto_tplvar("SCRIPTS_TOP", SMBasic_LoginScript());
+        SMBasic_LoginScript();
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "login"));
     }
 }

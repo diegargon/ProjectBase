@@ -6,7 +6,7 @@ if (!defined('IN_WEB')) { exit; }
 
 function NewsFormExtraMediaTpl($news_data) {
     global $tpl;
-    $tpl->AddScriptFile("NewsMedia", "addmediafield");
+    $tpl->AddScriptFile("NewsMedia", "addmediafield", "BOTTOM");
     $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMedia", "NewsMediaExtraItems", $news_data)); 
 }
 
