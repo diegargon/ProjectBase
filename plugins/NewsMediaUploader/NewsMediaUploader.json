@@ -1,6 +1,6 @@
 {
     "plugin_name": "NewsMediaUploader",
-    "enabled": "0",
+    "enabled": "1",
     "main_file" : "NewsMediaUploader.php",
     "function_init": "NewsMediaUploader_init",
     "function_install": "",
