@@ -10,3 +10,4 @@ define('TPL_DEBUG', true);
 $config['NAV_MENU'] = 1;
 $config['NAV_MENU_HOME'] = 1;
 $config['IMG_HOME'] = "/plugins/tplBasic/images/home.png";
+$config['CSS_OPTIMIZE'] = 1; //need cache writable
