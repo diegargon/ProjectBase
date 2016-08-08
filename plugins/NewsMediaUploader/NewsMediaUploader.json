@@ -1,0 +1,13 @@
+{
+    "plugin_name": "NewsMediaUploader",
+    "enabled": "0",
+    "main_file" : "NewsMediaUploader.php",
+    "function_init": "NewsMediaUploader_init",
+    "function_install": "",
+    "provided": "newsuploader1",
+    "depends" : "tplbasic1 news1",
+    "autostart": "0",
+    "priority" : "5",
+    "optional": "multilang1",
+    "conflicts": ""
+}
