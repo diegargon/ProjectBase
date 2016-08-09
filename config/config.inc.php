@@ -16,6 +16,7 @@ $config['TITLE'] = $config['WEB_NAME'];
 $config['PAGE_TITLE'] = $config['TITLE'];
 $config['THEME'] = "default";
 $config['WEB_URL'] = "http://projectbase.envigo.net/";
+$config['IMG_SRV_URL'] = "";
 $config['WEB_LANG'] = "es";
 $config['WEB_LANG_NAME'] = "Español";
 $config['WEB_LANG_ID'] = "1"; //used when not ML
@@ -33,4 +34,5 @@ $config['ACCEPTED_MEDIA_REGEX'] = "jpe?g|bmp|png|JPE?G|BMP|PNG|gif";
 $config['ADMIN_MAIL'] = "diego@envigo.net";
 $config['EMAIL_SENDMAIL'] = "no-reply@envigo.net";
 $config['SERVER_STRESS'] = 0.8;
+$config['ROOT_FILE'] = "app.php";
 //$config['']
