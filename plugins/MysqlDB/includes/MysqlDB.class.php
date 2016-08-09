@@ -54,7 +54,7 @@ class Database {
     }
 
     function insert_id() {
-        if(!($id = $this->dblink->insert_id()) ) {
+        if(!($id = $this->dblink->insert_id) ) {
             die('Could not connect: ' . $this->dblink->error);
             $this->dblink->close();
             exit;
