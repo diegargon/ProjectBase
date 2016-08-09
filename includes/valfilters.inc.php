@@ -188,7 +188,20 @@ function S_VAR_CHAR_AZ ($var, $max_size = null, $min_size = null) {
     return $var;
 
 }
+function S_VAR_FILENAME ($file, $max_size = null, $min_size = null) {
+    
+    if ( (empty($file) )
+       || (!empty($max_size) && (strlen($file) > $max_size) )
+       || (!empty($min_size) && (strlen($file) < $min_size))
+            ) {
+        return false;
+    } 
+    // clean filename @ StackOverflow 2021624/Sean Viera
+    $file = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $file);
+    $file = mb_ereg_replace("([\.]{2,})", '', $file);
+    return trim($file);
 
+}
 function S_VAR_URL($var, $max_size = null, $min_size = null) {
     global $config;
     
