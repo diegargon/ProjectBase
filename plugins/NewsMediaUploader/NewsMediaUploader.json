@@ -5,9 +5,9 @@
     "function_init": "NewsMediaUploader_init",
     "function_install": "",
     "provided": "newsuploader1",
-    "depends" : "tplbasic1 news1",
+    "depends" : "tplbasic1 news1 sessions1",
     "autostart": "0",
     "priority" : "5",
-    "optional": "multilang1",
+    "optional": "multilang1 acl1",
     "conflicts": ""
 }

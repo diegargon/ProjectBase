@@ -1,0 +1,33 @@
+/*
+ Copyright @ 2016 Diego Garcia
+*/
+#filelist {
+    /* border:1px solid black; */
+   
+}
+#filelist div {
+    border: inset 1px black; 
+    margin-bottom: 1px;
+    background-color: #666;
+    width:100%;
+}
+.file_percent {
+    border:1px inset black;
+    padding: 0px 5px 0px 5px;
+    background-color: red;
+    
+    
+}
+.file_details {
+    background-color: #666;
+    border-left: 1px solid black;
+    padding: 0px 0px 0px 5px;
+}
+#pickfiles, #uploadfiles {
+    font-size: 0.8em;
+    text-decoration: none;
+    border: outset 1px black;
+    padding: 3px 5px;
+    background: #4479BA;
+    color: #FFF;
+}

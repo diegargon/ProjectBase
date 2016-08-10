@@ -371,3 +371,6 @@
     overflow:hidden;
     border:0px solid red;
 }
+#preview { 
+    overflow:hidden;
+}
