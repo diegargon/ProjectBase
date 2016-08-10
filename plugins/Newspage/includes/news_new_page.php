@@ -31,7 +31,7 @@ function news_new_page() {
     $form_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_CREATE_NEW_PAGE'];
     $form_data['can_change_author'] = "disabled";
     $form_data['author'] = $user['username'];
-    
+    do_action("news_newpage_form_add");
     news_editor_getBar();
     
     $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION", 

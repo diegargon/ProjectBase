@@ -31,7 +31,7 @@ function news_edit($news_data) {
     if (defined('MULTILANG') && ($site_langs = news_get_available_langs($news_data)) != false) {
         $news_data['select_langs'] = $site_langs;
     }  
-
+    
     do_action("news_edit_form_add", $news_data);
     news_editor_getBar();
 
