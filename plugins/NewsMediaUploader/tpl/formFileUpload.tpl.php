@@ -12,6 +12,9 @@ if (!defined('IN_WEB')) { exit; }
 <pre id="console"></pre>
 <div id="filelist"><?php  print $LANGDATA['L_NMU_E_BROWSER_UPLOAD'] ?></div>
 
+<?php if(!empty($data['UPLOAD_EXTRA'])) { ?>
+<div id="uploaded_user_list"><?php print $data['UPLOAD_EXTRA'] ?></div>
+<?php } ?>
 <script type="text/javascript">
 
 var uploader = new plupload.Uploader({

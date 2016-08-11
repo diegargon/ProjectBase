@@ -110,3 +110,32 @@ function remote_check($url) {
     }
     return true;
 }
+
+function getLib($libname, $version) {
+    //1.0 to 1.9 minor version must be 100% compatible
+    //FIX  if ask for 0.9 and only exist < .9  actually load a minor version
+    $LIBPATH = "libs/";
+
+    if (empty($libname) || !isset($version)) { //can be 0 to 0.*
+        return false;
+    }
+
+    if (preg_match("/./", $version)) {
+        $v_mayor_minor = explode(".", $version);
+    } else {
+        $v_mayor_minor[0] = $version;
+    }
+
+    $libs = glob($LIBPATH . $libname ."-". $v_mayor_minor[0]. "*" , GLOB_ONLYDIR);
+    if (empty($libs)) {
+        return false;
+    }
+    $lib = end($libs); // GLOB SORT END element its the greater minor
+
+    if (file_exists($lib . "/" . $libname . ".php")) {
+        require_once ($lib . '/' . $libname . '.php');
+    } else {
+        return false;
+    }
+    return true;
+}

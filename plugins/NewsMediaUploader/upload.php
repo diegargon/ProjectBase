@@ -110,4 +110,16 @@ $insert_ary = array(
     "link" => "$fileName",
 );
 $db->insert("links", $insert_ary);
+
+if( (getLib("ImageLib", "0.1")) && ( $config['NMU_CREATE_IMG_THUMBS'] || $config['NMU_CREATE_IMG_MOBILE'] ) ) {
+    $imglib = new ImageLib;
+    if ($config['NMU_CREATE_IMG_THUMBS']) {
+        $thumb_filePath =  $targetDir . DIRECTORY_SEPARATOR . "thumb-" . $fileName; // str_replace(".", "-thumb.", $filePath);
+        $imglib->do_thumb($filePath, $thumb_filePath, $config['NMU_THUMBS_WIDTH'] );
+    }
+    if ( $config['NMU_CREATE_IMG_MOBILE'] ) {
+        $mobile_filePath =  $targetDir . DIRECTORY_SEPARATOR . "mobile-" . $fileName;
+        $imglib->do_thumb($filePath, $mobile_filePath, $config['NMU_MOBILE_WIDTH'] );
+    }
+}
 die('{"jsonrpc" : "2.0", "result" : "'. $filePath .'", "id" : "id"}');

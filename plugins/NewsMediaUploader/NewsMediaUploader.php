@@ -27,13 +27,23 @@ function NewsMediaUploader_init() {
     register_action("news_new_form_add", "NMU_form_add");
     register_action("news_edit_form_add", "NMU_form_add");
     register_action("news_newlang_form_add", "NMU_form_add");
-    register_action("news_newpage_form_add", "NMU_form_add");
+    register_action("news_newpage_form_add", "NMU_form_add");    
 }
 
 function NMU_form_add () {
-    global $tpl;
+    global $tpl, $sm;
+
+    $nmu_extra = "";
+
+    if ($user = $sm->getSessionUser()) {
+        NMU_upload_list($user);
+    }
 
     $tpl->AddScriptFile("standard", "jquery.min", "TOP");
     $tpl->AddScriptFile("NewsMediaUploader", "plupload.full.min", "TOP");
-    $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "formFileUpload"));
+    $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "formFileUpload"), $nmu_extra);
+}
+
+function NMU_upload_list($user) {
+    return true;
 }
