@@ -71,4 +71,10 @@ var uploader = new plupload.Uploader({
     }
 });
 uploader.init();
+
+function addtext(text) {
+    var textarea = document.getElementById('news_text');
+    textarea.value += text;
+}
+
 </script>

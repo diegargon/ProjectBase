@@ -2,8 +2,7 @@
  Copyright @ 2016 Diego Garcia
 */
 #filelist {
-    /* border:1px solid black; */
-   
+    /* border:1px solid black; */  
 }
 #filelist div {
     border: inset 1px black; 
@@ -15,8 +14,6 @@
     border:1px inset black;
     padding: 0px 5px 0px 5px;
     background-color: red;
-    
-    
 }
 .file_details {
     background-color: #666;
@@ -30,4 +27,15 @@
     padding: 3px 5px;
     background: #4479BA;
     color: #FFF;
+}
+#photobanner {
+    width:100%;
+    height: 105px;
+    padding:15px 0;
+    text-align:center;
+    background-color:#efefef;
+    border:2px solid #fff;
+    outline:1px solid #ddd;
+    -moz-ouline-radius:4px;
+    overflow: scroll;
 }

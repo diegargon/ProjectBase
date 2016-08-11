@@ -33,17 +33,24 @@ function NewsMediaUploader_init() {
 function NMU_form_add () {
     global $tpl, $sm;
 
-    $nmu_extra = "";
-
-    if ($user = $sm->getSessionUser()) {
-        NMU_upload_list($user);
-    }
+    ($user = $sm->getSessionUser()) ? $extra_content['UPLOAD_EXTRA'] = NMU_upload_list($user) : false;
 
     $tpl->AddScriptFile("standard", "jquery.min", "TOP");
     $tpl->AddScriptFile("NewsMediaUploader", "plupload.full.min", "TOP");
-    $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "formFileUpload"), $nmu_extra);
+    $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "formFileUpload", $extra_content));
 }
 
 function NMU_upload_list($user) {
-    return true;
+    global $db, $config;
+
+    $content = "<div id='photobanner'>";
+    $query = $db->select_all("links", array("plugin" => "news_img_upload", "source_id" => $user['uid']));
+    while ($link = $db->fetch($query)) {
+        $link_thumb = $config['IMG_SRV_URL'];
+        $link_thumb .= str_replace("[S]", "/thumbs/", $link['link']);
+        $textToadd = "[localimg]" . str_replace("[S]", "/desktop/", $link['link'])  . "[/localimg]";
+        $content .= "<a href=\"#news_text\" onclick=\"addtext('$textToadd'); return false\"><img src='$link_thumb' alt='' /></a>";
+    }
+    $content .= "</div>";
+    return $content;
 }

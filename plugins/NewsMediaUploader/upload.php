@@ -24,18 +24,30 @@ $targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
 $targetDir = $config['NMU_UPLOAD_DIR'];
 $cleanupTargetDir = true; // Remove old files
 $maxFileAge = 5 * 3600; // Temp file age in seconds
+$thumbsDir = $targetDir . DIRECTORY_SEPARATOR . "thumbs";
+$mobileDir = $targetDir . DIRECTORY_SEPARATOR . "mobile";
+$desktopDir = $targetDir . DIRECTORY_SEPARATOR . "desktop";
 // Create target dir
 if (!file_exists($targetDir)) {
-	@mkdir($targetDir);
+    @mkdir($targetDir);
+}
+if (!file_exists($mobileDir)) {
+    @mkdir($mobileDir);
+}
+if (!file_exists($thumbsDir)) {
+    @mkdir($thumbsDir);
+}
+if (!file_exists($desktopDir)) {
+    @mkdir($desktopDir);
 }
 // Get a file name
 // FIXME: $_FILES filename empty uploading  files greater than 8mb 
 if (isset($_REQUEST["name"])) {
-	$fileName = $_REQUEST["name"];
+    $fileName = $_REQUEST["name"];
 } elseif (!empty($_FILES)) {
-	$fileName = $_FILES["file"]["name"];
+    $fileName = $_FILES["file"]["name"];
 } else {
-	$fileName = uniqid("file_");
+    $fileName = uniqid("file_");
 }
 $fileName = S_VAR_FILENAME($fileName, 256, 1);
 $fileName = preg_replace("/\s+/", "_", $fileName); //spaces to _
@@ -47,8 +59,8 @@ if (empty($fileName)) {
 $filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
 if (file_exists($filePath)) {
-	die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "'. $LANGDATA['L_NMU_E_ALREADY_EXISTS'] .'"}, "id" : "id"}');
-        exit();
+    die('{"jsonrpc" : "2.0", "error" : {"code": 103, "message": "'. $LANGDATA['L_NMU_E_ALREADY_EXISTS'] .'"}, "id" : "id"}');
+    exit();
 }
 // Chunking might be enabled
 $chunk = isset($_REQUEST["chunk"]) ? intval($_REQUEST["chunk"]) : 0;
@@ -107,19 +119,23 @@ $insert_ary = array(
     "plugin" => "news_img_upload",
     "source_id" => $user['uid'],
     "type" => "image",
-    "link" => "$fileName",
+    "link" => $config['NMU_UPLOAD_DIR'] . "[S]" . $fileName,
 );
 $db->insert("links", $insert_ary);
 
 if( (getLib("ImageLib", "0.1")) && ( $config['NMU_CREATE_IMG_THUMBS'] || $config['NMU_CREATE_IMG_MOBILE'] ) ) {
     $imglib = new ImageLib;
     if ($config['NMU_CREATE_IMG_THUMBS']) {
-        $thumb_filePath =  $targetDir . DIRECTORY_SEPARATOR . "thumb-" . $fileName; // str_replace(".", "-thumb.", $filePath);
+        $thumb_filePath =  $thumbsDir . DIRECTORY_SEPARATOR . $fileName; // str_replace(".", "-thumb.", $filePath);
         $imglib->do_thumb($filePath, $thumb_filePath, $config['NMU_THUMBS_WIDTH'] );
     }
     if ( $config['NMU_CREATE_IMG_MOBILE'] ) {
-        $mobile_filePath =  $targetDir . DIRECTORY_SEPARATOR . "mobile-" . $fileName;
+        $mobile_filePath =  $mobileDir . DIRECTORY_SEPARATOR . $fileName;
         $imglib->do_thumb($filePath, $mobile_filePath, $config['NMU_MOBILE_WIDTH'] );
     }
+    if ( $config['NMU_CREATE_IMG_DESKTOP'] ) {
+        $desktop_filePath =  $desktopDir . DIRECTORY_SEPARATOR . $fileName;
+        $imglib->do_thumb($filePath, $desktop_filePath, $config['NMU_DESKTOP_WIDTH'] );
+    }    
 }
 die('{"jsonrpc" : "2.0", "result" : "'. $filePath .'", "id" : "id"}');
