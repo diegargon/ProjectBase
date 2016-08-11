@@ -42,13 +42,13 @@
 .news_extra_link {
     width: 85%;
 }
-.main_img_container {
+.main_img_container, .img_container_zoom {
     width:350px;
     float:right;
     padding-left:5px;
     transition: all 0.0s linear;
 }
-.main_img_container img:hover{
+.img_container_zoom img:hover{
     position: absolute;
     width: 50%;
     left:25%;

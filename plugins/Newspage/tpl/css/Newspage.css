@@ -346,15 +346,9 @@
     transition: all 0.5s linear;
     transition-delay:1s;
 }
-.image_link, .user_image_link {
+.image_link, .user_image_link  {
     max-width: 100%;
     box-shadow: 0 0 10px #ccc; 
-}
-
-.user_image_link:hover {
-    position: absolute;
-    width: 50%;
-    left:25%;   
 }
 .image_container {
     width:350px;

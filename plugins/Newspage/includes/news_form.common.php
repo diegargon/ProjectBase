@@ -230,7 +230,7 @@ function Newspage_FormScript() {
     global $tpl;
 
     $tpl->AddScriptFile("standard", "jquery.min", "TOP" );
-    $tpl->AddScriptFile("Newspage", "news_form", "BOTTOM" );
+    $tpl->AddScriptFile("Newspage", "newsform", "BOTTOM" );
     $tpl->AddScriptFile("Newspage", "editor", "BOTTOM" );
 }
 //Used when submit new news, get all site available langs and selected the default/user lang
