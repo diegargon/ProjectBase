@@ -9,15 +9,7 @@ $(document).ready(function(){
         var news_title = $("#news_title").val();
         var news_lead = $("#news_lead").val();
         var news_text = $("#news_text").val();
-
-        $('#news_author').css("border","1px solid black");
-        $('#news_author').css("box-shadow","0 0 3px black");
-        $('#news_title').css("border","1px solid black");          
-        $('#news_title').css("box-shadow","0 0 3px black");
-        $('#news_lead').css("border","1px solid black");
-        $('#news_lead').css("box-shadow","0 0 3px black");
-        $('#news_text').css("border","1px solid black");
-        $('#news_text').css("box-shadow","0 0 3px black");                      
+                     
         if($("#tos").is(':checked')) {
             var tos = 1;
         } else {
@@ -58,7 +50,7 @@ $(document).ready(function(){
         } else {
             $.post("", $( "#form_news" ).serialize() + '&newsFormSubmit_ST2=1' ,
             function(data) {                
-                alert(data); //DEBUG             
+                // console.log(data); //DEBUG             
                 var json = $.parseJSON(data);
                 if(json[0].status === 'ok') {
                     alert(json[0].msg);
