@@ -58,7 +58,11 @@ function news_page() {
                 news_form_preview();
             } else {
                 do_action("common_web_structure");
-                Newspage_FormScript();
+                if (!empty($_GET['page']) && $_GET['page'] > 1) {
+                    Newspage_FormPageScript();
+                } else {
+                    Newspage_FormScript();
+                }
                 news_edit($news_data);
             }
         } else {
@@ -85,7 +89,7 @@ function news_page() {
             news_form_preview ();
         } else {
             do_action("common_web_structure");
-            Newspage_FormNewpageScript();
+            Newspage_FormPageScript();
             news_new_page();
         }
     } else {

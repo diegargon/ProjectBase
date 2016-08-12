@@ -138,11 +138,3 @@ function news_newpage_submit_new($news_data) {
     $db->insert("news", $insert_ary);
     return true;
 }
-
-function Newspage_FormNewpageScript() {
-    global $tpl;
-
-    $tpl->AddScriptFile("standard", "jquery.min", "TOP" );
-    $tpl->AddScriptFile("Newspage", "newsform_newpage", "BOTTOM" );
-    $tpl->AddScriptFile("Newspage", "editor", "BOTTOM" );
-}

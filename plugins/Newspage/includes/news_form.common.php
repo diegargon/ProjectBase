@@ -155,17 +155,25 @@ function news_form_common_field_check($news_data) {
         return false;
     }
     //LEAD
-    if($news_data['lead'] == false) {
-        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_ERROR']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
-    }
-    if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT']) ||
+    if(isset($_GET['page']) && $_GET['page'] > 1 ) {
+      if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT'])) {
+            $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;            
+        }        
+    } else {
+        if($news_data['lead'] == false) {
+            $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_ERROR']);
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;
+        }
+        if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT']) ||
             (strlen($news_data['lead']) < $config['NEWS_LEAD_MIN_LENGHT'])
             ){
-        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+            $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;
+        }
     }
     //TEXT
     if($news_data['text'] == false) {
@@ -233,6 +241,15 @@ function Newspage_FormScript() {
     $tpl->AddScriptFile("Newspage", "newsform", "BOTTOM" );
     $tpl->AddScriptFile("Newspage", "editor", "BOTTOM" );
 }
+
+function Newspage_FormPageScript() { //Used for new page and edit non main page for avoid lead check
+    global $tpl;
+
+    $tpl->AddScriptFile("standard", "jquery.min", "TOP" );
+    $tpl->AddScriptFile("Newspage", "newsform_page", "BOTTOM" );
+    $tpl->AddScriptFile("Newspage", "editor", "BOTTOM" );
+}
+
 //Used when submit new news, get all site available langs and selected the default/user lang
 function news_get_all_sitelangs() {  
     global $config, $ml; 
