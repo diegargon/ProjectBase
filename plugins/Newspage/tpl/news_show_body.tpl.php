@@ -42,9 +42,11 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
                 </div>                
 <?php isset($tpldata['ADD_NEWS_INFO_BOTTOM']) ? print $tpldata['ADD_NEWS_INFO_BOTTOM']:false ?>
             </div>
+<?php if (!empty($tpldata['news_lead'])) { ?>                
                 <p class="article_lead">
                     <?php isset($tpldata['news_lead']) ? print $tpldata['news_lead']:false ?>
                 </p>
+<?php } ?>                
                 <hr/>
                 <?php !empty($tpldata['news_main_pre_text']) ? print $tpldata['news_main_pre_text'] : false; ?>
                 <div class="article_text">

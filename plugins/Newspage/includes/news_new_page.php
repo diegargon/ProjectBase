@@ -61,17 +61,12 @@ function news_newpage_form_process() {
         return false;
     }
 
-    if($news_data['lead'] == false) {
-        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_ERROR']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
-    }
-    if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT']) ||
-            (strlen($news_data['lead']) < $config['NEWS_LEAD_MIN_LENGHT'])
-            ){
-        $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+    if(!empty($news_data['lead'])) {
+        if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT'])){
+            $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);
+            echo json_encode($response, JSON_UNESCAPED_SLASHES);
+            return false;
+        }
     }
 
     if($news_data['text'] == false) {
@@ -127,7 +122,6 @@ function news_newpage_submit_new($news_data) {
         "nid" => $news_father['nid'],
         "lang_id" => $news_father['lang_id'],
         "title" => $news_data['title'],
-        "lead" => $news_data['lead'],
         "text" => $news_data['text'],
         "featured" => $news_father['featured'],
         "author" => $news_father['author'],
@@ -138,8 +132,17 @@ function news_newpage_submit_new($news_data) {
         "moderation" => $news_father['moderation'],
         "translator" => $news_father['translator'],
         "page" => ++$news_data['num_pages']
-    );    
+    );
+    !empty($news_data['lead']) ? $insert_ary['lead'] = $news_data['lead'] : false;
 
     $db->insert("news", $insert_ary);
     return true;
+}
+
+function Newspage_FormNewpageScript() {
+    global $tpl;
+
+    $tpl->AddScriptFile("standard", "jquery.min", "TOP" );
+    $tpl->AddScriptFile("Newspage", "newsform_newpage", "BOTTOM" );
+    $tpl->AddScriptFile("Newspage", "editor", "BOTTOM" );
 }

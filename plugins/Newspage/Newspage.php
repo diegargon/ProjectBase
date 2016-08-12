@@ -85,7 +85,7 @@ function news_page() {
             news_form_preview ();
         } else {
             do_action("common_web_structure");
-            Newspage_FormScript();
+            Newspage_FormNewpageScript();
             news_new_page();
         }
     } else {
