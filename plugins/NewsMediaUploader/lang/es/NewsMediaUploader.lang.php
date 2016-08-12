@@ -17,3 +17,4 @@ $LANGDATA['L_NMU_E_OPENSTREAM'] = "Error abriendo el stream";
 $LANGDATA['L_NMU_E_MOVE_FILE'] = "Error moviendo el archivo subido.";
 $LANGDATA['L_NMU_E_OPEN_INPUT_STREAM'] = "Error abriendo el stream de entrada.";
 $LANGDATA['L_NMU_E_FILENAME'] = "Error en el nombre del archivo, caracteres incorrectos o demasiado largo";
+$LANGDATA['L_NMU_W_DISABLE'] = "No tienes permisos para subir archivos";

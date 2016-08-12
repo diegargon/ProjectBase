@@ -14,13 +14,15 @@ function NewsMediaUploader_init() {
     
     $user = $sm->getSessionUser();
     
-    if ($config['NMU_ALLOW_ANON'] == 0 && empty($user['uid'])) {        
+    if ($config['NMU_ALLOW_ANON'] == 0 && empty($user['uid'])) {     
+        $tpl->addto_tplvar("NEWS_FORM_TOP_OPTION", NMU_disable_warn());
         return false;
     }
     
     if (defined('ACL') && $config['NMU_ACL_CHECK']) {
         global $acl_auth;
         if ( !$acl_auth->acl_ask($config['NMU_ACL_LIST'])) {
+            $tpl->addto_tplvar("NEWS_FORM_TOP_OPTION", NMU_disable_warn());
             return false;
         }
     }
@@ -52,5 +54,11 @@ function NMU_upload_list($user) {
         $content .= "<a href=\"#news_text\" onclick=\"addtext('$textToadd'); return false\"><img src='$link_thumb' alt='' /></a>";
     }
     $content .= "</div>";
+    return $content;
+}
+
+function NMU_disable_warn() {
+    global $LANGDATA;
+    $content = "<p class='warn_disable'>{$LANGDATA['L_NMU_W_DISABLE']}</p>";
     return $content;
 }

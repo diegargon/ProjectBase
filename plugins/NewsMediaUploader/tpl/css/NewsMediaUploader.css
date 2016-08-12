@@ -39,3 +39,7 @@
     -moz-ouline-radius:4px;
     overflow: scroll;
 }
+.warn_disable {
+    color: #cc0000;
+    text-align: center;
+}
