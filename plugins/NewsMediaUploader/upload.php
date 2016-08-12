@@ -115,11 +115,12 @@ if (!$chunks || $chunk == $chunks - 1) {
     rename("{$filePath}.part", $filePath);
 }
 
+$filePathSelector = $config['NMU_UPLOAD_DIR'] . "[S]" . $fileName;
 $insert_ary = array(
     "plugin" => "news_img_upload",
     "source_id" => $user['uid'],
     "type" => "image",
-    "link" => $config['NMU_UPLOAD_DIR'] . "[S]" . $fileName,
+    "link" => $config['NMU_UPLOAD_DIR'] . "[S]" . $filePathSelector,
 );
 $db->insert("links", $insert_ary);
 
@@ -138,4 +139,4 @@ if( (getLib("ImageLib", "0.1")) && ( $config['NMU_CREATE_IMG_THUMBS'] || $config
         $imglib->do_thumb($filePath, $desktop_filePath, $config['NMU_DESKTOP_WIDTH'] );
     }    
 }
-die('{"jsonrpc" : "2.0", "result" : "'. $filePath .'", "id" : "id"}');
+die('{"jsonrpc" : "2.0", "result" : "'. $filePathSelector .'", "id" : "id"}');

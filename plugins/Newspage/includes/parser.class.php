@@ -35,6 +35,7 @@ class parse_text {
         $text = nl2br($text);
         $text = preg_replace("/><br \/>(\s*)(<br \/>)?/si", ">" , $text);
         $text = preg_replace('/{IMG_SRV_URL}/si', $config['IMG_SRV_URL'], $text);
+        $text = preg_replace('/\[S\]/si', DIRECTORY_SEPARATOR . $config['IMG_SELECTOR'] . DIRECTORY_SEPARATOR , $text);
         return  $text;
     }
 }

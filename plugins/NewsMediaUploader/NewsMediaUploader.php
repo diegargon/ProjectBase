@@ -50,7 +50,7 @@ function NMU_upload_list($user) {
     while ($link = $db->fetch($query)) {
         $link_thumb = $config['IMG_SRV_URL'];
         $link_thumb .= str_replace("[S]", "/thumbs/", $link['link']);
-        $textToadd = "[localimg]" . str_replace("[S]", "/desktop/", $link['link'])  . "[/localimg]";
+        $textToadd = "[localimg]" . $link['link']  . "[/localimg]";
         $content .= "<a href=\"#news_text\" onclick=\"addtext('$textToadd'); return false\"><img src='$link_thumb' alt='' /></a>";
     }
     $content .= "</div>";
