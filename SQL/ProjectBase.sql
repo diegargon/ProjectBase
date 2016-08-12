@@ -1,20 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 30-07-2016 a las 14:27:13
+-- Tiempo de generación: 12-08-2016 a las 02:21:44
 -- Versión del servidor: 5.7.13-0ubuntu0.16.04.2
--- Versión de PHP: 7.0.8-0ubuntu0.16.04.1
+-- Versión de PHP: 7.0.8-0ubuntu0.16.04.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de datos: `ProjectBase`
@@ -74,16 +67,18 @@ INSERT INTO `pb_acl_users` (`urid`, `uid`, `role_id`) VALUES
 
 CREATE TABLE `pb_adv_stats` (
   `advstatid` int(11) NOT NULL,
-  `uid` int(11) NOT NULL,
+  `type` varchar(32) NOT NULL,
+  `uid` int(11) DEFAULT NULL,
   `plugin` varchar(11) NOT NULL,
-  `lang` varchar(2) NOT NULL,
-  `rid` int(11) NOT NULL,
-  `ip` varchar(32) NOT NULL,
-  `hostname` varchar(32) NOT NULL,
+  `lang` varchar(2) DEFAULT NULL,
+  `rid` int(11) DEFAULT NULL,
+  `ip` varchar(32) DEFAULT NULL,
+  `hostname` varchar(32) DEFAULT NULL,
+  `referer` varchar(256) DEFAULT NULL,
+  `user_agent` varchar(256) DEFAULT NULL,
   `counter` int(11) NOT NULL,
   `last_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 -- --------------------------------------------------------
 
@@ -128,9 +123,9 @@ CREATE TABLE `pb_comments` (
   `message` longtext NOT NULL,
   `author` varchar(32) NOT NULL,
   `author_id` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `rating` float NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 -- --------------------------------------------------------
 
@@ -161,13 +156,12 @@ INSERT INTO `pb_lang` (`lang_id`, `lang_name`, `iso_code`, `active`) VALUES
 
 CREATE TABLE `pb_links` (
   `link_id` int(11) NOT NULL,
-  `plugin` varchar(11) NOT NULL,
+  `plugin` varchar(32) NOT NULL,
   `source_id` int(11) NOT NULL,
   `type` varchar(11) NOT NULL,
   `link` varchar(256) NOT NULL,
   `itsmain` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 -- --------------------------------------------------------
 
@@ -180,7 +174,7 @@ CREATE TABLE `pb_news` (
   `lang_id` int(11) NOT NULL,
   `page` int(11) NOT NULL,
   `title` varchar(128) NOT NULL,
-  `lead` text NOT NULL,
+  `lead` text,
   `text` longtext NOT NULL,
   `acl` varchar(11) NOT NULL,
   `author` varchar(32) NOT NULL,
@@ -196,12 +190,10 @@ CREATE TABLE `pb_news` (
   `visits` int(32) NOT NULL DEFAULT '0',
   `translator` varchar(32) DEFAULT NULL,
   `disabled` tinyint(1) NOT NULL DEFAULT '0',
-  `tags` varchar(128) DEFAULT NULL
+  `tags` varchar(128) DEFAULT NULL,
+  `rating` float NOT NULL DEFAULT '0',
+  `rating_closed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `pb_news_ads`
@@ -209,9 +201,34 @@ CREATE TABLE `pb_news` (
 
 CREATE TABLE `pb_news_ads` (
   `adid` int(11) NOT NULL,
+  `lang` int(2) DEFAULT NULL,
   `ad_code` text NOT NULL,
+  `resource_id` int(11) NOT NULL DEFAULT '0',
+  `itsmain` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `pb_news_ads`
+--
+
+INSERT INTO `pb_news_ads` (`adid`, `lang`, `ad_code`, `resource_id`, `itsmain`) VALUES
+(1, NULL, '<img src="https://static06.cminds.com/wp-content/uploads/banner_functionalvisual-design1.png" alt="" />', 0, 1),
+(2, NULL, '<img src=\'http://www.2015awmanationals.com/images/your_ad_here.jpg\' alt=\'\' />\r\n', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pb_rating_track`
+--
+
+CREATE TABLE `pb_rating_track` (
+  `rating_id` int(32) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `ip` varchar(14) NOT NULL DEFAULT '0',
+  `section` varchar(32) NOT NULL,
   `resource_id` int(11) NOT NULL,
-  `itsmain` tinyint(1) NOT NULL
+  `lang_id` int(6) DEFAULT NULL,
+  `vote_value` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -229,8 +246,6 @@ CREATE TABLE `pb_sessions` (
   `last_login` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
-
 --
 -- Estructura de tabla para la tabla `pb_users`
 --
@@ -240,20 +255,37 @@ CREATE TABLE `pb_users` (
   `username` varchar(32) NOT NULL,
   `password` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `email` varchar(64) NOT NULL,
+  `realname` varchar(64) DEFAULT NULL,
   `regdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `active` int(12) NOT NULL DEFAULT '1',
   `disable` tinyint(4) NOT NULL DEFAULT '0',
   `isAdmin` tinyint(1) NOT NULL DEFAULT '0',
   `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `reset` int(11) NOT NULL
+  `reset` int(11) DEFAULT NULL,
+  `avatar` varchar(256) DEFAULT NULL,
+  `tos` tinyint(1) NOT NULL DEFAULT '1',
+  `user_rating` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `pb_users`
 --
 
-INSERT INTO `pb_users` (`uid`, `username`, `password`, `email`, `regdate`, `active`, `disable`, `isAdmin`, `last_login`, `reset`) VALUES
-(1, 'admin', '', 'root@localhost', '2016-07-25 14:04:38', 0, 0, 0, '2016-07-30 08:53:02', 0);
+INSERT INTO `pb_users` (`uid`, `username`, `password`, `email`, `realname`, `regdate`, `active`, `disable`, `isAdmin`, `last_login`, `reset`, `avatar`, `tos`, `user_rating`) VALUES
+(1, 'diego', 'pass', 'no@no.es', 'Diegargon', '2016-07-25 14:04:38', 0, 0, 0, '2016-08-11 23:56:43', 0, 'http://diego.envigo.net/images/Mifoto_Desktop.png', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `pb_user_extra`
+--
+
+CREATE TABLE `pb_user_extra` (
+  `ueid` int(11) NOT NULL,
+  `uid` int(11) NOT NULL,
+  `keyword` varchar(16) NOT NULL,
+  `value` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Índices para tablas volcadas
@@ -288,19 +320,22 @@ ALTER TABLE `pb_categories`
 -- Indices de la tabla `pb_comments`
 --
 ALTER TABLE `pb_comments`
-  ADD PRIMARY KEY (`cid`);
+  ADD PRIMARY KEY (`cid`),
+  ADD UNIQUE KEY `cid` (`cid`);
 
 --
 -- Indices de la tabla `pb_lang`
 --
 ALTER TABLE `pb_lang`
-  ADD PRIMARY KEY (`lang_id`);
+  ADD PRIMARY KEY (`lang_id`),
+  ADD UNIQUE KEY `lang_id` (`lang_id`);
 
 --
 -- Indices de la tabla `pb_links`
 --
 ALTER TABLE `pb_links`
-  ADD PRIMARY KEY (`link_id`);
+  ADD PRIMARY KEY (`link_id`),
+  ADD UNIQUE KEY `link_id` (`link_id`);
 
 --
 -- Indices de la tabla `pb_news`
@@ -313,7 +348,15 @@ ALTER TABLE `pb_news`
 -- Indices de la tabla `pb_news_ads`
 --
 ALTER TABLE `pb_news_ads`
-  ADD PRIMARY KEY (`adid`);
+  ADD PRIMARY KEY (`adid`),
+  ADD UNIQUE KEY `adid` (`adid`);
+
+--
+-- Indices de la tabla `pb_rating_track`
+--
+ALTER TABLE `pb_rating_track`
+  ADD PRIMARY KEY (`rating_id`),
+  ADD UNIQUE KEY `rating_id` (`rating_id`);
 
 --
 -- Indices de la tabla `pb_sessions`
@@ -326,7 +369,16 @@ ALTER TABLE `pb_sessions`
 -- Indices de la tabla `pb_users`
 --
 ALTER TABLE `pb_users`
-  ADD PRIMARY KEY (`uid`);
+  ADD PRIMARY KEY (`uid`),
+  ADD UNIQUE KEY `uid` (`uid`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indices de la tabla `pb_user_extra`
+--
+ALTER TABLE `pb_user_extra`
+  ADD PRIMARY KEY (`ueid`),
+  ADD UNIQUE KEY `ueid` (`ueid`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -346,12 +398,12 @@ ALTER TABLE `pb_acl_users`
 -- AUTO_INCREMENT de la tabla `pb_adv_stats`
 --
 ALTER TABLE `pb_adv_stats`
-  MODIFY `advstatid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `advstatid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT de la tabla `pb_comments`
 --
 ALTER TABLE `pb_comments`
-  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `pb_lang`
 --
@@ -361,17 +413,24 @@ ALTER TABLE `pb_lang`
 -- AUTO_INCREMENT de la tabla `pb_links`
 --
 ALTER TABLE `pb_links`
-  MODIFY `link_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `link_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 --
 -- AUTO_INCREMENT de la tabla `pb_news_ads`
 --
 ALTER TABLE `pb_news_ads`
-  MODIFY `adid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `adid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `pb_rating_track`
+--
+ALTER TABLE `pb_rating_track`
+  MODIFY `rating_id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 --
 -- AUTO_INCREMENT de la tabla `pb_users`
 --
 ALTER TABLE `pb_users`
-  MODIFY `uid` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+  MODIFY `uid` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `pb_user_extra`
+--
+ALTER TABLE `pb_user_extra`
+  MODIFY `ueid` int(11) NOT NULL AUTO_INCREMENT;
