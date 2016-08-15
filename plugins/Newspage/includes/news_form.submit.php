@@ -13,7 +13,8 @@ function news_form_new() {
     if (!$user && $config['NEWS_SUBMIT_ANON']) {
         $data['author'] = $LANGDATA['L_NEWS_ANONYMOUS'];
     } else if ($user) {
-        $data['author'] = $user['username'];    
+        $data['author'] = $user['username'];
+        $data['tos_checked'] = 1;
     } else {
         $msgbox['MSG'] = "L_ERROR_NOACCESS";
         do_action("message_box", $msgbox);        

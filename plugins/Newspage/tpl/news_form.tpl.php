@@ -103,7 +103,7 @@ if(!empty($data['select_acl'])) {
             </p>
             <?php !empty($tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'])? print $tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'] :false; ?>
             <p>
-                <a href="/terms.php" target="_blank"><?php print $LANGDATA['L_TOS'] ?></a><input id="tos" name="tos" required="required" type="checkbox"/>
+                <a href="/terms.php" target="_blank"><?php print $LANGDATA['L_TOS'] ?></a><input <?php $data['tos_checked'] ? print "checked" : false ?> id="tos" name="tos" required="required" type="checkbox"/>
             </p>            
         </div>
             
