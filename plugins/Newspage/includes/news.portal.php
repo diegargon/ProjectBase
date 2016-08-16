@@ -71,9 +71,7 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
         }
     } 
     
-    if ((!empty($category)) && ($category != 0 )) {        
-        $where_ary['category'] = $category;
-    }       
+    !empty($category) && $category != 0 ? $where_ary['category'] = $category : false;
     $q_extra = " ORDER BY date DESC";    
     $limit > 0 ? $q_extra .= " LIMIT $limit" : false;
     
@@ -82,18 +80,15 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
         return false;
     }
        
-    if(!empty($category)) {
-        if (defined('MULTILANG')) {
-            $catname = get_category_name($category, $lang_id);
-        } else {
-            $catname = get_category_name($category);    
-        }
-        $content .= "<h2>$catname</h2>";
-    }     
+    if (defined('MULTILANG') && !empty($category)) {
+        $catname = get_category_name($category, $lang_id);
+    } else {
+        $catname = get_category_name($category);    
+    }
 
     while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false) {
-            if ($headlines == 1) { $content_data['headlines'] = 1; }
+            $headlines == 1 ? $content_data['headlines'] = 1 : false;
             do_action("news_get_news_mod", $content_data);
             $content .= $tpl->getTPL_file("Newspage", "news_preview", $content_data);        
         }
@@ -167,9 +162,8 @@ function get_category_name($cid, $lang_id = null) {
     global $db; 
 
     $where_ary['cid'] = $cid;
-    if (defined('MULTILANG') && $lang_id != null) {
-        $where_ary['lang_id'] = $lang_id;
-    }
+    defined('MULTILANG') && $lang_id != null ? $where_ary['lang_id'] = $lang_id : false;
+
     $query = $db->select_all("categories", $where_ary, "LIMIT 1");
     $category = $db->fetch($query);
     $db->free($query);  
