@@ -19,6 +19,9 @@ function news_new_page() {
 
     $user = $sm->getSessionUser();
 
+    if (!empty($user) && $user['uid'] > 0) {
+        $form_data['tos_checked'] = 1;
+    }
     if ( ( $news_first_page['author_id'] == $user['uid'])
             || (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all"))
                     || (!defined('ACL') && $user['isAdmin'])

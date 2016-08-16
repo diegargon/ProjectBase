@@ -58,7 +58,9 @@ function news_check_edit_authorized() {
     if ( (!$user = $sm->getSessionUser()) ) {
         $msgbox['MSG'] = "L_ERROR_NOACCESS";
         do_action("message_box", $msgbox);        
-    } 
+    } else if ($user['uid'] > 0) {            
+        $news_data['tos_checked'] = 1;
+    }
 
     if( (defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin"))
             || (!defined('ACL') && $user['isAdmin'])

@@ -39,6 +39,9 @@ function news_new_lang() {
     }
     $news_data['translator'] = $translator['username'];  
     
+    if ($translator['uid'] > 0 ) {
+        $news_data['tos_checked'] = 1;
+    }
     if ( (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) 
             || ((!defined('ACL') && $translator['isAdmin']))
             ) {
