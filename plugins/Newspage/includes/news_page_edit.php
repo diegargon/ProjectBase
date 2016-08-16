@@ -56,8 +56,9 @@ function news_check_edit_authorized() {
         return false; //get_news... error already setting
     }
     if ( (!$user = $sm->getSessionUser()) ) {
-        $msgbox['MSG'] = "L_ERROR_NOACCESS";
-        do_action("message_box", $msgbox);        
+        $msgbox['MSG'] = "L_ERROR_NOACCESS";        
+        do_action("message_box", $msgbox);
+        return false;
     } else if ($user['uid'] > 0) {            
         $news_data['tos_checked'] = 1;
     }
