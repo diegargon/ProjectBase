@@ -1,7 +1,6 @@
 /*
  Copyright @ 2016 Diego Garcia
 */
-
 /* NEWS */
 .newsbox {
     display:block;
@@ -34,12 +33,10 @@
 .newsbox h4 {
     font-size: 0.7em;
 }
-
 .newsbox p{
     font-size: 1.2em;
     margin-top:0px;
 }
-
 .p-small {
     font-size: 1.0em !important;
     margin:0 auto;   
@@ -53,7 +50,6 @@
     padding: 5px;
     /* overflow: hidden; */
 }
-
 /* FEATURED */
 #featured_wrap {
     border: 0px solid red;
@@ -63,11 +59,13 @@
     padding-left: 4px;
     padding-right: 4px;
 }
+#featured_wrap a {
+    text-decoration: none;
+}
 #featured_wrap span {
     float:left;
     font-weight: bold;
     font-size: 1.2em;
-    /* margin: 0px 10px 5px 10px; */
     box-shadow: 0 0 10px #ccc;
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;        
@@ -79,11 +77,12 @@
     margin-bottom: 5px;
 }
 #featured {
-   display:table;
-   float:left;
    width: 100%;
-   border: 0px solid red;   
-   margin-bottom: 5px;
+   border: 0px solid red;
+   background-color: #DEDEDE;
+   color: #989898;
+   height: 230px;
+   box-shadow: 0 0 10px #ccc;
 }
 #featured h1 {
     font-size: 1.4em;
@@ -94,15 +93,22 @@
     font-size: 1.2em;
     text-transform: none;
 }
-.feature_article {
-    display:table-cell;
-    border: 0px solid red;    
-    color: #989898;
-    background-color: #DEDEDE;
-    box-shadow: 0 0 10px #ccc;  
-    height:100%;
-    vertical-align:top;
-    /* padding-left:5px; */
+#featured  img {
+    margin-right: 10px;
+    float:left;
+    width: 100%;
+    box-shadow: 3px 3px 4px black;
+    max-width: 300px;
+    padding-left: 5px;
+}
+.feature_image{
+    display: table-cell;
+    border:0px solid blue;
+    float:left;
+    margin: 10px;
+}
+#featured:hover img{
+    opacity: 0.8; 
 }
 .feature_article p {
     font-size: 1.2em;
@@ -161,7 +167,6 @@
     color: red;
     text-align: center;
 }
-
 /* #col1 section h2, #col2  section h2, #col3 section h2 { */
 #col1 h2, #col2 h2, #col3 h2 { 
     float:left;
@@ -198,15 +203,13 @@
     margin-bottom: 5px;
 }
 .submit_box input {}
-
 .btnSubmitNews {     
     margin-top: 5px;
     width: 100px !important;
-    
 }
 .submit_items {
     margin:0 auto;
-    border:0px solid red;    
+    border:0px solid red;
     width:99%;
 }
 #news_author, #news_lead, #news_title, #news_text, #news_lang {
@@ -246,7 +249,6 @@
  
 }
 #adm_nav {}
-
 #adm_nav li {
     border:0px solid red;
     padding-top:9px;
@@ -367,4 +369,27 @@
 }
 #preview { 
     overflow:hidden;
+}
+.newsbox img {
+	float: left;
+	width: 100px;
+	height: 75px;
+	margin: 0 10px 10px 0;
+	border: 0px solid black;
+	box-shadow: 3px 3px 4px black;
+}
+.newsbox:hover img {
+	opacity: 0.4;
+}
+.news_img_float_r, .news_img_float_l {
+    width:350px;
+    transition: all 0.0s linear;
+}
+.news_img_float_r {
+    float:right;
+    padding-left:5px;
+}
+.news_img_float_l {
+    float:left;
+    padding-right: 5px;
 }

@@ -89,6 +89,12 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false) {
             $headlines == 1 ? $content_data['headlines'] = 1 : false;
+            $mainimage = news_determine_main_image($row);
+            if (!empty($mainimage)) {
+                require_once 'parser.class.php';
+                !isset($news_parser) ? $news_parser = new parse_text : false;
+                $content_data['mainimage'] = $news_parser->parse($mainimage);
+            }
             do_action("news_get_news_mod", $content_data);
             $content .= $tpl->getTPL_file("Newspage", "news_preview", $content_data);        
         }
@@ -96,6 +102,14 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     $db->free($query);    
     
     return $content;
+}
+
+function news_determine_main_image($news) {
+    $news_body = $news['text'];
+    $match_regex = "/\[(img|localimg).*\](.*)\[\/(img|localimg)\]/";
+    $match = false;
+    preg_match($match_regex, $news_body, $match);
+    return !empty($match[0]) ? $match[0] : false;
 }
 
 function get_news_featured() {
@@ -125,6 +139,12 @@ function get_news_featured() {
             } else {
                 $content_data['category'] = get_category_name($row['category']);
             }
+            $mainimage = news_determine_main_image($row);
+            if (!empty($mainimage)) {
+                require_once 'parser.class.php';
+                !isset($news_parser) ? $news_parser = new parse_text : false;
+                $content_data['mainimage'] = $news_parser->parse($mainimage);
+            }            
             do_action("news_featured_mod" ,$row);
             $content .= $tpl->getTPL_file("Newspage", "news_featured", $content_data);
         }
