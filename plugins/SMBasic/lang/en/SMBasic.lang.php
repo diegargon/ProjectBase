@@ -93,3 +93,6 @@ $LANGDATA['L_SM_USERS_DISABLE'] = "Disabled users";
 $LANGDATA['L_SM_E_ACTIVATION'] = "Activation error";
 $LANGDATA['L_SM_E_RESET'] = "failed reset password";
 $LANGDATA['L_SM_E_AVATAR'] = "Avatar incorrect";
+$LANGDATA['L_TOS'] = "Terms of service";
+$LANGDATA['L_SM_REALNAME'] = "Real name";
+$LANGDATA['L_SM_PROFILE_OPTIONAL'] = "Additional options:";
