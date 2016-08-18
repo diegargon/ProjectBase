@@ -1,12 +1,12 @@
 {
     "plugin_name": "SimpleComments",
-    "enabled": "1",
+    "enabled": 1,
     "main_file" : "SimpleComments.php",
     "function_init": "SimpleComments_init",
     "function_install": "",
     "provided": "sc1",
     "depends" : "sessions1",
-    "autostart": "0",
-    "priority" : "5",
+    "autostart": 0,
+    "priority" : 5,
     "optional": ""    
 }

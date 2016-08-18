@@ -1,13 +1,13 @@
 {
     "plugin_name": "ExampleWeb",
-    "enabled": "1",
+    "enabled": 1,
     "main_file" : "ExampleWeb.php",
     "function_init": "ExampleWeb_init",
     "function_install": "",
     "provided": "mainweb",
     "depends" : "SQL1 tplbasic1",
-    "autostart": "1",
-    "priority" : "5",
+    "autostart": 1,
+    "priority" : 5,
     "optional": "",
     "conflicts": ""
 }

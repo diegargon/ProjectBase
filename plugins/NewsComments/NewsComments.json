@@ -1,13 +1,13 @@
 {
     "plugin_name": "NewsComments",
-    "enabled": "1",
+    "enabled": 1,
     "main_file" : "NewsComments.php",
     "function_init": "NewsComments_init",
     "function_install": "",
     "provided": "",
     "depends" : "sc1",
-    "autostart": "0",
-    "priority" : "5",
+    "autostart": 0,
+    "priority" : 5,
     "optional": "",
     "conflicts": ""
 }

@@ -1,13 +1,13 @@
 {
     "plugin_name": "DebugWindow",
-    "enabled": "0",
+    "enabled": 0,
     "main_file" : "DebugWindow.php",
     "function_init": "DebugWindow_init",
     "function_install": "",
     "provided": "",
     "depends" : "tplbasic1",
-    "autostart": "0",
-    "priority" : "5",
+    "autostart": 0,
+    "priority" : 5,
     "optional": "multilang1",
     "conflicts": ""
 }

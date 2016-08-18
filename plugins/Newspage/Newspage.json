@@ -1,14 +1,14 @@
 {
     "plugin_name": "Newspage",
-    "enabled": "1",
+    "enabled": 1,
     "main_file" : "Newspage.php",
     "function_init": "Newspage_init",
     "function_admin_init": "Newspage_AdminInit",    
     "function_install": "",
     "provided": "news1",
     "depends" : "SQL1 tplbasic1 sessions1",
-    "autostart": "0",
-    "priority" : "5",
+    "autostart": 0,
+    "priority" : 5,
     "optional": "multilang1 acl1",
     "conflicts": ""
 }
