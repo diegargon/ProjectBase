@@ -393,3 +393,6 @@
     float:left;
     padding-right: 5px;
 }
+.center {
+    text-align:center;
+}
