@@ -86,8 +86,6 @@ class ImageLib {
             $new_width = $thumbnail_width;
             $new_height = $original_height / $ratio;
         }
-        $dest_x = 0;
-        $dest_y = 0;
 
         if ($original_type === 1) {
             $imgt = "ImageGIF";
@@ -105,7 +103,7 @@ class ImageLib {
         $old_image = $imgcreatefrom($filepath);
         $new_image = imagecreatetruecolor($new_width, $new_height); // creates new image, but with a black background
 
-        imagecopyresampled($new_image, $old_image, $dest_x, $dest_y, 0, 0, $new_width, $new_height, $original_width, $original_height);
+        imagecopyresampled($new_image, $old_image, 0, 0, 0, 0, $new_width, $new_height, $original_width, $original_height);
         $imgt($new_image, $thumbpath);
         return file_exists($thumbpath);
     }
