@@ -49,7 +49,7 @@ function NMU_upload_list($user) {
     $query = $db->select_all("links", array("plugin" => "news_img_upload", "source_id" => $user['uid']), "LIMIT {$config['NMU_USER_IMG_LIST_MAX']}");
     while ($link = $db->fetch($query)) {        
         $link_thumb = str_replace("[S]", "/thumbs/", $link['link']);
-        $textToadd = "[localimg]" . $config['IMG_SRV_URL'] . $link['link']  . "[/localimg]";
+        $textToadd = "[localimg]" . $config['STATIC_SRV_URL'] . $link['link']  . "[/localimg]";
         $content .= "<a href=\"#news_text\" onclick=\"addtext('$textToadd'); return false\"><img src='$link_thumb' alt='' /></a>";
     }
     $content .= "</div>";

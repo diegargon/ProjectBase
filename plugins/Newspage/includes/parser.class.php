@@ -14,8 +14,8 @@ class parse_text {
 	'~\[url\]((?:ftp|https?)://.*?)\[/url\]~si'                         => '<a href="$1">$1</a>',
 	'~\[img\](https?://.*?\.(?:jpg|jpeg|gif|png|bmp))\[/img\]~si'       => '<p><img class="user_image_link" src="$1" alt="" /></p>',
         '~\[img w=((?:[1-9][0-9]?[0-9]?))\](.*?)\[\/img\]~si'               => '<p><img class="user_image_link" width="$1" src="$2" alt="" /></p>',
-        '~\[localimg\](.*?)\[\/localimg\]~si'                               => '<p><img class="user_image_link" src="{IMG_SRV_URL}$1" alt="" /></p>',
-        '~\[localimg w=((?:[1-9][0-9]?[0-9]?))\](.*?)\[\/localimg\]~si'     => '<p><img class="user_image_link" width="$1" src="{IMG_SRV_URL}$2" alt="" /></p>',
+        '~\[localimg\](.*?)\[\/localimg\]~si'                               => '<p><img class="user_image_link" src="{STATIC_SRV_URL}$1" alt="" /></p>',
+        '~\[localimg w=((?:[1-9][0-9]?[0-9]?))\](.*?)\[\/localimg\]~si'     => '<p><img class="user_image_link" width="$1" src="{STATIC_SRV_URL}$2" alt="" /></p>',
         '~\[list\](.*?)\\[\\/list\\]~si'                                    => '<ol>$1</ol>',
         '~\[\*\](.*)\[\/\*\]~i'                                             => '<li>$1</li>',
         '~\[style=((?:[a-zA-Z-_:;])+)\]~si'                                 => '<div style="$1">',
@@ -34,7 +34,7 @@ class parse_text {
         $text = preg_replace(array_keys($this->bbcode), array_values($this->bbcode), $text);
         $text = nl2br($text);
         $text = preg_replace("/><br \/>(\s*)(<br \/>)?/si", ">" , $text);
-        $text = preg_replace('/{IMG_SRV_URL}/si', $config['IMG_SRV_URL'], $text);
+        $text = preg_replace('/{STATIC_SRV_URL}/si', $config['STATIC_SRV_URL'], $text);
         $text = preg_replace('/\[S\]/si', DIRECTORY_SEPARATOR . $config['IMG_SELECTOR'] . DIRECTORY_SEPARATOR , $text);
         return  $text;
     }
