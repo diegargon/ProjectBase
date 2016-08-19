@@ -7,7 +7,7 @@ if ( (!$user = $sm->getSessionUser())  ) {
     if ($config['NMU_ALLOW_ANON']) {
         $user['uid'] = 0;
     } else {
-        echo "Error anonymous upload disabled";
+        die('{"jsonrpc" : "2.0", "error" : {"code": 105, "message": "'. $LANGDATA['L_NMU_W_DISABLE'] .'"}, "id" : "id"}');
         exit();
     }   
 }
@@ -120,7 +120,7 @@ $insert_ary = array(
     "plugin" => "news_img_upload",
     "source_id" => $user['uid'],
     "type" => "image",
-    "link" => $config['NMU_UPLOAD_DIR'] . "[S]" . $filePathSelector,
+    "link" => $filePathSelector,
 );
 $db->insert("links", $insert_ary);
 
