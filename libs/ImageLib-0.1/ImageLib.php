@@ -80,11 +80,14 @@ class ImageLib {
     }
     function do_thumb($filepath, $thumbpath, $thumbnail_width) {
         list($original_width, $original_height, $original_type) = getimagesize($filepath);
-
+        
         if ($original_width > $thumbnail_width) {
             $ratio =  $original_width / $thumbnail_width;
             $new_width = $thumbnail_width;
             $new_height = $original_height / $ratio;
+        } else {
+            $new_width = $original_width;
+            $new_height = $original_height;
         }
 
         if ($original_type === 1) {
