@@ -33,12 +33,15 @@ function NewsMediaUploader_init() {
 }
 
 function NMU_form_add () {
-    global $tpl, $sm;
+    global $tpl, $sm, $config;
 
     ($user = $sm->getSessionUser()) ? $extra_content['UPLOAD_EXTRA'] = NMU_upload_list($user) : false;
 
     $tpl->AddScriptFile("standard", "jquery.min", "TOP");
     $tpl->AddScriptFile("NewsMediaUploader", "plupload.full.min", "TOP");
+    if ($config['NMU_REMOTE_FILE_UPLOAD']) {
+        $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "remoteFileUpload", $extra_content));
+    }
     $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "formFileUpload", $extra_content));
 }
 
@@ -46,10 +49,15 @@ function NMU_upload_list($user) {
     global $db, $config;
 
     $content = "<div id='photobanner'>";
-    $query = $db->select_all("links", array("plugin" => "news_img_upload", "source_id" => $user['uid']), "LIMIT {$config['NMU_USER_IMG_LIST_MAX']}");
+    $select_ary = array(
+        "plugin" => "news_img_upload", 
+        "source_id" => $user['uid'],
+    );
+    
+    $query = $db->select_all("links", $select_ary, "ORDER BY `date` DESC LIMIT {$config['NMU_USER_IMG_LIST_MAX']}");
     while ($link = $db->fetch($query)) {        
         $link_thumb = str_replace("[S]", "/thumbs/", $link['link']);
-        $textToadd = "[localimg]" . $config['STATIC_SRV_URL'] . $link['link']  . "[/localimg]";
+        $textToadd = "[localimg]" . $link['link']  . "[/localimg]";
         $content .= "<a href=\"#news_text\" onclick=\"addtext('$textToadd'); return false\"><img src='$link_thumb' alt='' /></a>";
     }
     $content .= "</div>";

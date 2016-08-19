@@ -20,7 +20,7 @@
     border-left: 1px solid black;
     padding: 0px 0px 0px 5px;
 }
-#pickfiles, #uploadfiles {
+#pickfiles, #uploadfiles, #btnRemoteUpload {
     font-size: 0.8em;
     text-decoration: none;
     border: outset 1px black;
@@ -42,4 +42,7 @@
 .warn_disable {
     color: #cc0000;
     text-align: center;
+}
+.news_remote_link {
+    width:80%;
 }
