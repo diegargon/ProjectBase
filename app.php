@@ -6,8 +6,8 @@ define('IN_WEB', TRUE);
 
 require_once "includes/core.inc.php";
 
-$module = S_GET_CHAR_AZ("module");
-$page = S_GET_CHAR_AZ("page");
+$module = S_GET_STRICT_CHARS("module");
+$page = S_GET_STRICT_CHARS("page");
 
 if ( empty($module) || empty($page)) {
     echo "Error module or page missed";
