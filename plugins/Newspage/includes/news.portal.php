@@ -86,6 +86,8 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
         $catname = get_category_name($category);    
     }
 
+    $save_img_selector = $config['IMG_SELECTOR'];
+    $config['IMG_SELECTOR'] = "thumbs";
     while($row = $db->fetch($query)) {
         if ( ($content_data = fetch_news_data($row)) != false) {
             $headlines == 1 ? $content_data['headlines'] = 1 : false;
@@ -100,7 +102,7 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
         }
     }    
     $db->free($query);    
-    
+    $config['IMG_SELECTOR'] = $save_img_selector;
     return $content;
 }
 
