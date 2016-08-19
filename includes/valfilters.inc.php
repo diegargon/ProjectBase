@@ -41,6 +41,14 @@ function S_GET_URI($var) {
     }
     return filter_input(INPUT_GET, $var,  FILTER_SANITIZE_URL);
 }
+function S_GET_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
+    if(empty($_GET[$var])) {
+       return false;
+    }    
+
+    return S_VAR_STRICT_CHARS($_GET[$var], $max_size, $min_size);    
+}
+
 //$_POST
 function S_POST_PASSWORD($var, $max_size = null, $min_size = null) {
     if(empty($_POST[$var])) {
