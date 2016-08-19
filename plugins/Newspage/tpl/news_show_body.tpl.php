@@ -29,7 +29,7 @@ if(isset($tpldata['NEWS_MSG']) && !empty($tpldata['NEWS_MSG'])) {
 <?php !empty($tpldata['author_avatar']) ? print $tpldata['author_avatar'] : false; ?>
 <?php isset($tpldata['ADD_NEWS_INFO_POST_AVATAR']) ? print $tpldata['ADD_NEWS_INFO_POST_AVATAR']:false ?>
                 <div class="extra-small">
-                    <?php print($tpldata['news_date'])?> |
+                    <?php print($tpldata['news_date'])?> <br/>
                     <a href='/profile.php?lang=<?php print $config['WEB_LANG']?>&viewprofile=<?php print $tpldata['news_author_uid'] ?>'>
                     <?php print $tpldata['news_author'] ?>
                     </a>

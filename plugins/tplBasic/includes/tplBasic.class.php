@@ -9,7 +9,7 @@ class TPL {
     private $tpldata;
     private $scripts = [];
     private $standard_scripts = array ( //TODO LOAD LIST
-        "jquery.min" => "<script  type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\" charset=\"UTF-8\"></script>\n",
+        "jquery.min" => "<script  type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\" charset=\"UTF-8\" async></script>\n",
     );
     private $css_cache_filepaths;
     private $css_cache_onefile;
@@ -145,7 +145,7 @@ class TPL {
             $SCRIPT_PATH = $DEFAULT_PATH;
         } 
         if (!empty($SCRIPT_PATH)) {
-            $script = "<script type='text/javascript' src='/$SCRIPT_PATH' charset='UTF-8'></script>\n";
+            $script = "<script type='text/javascript' src='/$SCRIPT_PATH' charset='UTF-8' async></script>\n";
         } else {
             print_debug("AddScriptFile called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
             return false;

@@ -92,7 +92,7 @@ function newsvote_comment_addrate(& $comment) {
     $stars_ext = "_rate.png";
     $user = $sm->getSessionUser();
     $rate_data['rate_style'] = "border:0px solid red;"
-            . "padding:0px;margin-left:-7px;"
+            . "padding:3px;margin-left:-7px;"
             . "background-color:transparent;"
     ;
 
@@ -125,7 +125,7 @@ function newsvote_addrate($news){
     $stars_ext = "_rate.png";
     $user = $sm->getSessionUser();    
     $rate_data['rate_style'] = "border:0px solid red;"
-            . "padding:0px;margin-left:-7px;"
+            . "padding:0px;margin-left:0px;margin-bottom:1px;"
             . "background-color:transparent;"
     ;
     if ($news['rating_closed'] == 0 && $user['uid'] > 0 && $user['uid'] != $news['author_id']) {

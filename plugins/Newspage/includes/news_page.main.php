@@ -64,8 +64,7 @@ function news_show_page() {
     $tpl_data['news_url'] = "news.php?nid={$news_row['nid']}";
     $tpl_data['news_date'] = format_date($news_row['date']);
     $tpl_data['news_author'] = $news_row['author'];
-    $tpl_data['news_author_uid'] = $news_row['author_id'];
-    //$tpl_data['news_text']  = str_replace('\r\n', PHP_EOL, $news_row['text']);
+    $tpl_data['news_author_uid'] = $news_row['author_id'];    
     
     !isset($news_parser) ? $news_parser = new parse_text : false;
     $tpl_data['news_text']  = $news_parser->parse($news_row['text']);
