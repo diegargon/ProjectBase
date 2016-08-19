@@ -8,7 +8,7 @@ function NewsVote_init() {
     global $tpl;
     print_debug("NewsVote initiated", "PLUGIN_LOAD");
 
-    $tpl->AddScriptFile("standard", "jquery.min", "TOP");
+    $tpl->AddScriptFile("standard", "jquery.min", "BOTTOM");
     $tpl->AddScriptFile("NewsVote", "newsvote", "BOTTOM");
     //NEWS
     register_action("news_show_page", "newsvote_addrate");
