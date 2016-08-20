@@ -9,7 +9,7 @@ function print_debug($msg, $filter = null) {
     if ( (array_search($msg, array_column($debug, 'msg')) ) != null) { //avoid duplicates
         return;
     }
-    if (!empty($filter) && defined($filter) && defined('DEBUG')) {   
+    if (!empty($filter) && defined($filter) && defined('DEBUG')) {
         $debug[] = array ("msg" => "$msg", "filter" => "$filter" );
     } else if (empty($filter) && defined ('DEBUG')) {
         $debug[] = array ("msg" => "$msg", "filter" => "DEBUG");
@@ -41,7 +41,7 @@ function its_server_stressed() {
 
 function codetovar($path, $data = null) {
     global $config, $LANGDATA, $tpl;
-    
+
     $tpldata = $tpl->get_tpldata();
     ob_start();
     include ($path);
@@ -60,7 +60,7 @@ function format_date($date, $timestamp = false) {
 }
 
 function includePluginFiles($plugin, $admin = 0) {
-    global $config, $LANGDATA; 
+    global $config; 
 
     $class_file ="";
     $inc_file ="";
