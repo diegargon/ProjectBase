@@ -80,7 +80,7 @@ window.onload = function() {
                 }  
             });
         }
-        $('#newsFormSubmit').removeAttr("disabled");            
+        $('#newsFormSubmit').removeAttr("disabled");
         return false;        
     });    
 };

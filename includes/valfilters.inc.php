@@ -210,7 +210,7 @@ function S_VAR_FILENAME ($file, $max_size = null, $min_size = null) {
     return trim($file);
 
 }
-function S_VAR_URL($var, $max_size = null, $min_size = null) {
+function S_VAR_URL($var, $max_size = null, $min_size = null, $force_no_remote_check = null) {
     global $config;
     
     if(empty($var)) {
@@ -226,9 +226,12 @@ function S_VAR_URL($var, $max_size = null, $min_size = null) {
     } 
     $url = filter_var($var, FILTER_SANITIZE_URL);  
     $url = filter_var($url, FILTER_VALIDATE_URL);
-
+    
+    if (empty($url)) {
+        return false;
+    }
     if ($config['REMOTE_CHECKS'] && (!remote_check($url)) ) {
-        $url = false;
+        return false;
     }    
     return $url;
 }
@@ -319,24 +322,15 @@ function S_COOKIE_CHAR_AZNUM($var, $max_size = null, $min_size = null) {
 function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null, $force_no_remote_check = null) {
     global $config;
 
-    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) {
-        $url = "http://" . $url;
-    }
-
     $regex = '/\.('. $config['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
 
-    if( ($url = S_VAR_URL($url, $max_size, $min_size)) == false ) {
+    if( ($url = S_VAR_URL($url, $max_size, $min_size, $force_no_remote_check)) == false ) {
         return -1;
     }
-
+    
     if ( !preg_match($regex, $url) ) {
       return -1;
     }
 
-    if ($config['REMOTE_CHECKS'] && empty($force_no_remote_check)) {
-        if (!remote_check($url)) {
-            return -1;
-        }
-    }
     return $url;
 }

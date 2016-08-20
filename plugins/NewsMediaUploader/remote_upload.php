@@ -16,12 +16,13 @@ if ( (!$user = $sm->getSessionUser())  ) {
         exit();
     }   
 }
-$url = S_POST_URL("url");
+$url = S_POST_URL("url", null, null, 1);
+
 if (!empty($url) ) {
     $url = S_VALIDATE_MEDIA($url, null, null, 1); //force no remote check, we check here
 }
 
-if (empty($url) || ! $headers = get_headers( $url , 1) ) {    
+if (empty($url) || $url == -1 || ! $headers = get_headers( $url , 1) ) {    
         die('{"status": "2", "msg": "'.  $LANGDATA['L_NMU_E_URL'] .'"}');
         exit();
 }
@@ -34,13 +35,17 @@ if(!empty($headers['Content-Lenght'])) { //Nginx not send content-lenght not all
         exit();
     }
 }
+if(empty($headers['Content-Type'])) {
+        die('{"status": "4", "msg": "'.  $LANGDATA['L_NMU_E_URL'] .'"}');
+        exit();    
+}
 
 $content_type = explode("/", $headers['Content-Type']);
 $image_type = $content_type[1];
 $content_type = $content_type[0];
 
 if ($content_type != "image") {
-        die('{"status": "3", "msg": "'.  $LANGDATA['L_NMU_E_NOMEDIA'] .'"}');
+        die('{"status": "5", "msg": "'.  $LANGDATA['L_NMU_E_NOMEDIA'] .'"}');
         exit();        
 }
 
@@ -56,7 +61,7 @@ $image = file_get_contents($url, false, stream_context_create ($ssl_off) );
 $fileName = uniqid("file_") . "." . $image_type;
 $filePath = $config['NMU_UPLOAD_DIR'] . DIRECTORY_SEPARATOR . $fileName ;
 if(file_exists($filePath)) {
-        die('{"status": "3", "msg": "'.  $LANGDATA['L_NMU_E_ALREADY_EXISTS'] .'"}');
+        die('{"status": "6", "msg": "'.  $LANGDATA['L_NMU_E_ALREADY_EXISTS'] .'"}');
         exit();        
 }
 

@@ -37,8 +37,8 @@ function NMU_form_add () {
 
     ($user = $sm->getSessionUser()) ? $extra_content['UPLOAD_EXTRA'] = NMU_upload_list($user) : false;
 
-    $tpl->AddScriptFile("standard", "jquery.min", "TOP");
-    $tpl->AddScriptFile("NewsMediaUploader", "plupload.full.min", "BOTTOM");
+    $tpl->AddScriptFile("standard", "jquery.min", "TOP", null);    
+    $tpl->AddScriptFile("NewsMediaUploader", "plupload.full.min", "TOP", null);
     if ($config['NMU_REMOTE_FILE_UPLOAD']) {
         $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "remoteFileUpload", $extra_content));
     }

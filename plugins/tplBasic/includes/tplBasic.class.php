@@ -8,8 +8,8 @@ if (!defined('IN_WEB')) { exit; }
 class TPL {
     private $tpldata;
     private $scripts = [];
-    private $standard_scripts = array ( //TODO LOAD LIST
-        "jquery.min" => "<script  type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js\" charset=\"UTF-8\" async></script>\n",
+    private $standard_remote_scripts = array ( //TODO LOAD LIST
+        "jquery.min" => "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js",
     );
     private $css_cache_filepaths;
     private $css_cache_onefile;
@@ -100,14 +100,16 @@ class TPL {
         }
     }
 
-    function AddScriptFile($plugin, $filename = null, $place = "TOP" ) {
+    function AddScriptFile($plugin, $filename = null, $place = "TOP", $async = "async") {
         global $config;
         print_debug("AddScriptFile request -> $plugin for get a $filename", "TPL_DEBUG");
 
         if( !empty($plugin) && ($plugin == "standard") ) {
             if(!$this->check_script($filename)) {
-                if(array_key_exists($filename, $this->standard_scripts))  {
-                    $this->addto_tplvar("SCRIPTS_".$place."", $this->standard_scripts[$filename]);
+                if(array_key_exists($filename, $this->standard_remote_scripts))  {
+                    $script_url = $this->standard_remote_scripts[$filename];
+                    $script = "<script type='text/javascript' src='$script_url' charset='UTF-8' $async></script>\n";
+                    $this->addto_tplvar("SCRIPTS_".$place."", $script);
                     $this->scripts[] = $filename;
                     if(defined('TPL_DEBUG')) {
                         $backtrace = debug_backtrace();
@@ -145,7 +147,7 @@ class TPL {
             $SCRIPT_PATH = $DEFAULT_PATH;
         } 
         if (!empty($SCRIPT_PATH)) {
-            $script = "<script type='text/javascript' src='/$SCRIPT_PATH' charset='UTF-8' async></script>\n";
+            $script = "<script type='text/javascript' src='/$SCRIPT_PATH' charset='UTF-8' $async></script>\n";
         } else {
             print_debug("AddScriptFile called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
             return false;
