@@ -1,0 +1,13 @@
+{
+    "plugin_name": "GoogleAnalytics",
+    "enabled": 1,
+    "main_file" : "GoogleAnalytics.php",
+    "function_init": "GoogleAnalytics_init",
+    "function_install": "",
+    "provided": "",
+    "depends" : "tplbasic1",
+    "autostart": 1,
+    "priority" : 9,
+    "optional": "",
+    "conflicts": ""
+}
