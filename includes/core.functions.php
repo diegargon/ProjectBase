@@ -60,7 +60,7 @@ function format_date($date, $timestamp = false) {
 }
 
 function includePluginFiles($plugin, $admin = 0) {
-    global $config; 
+    global $config, $LANGDATA; 
 
     $class_file ="";
     $inc_file ="";
