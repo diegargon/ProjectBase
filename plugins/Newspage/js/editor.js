@@ -21,7 +21,8 @@ function new_tagged_text(tag) {
     return left_text + tag + right_text;
 }
 
- $(document).ready(function() {
+ //$(document).ready(function(){ // Not work with jquery async
+window.onload = function() {
     $(".btnEditor").on('click', function() {
         var tag = $(this).val();
         var tag_ary = tag.split(/\$1/);
@@ -41,4 +42,4 @@ function new_tagged_text(tag) {
     $('#btnHiddePreview').click(function() {        
         $("#preview").html("");
     });    
- });
+ };

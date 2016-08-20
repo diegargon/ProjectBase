@@ -1,7 +1,8 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
- $(document).ready(function() {
+ //$(document).ready(function(){ // Not work with jquery async
+window.onload = function() {
     $(".btnNewsRate").on('click', function() {
         $('.btnNewsRate').attr('disabled','disabled');
         var rate_rid = $(".rate_rid").val();
@@ -37,4 +38,4 @@
         }
         $('.btnCommentRate').removeAttr("disabled");
     });
- });
+ };

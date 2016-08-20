@@ -7,7 +7,7 @@ if (!defined('IN_WEB')) { exit; }
 function SMBasic_ProfileScript() {
     global $tpl;
     $tpl->AddScriptFile("standard", "jquery.min", "TOP" );
-    $tpl->AddScriptFile("SMBasic", "profile", "TOP" );
+    $tpl->AddScriptFile("SMBasic", "profile", "BOTTOM" );
 }
 
 function SMBasic_ViewProfile() {

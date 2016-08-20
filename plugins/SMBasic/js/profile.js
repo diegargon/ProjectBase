@@ -2,7 +2,8 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
-$(document).ready(function(){
+//$(document).ready(function(){ // Not work with jquery async
+window.onload = function() {
     $("#profile").click(function(){
         $('#profile').attr('disabled','disabled');
         //Email Validation
@@ -75,4 +76,4 @@ $(document).ready(function(){
             $('#optional_profile_fields').css("display","none");
         }
     });
-});
+};

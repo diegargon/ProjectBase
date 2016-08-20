@@ -2,7 +2,8 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
-$(document).ready(function(){
+//$(document).ready(function(){ // Not work with jquery async
+window.onload = function() {    
     $('#reset_password_chk').click(function(){
         if(this.checked) {
             $('#login_form').trigger("reset");
@@ -96,4 +97,4 @@ $(document).ready(function(){
         $('#login').removeAttr("disabled");
         return false;
     });
-});
+};
