@@ -8,8 +8,6 @@ function NewsVote_init() {
     global $tpl;
     print_debug("NewsVote initiated", "PLUGIN_LOAD");
 
-    $tpl->AddScriptFile("standard", "jquery.min", "BOTTOM");
-    $tpl->AddScriptFile("NewsVote", "newsvote", "BOTTOM");
     //NEWS
     register_action("news_show_page", "newsvote_addrate");
     register_action("news_page_begin", "newsvote_page_begin");
@@ -85,7 +83,9 @@ function newsvote_comment_addrate(& $comment) {
     global $config, $sm, $db, $tpl;
 
     includePluginFiles("NewsVote");
-
+    $tpl->AddScriptFile("standard", "jquery.min", "BOTTOM");
+    $tpl->AddScriptFile("NewsVote", "newsvote", "BOTTOM");
+    
     if ($config['NEWSVOTE_ON_NEWS_COMMENTS'] != 1) {
         return false;
     }
@@ -118,7 +118,9 @@ function newsvote_addrate($news){
     global $tpl, $config, $sm, $db;
 
     includePluginFiles("NewsVote");
-
+    $tpl->AddScriptFile("standard", "jquery.min", "BOTTOM");
+    $tpl->AddScriptFile("NewsVote", "newsvote", "BOTTOM");
+    
     if ($config['NEWSVOTE_ON_NEWS'] !== 1) {
         return false;
     }
