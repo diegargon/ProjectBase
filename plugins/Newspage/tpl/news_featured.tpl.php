@@ -11,7 +11,7 @@ if (!defined('IN_WEB')) { exit; }
 <a href="<?php print $data['url'];?>">
     <section id="featured">
         <?php
-        !empty($data['mainimage']) ? print "<div class='featured_image'>" . $data['mainimage'] ."</div>": false;
+        !empty($data['mainimage']) ? print  $data['mainimage'] : false;
         !empty($tpldata['news_featured_article_pre']) ? print $tpldata['news_featured_article_pre'] : false;
         ?>
         <h1><?php echo $data['title']?></h1>
