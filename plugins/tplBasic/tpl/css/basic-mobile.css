@@ -3,13 +3,12 @@
 */
 
 @media only screen and (max-width: 900px) {
-    #col1, #col2, #col3 {
+    .col1, .col2, .col3 {
         margin-left: 10px;
-    }    
+    }
 }
-
 @media only screen and (max-width: 700px) {
-    #col1, #col2, #col3 {
+    .col1, .col2, .col3 {
         width:98%;
         margin-left: 5px;
     }
@@ -20,7 +19,6 @@
         min-height: 300px;
     }
 }
-
 @media only screen and (max-width: 640px) {
     #header nav li:not(:first-child) {
         display: none; 
@@ -52,12 +50,9 @@
     .p_center_big {
         font-size: 1.5em;
     }
-        
-
 }
-
 @media only screen and (max-width: 400px) {
-    #col1, #col2, #col3 {
+    .col1, .col2, .col3 {
         width:98%;
         margin-left: 1px;
     }
@@ -67,7 +62,7 @@
         margin-bottom: 5px;
     }
     #brand a {
-        font-size: 2.0em;        
+        font-size: 2.0em;
     }
     #brand span {
         font-size: 1.0em;

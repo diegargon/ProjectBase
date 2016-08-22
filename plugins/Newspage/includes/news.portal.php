@@ -85,7 +85,8 @@ function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
     } else {
         $catname = get_category_name($category);    
     }
-
+    $content .= "<h2>$catname</h2>";
+    
     $save_img_selector = $config['IMG_SELECTOR'];
     $config['IMG_SELECTOR'] = "thumbs";
     while($row = $db->fetch($query)) {
