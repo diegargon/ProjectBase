@@ -18,10 +18,9 @@ if (!file_exists($path)) {
     echo "Error page not exist";
     exit();
 } else {
+    do_action("preload_" . $module ."_". $page);
     require_once($path);
 }
 
-
-//do_action("root_page");
 $tpl->build_page();
 do_action("finalize"); 
