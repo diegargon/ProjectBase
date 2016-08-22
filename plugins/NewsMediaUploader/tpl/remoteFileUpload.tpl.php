@@ -16,7 +16,7 @@ if (!defined('IN_WEB')) { exit; }
             $('#btnRemoteUpload').show();
             return false;
         } else {
-            $.post("<?php print $config['ROOT_FILE'] ?>?module=NewsMediaUploader&page=remote_upload", { url: remote_url },
+            $.post("<?php print $config['CON_FILE'] ?>?module=NewsMediaUploader&page=remote_upload", { url: remote_url },
             function(data) {
                 console.log(data);
                 var json = $.parseJSON(data);

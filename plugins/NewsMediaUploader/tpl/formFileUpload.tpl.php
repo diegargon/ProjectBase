@@ -21,7 +21,7 @@ var uploader = new plupload.Uploader({
     runtimes : 'html5, html4',
     browse_button : 'pickfiles', // you can pass an id...
     container: document.getElementById('upload_container'), // ... or DOM Element itself
-    url : '<?php print $config['ROOT_FILE'] ?>?module=NewsMediaUploader&page=upload',
+    url : '<?php print $config['CON_FILE'] ?>?module=NewsMediaUploader&page=upload',
     unique_names: false,
 
     filters : {

@@ -34,6 +34,6 @@ $config['ACCEPTED_MEDIA_REGEX'] = "jpe?g|bmp|png|JPE?G|BMP|PNG|gif";
 $config['ADMIN_MAIL'] = "diego@envigo.net";
 $config['EMAIL_SENDMAIL'] = "no-reply@envigo.net";
 $config['SERVER_STRESS'] = 0.8;
-$config['ROOT_FILE'] = "app.php";
+$config['CON_FILE'] = "app.php";
 $config['IMG_SELECTOR'] = "desktop";
 //$config['']

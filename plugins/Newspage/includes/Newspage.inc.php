@@ -75,7 +75,7 @@ function news_menu_submit_news() {
 
     $data = "<li class='nav_left'>";
     $data .= "<a rel='nofollow' href='/";
-    $config['FRIENDLY_URL'] ? $data .= "{$config['WEB_LANG']}/app.php?" : $data .= "app.php?lang={$config['WEB_LANG']}&";
+    $config['FRIENDLY_URL'] ? $data .= "{$config['WEB_LANG']}/{$config['CON_FILE']}?" : $data .= "{$config['CON_FILE']}?lang={$config['WEB_LANG']}&";
     $data .= "module=Newspage&page=submitnews'>". $LANGDATA['L_SEND_NEWS'] ."</a>";
     $data .= "</li>";
     

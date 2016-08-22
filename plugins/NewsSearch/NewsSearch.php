@@ -85,7 +85,7 @@ function NS_build_result_page($query) {
                 $friendly_title = news_friendly_title($result['title']);
                 $result['url'] = "/{$result['lang']}/news/{$result['nid']}/{$result['page']}/$friendly_title";
             } else {
-                $result['url'] = "/app.php?module=Newspage&page=news&nid={$result['nid']}&lang={$result['lang']}&npage={$result['page']}";
+                $result['url'] = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$result['nid']}&lang={$result['lang']}&npage={$result['page']}";
             }
             $content .= $tpl->getTPL_file("NewsSearch", "NewsSearch-results", $result);
         }
@@ -144,7 +144,7 @@ function NS_news_tag_show_page(& $news_row) {
             if($config['FRIENDLY_URL']) {
                 $tag_data .= "<a href='searchTag/$tag'>$tag</a> ";
             } else {
-                $tag_data .= "<a href='app.php?module=Newspage&page=news&searchTag=$tag'>$tag</a> ";
+                $tag_data .= "<a href='{$config['CON_FILE']}?module=Newspage&page=news&searchTag=$tag'>$tag</a> ";
             }
         }
         $tag_data .= "</p></div>";

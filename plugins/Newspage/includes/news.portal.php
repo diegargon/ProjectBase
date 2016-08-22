@@ -175,7 +175,7 @@ function fetch_news_data($row) {
         $friendly_title = news_friendly_title($row['title']);
         $data['url'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/{$row['page']}/$friendly_title";
     } else {
-        $data['url'] = "/app.php?module=Newspage&page=news&nid={$row['nid']}&lang=".$config['WEB_LANG']."&npage={$row['page']}";
+        $data['url'] = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$row['nid']}&lang=".$config['WEB_LANG']."&npage={$row['page']}";
     }
 
     return $data;
