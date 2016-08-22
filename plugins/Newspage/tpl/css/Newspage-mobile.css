@@ -9,6 +9,9 @@
     #featured {
         margin-left: 10px;
     }    
+    .col {
+        margin-left: 5px;
+    }
 }
 
 
@@ -23,7 +26,9 @@
     .submit_items {
         width: 100%;
     }
-
+    .col1, .col2, .col3 {
+        width:96%;
+    }
 }
 
 @media only screen and (max-width: 640px) {
@@ -79,4 +84,7 @@
     .article_body h1 {
         font-size: 1.5em;
     }
+    .col {
+        margin-left: 1px;
+    }    
 }

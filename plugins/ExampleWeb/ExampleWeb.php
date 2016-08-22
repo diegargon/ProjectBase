@@ -24,7 +24,7 @@ function ex_index_page(){
     plugin_start("NewsAds");
     plugin_start("Newspage");
     its_server_stressed() ? false : plugin_start("NewsSearch");
-    news_index_page();
+    news_portal();
 }
 
 function ex_Newspage_submitnews () {

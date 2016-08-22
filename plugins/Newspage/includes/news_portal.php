@@ -4,26 +4,6 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function news_portal() {    
-    global $config, $tpl;
-
-    $news_nLayout = news_layout_select();
-    $news_layout_tpl = "news_body_style" . $news_nLayout++;
-
-    if ($config['LAYOUT_SWITCH']) {
-        $tpl->addto_tplvar("news_nSwitch", $news_nLayout);
-        register_action("nav_element", "news_layout_switcher", 6);
-    }
-    $tpl_data['FEATURED'] = get_news_featured();
-    $tpl_data['COL1_ARTICLES'] = get_news(1,0);
-    $tpl_data['COL1_ARTICLES'] .= get_news(2,0);
-    $tpl_data['COL2_ARTICLES'] = get_news(2,0);
-    $tpl_data['COL3_ARTICLES'] = get_news(1,0,1,0);
-    $tpl_data['COL3_ARTICLES'].= get_news(2,0,1,0);
-    $tpl->addtpl_array($tpl_data);
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", $news_layout_tpl));
-}
-
 function news_layout_select() {
     global $config;
 
@@ -39,12 +19,12 @@ function news_layout_select() {
 function news_layout_switcher() { 
     global $tpl;
 
-    $data = "<li class='nav_left'><form action='#' method='post'>";
-    $data .= "<input type='submit'  value='' class='button_switch' />";
-    $data .= "<input type='hidden' value=" . $tpl->gettpl_value("news_nSwitch") ." name='news_switch'/>";
-    $data .= "</form></li>";
+    $switcher_tpl = "<li class='nav_left'><form action='#' method='post'>";
+    $switcher_tpl .= "<input type='submit'  value='' class='button_switch' />";
+    $switcher_tpl .= "<input type='hidden' value=" . $tpl->gettpl_value("news_nSwitch") ." name='news_switch'/>";
+    $switcher_tpl .= "</form></li>";
 
-    return $data;
+    return $switcher_tpl;
 }
 
 function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
@@ -120,7 +100,7 @@ function get_news_featured() {
     //INFO: news_featured skip moderation bit
     $content = "";
     $where_ary = array ( "featured" => 1, "page" => 1);
-    
+
     if (defined('MULTILANG')) {
         $site_langs = $ml->get_site_langs();
         foreach ($site_langs as $site_lang) {
@@ -147,11 +127,11 @@ function get_news_featured() {
                 require_once 'parser.class.php';
                 !isset($news_parser) ? $news_parser = new parse_text : false;
                 $content_data['mainimage'] = $news_parser->parse($mainimage);
-            }            
+            }
             do_action("news_featured_mod" ,$row);
             $content .= $tpl->getTPL_file("Newspage", "news_featured", $content_data);
         }
-    }    
+    }
     $db->free($query);
 
     return $content;
@@ -165,20 +145,20 @@ function fetch_news_data($row) {
         return false;
     }
 
-    $data['nid'] = $row['nid'];
-    $data['title'] = $row['title'];
-    $data['lead'] = $row['lead'];
-    $data['date'] = format_date($row['date']);
-    $data['alt_title'] = htmlspecialchars($row['title']);
+    $news['nid'] = $row['nid'];
+    $news['title'] = $row['title'];
+    $news['lead'] = $row['lead'];
+    $news['date'] = format_date($row['date']);
+    $news['alt_title'] = htmlspecialchars($row['title']);
 
     if ($config['FRIENDLY_URL']) {
         $friendly_title = news_friendly_title($row['title']);
-        $data['url'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/{$row['page']}/$friendly_title";
+        $news['url'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/{$row['page']}/$friendly_title";
     } else {
-        $data['url'] = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$row['nid']}&lang=".$config['WEB_LANG']."&npage={$row['page']}";
+        $news['url'] = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$row['nid']}&lang=".$config['WEB_LANG']."&npage={$row['page']}";
     }
 
-    return $data;
+    return $news;
 }
 
 function get_category_name($cid, $lang_id = null) {

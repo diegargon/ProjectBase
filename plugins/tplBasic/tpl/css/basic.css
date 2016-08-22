@@ -28,13 +28,6 @@ html, body {
     margin:0 auto;
     min-height: 600px;
 }
-.col1, .col2, .col3{
-    border: 0px solid red;
-    width: 32%;
-    float:left;
-    margin-left: 10px;
-    font-size: 0.6em;
-}
 .fl_left{
     float:left;
     margin-left: 5px;
