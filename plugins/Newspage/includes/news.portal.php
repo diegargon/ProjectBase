@@ -158,7 +158,7 @@ function get_news_featured() {
 }
 
 function fetch_news_data($row) {
-    global $config, $acl_auth;    
+    global $config, $acl_auth;
 
     if( $config['NEWS_ACL_PREVIEW_CHECK']  && defined('ACL') && 
             !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
@@ -167,15 +167,15 @@ function fetch_news_data($row) {
 
     $data['nid'] = $row['nid'];
     $data['title'] = $row['title'];
-    $data['lead'] = $row['lead'];                
-    $data['date'] = format_date($row['date']);    
-    $data['alt_title'] = htmlspecialchars($row['title']);            
+    $data['lead'] = $row['lead'];
+    $data['date'] = format_date($row['date']);
+    $data['alt_title'] = htmlspecialchars($row['title']);
 
-    if ($config['FRIENDLY_URL']) {   
+    if ($config['FRIENDLY_URL']) {
         $friendly_title = news_friendly_title($row['title']);
-        $data['url'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/{$row['page']}/$friendly_title";          
-    } else {            
-        $data['url'] = "/newspage.php?nid={$row['nid']}&lang=".$config['WEB_LANG']."&page={$row['page']}";
+        $data['url'] = "/".$config['WEB_LANG']."/news/{$row['nid']}/{$row['page']}/$friendly_title";
+    } else {
+        $data['url'] = "/app.php?module=Newspage&page=news&nid={$row['nid']}&lang=".$config['WEB_LANG']."&npage={$row['page']}";
     }
 
     return $data;

@@ -126,9 +126,9 @@ function Newspage_AdminModeration() {
     }
     while ($news_row = $db->fetch($query)) {
         $content .= "<p>"
-        . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete=1&page={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_DELETE']}</a>]"
-        . "[<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&news_approved={$news_row['nid']}&lang_id={$news_row['lang_id']}&page={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a>]"
-        . "<a href='/newspage.php?nid={$news_row['nid']}&lang={$news_row['lang']}&page={$news_row['page']}&admin=1' target='_blank'>{$news_row['title']}</a>"
+        . "[<a href='/app.php?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete=1&npage={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_DELETE']}</a>]"
+        . "[<a href='/app.php?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&news_approved={$news_row['nid']}&lang_id={$news_row['lang_id']}&npage={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a>]"
+        . "<a href='/app.php?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&npage={$news_row['page']}&admin=1' target='_blank'>{$news_row['title']}</a>"
         . "</p>";
     }
     $content .= "</div>";
@@ -146,9 +146,9 @@ function Newspage_InFrontpage () {
     $query = $db->select_all("news", array ("moderation" => 0, "disabled" => 0), "ORDER BY date DESC");
     while($news_row = $db->fetch($query)) {
         if ($news_row['frontpage'] == 1) {
-            $frontpage .= "<li><span> [". format_date($news_row['date'])."] [{$news_row['lang']}] </span><a href='/newspage.php?lang={$news_row['lang']}&nid={$news_row['nid']}&page=1'>{$news_row['title']}</a></li>";
+            $frontpage .= "<li><span> [". format_date($news_row['date'])."] [{$news_row['lang']}] </span><a href='/app.php?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}&npage=1'>{$news_row['title']}</a></li>";
         } else {
-            $backpage .= "<li><span> [". format_date($news_row['date'])."]  [{$news_row['lang']}] </span><a href='/newspage.php?lang={$news_row['lang']}&nid={$news_row['nid']}'>{$news_row['title']}&page=1</a> </li>";
+            $backpage .= "<li><span> [". format_date($news_row['date'])."]  [{$news_row['lang']}] </span><a href='/app.php?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}'>{$news_row['title']}&npage=1</a> </li>";
         }
     }
     $content = "<div>";

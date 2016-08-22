@@ -45,7 +45,7 @@ function news_check_edit_authorized() {
 
     $nid = S_GET_INT("newsedit", 11, 1);
     $lang = S_GET_CHAR_AZ("lang", 2, 2);
-    $page = S_GET_INT("page", 11, 1);
+    $page = S_GET_INT("npage", 11, 1);
 
     if ($nid == false || $lang == false || $page == false) {
         $msgbox['MSG'] = "L_NEWS_NOT_EXIST";

@@ -14,8 +14,8 @@ function news_show_page() {
         return false;
     }
 
-    if($config['NEWS_MULTIPLE_PAGES'] && !empty($_GET['page'])) {
-        $page = S_GET_INT("page", 11, 1);  
+    if($config['NEWS_MULTIPLE_PAGES'] && !empty($_GET['npage'])) {
+        $page = S_GET_INT("npage", 11, 1);  
     } else {
         $page = 1; 
     }
@@ -138,7 +138,7 @@ function news_nav_options($news) {
             || ($news['author'] == $user['username']) 
             || (!empty($news['translator']) && ($news['translator'] == $user['username']))
     ) {       
-        $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&page={$news['page']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
     }
     //not translator
     if($config['NEWS_MULTIPLE_PAGES'] ) {
@@ -146,7 +146,7 @@ function news_nav_options($news) {
                 || (!defined('ACL') && $user['isAdmin'] == 1)
                 || ($news['author'] == $user['username'])
         ) { 
-            $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&newpage=1'>{$LANGDATA['L_NEWS_NEW_PAGE']}</a></li>";        
+            $content .= "<li><a rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&newpage=1'>{$LANGDATA['L_NEWS_NEW_PAGE']}</a></li>";        
         }
     }
     // TRANSLATE ADMIN, ANON IF, REGISTERED IF
@@ -157,30 +157,30 @@ function news_nav_options($news) {
             ||  (!defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && !empty($user)) //NO_ACL registered
             )
     ) {        
-        $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&page={$news['page']}&news_new_lang={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&news_new_lang={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
     }
     //REST ONLY ADMIN
     if( (defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin"))
         || (!defined('ACL') && $user['isAdmin'] == 1) 
     ) {
         if ($news['featured'] == 1 && $news['page'] == 1) {
-            $content .= "<li><a class='link_active' rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=0&featured_value=0&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
+            $content .= "<li><a class='link_active' rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&news_featured=0&featured_value=0&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
         } else if ($news['page'] == 1) {
-            $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_featured=1&featured_value=1&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
+            $content .= "<li><a rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&news_featured=1&featured_value=1&lang_id={$news['lang_id']}&admin=1''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";    
         }
         if ($news['moderation'] && $news['page'] == 1) {
-            $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_approved={$news['nid']}&lang_id={$news['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a></li>";
+            $content .= "<li><a rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&news_approved={$news['nid']}&lang_id={$news['lang_id']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a></li>";
         }        
         //TODO  Add a menu for enable/disable news
         //$content .= "<li><a href=''>{$LANGDATA['L_NEWS_DISABLE']}</a></li>";
         if ($news['page'] == 1) {
-            $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_delete=1&admin=1&backlink=home' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";        
+            $content .= "<li><a rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&news_delete=1&admin=1&backlink=home' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";        
         }
         if ($config['NEWS_SELECTED_FRONTPAGE'] && $news['page'] == 1){
             if ($news['frontpage'] == 1) {
-                $content .= "<li><a class='link_active' rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_frontpage=0&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";        
+                $content .= "<li><a class='link_active' rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&news_frontpage=0&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";        
             } else {
-                $content .= "<li><a rel='nofollow' href='/newspage.php?nid={$news['nid']}&lang={$news['lang']}&news_frontpage=1&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
+                $content .= "<li><a rel='nofollow' href='/app.php?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&news_frontpage=1&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
             }
         }
     }
@@ -201,7 +201,7 @@ function news_pager($news_page) {
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/1/$friendly_title'>1</a></li>";
     } else {
         $news_page['page'] == 1 ? $a_class = "class='active'" : $a_class = "";
-        $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=1'>1</a></li>";
+        $content .= "<li><a $a_class href='app.php?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=1'>1</a></li>";
     }
 
     $pager = page_pager($config['NEWS_PAGER_MAX'], $num_pages, $news_page['page']);
@@ -213,7 +213,7 @@ function news_pager($news_page) {
             $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$i/$friendly_title'>$i</a></li>";
         } else {
             $news_page['page'] == $i ? $a_class = "class='active'" : $a_class = "";
-            $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=$i'>$i</a></li>";
+            $content .= "<li><a $a_class href='app.php?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=$i'>$i</a></li>";
         }
     }
     if ($config['FRIENDLY_URL']) {
@@ -222,7 +222,7 @@ function news_pager($news_page) {
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$num_pages/$friendly_title'>$num_pages</a></li>";
     } else {
         $news_page['page'] == $num_pages ? $a_class = "class='active'" : $a_class = "";
-        $content .= "<li><a $a_class href='newspage.php?nid={$news_page['nid']}&lang={$news_page['lang']}&page=$num_pages'>$num_pages</a></li>";
+        $content .= "<li><a $a_class href='app.php?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=$num_pages'>$num_pages</a></li>";
     }        
     $content .= "</ul></div>";
     
@@ -391,6 +391,7 @@ function news_add_social_meta($news) {
     $match_regex = "/img\](.*)\[\/.*img\]/";
     $match = false;
     preg_match($match_regex, $news['text'], $match);
+    if (empty($match[1])) { return false; }
     $url = preg_replace('/\[S\]/si', "/". $config['IMG_SELECTOR'] . "/", $match[1]);
     $news['mainimage'] = $config['STATIC_SRV_URL'] . $url;
     $content = $tpl->getTPL_file("Newspage", "NewsSocialmeta", $news);

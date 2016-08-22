@@ -75,11 +75,11 @@ function news_menu_submit_news() {
 
     $data = "<li class='nav_left'>";
     $data .= "<a rel='nofollow' href='/";
-    $config['FRIENDLY_URL'] ? $data .= "{$config['WEB_LANG']}/?" : $data .= "?lang={$config['WEB_LANG']}&";
-    $data .= "sendnews=1'>". $LANGDATA['L_SEND_NEWS'] ."</a>";
+    $config['FRIENDLY_URL'] ? $data .= "{$config['WEB_LANG']}/app.php?" : $data .= "app.php?lang={$config['WEB_LANG']}&";
+    $data .= "module=Newspage&page=submitnews'>". $LANGDATA['L_SEND_NEWS'] ."</a>";
     $data .= "</li>";
-
-    return $data;    
+    
+    return $data;
 }
 
 function news_check_display_submit () {
@@ -105,7 +105,7 @@ function news_get_related($nid) {
     $query = $db->select_all("links", array("source_id" => $nid, "plugin" => "Newspage", "type" => "related"));
     if ($db->num_rows($query) <= 0) {
         return false;
-    } else {        
+    } else {
         while ($relate_row = $db->fetch($query)) {
             $related[] = $relate_row;
         }
@@ -116,11 +116,11 @@ function news_get_related($nid) {
 
 function news_clean_featured($lang_id) {
     global $db;
-       
+
     $set_ary['featured'] = '0';
     if (defined('MULTILANG')) {
         $where_ary['lang_id'] = $lang_id;
-        $db->update("news", $set_ary, $where_ary);                
+        $db->update("news", $set_ary, $where_ary);
     } else {
         $db->update("news", $set_ary);
     }

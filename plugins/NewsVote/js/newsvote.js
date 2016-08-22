@@ -13,7 +13,7 @@ window.onload = function() {
         } else {
             $.post("", $( "#form_news_rate" ).serialize() + '&news_rate=' + $(this).val(),
             function(data) {
-                //alert(data);
+                console.log(data);
                 var json = $.parseJSON(data);
                 alert(json[0].msg);
             });
@@ -31,7 +31,7 @@ window.onload = function() {
         } else {
             $.post("", $( "#form_comment_rate\\[" +rate_rid+"\\]" ).serialize() + '&comment_rate=' + $(this).val(),
             function(data) {
-               //alert(data);
+               console.log(data);
                 var json = $.parseJSON(data);
                 alert(json[0].msg);
             });

@@ -5,9 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function NewsVote_init() {
-    global $tpl;
     print_debug("NewsVote initiated", "PLUGIN_LOAD");
-
     //NEWS
     register_action("news_show_page", "newsvote_addrate");
     register_action("news_page_begin", "newsvote_page_begin");

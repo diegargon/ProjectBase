@@ -1,8 +1,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-//$(document).ready(function(){ // Not work with jquery async
-window.onload = function() {
+$(document).ready(function(){ 
     $("#newsFormSubmit").click(function(){       
         $('#newsFormSubmit').attr('disabled','disabled');
         
@@ -65,4 +64,4 @@ window.onload = function() {
         $('#newsFormSubmit').removeAttr("disabled");            
         return false;        
     });    
-};
+});

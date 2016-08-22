@@ -1,6 +1,6 @@
 {
     "plugin_name": "GoogleAnalytics",
-    "enabled": 1,
+    "enabled": 0,
     "main_file" : "GoogleAnalytics.php",
     "function_init": "GoogleAnalytics_init",
     "function_install": "",

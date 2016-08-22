@@ -80,7 +80,7 @@ function news_form_getPost() {
     $data['news_related'] = S_POST_URL("news_related");
     $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
     $data['post_newlang'] = S_POST_INT("post_newlang");
-    $data['page'] = S_GET_INT("page", 11, 1);
+    $data['page'] = S_GET_INT("npage", 11, 1);
 
     return $data;
 }
@@ -155,7 +155,7 @@ function news_form_common_field_check($news_data) {
         return false;
     }
     //LEAD
-    if(isset($_GET['page']) && $_GET['page'] > 1 ) {
+    if(isset($_GET['npage']) && $_GET['npage'] > 1 ) {
       if( (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT'])) {
             $response[] = array("status" => "4", "msg" => $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR']);
             echo json_encode($response, JSON_UNESCAPED_SLASHES);

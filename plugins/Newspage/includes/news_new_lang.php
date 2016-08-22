@@ -9,7 +9,7 @@ function news_new_lang() {
     
     $nid = S_GET_INT("nid");
     $lang = S_GET_CHAR_AZ("lang", 2, 2);  
-    $page  = S_GET_INT("page", 11, 1);
+    $page  = S_GET_INT("npage", 11, 1);
 
     if (empty($nid) || empty($lang) || empty($page)) {
         $msgbox['MSG'] = "L_NEWS_INTERNAL_ERROR";
