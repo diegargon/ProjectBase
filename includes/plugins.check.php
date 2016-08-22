@@ -66,10 +66,11 @@ function checker_plugin($plugin) {
     return false;
 }
 
-function plugin_manual_start($pluginname) {
-    global $registered_plugins;
-
-    print_debug("Info: Manual order to start $pluginname", "PLUGIN_LOAD");
+function plugin_start($pluginname) {
+    global $registered_plugins;    
+    
+    print_debug("Info: order to start $pluginname", "PLUGIN_LOAD");
+    
     foreach ($registered_plugins as $plugin ) {
         if ($plugin->plugin_name == $pluginname) {
            if(checker_plugin($plugin)) {
@@ -79,9 +80,9 @@ function plugin_manual_start($pluginname) {
         }
     }
     print_debug("<b>Error:</b> Plugin $pluginname not exist", "PLUGIN_LOAD");
-    return false;
+    
+    return false;        
 }
-
 function check_if_already_started($plugin) {
     global $started_plugins;
     foreach ($started_plugins as $started_plugin){
