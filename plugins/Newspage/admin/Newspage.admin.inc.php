@@ -137,7 +137,7 @@ function Newspage_AdminModeration() {
 }
 
 function Newspage_InFrontpage () {
-    global $LANGDATA, $db, $tpl;
+    global $LANGDATA, $db, $tpl, $config;
 
     $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_NEWS_INFRONTPAGE']);
     $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_NEWS_INFRONTPAGE_DESC']);
@@ -148,7 +148,7 @@ function Newspage_InFrontpage () {
         if ($news_row['frontpage'] == 1) {
             $frontpage .= "<li><span> [". format_date($news_row['date'])."] [{$news_row['lang']}] </span><a href='/{$config['CON_FILE']}?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}&npage=1'>{$news_row['title']}</a></li>";
         } else {
-            $backpage .= "<li><span> [". format_date($news_row['date'])."]  [{$news_row['lang']}] </span><a href='/{$config['CON_FILE']}?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}'>{$news_row['title']}&npage=1</a> </li>";
+            $backpage .= "<li><span> [". format_date($news_row['date'])."]  [{$news_row['lang']}] </span><a href='/{$config['CON_FILE']}?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}&npage=1'>{$news_row['title']}</a> </li>";
         }
     }
     $content = "<div>";
