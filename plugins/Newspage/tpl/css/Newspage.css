@@ -58,7 +58,7 @@
     margin: 0px auto;
     /*padding-left: 4px;
     padding-right: 4px;*/
-    margin: 10px;
+    margin-bottom: 5px;
 }
 #featured_wrap a {
     text-decoration: none;
@@ -187,6 +187,7 @@
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;    
     padding-left: 4px;
+    margin-bottom: 3px;
 }
 
 
