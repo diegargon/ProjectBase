@@ -5,9 +5,8 @@
 if (!defined('IN_WEB')) { exit; }
 
 define("NEWSPAGE_DEBUG", true);
-if ('ACL') {
-    $config['NEWS_HIDDE_PREVIEW_BY_ACL'] = 0;
-}
+defined('ACL') ? $config['NEWS_HIDDE_PREVIEW_BY_ACL'] = 0 : false;
+
 $config['LAYOUT_SWITCH'] = 1;
 $config['NEWS_BODY_STYLES'] = 3;
 $config['NEWS_SUBMIT_ANON'] = 1;
