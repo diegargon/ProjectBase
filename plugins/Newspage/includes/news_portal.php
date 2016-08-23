@@ -27,62 +27,86 @@ function news_layout_switcher() {
     return $switcher_tpl;
 }
 
-function get_news($category, $limit = null, $headlines = 0, $frontpage = 1) {
-    global $config, $db, $tpl, $ml;
-    $content = "";         
-       
-    $where_ary =  array( 
-        "featured" => array("value" => "1", "operator" => "<>"),
-        "page" => 1
-    );
+function getNews_featured ($category = 0, $limit = 1) {
+    return get_news($category, $limit , $headlines = 0, $frontpage = 1, $featured = 1);
+}
+//FRONTPAGE
+function getNews_frontpage ($category = 0, $limit = null) {
+    return get_news($category, $limit , $headlines = 0, $frontpage = 1);
+}
+function getNews_frontpage_h ($category = 0, $limit = null) {
+    return get_news($category, $limit , $headlines = 1, $frontpage = 1);
+}
+//BACKPAGE
+function getNews_backpage ($category = 0 , $limit = null) {
+    return get_news($category, $limit , $headlines = 0, $frontpage = 0);
+}
+function getNews_backpage_h($category = 0 , $limit = null) {
+    return get_news($category, $limit , $headlines = 1, $frontpage = 0);
+}
 
-    $config['NEWS_SELECTED_FRONTPAGE'] ? $where_ary['frontpage'] = $frontpage : false;    
+function get_news($category = 0, $limit = null, $headlines = 0, $frontpage = 1, $featured = null) {
+    global $config, $db, $tpl, $ml, $LANGDATA;
+    $content = "";
+
+    $where_ary =  array( "page" => 1 );
+
+    if ($featured != null) {
+        $where_ary['featured'] = $featured;
+    } else {
+        $where_ary['featured'] = array("value" => "1", "operator" => "<>");
+    }
+    $config['NEWS_SELECTED_FRONTPAGE'] ? $where_ary['frontpage'] = $frontpage : false;
     $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : false;
-        
+
     if (defined('MULTILANG')) {
         $site_langs = $ml->get_site_langs();
-
         foreach ($site_langs as $site_lang) {
             if ($site_lang['iso_code'] == $config['WEB_LANG']) {
-                $lang_id = $site_lang['lang_id'];                               
+                $lang_id = $site_lang['lang_id'];
                 $where_ary['lang_id'] = $lang_id;
                 break;
-            } 
+            }
         }
-    } 
-    
+    }
+
     !empty($category) && $category != 0 ? $where_ary['category'] = $category : false;
-    $q_extra = " ORDER BY date DESC";    
+    $q_extra = " ORDER BY date DESC";
     $limit > 0 ? $q_extra .= " LIMIT $limit" : false;
-    
+
     $query = $db->select_all("news", $where_ary, $q_extra);
     if ($db->num_rows($query) <= 0) {
         return false;
     }
-       
+
+    $catname = null;
     if (defined('MULTILANG') && !empty($category)) {
         $catname = get_category_name($category, $lang_id);
-    } else {
-        $catname = get_category_name($category);    
+    } else if (!empty($category)) {
+        $catname = get_category_name($category);
+    } else if (empty($category) && $frontpage == 0 && $featured == 0) {
+        $catname = $LANGDATA['L_NEWS_BACKPAGE'];
+    } else if (empty($category) && $frontpage == 1 && $featured == 0) {
+        $catname = $LANGDATA['L_NEWS_FRONTPAGE'];
     }
+
     $content .= "<h2>$catname</h2>";
-    
+
     $save_img_selector = $config['IMG_SELECTOR'];
-    $config['IMG_SELECTOR'] = "thumbs";
-    while($row = $db->fetch($query)) {
-        if ( ($content_data = fetch_news_data($row)) != false) {
-            $headlines == 1 ? $content_data['headlines'] = 1 : false;
-            $mainimage = news_determine_main_image($row);
-            if (!empty($mainimage)) {
-                require_once 'parser.class.php';
-                !isset($news_parser) ? $news_parser = new parse_text : false;
-                $content_data['mainimage'] = $news_parser->parse($mainimage);
+    empty($featured) ? $config['IMG_SELECTOR'] = "thumbs" : false; //no thumb for featured image
+    while($news_row = $db->fetch($query)) {
+        if ( ($news_data = fetch_news_data($news_row)) != false) {
+            $headlines == 1 ? $news_data['headlines'] = 1 : false;
+            if ($featured == 1) {
+                do_action("news_featured_mod" ,$news_data);
+                $content .= $tpl->getTPL_file("Newspage", "news_featured", $news_data);
+            } else {
+                do_action("news_get_news_mod", $news_data);
+                $content .= $tpl->getTPL_file("Newspage", "news_preview", $news_data);
             }
-            do_action("news_get_news_mod", $content_data);
-            $content .= $tpl->getTPL_file("Newspage", "news_preview", $content_data);        
         }
-    }    
-    $db->free($query);    
+    }
+    $db->free($query);
     $config['IMG_SELECTOR'] = $save_img_selector;
     return $content;
 }
@@ -95,48 +119,6 @@ function news_determine_main_image($news) {
     return !empty($match[0]) ? $match[0] : false;
 }
 
-function get_news_featured() {
-    global $config, $db, $tpl, $ml;
-    //INFO: news_featured skip moderation bit
-    $content = "";
-    $where_ary = array ( "featured" => 1, "page" => 1);
-
-    if (defined('MULTILANG')) {
-        $site_langs = $ml->get_site_langs();
-        foreach ($site_langs as $site_lang) {
-            if ($site_lang['iso_code'] == $config['WEB_LANG']) {
-                $lang_id = $site_lang['lang_id'];
-                $where_ary['lang_id'] = $lang_id;
-            }
-        }
-    }
-    $query = $db->select_all("news", $where_ary, "LIMIT 1");
-    if ($db->num_rows($query) <= 0) {
-        return false;
-    }
-
-    while($row = $db->fetch($query)) {
-        if ( ($content_data = fetch_news_data($row)) != false ) {
-            if (defined('MULTILANG')) {
-                $content_data['category'] = get_category_name($row['category'], $lang_id);
-            } else {
-                $content_data['category'] = get_category_name($row['category']);
-            }
-            $mainimage = news_determine_main_image($row);
-            if (!empty($mainimage)) {
-                require_once 'parser.class.php';
-                !isset($news_parser) ? $news_parser = new parse_text : false;
-                $content_data['mainimage'] = $news_parser->parse($mainimage);
-            }
-            do_action("news_featured_mod" ,$row);
-            $content .= $tpl->getTPL_file("Newspage", "news_featured", $content_data);
-        }
-    }
-    $db->free($query);
-
-    return $content;
-}
-
 function fetch_news_data($row) {
     global $config, $acl_auth;
 
@@ -144,7 +126,6 @@ function fetch_news_data($row) {
             !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
         return false;
     }
-
     $news['nid'] = $row['nid'];
     $news['title'] = $row['title'];
     $news['lead'] = $row['lead'];
@@ -157,7 +138,12 @@ function fetch_news_data($row) {
     } else {
         $news['url'] = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$row['nid']}&lang=".$config['WEB_LANG']."&npage={$row['page']}";
     }
-
+    $mainimage = news_determine_main_image($row);
+    if (!empty($mainimage)) {
+        require_once 'parser.class.php';
+        !isset($news_parser) ? $news_parser = new parse_text : false;
+        $news['mainimage'] = $news_parser->parse($mainimage);
+    }
     return $news;
 }
 
@@ -172,4 +158,43 @@ function get_category_name($cid, $lang_id = null) {
     $db->free($query);  
 
     return $category['name'];
+}
+
+function news_portal_config(){
+    global $config;
+    $portal_content = [];
+
+    if ($config['NEWS_PORTAL_COLS'] >=1) {
+        $portal_content['COL1_ARTICLES'] = news_getPortalConfig($config['NEWS_PORTAL_COL1_CONTENT'], $config['NEWS_PORTAL_COL1_CONTENT_CATS'], $config['NEWS_PORTAL_COL1_CONTENT_LIMIT']);
+    }
+    if ($config['NEWS_PORTAL_COLS'] >=2) {
+        $portal_content['COL2_ARTICLES'] = news_getPortalConfig($config['NEWS_PORTAL_COL2_CONTENT'], $config['NEWS_PORTAL_COL2_CONTENT_CATS'], $config['NEWS_PORTAL_COL2_CONTENT_LIMIT']);
+    }
+    if ($config['NEWS_PORTAL_COLS'] >=3) {
+        $portal_content['COL3_ARTICLES'] = news_getPortalConfig($config['NEWS_PORTAL_COL3_CONTENT'], $config['NEWS_PORTAL_COL3_CONTENT_CATS'], $config['NEWS_PORTAL_COL3_CONTENT_LIMIT']);
+    }
+
+    return $portal_content;
+}
+
+function news_getPortalConfig($type, $cats, $limit = 0) {
+    $content = "";
+    
+    $cats = preg_replace('/\s+/', '', $cats); 
+    $cats = explode(",", $cats);
+    
+    foreach ($cats as $cat) {
+        if(isset($cat)) {
+            if ($type == "frontpage") {
+                $content .= getNews_frontpage($cat, $limit);
+            } else if ($type == "frontpage_h") {
+                $content .= getNews_frontpage_h($cat, $limit);
+            } else if ($type == "backpage") {
+                $content .= getNews_backpage($cat, $limit);
+            } else if ($type == "backpage_h") {
+                $content .= getNews_backpage_h($cat, $limit);
+            }
+        }
+    }
+    return $content;
 }

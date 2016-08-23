@@ -1,28 +1,21 @@
 /*
  Copyright @ 2016 Diego Garcia
 */
-/* 
-    Created on : 09-may-2016, 14:21:38
-    Author     : melmoth
-*/
 @media only screen and (max-width: 900px) {
     #featured {
         margin-left: 10px;
-    }    
+    }
     .col {
         margin-left: 5px;
     }
 }
-
-
 @media only screen and (max-width: 700px) {
     #featured {
         margin-left: 5px;
     }
     .newsbox {
         margin-left: 5px;
-    }  
-
+    }
     .submit_items {
         width: 100%;
     }
@@ -30,7 +23,6 @@
         width:96%;
     }
 }
-
 @media only screen and (max-width: 640px) {
     .submit_box {
         width: 98%;
@@ -60,17 +52,19 @@
         margin: 0 auto;
     }
 }
-
 @media only screen and (max-width: 400px) {
     .newsbox {
 	margin-left: 1px;
-    }    
+    }
     #featured {
         margin-left: 2px;
-    }    
+    }
+    #featured img {
+        margin-left: 1px;
+    }
     .submit_auth, .submit_lead, .submit_text, .submit_title {
         width:200px;
-    }  
+    }
     .submit_box h1 {
         font-size: 16px;
     }
@@ -86,5 +80,5 @@
     }
     .col {
         margin-left: 1px;
-    }    
+    }
 }

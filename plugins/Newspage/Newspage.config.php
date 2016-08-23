@@ -9,7 +9,7 @@ if('ACL') {
 $config['NEWS_HIDDE_PREVIEW_BY_ACL'] = 0;
 }
 $config['LAYOUT_SWITCH'] = 1;
-$config['NEWS_BODY_STYLES'] = 2;
+$config['NEWS_BODY_STYLES'] = 3;
 $config['NEWS_SUBMIT_ANON'] = 1;
 $config['NEWS_SUBMIT_REGISTERED'] = 1;
 $config['NEWS_TITLE_MAX_LENGHT'] = 130;
@@ -35,3 +35,14 @@ $config['NEWS_PAGER_MAX'] = 4; //Pair >= 4
 $config['NEWS_STATS'] = 1;
 $config['NEWS_ADVANCED_STATS'] = 1;
 $config['NEWS_META_OPENGRAPH'] = 1;
+$config['NEWS_PORTAL_COLS'] = 3;
+$config['NEWS_PORTAL_FEATURED'] = 1;
+$config['NEWS_PORTAL_COL1_CONTENT'] = "frontpage";
+$config['NEWS_PORTAL_COL1_CONTENT_CATS'] = "1,2";
+$config['NEWS_PORTAL_COL1_CONTENT_LIMIT'] = 10;
+$config['NEWS_PORTAL_COL2_CONTENT'] = "frontpage";
+$config['NEWS_PORTAL_COL2_CONTENT_CATS'] = "2,1";
+$config['NEWS_PORTAL_COL2_CONTENT_LIMIT'] = 10;
+$config['NEWS_PORTAL_COL3_CONTENT'] = "backpage_h";
+$config['NEWS_PORTAL_COL3_CONTENT_CATS'] = "0";
+$config['NEWS_PORTAL_COL3_CONTENT_LIMIT'] = 10;

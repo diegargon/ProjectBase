@@ -176,6 +176,8 @@ class TPL {
     }
     
     function addtpl_array($tpl_ary) {
+        if (empty($tpl_ary)) { return false; }
+        
         foreach ($tpl_ary as $key => $value) {
             $this->addto_tplvar($key, $value);
         }

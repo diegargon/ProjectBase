@@ -11,7 +11,6 @@
     background-color: #FFFFFF;
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;
-    /* line-height: 1.2em; */
     padding: 5px;
     box-shadow: 0 0 10px #ccc;
     width:97%;
@@ -50,16 +49,14 @@
 .extra-small {
     font-size: 0.6em !important;
     padding: 5px;
-    /* overflow: hidden; */
 }
 /* FEATURED */
 #featured_wrap {
     border: 0px solid red;
     overflow: hidden;
-    width:99%;
+    width:97%;
     margin: 0px auto;
-    /*padding-left: 4px;
-    padding-right: 4px;*/
+    padding-right: 4px;
     margin-bottom: 5px;
 }
 #featured_wrap a {
@@ -77,16 +74,18 @@
     padding: 4px;
     text-transform: uppercase;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 #featured {
    display: table;
-   width: 100%;
+   width: 99%;
    border: 0px solid red;
    background-color: #DEDEDE;
    color: #989898;
-   height: 230px;
-   box-shadow: 0 0 10px #ccc;
+   box-shadow: 0 0 5px #818181;
+   margin: 0 auto;
+   margin-bottom: 4px;
+   padding-bottom: 10px;
 }
 #featured h1 {
     font-size: 1.4em;
@@ -106,13 +105,13 @@
     text-transform: none;
 }
 #featured  img {
-    margin-right: 10px;
+    margin-right: 8px;
     float:left;
     width: 100%;
     box-shadow: 3px 3px 4px black;
     max-width: 300px;
-    padding-left: 5px;
     margin-bottom: 5px;
+    margin-left:5px;
 }
 #featured:hover img{
     opacity: 0.8; 
@@ -174,14 +173,12 @@
     color: red;
     text-align: center;
 }
-/* #col1 section h2, #col2  section h2, #col3 section h2 { */
-.col { /* 1, .col2, .col3{ */
+.col {
     border: 0px solid red;
     float:left;
     margin-left: 10px;
     font-size: 0.6em;
 }
-
 .col1 {
     width: 99.5%;    
 }
@@ -191,9 +188,9 @@
 .col3 {
     width: 32%;    
 }
-.col h2 { /*, .col2 h2, .col3 h2 { */
+.col h2 { 
     float:left;
-    width: 100%;
+    width: 98%;
     color:#919191;
     background-color:#232323;
     box-shadow: 0 0 10px #ccc; 
@@ -202,8 +199,6 @@
     padding-left: 4px;
     margin-bottom: 3px;
 }
-
-
 #news_menu {
     border: 1px solid black;
     width:95%;
@@ -271,7 +266,6 @@
 #adm_nav_container {
  border:0px solid blue; 
  overflow:hidden;
- 
 }
 #adm_nav {}
 #adm_nav li {

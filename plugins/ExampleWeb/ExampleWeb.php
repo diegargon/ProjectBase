@@ -20,7 +20,7 @@ function ex_common_web_structure() {
     plugin_start("DebugWindow");
 }
 
-function ex_index_page(){
+function ex_index_page(){ 
     plugin_start("NewsAds");
     plugin_start("Newspage");
     its_server_stressed() ? false : plugin_start("NewsSearch");
