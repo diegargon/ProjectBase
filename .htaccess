@@ -1,8 +1,10 @@
 RewriteEngine On
 RewriteBase /
 
-RewriteRule  ^es\/news/([0-9]+)/([0-9]+)/searchTag/(.*)$   app.php?module=Newspage&page=news&lang=es&nid=$1&npage=$2&searchTag=$3 [NC]
-RewriteRule  ^en\/news/([0-9]+)/([0-9]+)/searchTag/(.*)$   app.php?module=Newspage&page=news&lang=en&nid=$1&npage=$2&searchTag=$3 [NC]
+RewriteRule  ^es\/searchTag/(.*)$   app.php?module=NewsSearch&page=search&lang=es&searchTag=$1
+RewriteRule  ^en\/searchTag/(.*)$   app.php?module=NewsSearch&page=search&lang=en&searchTag=$1
+RewriteRule  ^es\/search$   app.php?module=NewsSearch&page=search&lang=es
+RewriteRule  ^en\/search$   app.php?module=NewsSearch&page=search&lang=en&
 
 RewriteRule  ^es\/news/([0-9]+)/([0-9]+)/(.*)$   app.php?module=Newspage&page=news&lang=es&nid=$1&npage=$2 [NC]
 RewriteRule  ^en\/news/([0-9]+)/([0-9]+)/(.*)$   app.php?module=Newspage&page=news&lang=en&nid=$1&npage=$2 [NC]
