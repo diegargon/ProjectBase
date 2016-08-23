@@ -36,6 +36,10 @@ if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['login']
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
     SMBasic_LoginScript();
-    $login_data['register_url'] = "app.php?module=SMBasic&page=register&lang={$config['WEB_LANG']}"; //TODO FRIENDLY
+    if ($config['FRIENDLY_URL']) {
+        $login_data['register_url'] = "/{$config['WEB_LANG']}/register";
+    } else {
+        $login_data['register_url'] = "app.php?module=SMBasic&page=register&lang={$config['WEB_LANG']}";
+    }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "login", $login_data));
 }
