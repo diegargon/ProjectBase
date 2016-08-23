@@ -202,7 +202,7 @@ function plugin_check_enable($plugin) {
     global $registered_plugins;  
     
     foreach ($registered_plugins as $reg_plugin) {
-        if ($reg_plugin['plugin_name'] == $plugin) {
+        if ($reg_plugin->plugin_name == $plugin) {
             return true;
         }
     }

@@ -13,6 +13,10 @@ if ( empty($module) || empty($page)) {
     echo "Error module or page missed";
     exit();
 }
+if(!plugin_check_enable($module)) {
+    echo "Error plugin ins't enabled";
+    exit();
+}
 $path = "plugins/$module/$page.php";
 if (!file_exists($path)) {
     echo "Error page not exist";
