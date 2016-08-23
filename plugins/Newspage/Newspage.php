@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function Newspage_init(){
+function Newspage_init() {
     global $tpl;
     print_debug("Newspage Inititated", "PLUGIN_LOAD");
 
@@ -17,7 +17,7 @@ function Newspage_init(){
     }
 }
 
-function news_portal() {    
+function news_portal() {
     global $config, $tpl;
     require_once("includes/news_portal.php");
     do_action("news_portal_begin");
