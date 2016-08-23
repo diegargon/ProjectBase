@@ -5,8 +5,8 @@
 if (!defined('IN_WEB')) { exit; }
 
 define("NEWSPAGE_DEBUG", true);
-if('ACL') {
-$config['NEWS_HIDDE_PREVIEW_BY_ACL'] = 0;
+if ('ACL') {
+    $config['NEWS_HIDDE_PREVIEW_BY_ACL'] = 0;
 }
 $config['LAYOUT_SWITCH'] = 1;
 $config['NEWS_BODY_STYLES'] = 3;
@@ -46,3 +46,5 @@ $config['NEWS_PORTAL_COL2_CONTENT_LIMIT'] = 10;
 $config['NEWS_PORTAL_COL3_CONTENT'] = "backpage_h";
 $config['NEWS_PORTAL_COL3_CONTENT_CATS'] = "0";
 $config['NEWS_PORTAL_COL3_CONTENT_LIMIT'] = 10;
+$config['NEWS_PARSER_ALLOW_IMG'] = 0;
+$config['NEWS_PARSER_ALLOW_URL'] = 0;
