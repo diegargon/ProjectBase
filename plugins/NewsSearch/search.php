@@ -14,16 +14,16 @@ if (!empty($_POST['searchText'])) {
         NS_msgbox($msg);
     }
     $searchText = $db->escape_strip($searchText);
-    $query = $db->search("news", "title lead text", $searchText, array("lang" => $config['WEB_LANG']), " LIMIT {$config['NS_RESULT_LIMIT']} " );
+    $query = $db->search("news", "title lead text", $searchText, array("lang" => $config['WEB_LANG']), " LIMIT {$config['NS_RESULT_LIMIT']} ");
 
-    if(!$query) {
-        return false ;
-    } else {
+    if ($query) {
         NS_build_result_page($query);
+    } else {
+        return false;
     }
 }
 
-if(!empty($_GET["searchTag"])) {
+if (!empty($_GET["searchTag"])) {
     $searchTag = S_GET_TEXT_UTF8("searchTag", $config['NS_TAGS_SZ_LIMIT'], $config['NS_MIN_S_TEXT']);
 
     if (empty($searchTag)) {
@@ -31,10 +31,10 @@ if(!empty($_GET["searchTag"])) {
         NS_msgbox($msg);
     }
     $searchTag = $db->escape_strip($searchTag);
-    $query = $db->search("news", "tags", $searchTag, array("lang" => $config['WEB_LANG']), " LIMIT {$config['NS_RESULT_LIMIT']} " );
-    if(!$query) {
-        return false ;
-    } else {
+    $query = $db->search("news", "tags", $searchTag, array("lang" => $config['WEB_LANG']), " LIMIT {$config['NS_RESULT_LIMIT']} ");
+    if ($query) {
         NS_build_result_page($query);
+    } else {
+        return false;
     }
 }

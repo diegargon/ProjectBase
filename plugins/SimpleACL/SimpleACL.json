@@ -1,14 +1,14 @@
 {
     "plugin_name": "SimpleACL",
     "enabled": 1,
-    "main_file" : "SimpleACL.php",
+    "main_file": "SimpleACL.php",
     "function_init": "SimpleACL_init",
-    "function_admin_init": "SimpleACL_AdminInit",     
+    "function_admin_init": "SimpleACL_AdminInit",
     "function_install": "",
     "provided": "acl1",
-    "depends" : "sessions1 SQL1",
+    "depends": "sessions1 SQL1",
     "autostart": 1,
-    "priority" : 4,
-    "optional" : "",
+    "priority": 4,
+    "optional": "",
     "conflicts": ""
 }

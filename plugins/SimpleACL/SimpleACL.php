@@ -4,13 +4,11 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
-function SimpleACL_init(){
-    global $acl_auth; 
+function SimpleACL_init() {
+    global $acl_auth;
     print_debug("SimpleACL Inititated", "PLUGIN_LOAD");
-          
-    includePluginFiles("SimpleACL"); 
-    
-    if(empty($acl_auth)) {
-        $acl_auth = new ACL;
-    }    
+
+    includePluginFiles("SimpleACL");
+
+    empty($acl_auth) ? $acl_auth = new ACL : false;
 }
