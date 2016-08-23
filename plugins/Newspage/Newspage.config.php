@@ -46,5 +46,5 @@ $config['NEWS_PORTAL_COL2_CONTENT_LIMIT'] = 10;
 $config['NEWS_PORTAL_COL3_CONTENT'] = "backpage_h";
 $config['NEWS_PORTAL_COL3_CONTENT_CATS'] = "0";
 $config['NEWS_PORTAL_COL3_CONTENT_LIMIT'] = 10;
-$config['NEWS_PARSER_ALLOW_IMG'] = 0;
-$config['NEWS_PARSER_ALLOW_URL'] = 0;
+$config['NEWS_PARSER_ALLOW_IMG'] = 1;
+$config['NEWS_PARSER_ALLOW_URL'] = 1;
