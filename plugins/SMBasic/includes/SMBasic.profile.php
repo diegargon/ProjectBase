@@ -171,8 +171,7 @@ function SMBasic_ProfileChange() {
     }
     $db->update("users", $q_set_ary, array("uid" => $user['uid'] ), "LIMIT 1");
 
-    $profile_url = $config['WEB_URL'] . "profile.php";
-    $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'], "url" => "$profile_url");
+    $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'], "url" => S_SERVER_REQUEST_URI());
     echo json_encode($response, JSON_UNESCAPED_SLASHES);
 
     return false;

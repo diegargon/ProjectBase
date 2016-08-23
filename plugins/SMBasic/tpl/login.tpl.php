@@ -32,7 +32,7 @@ if (!defined('IN_WEB')) { exit; }
 				</p>                                
 				<p class="change_link">
 					<?php print $LANGDATA['L_REGISTER_MSG']?>
-					<a href="register.php" class="to_register"><?php print $LANGDATA['L_REGISTER']?></a>
+					<a href="<?php print $data['register_url'] ?>" class="to_register"><?php print $LANGDATA['L_REGISTER']?></a>
 				</p>
 			</form>            
         </div>
