@@ -23,7 +23,7 @@ window.onload = function() {
     $("#reset_password_btn").click(function(){
            $.post("", $( "#login_form" ).serialize() ,
             function(data) {
-               //alert(data); //DEBUG
+               console.log(data); //DEBUG
                 var json = $.parseJSON(data);
                 if (json[0].status == 1) {
                     $('#email').css("border","2px solid red");
@@ -76,7 +76,7 @@ window.onload = function() {
         } else {
             $.post("", $( "#login_form" ).serialize() + '&login=1',
             function(data) {
-                //alert(data); //DEBUG
+                console.log(data); //DEBUG
                 var json = $.parseJSON(data);
                 if(json[0].status == 'ok') {
                     $("form")[0].reset();

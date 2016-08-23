@@ -65,7 +65,7 @@ window.onload = function() {
         } else {
             $.post("", $( "#register_form" ).serialize() ,
             function(data) {
-                //alert(data); //DEBUG
+                console.log(data); //DEBUG
                 var json = $.parseJSON(data);
                 if(json[0].status == 'ok') {
                     alert(json[0].msg);

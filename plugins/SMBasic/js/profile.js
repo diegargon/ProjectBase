@@ -29,7 +29,7 @@ window.onload = function() {
         $('.avatar').css("border","1px solid black");
         $.post("", $( "#profile_form" ).serialize() + '&profile=1' ,
         function(data) {
-            //alert(data); //DEBUG
+            console.log(data); //DEBUG
             var json = $.parseJSON(data);
             if(json[0].status == 'ok') {
                 alert(json[0].msg);
