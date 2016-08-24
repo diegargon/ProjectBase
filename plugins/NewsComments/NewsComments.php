@@ -11,10 +11,8 @@ function NewsComments_init() {
 
 function News_Comments($news) {
     global $config, $tpl, $sm;
-    
-    includePluginFiles("NewsComments");
 
-    SC_corefiles();
+    includePluginFiles("NewsComments");
 
     $nid = $news['nid'];
     $lang_id = $news['lang_id'];
@@ -25,7 +23,7 @@ function News_Comments($news) {
         return false;
     }
 
-    if(!empty($_POST['btnSendNewComment']) && $config['NC_ALLOW_NEW_COMMENTS'] ) {
+    if (!empty($_POST['btnSendNewComment']) && $config['NC_ALLOW_NEW_COMMENTS']) {
         if (!empty($user) || $config['NC_ALLOW_ANON_COMMENTS']) {
             $comment = S_POST_TEXT_UTF8("news_comment");
             $comment ? SC_AddComment("Newspage", $comment, $nid, $lang_id) : false;
