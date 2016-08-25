@@ -1,0 +1,13 @@
+{
+    "plugin_name": "UserExtra",
+    "enabled": 1,
+    "main_file": "UserExtra.php",
+    "function_init": "UserExtra_init",
+    "function_install": "",
+    "provided": "uxtra1",
+    "depends": "SQL1",
+    "autostart": 0,
+    "priority": 5,
+    "optional": "",
+    "conflicts": ""
+}

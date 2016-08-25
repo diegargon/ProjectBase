@@ -1,0 +1,13 @@
+{
+    "plugin_name": "SMBasicExtra",
+    "enabled": 1,
+    "main_file": "SMBasicExtra.php",
+    "function_init": "SMBasicExtra_init",
+    "function_install": "",
+    "provided": "",
+    "depends": "sessions1 tplbasic1",
+    "autostart": 1,
+    "priority": 5,
+    "optional": "multilang1",
+    "conflicts": ""
+}
