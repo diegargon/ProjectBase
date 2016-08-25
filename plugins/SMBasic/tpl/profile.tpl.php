@@ -4,9 +4,9 @@
  */
 if (!defined('IN_WEB')) { exit; }
 ?>
-<div  class="clear bodysize page">   
-    <div class="profile_box">        
-        <form id="profile_form" action="" autocomplete="off" method="post"> 
+<div  class="clear bodysize page">
+    <div class="profile_box">
+        <form id="profile_form" action="" autocomplete="off" method="post">
             <h1><?php print $LANGDATA['L_PROFILE'] ?></h1>
             <div id="avatar">
                 <?php
@@ -17,9 +17,11 @@ if (!defined('IN_WEB')) { exit; }
                 } else {
                     ?>
                     <img width="125" height="150" src="<?php print $config['IMG_DEFAULT_AVATAR']; ?>" alt="" />
-<?php } ?>
+                <?php } ?>
             </div>
+            <?php !empty($tpldata['SMBASIC_PROFILE_POST_AVATAR']) ? print $tpldata['SMBASIC_PROFILE_POST_AVATAR'] : false; ?>
             <div id="profile_fields">
+                <?php !empty($tpldata['SMBASIC_PROFILE_FIELDS_TOP']) ? print $tpldata['SMBASIC_PROFILE_FIELDS_TOP'] : false; ?>
                 <dl>
                     <dt><label><?php print $LANGDATA['L_USERNAME'] ?></label><br/>
                         <span class="profile_subtext"><?php print $LANGDATA['L_USERNAME_H'] ?> </span>
@@ -51,7 +53,7 @@ if (!defined('IN_WEB')) { exit; }
                     <dd>
                         <?php
                         if ($config['smbasic_can_change_email']) {
-                            ?> 
+                            ?>
                             <input required id="email" name="email" type="text"  value="<?php print $data['email'] ?>" title="<?php print $LANGDATA['L_EMAIL_H'] ?>" autocomplete="off"/>
                             <?php
                         } else if (isset($data['email'])) {
@@ -82,26 +84,13 @@ if (!defined('IN_WEB')) { exit; }
                     <dt><label><?php print $LANGDATA['L_PASSWORD'] ?></label><br/>
                         <span class="profile_subtext"><?php print $LANGDATA['L_CUR_PASSWORD_H'] ?> </span>
                     </dt>
-                    <dd>                    
+                    <dd>
                         <input required type="password" name="cur_password" id="cur_password" title="<?php print $LANGDATA['L_CUR_PASSWORD_H'] ?>" autocomplete="off"/>
                     </dd>
                 </dl>
             </div>
-            <div id="field_switcher">
-                <label for="optional_switcher"><?php print $LANGDATA['L_SM_PROFILE_OPTIONAL'] ?></label>
-                <input id="optional_switcher" name="optional_switcher" type="checkbox" />
-            </div>
-            <div id="optional_profile_fields">
-<?php if ($config['smbasic_ask_realname']) { ?>
-                    <dl>
-                        <dt><label><?php print $LANGDATA['L_SM_REALNAME'] ?></dt>
-                        <dd>
-                            <input class="realname" name="realname" type="text"  value="<?php print $data['realname'] ?>" title="" autocomplete="off"/>
-                        </dd>
-                    </dl>
-<?php } ?>
-            </div>
+            <?php !empty($tpldata['SMBASIC_PROFILE_FIELDS_BOTTOM']) ? print $tpldata['SMBASIC_PROFILE_FIELDS_BOTTOM'] : false; ?>
             <p class="inputBtnSend"><input type="submit" id="profile" name="profile" value="<?php print $LANGDATA['L_SEND'] ?>" class=""  /></p>                                    
-        </form>        
+        </form>
     </div>
 </div>

@@ -157,19 +157,9 @@ function SMBasic_ProfileChange() {
         }
     }
 
-    if ($realname = S_POST_TEXT_UTF8("realname", 64)) {
-        $realname = $db->escape_strip($realname);
-        if ($user['realname'] != $realname) {
-            $q_set_ary['realname'] = $realname;
-        }
-    }
+    do_action("SMBasic_ProfileChange", $q_set_ary);
 
-    if (empty($q_set_ary)) {
-        $response[] = array("status" => "0", "msg" => $LANGDATA['L_NOTHING_CHANGE']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
-    }
-    $db->update("users", $q_set_ary, array("uid" => $user['uid']), "LIMIT 1");
+    empty($q_set_ary) ? $db->update("users", $q_set_ary, array("uid" => $user['uid']), "LIMIT 1") : false;
 
     $response[] = array("status" => "ok", "msg" => $LANGDATA['L_UPDATE_SUCCESSFUL'], "url" => S_SERVER_REQUEST_URI());
     echo json_encode($response, JSON_UNESCAPED_SLASHES);
