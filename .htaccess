@@ -18,8 +18,8 @@ RewriteRule  ^es\/login$   app.php?module=SMBasic&page=login&lang=es
 RewriteRule  ^en\/login$   app.php?module=SMBasic&page=login&lang=en
 RewriteRule  ^es\/logout$   app.php?module=SMBasic&page=logout&lang=es
 RewriteRule  ^en\/logout$   app.php?module=SMBasic&page=logout&lang=en
-RewriteRule  ^es\/profile$   app.php?module=SMBasic&page=profile&lang=es
-RewriteRule  ^en\/profile$   app.php?module=SMBasic&page=profile&lang=en
+RewriteRule  ^es\/profile(.*)$   app.php?module=SMBasic&page=profile&lang=es$1
+RewriteRule  ^en\/profile(.*)$   app.php?module=SMBasic&page=profile&lang=en$1
 RewriteRule  ^es\/register$   app.php?module=SMBasic&page=register&lang=es
 RewriteRule  ^en\/register$   app.php?module=SMBasic&page=register&lang=en
 
