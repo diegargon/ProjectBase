@@ -5,15 +5,16 @@
 if (!defined('IN_WEB')) { exit; }
 
 class Database {
+
     var $dblink;
 
     function connect() {
         $this->dblink = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB);
         if (!$this->dblink) {
-            die ('Failed to connect to database: ' . $this->mysqli->connect_error());
+            die('Failed to connect to database: ' . $this->mysqli->connect_error());
             exit();
-        }   
-        $this->query("SET NAMES ". DB_CHARSET ."");
+        }
+        $this->query("SET NAMES " . DB_CHARSET . "");
 
         return true;
     }
@@ -24,7 +25,7 @@ class Database {
     }
 
     function fetch($query) {
-    	return $row = $query->fetch_assoc();
+        return $row = $query->fetch_assoc();
     }
 
     function escape($var) {
@@ -37,24 +38,24 @@ class Database {
     }
 
     function num_rows($query) {
-	return $query->num_rows;
+        return $query->num_rows;
     }
 
     function close() {
-	!$this->dblink ?  die('Could not connect: ' . $this->dblink->error) : false;
-	$this->dblink->close();
+        !$this->dblink ? die('Could not connect: ' . $this->dblink->error) : false;
+        $this->dblink->close();
     }
 
     private function dbdie($query) {
         echo "\n<b>Error: Unable to retrieve information.</b>";
         echo "\n<br>$query";
-        echo "\n<br>reported: ".$this->dblink->error;
+        echo "\n<br>reported: " . $this->dblink->error;
         $this->close();
-       exit;
+        exit;
     }
 
     function insert_id() {
-        if(!($id = $this->dblink->insert_id) ) {
+        if (!($id = $this->dblink->insert_id)) {
             die('Could not connect: ' . $this->dblink->error);
             $this->dblink->close();
             exit;
@@ -67,11 +68,12 @@ class Database {
         $query->free();
     }
 
-    function get_next_num ($table, $field) {
+    function get_next_num($table, $field) {
         global $config;
 
-        if (empty($table) || empty($field)) { return false; }
-
+        if (empty($table) || empty($field)) {
+            return false;
+        }
         $table = $config['DB_PREFIX'] . $table;
         $q = "SELECT MAX( $field ) AS max FROM `$table`;";
         $query = $this->query($q);
@@ -82,29 +84,28 @@ class Database {
 
     /* $db->select_all("users", array('uid' => 1, 'username' => "myname"), "LIMIT 1"); */
     /* Especify operator default '=';
-    /* $query = $db->select_all("news", array ("frontpage" => array("value"=> 1, "operator" => "="), "moderation" => 0, "disabled" => 0));
-    /* extra not array */
+      /* $query = $db->select_all("news", array ("frontpage" => array("value"=> 1, "operator" => "="), "moderation" => 0, "disabled" => 0));
+      /* extra not array */
+
     function select_all($table, $where = null, $extra = null, $logic = "AND") {
         global $config;
 
-        if(empty($table)) {
+        if (empty($table)) {
             return false;
         }
-
         $q = "SELECT * FROM {$config['DB_PREFIX']}$table";
 
         if (!empty($where)) {
             $q .= " WHERE ";
             $q .= $this->where_process($where, $logic);
         }
-
         !empty($extra) ? $q .= " $extra" : false;
 
         return $this->query($q);
     }
-    /*
-     * 
-     */
+
+    /* */
+
     function search($table, $s_fields, $searchText, $where, $extra = null) {
         global $config;
 
@@ -133,8 +134,8 @@ class Database {
             $where_s_tmp = "";
         }
 
-        if (!empty($where_s_fields) ) {
-            $q .= "(". $where_s_fields .")";
+        if (!empty($where_s_fields)) {
+            $q .= "(" . $where_s_fields . ")";
         } else {
             return false;
         }
@@ -142,42 +143,41 @@ class Database {
 
         return $this->query($q);
     }
-    /*
-     *
-     */
+
+    /*  */
+
     function update($table, $set, $where = null, $extra = null, $logic = "AND") {
         global $config;
 
         $q = "UPDATE {$config['DB_PREFIX']}$table SET ";
 
-        if(empty($set) || empty($table)) { return false; }
+        if (empty($set) || empty($table)) {
+            return false;
+        }
 
         foreach ($set as $field => $value) {
-             $q_set_fields[] = "$field = " . "'". $value ."'";
+            $q_set_fields[] = "$field = " . "'" . $value . "'";
         }
-        $q .= implode( ',', $q_set_fields );
+        $q .= implode(',', $q_set_fields);
 
         if (!empty($where)) {
             $q .= " WHERE ";
             $q .= $this->where_process($where, $logic);
         }
-
         !empty($extra) ? $q .= " $extra" : false;
         return $this->query($q);
     }
+
     /*  */
-    function insert($table, $data) {
+
+    function insert($table, $insert_data, $extra = null) {
         global $config;
 
-        if (empty($table) || empty($data)) { return false; }
-
-        foreach ($data as $field => $value){
-            $fields_ary[] = $field;
-            $values_ary[] = "'". $value . "'";
+        if (empty($table) || empty($insert_data)) {
+            return false;
         }
-        $fields = implode( ', ', $fields_ary );
-        $values = implode( ', ', $values_ary );
-        $q = "INSERT INTO {$config['DB_PREFIX']}$table ( $fields ) VALUES ( $values )";
+        $insert_ary = $this->insert_process($insert_data);
+        $q = "INSERT INTO {$config['DB_PREFIX']}$table ( {$insert_ary['fields']} ) VALUES ( {$insert_ary['values']} ) $extra";
 
         return $this->query($q);
     }
@@ -185,26 +185,52 @@ class Database {
     function delete($table, $where, $extra = null, $logic = 'AND') {
         global $config;
 
-        if(empty($table) || empty($where) ) { return false; }
-
+        if (empty($table) || empty($where)) {
+            return false;
+        }
         $q = "DELETE FROM {$config['DB_PREFIX']}$table WHERE ";
         $q .= $this->where_process($where, $logic);
-
         !empty($extra) ? $q .= " $extra" : false;
 
         return $this->query($q);
     }
 
-    private function where_process($where, $logic) {
+    function upsert($table, $set_ary, $where_ary) {
+        $insert_data = array_merge($where_ary, $set_ary);
+        $set_data = $this->set_process($set_ary);
+        $this->insert($table, $insert_data, "ON DUPLICATE KEY UPDATE $set_data");
+    }
 
-        foreach ($where as $field => $value){
-            if (!is_array($value)) {
-                $q_where_fields[] = "$field = " . "'". $value ."'";
-            } else {
-                $q_where_fields[] = "$field {$value['operator']} " . "'". $value['value'] ."'";
-            }
+    private function insert_process($insert_data) {
+        foreach ($insert_data as $field => $value) {
+            $fields_ary[] = $field;
+            $values_ary[] = "'" . $value . "'";
         }
-        $q = implode( " $logic ", $q_where_fields );
+        $insert['fields'] = implode(', ', $fields_ary);
+        $insert['values'] = implode(', ', $values_ary);
+
+        return $insert;
+    }
+
+    private function set_process($set) {
+        foreach ($set as $field => $value) {
+            $newset[] = "$field = " . "'" . $value . "'";
+        }
+        $q = implode(',', $newset);
         return $q;
     }
+
+    private function where_process($where, $logic) {
+
+        foreach ($where as $field => $value) {
+            if (!is_array($value)) {
+                $q_where_fields[] = "$field = " . "'" . $value . "'";
+            } else {
+                $q_where_fields[] = "$field {$value['operator']} " . "'" . $value['value'] . "'";
+            }
+        }
+        $q = implode(" $logic ", $q_where_fields);
+        return $q;
+    }
+
 }
