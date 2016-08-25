@@ -1,6 +1,6 @@
 <?php
 /*
-	
+ *  Copyright @ 2016 Diego Garcia	
 */
 if (!defined('IN_WEB')) { exit; }
 
@@ -55,6 +55,7 @@ if (!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
         news_new_page();
     }
 } else {
+    do_action("begin_newsshow");
     require_once("includes/news_page.main.php");
     require_once("includes/parser.class.php");
     do_action("common_web_structure");
