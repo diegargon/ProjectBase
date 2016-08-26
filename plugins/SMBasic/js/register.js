@@ -2,8 +2,7 @@
  *  Copyright @ 2016 Diego Garcia
  */
 
-//$(document).ready(function(){ // Not work with jquery async
-window.onload = function() {    
+window.addEventListener("load", function() { 
     $("#register").click(function(){
         $('#register').attr('disabled','disabled');
         //Email Validation
@@ -91,4 +90,4 @@ window.onload = function() {
         $('#register').removeAttr("disabled");
         return false;
     });
-};
+});

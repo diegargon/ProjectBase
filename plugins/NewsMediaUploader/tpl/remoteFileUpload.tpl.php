@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 ?>
 <script>
- $(document).ready(function() {
+ window.addEventListener("load", function() {
     $("#btnRemoteUpload").on('click', function() {
         $('#btnRemoteUpload').hide();
         var remote_url = $("#news_remote_media").val();
