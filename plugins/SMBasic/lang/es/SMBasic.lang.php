@@ -94,3 +94,5 @@ $LANGDATA['L_SM_E_RESET'] = "Error al reinicia la contraseña";
 $LANGDATA['L_SM_E_AVATAR'] = "Avatar erroneo";
 $LANGDATA['L_TOS'] = "Terminos de servicio";
 $LANGDATA['L_SM_PROFILE_OPTIONAL'] = "Opciones adicionales:";
+$LANGDATA['L_SM_ACTIVATION_OK'] = "Activación correcta, ya puede identificarse";
+$LANGDATA['L_SM_RESET_OK'] = "Reinicio de la contraseña correcto";

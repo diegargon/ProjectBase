@@ -2,11 +2,9 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) {
-    exit;
-}
+if (!defined('IN_WEB')) { exit; }
 
-function SMBasic_Login() {
+ function SMBasic_Login() {
     global $config, $LANGDATA, $db, $sm;
 
     if ((($email = S_POST_EMAIL("email")) != false) &&
@@ -17,36 +15,34 @@ function SMBasic_Login() {
         if (empty($password)) {
             $msgbox['MSG'] = "L_ERROR_INTERNAL";
             do_action("message_page", $msgbox);
-            exit(0);
+            return false;
         }
-        $response = [];
         $query = $db->select_all("users", array("email" => "$email", "password" => "$password"), "LIMIT 1");
         if (($user = $db->fetch($query))) {
             if ($user['active'] == 0) {
                 if ($user['disable'] == 1) {
-                    $response[] = array("status" => "error", "msg" => $LANGDATA['L_SM_E_DISABLE']);
+                    die('[{"status": "error", "msg": "' . $LANGDATA['L_SM_E_DISABLE'] . '"}]');
                 } else {
                     $sm->setSession($user);
                     if (($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])) {
                         $sm->setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11));
                     }
-                    $response[] = array("status" => "ok", "msg" => $config['WEB_URL']);
+                    die('[{"status": "ok", "msg": "' . $config['WEB_URL'] . '"}]');
                 }
             } else {
                 if ($user['active'] > 0) { //-1 disable by admin not send email
                     $mail_msg = SMBasic_create_reg_mail($user['active']);
                     mail($user['email'], $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
                 }
-                $response[] = array("status" => "error", "msg" => $LANGDATA['L_ACCOUNT_INACTIVE']);
+                die('[{"status": "error", "msg": "' . $LANGDATA['L_ACCOUNT_INACTIVE'] . '"}]');
             }
         } else {
-            $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD']);
+            die('[{"status": "error", "msg": "' . $LANGDATA['L_ERROR_EMAILPASSWORD'] . '"}]');
         }
         $db->free($query);
     } else {
-        $response[] = array("status" => "error", "msg" => $LANGDATA['L_ERROR_EMAILPASSWORD']);
+        die('[{"status": "error", "msg": "' . $LANGDATA['L_ERROR_EMAILPASSWORD'] . '"}]');
     }
-    echo json_encode($response, JSON_UNESCAPED_SLASHES);
 }
 
 function SMBasic_user_activate_account() {
@@ -58,9 +54,9 @@ function SMBasic_user_activate_account() {
     $query = $db->select_all("users", array("active" => "$active"), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
         return false;
-    } else {
-        $db->update("users", array("active" => 0), array("active" => $active));
     }
+    
+    $db->update("users", array("active" => 0), array("active" => $active));   
 
     return true;
 }
@@ -69,38 +65,29 @@ function SMBasic_RequestResetOrActivation() {
     global $LANGDATA, $config, $db;
 
     if (($email = S_POST_EMAIL("email")) == false) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        die('[{"status": "1", "msg": "' . $LANGDATA['L_ERROR_EMAIL'] . '"}]');
         return false;
     }
     if (strlen($email) > $config['smbasic_max_email']) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_EMAIL_LONG']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        die('[{"status": "1", "msg": "' . $LANGDATA['L_EMAIL_LONG'] . '"}]');
         return false;
     }
     $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL_NOEXISTS']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+        die('[{"status": "1", "msg": "' . $LANGDATA['L_ERROR_EMAIL_NOEXISTS'] . '"}]');
     } else {
         $user = $db->fetch($query);
         if ($user['active'] > 1) {
             $mail_msg = SMBasic_create_reg_mail($user['active']);
             mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
-            $response[] = array("status" => "2", "msg" => $LANGDATA['L_ACTIVATION_EMAIL']);
-            echo json_encode($response, JSON_UNESCAPED_SLASHES);
-            return false;
+            die('[{"status": "2", "msg": "' . $LANGDATA['L_ACTIVATION_EMAIL'] . '"}]');
         } else {
             $reset = mt_rand(11111111, 2147483647);
             $db->update("users", array("reset" => "$reset"), array("email" => "$email"));
-
-            $URL = "{$config['WEB_URL']}" . "/{$config['WEB_LANG']}/" . "login.php" . "?reset=$reset&email=$email";
+            $URL = "{$config['WEB_URL']}" . "/{$config['WEB_LANG']}" . "/login" . "&reset=$reset&email=$email";
             $msg = $LANGDATA['L_RESET_EMAIL_MSG'] . "\n" . "$URL";
             mail($email, $LANGDATA['L_RESET_EMAIL_SUBJECT'], $msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
-            $response[] = array("status" => "2", "msg" => $LANGDATA['L_RESET_EMAIL']);
-            echo json_encode($response, JSON_UNESCAPED_SLASHES);
-            return false;
+            die('[{"status": "2", "msg": "' . $LANGDATA['L_RESET_EMAIL'] . '"}]');
         }
     }
 
@@ -121,7 +108,7 @@ function SMBasic_user_reset_password() {
         $password = SMBasic_randomPassword();
         $password_encrypted = do_action("encrypt_password", $password);
         $db->update("users", array("password" => "$password_encrypted", "reset" => "0"), array("uid" => "{$user['uid']}"));
-        $URL = "{$config['WEB_URL']}" . "/{$config['WEB_LANG']}/" . "login.php";
+        $URL = "{$config['WEB_URL']}" . "/{$config['WEB_LANG']}" . "/login";
         $msg = $LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] . "\n" . "$password\n" . "$URL";
         mail($email, $LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'], $msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
         echo $LANGDATA['L_RESET_PASSWORD_SUCCESS'];

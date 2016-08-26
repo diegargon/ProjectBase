@@ -14,8 +14,8 @@ RewriteRule  ^es\/submitnews$   app.php?module=Newspage&page=submitnews&lang=es 
 RewriteRule  ^en\/submitnews$   app.php?module=Newspage&page=submitnews&lang=en[NC]
 
 #SMBasic
-RewriteRule  ^es\/login$   app.php?module=SMBasic&page=login&lang=es
-RewriteRule  ^en\/login$   app.php?module=SMBasic&page=login&lang=en
+RewriteRule  ^es\/login(.*)$   app.php?module=SMBasic&page=login&lang=es$1
+RewriteRule  ^en\/login(.*)$   app.php?module=SMBasic&page=login&lang=en$1
 RewriteRule  ^es\/logout$   app.php?module=SMBasic&page=logout&lang=es
 RewriteRule  ^en\/logout$   app.php?module=SMBasic&page=logout&lang=en
 RewriteRule  ^es\/profile(.*)$   app.php?module=SMBasic&page=profile&lang=es$1

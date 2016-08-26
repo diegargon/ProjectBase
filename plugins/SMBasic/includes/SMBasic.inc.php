@@ -24,33 +24,28 @@ function SMBasic_checkSession() {
     $query = $db->select_all("sessions", array("session_id" => S_SESSION_CHAR_AZNUM("sid"), "session_uid" => S_SESSION_INT("uid")), "LIMIT 1");
 
     if ($db->num_rows($query) <= 0) {
-        $db->free($query);
         return false;
-    } else {
-        $session = $db->fetch($query);
-        $db->free($query);
-        if ($config['smbasic_check_ip'] == 1) {
-            if (!SMBasic_check_IP($session['session_ip'])) {
-                print_debug("SMBasic:IP validated FALSE", "SM_DEBUG");
-                return false;
-            }
-            print_debug("SMBasic:IP validated OK", "SM_DEBUG");
-        }
-        if ($config['smbasic_check_user_agent'] == 1) {
-            if (!SMBasic_check_user_agent($session['session_browser'])) {
-                print_debug("SMBasic:UserAgent validated FALSE", "SM_DEBUG");
-                return false;
-            }
-            print_debug("SMBasic:UserAgent validated OK", "SM_DEBUG");
-        }
-        if ($session['session_expire'] < $now) {
-            print_debug("SMBasic: db session expired at $now", "SM_DEBUG");
-            return false;
-        } else {
-            print_debug("Update session expire at user {$session['session_uid']}", "SM_DEBUG");
-            $db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
-        }
     }
+    $session = $db->fetch($query);
+    $db->free($query);
+    if ($config['smbasic_check_ip'] == 1 && (!SMBasic_check_IP($session['session_ip']))) {
+        print_debug("SMBasic:IP validated FALSE", "SM_DEBUG");
+        return false;
+        print_debug("SMBasic:IP validated OK", "SM_DEBUG");
+    }
+    if ($config['smbasic_check_user_agent'] == 1 && (!SMBasic_check_user_agent($session['session_browser']))) {
+        print_debug("SMBasic:UserAgent validated FALSE", "SM_DEBUG");
+        return false;        
+    } else {
+        print_debug("SMBasic:UserAgent validated OK", "SM_DEBUG");
+    }
+    if ($session['session_expire'] < $now) {
+        print_debug("SMBasic: db session expired at $now", "SM_DEBUG");
+        return false;
+    }
+
+    print_debug("Update session expire at user {$session['session_uid']}", "SM_DEBUG");
+    $db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
 
     return true;
 }
@@ -101,10 +96,18 @@ function SMBasic_create_reg_mail($active) {
     global $LANGDATA, $config;
 
     if ($active > 1) {
-        $URL = "{$config['WEB_URL']}" . "login.php" . "?active=$active";
+        if ($config['FRIENDLY_URL']) {
+            $URL = $config['WEB_URL'] . "login&active=$active";
+        } else {
+            $URL = $config['CON_FILE'] . "?module=SMBasic&page=login&active=$active";
+        }
         $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" . "$URL";
     } else {
-        $URL = "{$config['WEB_URL']}" . "login.php";
+        if ($config['FRIENDLY_URL']) {
+            $URL = $config['WEB_URL'] . "login";
+        } else {
+            $URL = $config['CON_FILE'] . "?module=SMBasic&page=login";
+        }
         $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
     }
     return $msg;

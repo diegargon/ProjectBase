@@ -94,3 +94,5 @@ $LANGDATA['L_SM_E_RESET'] = "failed reset password";
 $LANGDATA['L_SM_E_AVATAR'] = "Avatar incorrect";
 $LANGDATA['L_TOS'] = "Terms of service";
 $LANGDATA['L_SM_PROFILE_OPTIONAL'] = "Additional options:";
+$LANGDATA['L_SM_ACTIVATION_OK'] = "Activation success, you can log in";
+$LANGDATA['L_SM_RESET_OK'] = "Reset success";

@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
- plugin_start("SMBasic");
+plugin_start("SMBasic");
 
 require_once("includes/SMBasic.login.php");
 
@@ -16,13 +16,27 @@ if (S_SESSION_INT("isLogged") == 1) {
 if (isset($_GET['active'])) {
     if (!SMBasic_user_activate_account()) {
         $msgbox['MSG'] = "L_SM_E_ACTIVATION";
+        $msgbox['backlink'] = $config['WEB_URL'];
         do_action("message_page", $msgbox);
+        return false;
+    } else {
+        $msgbox['MSG'] = "L_SM_ACTIVATION_OK";
+        $msgbox['backlink'] = $config['WEB_URL'];
+        do_action("message_page", $msgbox);
+        return false;
     }
 }
 if (isset($_GET['reset'])) {
     if (!SMBasic_user_reset_password()) {
         $msgbox['MSG'] = "L_SM_E_ACTIVATION";
+        $msgbox['backlink'] = $config['WEB_URL'];
         do_action("message_page", $msgbox);
+        return false;
+    } else {
+        $msgbox['MSG'] = "L_SM_RESET_OK";
+        $msgbox['backlink'] = $config['WEB_URL'];
+        do_action("message_page", $msgbox);
+        return false;
     }
 }
 if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['login'])) {
