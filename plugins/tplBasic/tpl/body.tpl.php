@@ -13,6 +13,11 @@ if (!defined('IN_WEB')) { exit; }
                         <span><?php echo $config['WEB_DESC'] ?></span>
                     </div>
                     <?php if ($config['NAV_MENU']) { ?>
+                        <script>
+                            function toggleMenu() {
+                                document.getElementsByClassName("main-nav")[0].classList.toggle("responsive");
+                            }
+                        </script>                        
                         <nav>
                             <ul class="main-nav">              
                                 <li class="nav_right resp-icon"><a rel="nofollow" href="javascript:void(0);" onclick="toggleMenu()">&#9776;</a></li>                
@@ -35,3 +40,4 @@ if (!defined('IN_WEB')) { exit; }
             isset($tpldata['PRE_ACTION_ADD_TO_BODY']) ? print $tpldata['PRE_ACTION_ADD_TO_BODY'] : false;
             !isset($tpldata['ADD_TO_BODY']) ? print "<p>Hello World</p>" : print $tpldata['ADD_TO_BODY'];
             isset($tpldata['POST_ACTION_ADD_TO_BODY']) ? print $tpldata['POST_ACTION_ADD_TO_BODY'] : false;
+            

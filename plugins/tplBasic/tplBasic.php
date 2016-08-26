@@ -40,7 +40,7 @@ function tplBasic_message_page($box_data) {
 
 function tplBasic_message_box($box_data) {
     global $config, $tpl, $LANGDATA;
-    
+
     !empty($box_data['title']) ? $data['BOX_TITLE'] = $LANGDATA[$box_data['title']] : $data['BOX_TITLE'] = $LANGDATA['L_E_ERROR'];
     !empty($box_data['backlink']) ? $data['BOX_BACKLINK'] = $box_data['backlink'] : $data['BOX_BACKLINK'] = $config['BACKLINK'];
     !empty($box_data['backlink_title']) ? $data['BOX_BACKLINK_TITLE'] = $LANGDATA[$box_data['backlink_title']] : $data['BOX_BACKLINK_TITLE'] = $LANGDATA['L_BACK'];

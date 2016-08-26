@@ -7,7 +7,7 @@ if (!defined('IN_WEB')) { exit; }
 <!DOCTYPE html>
 <html dir="<?php print $config['WEB_DIR'] ?>" lang="<?php print $config['WEB_LANG'] ?>">
     <head>
-        <title><?php echo $config['PAGE_TITLE'] ?></title>        
+        <title><?php echo $config['PAGE_TITLE'] ?></title>
         <meta charset="<?php echo $config['CHARSET'] ?>">
         <meta name='language' content='<?php print $config['WEB_LANG'] ?>'>
         <meta name="viewport" content="<?php print $config['PAGE_VIEWPORT'] ?>">
@@ -20,14 +20,9 @@ if (!defined('IN_WEB')) { exit; }
         isset($tpldata['HEAD']) ? print $tpldata['HEAD'] : false;
         isset($tpldata['META']) ? print $tpldata['META'] : false;
         ?>
-        <link rel="shortcut icon" href="<?php print $config['WEB_URL'] ?>favicon.ico" type='image/x-icon' />        
+        <link rel="shortcut icon" href="<?php print $config['WEB_URL'] ?>favicon.ico" type='image/x-icon' />
         <?php
         isset($tpldata['LINK']) ? print $tpldata['LINK'] : false;
         isset($tpldata['SCRIPTS_TOP']) ? print $tpldata['SCRIPTS_TOP'] : false;
         ?>
-        <script>
-            function toggleMenu() {
-            document.getElementsByClassName("main-nav")[0].classList.toggle("responsive");
-            }
-        </script>        
     </head>
