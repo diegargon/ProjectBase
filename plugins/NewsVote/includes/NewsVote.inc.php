@@ -6,21 +6,21 @@ if (!defined('IN_WEB')) { exit; }
 
 function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
     global $db;
-    $where_ary = array (
+    $where_ary = array(
         "uid" => $uid,
         "section" => $section,
         "resource_id" => $rid,
-        "lang_id"  => $lid,
+        "lang_id" => $lid,
     );
     $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
 
-    if($db->num_rows($query) > 0 ) {
+    if ($db->num_rows($query) > 0) {
         return false;
     } else {
         if ($section == "news_rate") {
-            $query = $db->select_all("news", array("nid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");            
+            $query = $db->select_all("news", array("nid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");
         } else if ($section == "news_comments_rate") {
-            $query = $db->select_all("comments", array("cid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");            
+            $query = $db->select_all("comments", array("cid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");
         }
         if ($rid_row = $db->fetch($query)) {
             if ($rid_row['author_id'] == $uid) {
@@ -33,15 +33,15 @@ function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
 
 function NewsVote_Calc_Rating($rid, $lid, $section) {
     global $db;
-    $where_ary = array (
+    $where_ary = array(
         "section" => $section,
         "resource_id" => $rid,
         "lang_id" => $lid,
     );
     $query = $db->select_all("rating_track", $where_ary);
     $vote_sum = 0;
-    if ( ($num_votes = $db->num_rows($query)) > 0) {
-        while($vote_row = $db->fetch($query)) {
+    if (($num_votes = $db->num_rows($query)) > 0) {
+        while ($vote_row = $db->fetch($query)) {
             $vote_sum = $vote_sum + $vote_row['vote_value'];
         }
         $new_rate = $vote_sum / $num_votes;
@@ -54,7 +54,7 @@ function NewsVote_Calc_Rating($rid, $lid, $section) {
 }
 
 function NewsVote_GetStars($rating, $stars_ext) {
-    if ($rating <= 0.25 || empty($rating) ) {
+    if ($rating <= 0.25 || empty($rating)) {
         $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "void" . $stars_ext;
     } else if ($rating <= 0.75) {
         $rate['stars1'] = "half" . $stars_ext;
@@ -89,6 +89,6 @@ function NewsVote_GetStars($rating, $stars_ext) {
     } else {
         $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "full" . $stars_ext;
     }
-    
+
     return $rate;
 }
