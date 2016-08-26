@@ -154,11 +154,7 @@ class Database {
         if (empty($set) || empty($table)) {
             return false;
         }
-
-        foreach ($set as $field => $value) {
-            $q_set_fields[] = "$field = " . "'" . $value . "'";
-        }
-        $q .= implode(',', $q_set_fields);
+        $q .= $this->set_process($set);
 
         if (!empty($where)) {
             $q .= " WHERE ";
