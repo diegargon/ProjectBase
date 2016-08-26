@@ -14,46 +14,33 @@ function SMBasic_Register() {
     global $config, $LANGDATA, $db;
 
     if (($email = S_POST_EMAIL("email")) == false) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+        die('[{"status": "1", "msg": "' . $LANGDATA['L_ERROR_EMAIL'] . '"}]');
     }
     if (($config['smbasic_need_username'] == 1) &&
             (($username = S_POST_STRICT_CHARS("username", $config['smbasic_max_username'])) == false)) {
-        $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_USERNAME']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+        die('[{"status": "2", "msg": "' . $LANGDATA['L_ERROR_USERNAME'] . '"}]');
     }
     if (($config['smbasic_need_username'] == 1) &&
             (strlen($username) < $config['smbasic_min_username'])
     ) {
-        $response[] = array("status" => "2", "msg" => $LANGDATA['L_USERNAME_SHORT']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+        die('[{"status": "2", "msg": "' . $LANGDATA['L_USERNAME_SHORT'] . '"}]');
     }
     if (($password = S_POST_PASSWORD("password")) == false) {
-        $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+        die('[{"status": "3", "msg": "' . $LANGDATA['L_ERROR_PASSWORD'] . '"}]');
     }
     if (strlen($_POST['password']) < $config['sm_min_password']) {
-        $response[] = array("status" => "3", "msg" => $LANGDATA['L_ERROR_PASSWORD_MIN']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+        die('[{"status": "3", "msg": "' . $LANGDATA['L_ERROR_PASSWORD_MIN'] . '"}]');
     }
 
     $query = $db->select_all("users", array("username" => "$username"), "LIMIT 1");
+
     if (($db->num_rows($query)) > 0) {
-        $response[] = array("status" => "2", "msg" => $LANGDATA['L_ERROR_USERNAME_EXISTS']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+        die('[{"status": "2", "msg": "' . $LANGDATA['L_ERROR_USERNAME_EXISTS'] . '"}]');
     }
 
     $query = $db->select_all("users", array("email" => "$email"));
     if (($db->num_rows($query)) > 0) {
-        $response[] = array("status" => "1", "msg" => $LANGDATA['L_ERROR_EMAIL_EXISTS']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
-        return false;
+        die('[{"status": "1", "msg": "' . $LANGDATA['L_ERROR_EMAIL_EXISTS'] . '"}]');
     }
 
     $db->free($query);
@@ -71,11 +58,9 @@ function SMBasic_Register() {
 
     if ($query) {
         mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
-        $response[] = array("status" => "ok", "msg" => $register_message, "url" => $config['WEB_URL']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        die('[{"status": "ok", "msg": "' . $register_message . ', "url": "' . $config['WEB_URL'] . '"}]');
     } else {
-        $response[] = array("status" => "7", "msg" => $LANGDATA['L_REG_ERROR_WHILE']);
-        echo json_encode($response, JSON_UNESCAPED_SLASHES);
+        die('[{"status": "7", "msg": "' . $LANGDATA['L_REG_ERROR_WHILE_REG'] . '"}]');
     }
 
     return true;
