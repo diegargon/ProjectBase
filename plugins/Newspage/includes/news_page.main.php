@@ -266,12 +266,18 @@ function news_approved($nid, $lang_id) {
 
 function news_featured($nid, $featured, $lang_id) {
     global $db;
-
+    
+    $time = format_date(time(), true);
+    
     if (empty($nid) || empty($lang_id)) {
         return false;
     }
-    $featured == 1 ? news_clean_featured($lang_id) : false;
-    $db->update("news", array("featured" => $featured), array("nid" => $nid, "lang_id" => $lang_id));
+    $update_ary = array("featured" => "$featured");
+    $featured == 1 ? $update_ary['featured_date'] = $time : false;
+    
+    //$featured == 1 ? news_clean_featured($lang_id) : false;
+
+    $db->update("news", $update_ary , array("nid" => $nid, "lang_id" => $lang_id));
 
     return true;
 }

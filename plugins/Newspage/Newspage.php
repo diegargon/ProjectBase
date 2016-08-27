@@ -19,6 +19,7 @@ function Newspage_init() {
 
 function news_portal() {
     global $config, $tpl;
+   
     require_once("includes/news_portal.php");
     do_action("news_portal_begin");
 
@@ -30,9 +31,8 @@ function news_portal() {
         $tpl->addto_tplvar("news_nSwitch", $news_nLayout);
         register_action("nav_element", "news_layout_switcher", 6);
     }
-    $portal_content = [];
-    $config['NEWS_PORTAL_FEATURED'] ? $portal_content['FEATURED'] = getNews_featured() : false;
-    $portal_content = array_merge($portal_content, news_portal_config());
+
+    $portal_content = news_portal_content();
 
     $tpl->addtpl_array($portal_content);
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", $news_layout_tpl));

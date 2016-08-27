@@ -106,7 +106,7 @@ function news_full_update($news_data) {
     }
    
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = ""; 
-    empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
+    empty($news_data['featured']) ? $news_data['featured'] = 0 : false; //news_clean_featured($lang_id) ;
     !isset($news_data['news_translator']) ? $news_data['news_translator'] = "" : false;
 
         

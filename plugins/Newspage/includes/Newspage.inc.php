@@ -117,7 +117,7 @@ function news_get_related($nid) {
 
     return $related;
 }
-
+/* Unused now, not delete old featured bit
 function news_clean_featured($lang_id) {
     global $db;
 
@@ -129,7 +129,7 @@ function news_clean_featured($lang_id) {
         $db->update("news", $set_ary);
     }
 }
-
+*/
 function news_friendly_title($title) {
     //FIX: better way for clean all those character?
     $friendly_filter = array('"', '\'', '?', '$', ',', '.', '‘', '’', ':', ';', '[', ']', '{', '}', '*', '!', '¡', '¿', '+', '<', '>', '#', '@', '|', '~', '%', '&', '(', ')', '=', '`', '´', '/', 'º', 'ª', '\\');

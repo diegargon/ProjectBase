@@ -56,7 +56,7 @@ function news_create_new($news_data) {
     }
 
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = "";
-    empty($news_data['featured']) ? $news_data['featured'] = 0 : news_clean_featured($lang_id) ;
+    empty($news_data['featured']) ? $news_data['featured'] = 0 : false; //news_clean_featured($lang_id) ;
 
     if ($news_data['featured'] == 1 && $config['NEWS_MODERATION'] == 1) {
         $moderation = 0;
