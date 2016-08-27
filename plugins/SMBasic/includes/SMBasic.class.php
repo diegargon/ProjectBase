@@ -114,7 +114,7 @@ class SessionManager {
         $ip = $db->escape_strip(S_SERVER_REMOTE_ADDR());
         $user_agent = $db->escape_strip(S_SERVER_USER_AGENT());
 
-        $db->delete("sessions", array("session_uid" => "{$user['uid']}"));
+        $db->delete("sessions", array("session_uid" => "{$user['uid']}", "LIMIT 1"));
 
         $q_ary = array(
             "session_id" => "{$_SESSION['sid']}",
@@ -185,6 +185,7 @@ class SessionManager {
         }
         if ($session['session_expire'] < $now) {
             print_debug("SMBasic: db session expired at $now", "SM_DEBUG");
+            $db->delete("sessions", array("session_uid" => S_SESSION_INT("uid") )) ;
             return false;
         }
 
