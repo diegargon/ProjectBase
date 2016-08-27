@@ -43,6 +43,14 @@ class SessionManager {
         $db->num_rows($query) <= 0 ? $this->user = false : $this->user = $db->fetch($query);
     }
 
+    //TODO... do that right later 
+    function setAnonSession() {
+        $_SESSION['anon'] = 1;
+    }
+    function unsetAnonSession() {
+        unset($_SESSION['anon']);
+    }
+    //END TODO
     function getAllUsersArray($order_field = "regdate", $order = "ASC", $limit = 20) {
         global $db;
         $extra = "ORDER BY " . $order_field . " " . $order . " LIMIT " . $limit;
@@ -108,6 +116,8 @@ class SessionManager {
     function setSession($user) {
         global $config, $db;
 
+        $this->unsetAnonSession();
+
         $session_expire = time() + $config['smbasic_session_expire'];
         $_SESSION['uid'] = $user['uid'];
         $_SESSION['sid'] = $this->sessionToken();
@@ -126,6 +136,7 @@ class SessionManager {
 
         $db->insert("sessions", $q_ary);
         $db->update("users", array("last_login" => date("Y-m-d H:i:s", time())), array("uid" => $user['uid']));
+        
     }
 
     function setCookies($sid, $uid) {
@@ -148,7 +159,10 @@ class SessionManager {
         }
 
         $query = $db->select_all("sessions", array("session_id" => "$cookie_sid", "session_uid" => "$cookie_uid"), "LIMIT 1");
-        $db->num_rows($query) <= 0 ? $this->destroy() : false;
+        if( $db->num_rows($query) <= 0 ) {
+            $this->destroy();
+            return false;
+        }
 
         if (($user = $this->getUserbyID($cookie_uid)) != false) {
             $this->setSession($user);

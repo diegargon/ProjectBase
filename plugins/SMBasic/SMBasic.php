@@ -25,9 +25,11 @@ function SMBasic_Init() {
             $sm->destroy();
         }
     } else {
-        if ($config['smbasic_session_persistence']) {
+        if ($config['smbasic_session_persistence'] && !S_SESSION_INT("anon")) {
             print_debug("Checkcookies trigged", "SM_DEBUG");
-            $sm->checkCookies();
+            if($sm->checkCookies() == false) {
+                $sm->setAnonSession();
+            }
         }
     }
     if (defined('SM_DEBUG') && ($sm->getSessionUser() != false)) {
