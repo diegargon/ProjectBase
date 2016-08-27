@@ -109,7 +109,6 @@ class SessionManager {
         global $config, $db;
 
         $session_expire = time() + $config['smbasic_session_expire'];
-        $_SESSION['username'] = $user['username'];
         $_SESSION['uid'] = $user['uid'];
         $_SESSION['sid'] = $this->sessionToken();
         $ip = $db->escape_strip(S_SERVER_REMOTE_ADDR());

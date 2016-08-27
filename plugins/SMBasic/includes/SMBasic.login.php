@@ -84,7 +84,7 @@ function SMBasic_RequestResetOrActivation() {
         } else {
             $reset = mt_rand(11111111, 2147483647);
             $db->update("users", array("reset" => "$reset"), array("email" => "$email"));
-            $URL = "{$config['WEB_URL']}" . "/{$config['WEB_LANG']}" . "/login" . "&reset=$reset&email=$email";
+            $URL = "{$config['WEB_URL']}" . "/login" . "&reset=$reset&email=$email";
             $msg = $LANGDATA['L_RESET_EMAIL_MSG'] . "\n" . "$URL";
             mail($email, $LANGDATA['L_RESET_EMAIL_SUBJECT'], $msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
             die('[{"status": "2", "msg": "' . $LANGDATA['L_RESET_EMAIL'] . '"}]');

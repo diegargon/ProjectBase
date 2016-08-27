@@ -20,7 +20,6 @@ function SMBasic_sessionDebugDetails() {
     print_debug("<hr><br/><h2>Session Details</h2>", "SM_DEBUG");
     print_debug("Time Now: " . format_date(time(), true) . "", "SM_DEBUG");
     print_debug("Session VAR ID: {$_SESSION['uid']}", "SM_DEBUG");
-    print_debug("Session VAR Username: {$_SESSION['username']}", "SM_DEBUG");
     print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
 
     $s_uid = S_SESSION_INT("uid");
