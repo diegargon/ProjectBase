@@ -6,5 +6,5 @@ if (!defined('IN_WEB')) { exit; }
 
 plugin_start("SMBasic");
 
-$sm->sessionDestroy();
+$sm->destroy();
 header('Location: ./');

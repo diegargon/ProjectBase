@@ -19,7 +19,7 @@ if (isset($_POST['profile'])) {
     SMBasic_ViewProfile();
 } else {
     if (($user = $sm->getSessionUser()) == false) {
-        $sm->sessionDestroy();
+        $sm->destroy();
         $msgbox['MSG'] = "L_SM_E_USER_NOT_EXISTS";
         do_action("message_page", $msgbox);
     } else {

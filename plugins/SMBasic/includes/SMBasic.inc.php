@@ -14,42 +14,6 @@ function SMBasic_encrypt_password($password) {
     }
 }
 
-function SMBasic_checkSession() {
-    global $config, $db;
-
-    print_debug("CheckSession called", "SM_DEBUG");
-    $now = time();
-    $next_expire = time() + $config['smbasic_session_expire'];
-
-    $query = $db->select_all("sessions", array("session_id" => S_SESSION_CHAR_AZNUM("sid"), "session_uid" => S_SESSION_INT("uid")), "LIMIT 1");
-
-    if ($db->num_rows($query) <= 0) {
-        return false;
-    }
-    $session = $db->fetch($query);
-    $db->free($query);
-    if ($config['smbasic_check_ip'] == 1 && (!SMBasic_check_IP($session['session_ip']))) {
-        print_debug("SMBasic:IP validated FALSE", "SM_DEBUG");
-        return false;
-        print_debug("SMBasic:IP validated OK", "SM_DEBUG");
-    }
-    if ($config['smbasic_check_user_agent'] == 1 && (!SMBasic_check_user_agent($session['session_browser']))) {
-        print_debug("SMBasic:UserAgent validated FALSE", "SM_DEBUG");
-        return false;        
-    } else {
-        print_debug("SMBasic:UserAgent validated OK", "SM_DEBUG");
-    }
-    if ($session['session_expire'] < $now) {
-        print_debug("SMBasic: db session expired at $now", "SM_DEBUG");
-        return false;
-    }
-
-    print_debug("Update session expire at user {$session['session_uid']}", "SM_DEBUG");
-    $db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
-
-    return true;
-}
-
 function SMBasic_sessionDebugDetails() {
     global $db;
 
@@ -82,16 +46,6 @@ function SMBasic_sessionDebugDetails() {
     }
 }
 
-function SMBasic_check_IP($db_session_ip) {
-    $ip = S_SERVER_REMOTE_ADDR();
-    return ($ip == $db_session_ip) ? true : false;
-}
-
-function SMBasic_check_user_agent($db_user_agent) {
-    $user_agent = S_SERVER_USER_AGENT();
-    return ($user_agent == $db_user_agent) ? true : false;
-}
-
 function SMBasic_create_reg_mail($active) {
     global $LANGDATA, $config;
 
@@ -111,4 +65,32 @@ function SMBasic_create_reg_mail($active) {
         $msg = $LANGDATA['L_REG_EMAIL_MSG_WELCOME'] . "\n" . "$URL";
     }
     return $msg;
+}
+
+function SMBasic_navLogReg() {
+    global $config, $LANGDATA, $sm;
+
+    $user = $sm->getSessionUser();
+
+    $elements = "";
+    if ($config['FRIENDLY_URL']) {
+        $login_url = "/{$config['WEB_LANG']}/login";
+        $register_url = "/{$config['WEB_LANG']}/register";
+        $profile_url = "/{$config['WEB_LANG']}/profile";
+        $logout_url = "/{$config['WEB_LANG']}/logout";
+    } else {
+        $login_url = "/app.php?module=SMBasic&page=login&lang={$config['WEB_LANG']}";
+        $register_url = "/app.php?module=SMBasic&page=register&lang={$config['WEB_LANG']}";
+        $profile_url = "/app.php?module=SMBasic&page=profile&lang={$config['WEB_LANG']}'";
+        $logout_url = "/app.php?module=SMBasic&page=logout&lang={$config['WEB_LANG']}";
+    }
+
+    if ($user) {
+        $elements .= "<li class='nav_right'><a href='$logout_url'>{$LANGDATA['L_LOGOUT']}</a></li>\n";
+        $elements .= "<li class='nav_right'><a href='$profile_url'>" . $user['username'] . "</a></li>\n";
+    } else {
+        $elements .= "<li class='nav_right'><a href='$login_url'>{$LANGDATA['L_LOGIN']}</a></li>\n";
+        $elements .= "<li class='nav_right'><a href='$register_url'>{$LANGDATA['L_REGISTER']}</a></li>\n";
+    }
+    return $elements;
 }

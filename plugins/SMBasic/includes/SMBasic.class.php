@@ -27,15 +27,17 @@ class SessionManager {
         return ($db->num_rows($query) <= 0) ? false : $db->fetch($query);
     }
 
-    function getSessionUser() {  //TODO Recheck/rethink  THIS FUCTION logic SESSION THINK
+    function getSessionUser() {
         global $db;
 
-        if (empty($this->user)) {
-            ($uid = S_SESSION_INT("uid", 11, 1)) == false ? $this->user = false : false;
-            $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
-            $db->num_rows($query) <= 0 ? $this->user = false : $this->user = $db->fetch($query);
-        }
+        empty($this->user) ? $this->setSessionUser() : false;
         return $this->user;
+    }
+
+    function setSessionUser() {
+        $uid = S_SESSION_INT("uid", 11, 1) == false ? $this->user = false : false;
+        $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
+        $db->num_rows($query) <= 0 ? $this->user = false : $this->user = $db->fetch($query);
     }
 
     function getAllUsersArray($order_field = "regdate", $order = "ASC", $limit = 20) {
@@ -76,7 +78,10 @@ class SessionManager {
         return false;
     }
 
-    function sessionDestroy() {
+    function destroy() {
+        global $db;
+
+        empty($this->user) ? $db->delete("sessions", array("session_uid" => $this->user['uid'])) : false;
         $_SESSION = [];
         session_destroy();
         $this->clearCookies();
@@ -137,19 +142,65 @@ class SessionManager {
         $cookie_uid = S_COOKIE_INT("{$config['smbasic_cookie_prefixname']}uid", 11);
         $cookie_sid = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefixname']}sid", 32);
 
-        if ($cookie_uid != false && $cookie_sid != false) {
-            $query = $db->select_all("sessions", array("session_id" => "$cookie_sid", "session_uid" => "$cookie_uid"), "LIMIT 1");
-            if ($db->num_rows($query) > 0) {
-                if (($user = $this->getUserbyID($cookie_uid)) != false) {
-                    $this->setSession($user);
-                    $this->setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11)); //New sid by setSession -> new cookies
-                    return true;
-                }
-            } else {
-                $this->sessionDestroy();
-            }
+        if ($cookie_uid == false || $cookie_sid == false) {
+            return false;
         }
-        return false;
+
+        $query = $db->select_all("sessions", array("session_id" => "$cookie_sid", "session_uid" => "$cookie_uid"), "LIMIT 1");
+        $db->num_rows($query) <= 0 ? $this->destroy() : false;
+
+        if (($user = $this->getUserbyID($cookie_uid)) != false) {
+            $this->setSession($user);
+            $this->setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11)); //New sid by setSession -> new cookies
+            return true;
+        }
+    }
+
+    function checkSession() {
+        global $config, $db;
+
+        print_debug("CheckSession called", "SM_DEBUG");
+        $now = time();
+        $next_expire = time() + $config['smbasic_session_expire'];
+
+        $query = $db->select_all("sessions", array("session_id" => S_SESSION_CHAR_AZNUM("sid"), "session_uid" => S_SESSION_INT("uid")), "LIMIT 1");
+
+        if ($db->num_rows($query) <= 0) {
+            return false;
+        }
+        $session = $db->fetch($query);
+        $db->free($query);
+        if ($config['smbasic_check_ip'] == 1 && (!$this->check_IP($session['session_ip']))) {
+            print_debug("SMBasic:IP validated FALSE", "SM_DEBUG");
+            return false;
+        } else {
+            print_debug("SMBasic:IP validated OK", "SM_DEBUG");
+        }
+        if ($config['smbasic_check_user_agent'] == 1 && (!$this->check_user_agent($session['session_browser']))) {
+            print_debug("SMBasic:UserAgent validated FALSE", "SM_DEBUG");
+            return false;
+        } else {
+            print_debug("SMBasic:UserAgent validated OK", "SM_DEBUG");
+        }
+        if ($session['session_expire'] < $now) {
+            print_debug("SMBasic: db session expired at $now", "SM_DEBUG");
+            return false;
+        }
+
+        print_debug("Update session expire at user {$session['session_uid']}", "SM_DEBUG");
+        $db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
+
+        return true;
+    }
+
+    function check_IP($db_session_ip) {
+        $ip = S_SERVER_REMOTE_ADDR();
+        return ($ip == $db_session_ip) ? true : false;
+    }
+
+    function check_user_agent($db_user_agent) {
+        $user_agent = S_SERVER_USER_AGENT();
+        return ($user_agent == $db_user_agent) ? true : false;
     }
 
 }
