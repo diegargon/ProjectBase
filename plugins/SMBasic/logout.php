@@ -6,5 +6,9 @@ if (!defined('IN_WEB')) { exit; }
 
 plugin_start("SMBasic");
 
-$sm->destroy();
+$user = $sm->getSessionUser();
+
+if ($user && $user['uid'] != 0) {
+    $sm->destroy();
+}
 header('Location: ./');

@@ -112,7 +112,6 @@ class SessionManager {
         $_SESSION['username'] = $user['username'];
         $_SESSION['uid'] = $user['uid'];
         $_SESSION['sid'] = $this->sessionToken();
-        $_SESSION['isLogged'] = 1;
         $ip = $db->escape_strip(S_SERVER_REMOTE_ADDR());
         $user_agent = $db->escape_strip(S_SERVER_USER_AGENT());
 

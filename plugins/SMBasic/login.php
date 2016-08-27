@@ -9,11 +9,12 @@ require_once("includes/SMBasic.login.php");
 
 $user = $sm->getSessionUser();
 
-if ($user) {
+if ($user && $user['uid'] != 0) {
     $msgbox['MSG'] = "L_ERROR_ALREADY_LOGGED";
     do_action("message_page", $msgbox);
     return false;
 }
+
 if (isset($_GET['active'])) {
     if (!SMBasic_user_activate_account()) {
         $msgbox['MSG'] = "L_SM_E_ACTIVATION";

@@ -30,7 +30,7 @@ function SMBasic_Init() {
             $sm->checkCookies();
         }
     }
-    if (defined('SM_DEBUG') && !empty($_SESSION['isLogged'])) {
+    if (defined('SM_DEBUG') && ($sm->getSessionUser() != false)) {
         SMBasic_sessionDebugDetails();
     }
     register_action("nav_element", "SMBasic_navLogReg");

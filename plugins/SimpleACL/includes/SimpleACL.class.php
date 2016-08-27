@@ -21,11 +21,8 @@ class ACL {
 
         if (defined('SM') && !($user = $sm->getSessionUser())) {
             return false;
-        } else {
-            if (!isset($_SESSION['isLogged']) || $_SESSION['isLogged'] != 1) {
-                return false;
-            }
-        }
+        } 
+        
         if (empty($this->roles) || empty($this->user_roles)) {
             $this->SetRoles();
             $this->SetUserRoles();

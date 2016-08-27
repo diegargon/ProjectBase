@@ -8,7 +8,9 @@ plugin_start("SMBasic");
 
 require_once("includes/SMBasic.register.php");
 
-if (S_SESSION_INT("isLogged") == 1) {
+$user = $sm->getSessionUser();
+
+if ($user && $user['uid'] != 0) {
     $msgbox['MSG'] = "L_ERROR_ALREADY_LOGGED";
     do_action("message_page", $msgbox);
     return false;

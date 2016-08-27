@@ -7,7 +7,9 @@ if (!defined('IN_WEB')) { exit; }
 plugin_start("SMBasic");
 require_once("includes/SMBasic.profile.php");
 
-if (S_SESSION_INT("isLogged") != 1) {
+$user = $sm->getSessionUser();
+
+if (empty($user) || $user['uid'] == 0) {
     $msgbox['MSG'] = "L_ERROR_NOT_LOGGED";
     do_action("message_page", $msgbox);
     return false;
