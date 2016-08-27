@@ -114,7 +114,7 @@ class SessionManager {
         $ip = $db->escape_strip(S_SERVER_REMOTE_ADDR());
         $user_agent = $db->escape_strip(S_SERVER_USER_AGENT());
 
-        $db->delete("sessions", array("session_uid" => "{$user['uid']}", "LIMIT 1"));
+        $db->delete("sessions", array("session_uid" => "{$user['uid']}"), "LIMIT 1");
 
         $q_ary = array(
             "session_id" => "{$_SESSION['sid']}",
@@ -163,8 +163,13 @@ class SessionManager {
         print_debug("CheckSession called", "SM_DEBUG");
         $now = time();
         $next_expire = time() + $config['smbasic_session_expire'];
-
-        $query = $db->select_all("sessions", array("session_id" => S_SESSION_CHAR_AZNUM("sid"), "session_uid" => S_SESSION_INT("uid")), "LIMIT 1");
+        
+        $sid = S_SESSION_CHAR_AZNUM("sid");
+        $s_uid = S_SESSION_INT("uid");
+        if(empty($sid) || empty($s_uid)) {
+            return false;
+        }
+        $query = $db->select_all("sessions", array("session_id" => "$sid", "session_uid" => "$s_uid"), "LIMIT 1");
 
         if ($db->num_rows($query) <= 0) {
             return false;
