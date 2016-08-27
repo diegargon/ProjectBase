@@ -34,16 +34,25 @@ $config['NEWS_PAGER_MAX'] = 4; //Pair >= 4
 $config['NEWS_STATS'] = 1;
 $config['NEWS_ADVANCED_STATS'] = 1;
 $config['NEWS_META_OPENGRAPH'] = 1;
+//BEGIN PORTAL
 $config['NEWS_PORTAL_COLS'] = 3;
 $config['NEWS_PORTAL_FEATURED'] = 1;
-$config['NEWS_PORTAL_COL1_CONTENT'] = "frontpage";
-$config['NEWS_PORTAL_COL1_CONTENT_CATS'] = "1,2,3";
+$config['NEWS_PORTAL_COL1_CONTENT'] = array(
+    "frontpage" => "1,2,3",
+    "backpage_h" => "0",
+);
+$config['NEWS_PORTAL_COL2_CONTENT'] = array(
+    "frontpage" => "4,5,6",
+    "backpage_h" => "0",
+    "backpage" => "0",
+);
+$config['NEWS_PORTAL_COL3_CONTENT'] = array(
+    "backpage_h" => "0",
+    "frontpage" => "3,2,1",
+);
 $config['NEWS_PORTAL_COL1_CONTENT_LIMIT'] = 10;
-$config['NEWS_PORTAL_COL2_CONTENT'] = "frontpage";
-$config['NEWS_PORTAL_COL2_CONTENT_CATS'] = "4,5,6";
 $config['NEWS_PORTAL_COL2_CONTENT_LIMIT'] = 10;
-$config['NEWS_PORTAL_COL3_CONTENT'] = "backpage_h";
-$config['NEWS_PORTAL_COL3_CONTENT_CATS'] = "0";
 $config['NEWS_PORTAL_COL3_CONTENT_LIMIT'] = 10;
+//END PORTAL
 $config['NEWS_PARSER_ALLOW_IMG'] = 1;
 $config['NEWS_PARSER_ALLOW_URL'] = 1;
