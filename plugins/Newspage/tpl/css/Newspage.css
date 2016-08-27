@@ -62,8 +62,7 @@
 #featured_wrap a {
     text-decoration: none;
 }
-#featured_wrap span {
-    float:left;
+.featured_category {    
     font-weight: bold;
     font-size: 1.2em;
     box-shadow: 0 0 10px #ccc;
@@ -71,21 +70,21 @@
     border-right: 1px solid #dcdcdc;        
     color:#919191;
     background-color:#232323;
-    padding: 4px;
+    padding-left: 4px;
     text-transform: uppercase;
-    width: 100%;
-    margin-bottom: 3px;
+    width: 97%;
+    margin: 0 auto;
 }
 #featured {
-   display: table;
-   width: 99%;
-   border: 0px solid red;
-   background-color: #DEDEDE;
-   color: #989898;
-   box-shadow: 0 0 5px #818181;
-   margin: 0 auto;
-   margin-bottom: 4px;
-   padding-bottom: 10px;
+    display: table;
+    width: 100%;
+    border: 0px solid red;
+    background-color: #DEDEDE;
+    color: #989898;
+    box-shadow: 0 0 5px #818181;
+    margin: 0 auto;
+    margin-bottom: 4px;
+    padding-bottom: 10px;
 }
 #featured h1 {
     font-size: 1.4em;
@@ -121,7 +120,7 @@
 }
 #featured:hover div{
     box-shadow: 0 0 10px gray;
-    
+
 }
 #featured:hover h1 {
     color: blue !important;
@@ -146,11 +145,11 @@
     border-top: 1px dotted gray;
 }
 .article_body h1 {
-   font-size: 2.0em;
-   font-weight: bold;
-   border:0px solid blue;
-   line-height: 1em;
-   margin-bottom: 10px;
+    font-size: 2.0em;
+    font-weight: bold;
+    border:0px solid blue;
+    line-height: 1em;
+    margin-bottom: 10px;
 }
 .article_side {
     float:left;
@@ -264,8 +263,8 @@
 }
 /* ADMIN NAV */
 #adm_nav_container {
- border:0px solid blue; 
- overflow:hidden;
+    border:0px solid blue; 
+    overflow:hidden;
 }
 #adm_nav {}
 #adm_nav li {
@@ -390,15 +389,15 @@
     overflow:hidden;
 }
 .newsbox img {
-	float: left;
-	width: 100px;
-	height: 75px;
-	margin: 0 10px 10px 0;
-	border: 0px solid black;
-	box-shadow: 3px 3px 4px black;
+    float: left;
+    width: 100px;
+    height: 75px;
+    margin: 0 10px 10px 0;
+    border: 0px solid black;
+    box-shadow: 3px 3px 4px black;
 }
 .newsbox:hover img {
-	opacity: 0.4;
+    opacity: 0.4;
 }
 .news_img_float_r, .news_img_float_l {
     width:350px;

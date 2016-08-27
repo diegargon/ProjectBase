@@ -27,8 +27,13 @@ function news_layout_switcher() {
     return $switcher_tpl;
 }
 
+//Featured
 function getNews_featured($category = 0, $limit = 1) {
     return get_news($category, $limit, $headlines = 0, $frontpage = 1, $featured = 1);
+}
+
+function getNews_featured_h($category = 0, $limit = 1) {
+    return get_news($category, $limit, $headlines = 1, $frontpage = 1, $featured = 1);
 }
 
 //FRONTPAGE
@@ -54,7 +59,7 @@ function get_news($category = 0, $limit = null, $headlines = 0, $frontpage = 1, 
     $content = "";
 
     $where_ary = array("page" => 1);
-        
+
     if (defined('MULTILANG')) {
         $site_langs = $ml->get_site_langs();
         foreach ($site_langs as $site_lang) {
@@ -65,15 +70,15 @@ function get_news($category = 0, $limit = null, $headlines = 0, $frontpage = 1, 
             }
         }
     }
-    
+
     if ($featured != 0) {
         $where_ary['featured'] = $featured;
     } else { //exclude featured
-        $featured_query = $db->select_all("news", array("featured" => 1, "page" => 1, "lang_id" => "$lang_id"), "ORDER BY featured_date DESC" );
+        $featured_query = $db->select_all("news", array("featured" => 1, "page" => 1, "lang_id" => "$lang_id"), "ORDER BY featured_date DESC");
         $featured_news = $db->fetch($featured_query);
-        $where_ary['nid'] = array("value" => $featured_news['nid'], "operator" => "<>");        
+        $where_ary['nid'] = array("value" => $featured_news['nid'], "operator" => "<>");
     }
-    
+
     $config['NEWS_SELECTED_FRONTPAGE'] ? $where_ary['frontpage'] = $frontpage : false;
     $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : false;
 
@@ -88,16 +93,24 @@ function get_news($category = 0, $limit = null, $headlines = 0, $frontpage = 1, 
 
     $catname = null;
     if (defined('MULTILANG') && !empty($category)) {
-        $catname = get_category_name($category, $lang_id);
+        $catname = "<h2>";
+        !empty($featured) ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : false;
+        $catname .= get_category_name($category, $lang_id) . "</h2>";
     } else if (!empty($category)) {
-        $catname = get_category_name($category);
-    } else if (empty($category) && $frontpage == 0 && $featured == 0) {
-        $catname = $LANGDATA['L_NEWS_BACKPAGE'];
-    } else if (empty($category) && $frontpage == 1 && $featured == 0) {
-        $catname = $LANGDATA['L_NEWS_FRONTPAGE'];
+        $catname = "<h2>";
+        !empty($featured) ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : false;
+        $catname .= get_category_name($category) . "</h2>";
     }
 
-    $content .= "<h2>$catname</h2>";
+    if (empty($category) && $frontpage == 0 && $featured == 0) {
+        $catname = "<h2>" . $LANGDATA['L_NEWS_BACKPAGE'] . "</h2>";
+    } else if (empty($category) && $frontpage == 1 && $featured == 0) {
+        $catname = "<h2>" . $LANGDATA['L_NEWS_FRONTPAGE'] . "</h2>";
+    } else if (empty($category) && $featured == 1) {
+        $catname = "<h2 class='featured_category'>{$LANGDATA['L_NEWS_FEATURED']}</h2>";
+    }
+
+    $content .= $catname;
 
     $save_img_selector = $config['IMG_SELECTOR'];
     empty($featured) ? $config['IMG_SELECTOR'] = "thumbs" : false; //no thumb for featured image
@@ -124,7 +137,7 @@ function news_determine_main_image($news) {
     $match_regex = "/\[(img|localimg).*\](.*)\[\/(img|localimg)\]/";
     $match = false;
     preg_match($match_regex, $news_body, $match);
-    
+
     return !empty($match[0]) ? $match[0] : false;
 }
 
@@ -153,7 +166,7 @@ function fetch_news_data($row) {
         !isset($news_parser) ? $news_parser = new parse_text : false;
         $news['mainimage'] = $news_parser->parse($mainimage);
     }
-    
+
     return $news;
 }
 
@@ -175,7 +188,7 @@ function news_portal_content() {
     $portal_content = [];
 
     $config['NEWS_PORTAL_FEATURED'] ? $portal_content['FEATURED'] = getNews_featured() : false;
-    
+
     if ($config['NEWS_PORTAL_COLS'] >= 1) {
         $portal_content['COL1_ARTICLES'] = news_getPortalColLayout($config['NEWS_PORTAL_COL1_CONTENT'], $config['NEWS_PORTAL_COL1_CONTENT_LIMIT']);
     }

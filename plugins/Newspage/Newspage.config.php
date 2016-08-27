@@ -39,7 +39,6 @@ $config['NEWS_PORTAL_COLS'] = 3;
 $config['NEWS_PORTAL_FEATURED'] = 1;
 $config['NEWS_PORTAL_COL1_CONTENT'] = array(
     "frontpage" => "1,2,3",
-    "backpage_h" => "0",
 );
 $config['NEWS_PORTAL_COL2_CONTENT'] = array(
     "frontpage" => "4,5,6",
@@ -48,7 +47,7 @@ $config['NEWS_PORTAL_COL2_CONTENT'] = array(
 );
 $config['NEWS_PORTAL_COL3_CONTENT'] = array(
     "backpage_h" => "0",
-    "frontpage" => "3,2,1",
+    "featured_h" => "1"
 );
 $config['NEWS_PORTAL_COL1_CONTENT_LIMIT'] = 10;
 $config['NEWS_PORTAL_COL2_CONTENT_LIMIT'] = 10;
