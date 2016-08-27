@@ -185,7 +185,7 @@ class SessionManager {
         }
         if ($session['session_expire'] < $now) {
             print_debug("SMBasic: db session expired at $now", "SM_DEBUG");
-            $db->delete("sessions", array("session_uid" => S_SESSION_INT("uid") )) ;
+            $db->delete("sessions", array("session_id" => $session['session_id'] ), "LIMIT 1");
             return false;
         }
 
