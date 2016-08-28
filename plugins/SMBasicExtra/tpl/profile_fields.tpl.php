@@ -23,11 +23,12 @@ if (!defined('IN_WEB')) { exit; }
                 <input <?php !empty($data['realname_public']) ? print "checked" : false; ?>  class="realname_public" name="realname_public" type="checkbox"  value="1" />
             </dd>
         </dl>
+    <?php } ?>    
         <dl>
             <dt><label><?php print $LANGDATA['L_SM_EMAIL_PUBLIC'] ?></label></dt>
             <dd>
                 <input <?php !empty($data['email_public']) ? print "checked" : false; ?>  class="email_public" name="email_public" type="checkbox"  value="1" />
             </dd>
         </dl>       
-    <?php } ?>
+
 </div>
