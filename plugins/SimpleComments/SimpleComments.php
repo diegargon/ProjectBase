@@ -39,11 +39,9 @@ function SC_GetComments($plugin, $resource_id, $lang_id = null, $limit = null) {
         $counter == 0 ? $comment_row['TPL_FIRST'] = 1 : false;
         $counter == ($num_comments - 1 ) ? $comment_row['TPL_LAST'] = 1 : false;
         $counter++;
-        $author_data = $sm->getUserByID($comment_row['author_id']);
 
         do_action($plugin . "_get_comments", $comment_row);
 
-        $comment_row = array_merge($comment_row, $author_data);
         $content .= $tpl->getTPL_file("SimpleComments", "comments", $comment_row);
     }
     return $content;
@@ -62,15 +60,13 @@ function SC_AddComment($plugin, $comment, $resource_id, $lang_id = null) {
 
     $user = $sm->getSessionUser();
     if (empty($user)) {
-        $user['username'] = $LANGDATA['L_SC_ANONYMOUS'];
-        $user['uid'] = -1;
+        $user['uid'] = 0;
     }
     $new_ary = array(
         "plugin" => "$plugin",
         "resource_id" => "$resource_id",
         "lang_id" => "$lang_id",
         "message" => $db->escape_strip($comment),
-        "author" => "{$user['username']}",
         "author_id" => $user['uid']
     );
 

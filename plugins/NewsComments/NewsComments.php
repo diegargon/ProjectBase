@@ -7,6 +7,7 @@ if (!defined('IN_WEB')) { exit; }
 function NewsComments_init() {
     print_debug("NewsComments initiated", "PLUGIN_LOAD");
     register_action("news_show_page", "News_Comments");
+    register_action("Newspage_get_comments", "News_Comment_Details");
 }
 
 function News_Comments($news) {
@@ -40,4 +41,16 @@ function News_Comments($news) {
     $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", $content);
 
     return true;
+}
+
+function News_Comment_Details(& $comment) {
+    global $sm, $config;
+
+    $author_data = $sm->getUserByID($comment['author_id']);
+    if ($config['FRIENDLY_URL']) {
+        $comment['p_url'] = "/{$config['WEB_LANG']}/profile&viewprofile={$author_data['uid']}";
+    } else {
+        $comment['p_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=profile&viewprofile={$author_data['uid']}&lang={$config['WEB_LANG']}";
+    }
+    $comment = array_merge($comment, $author_data);
 }
