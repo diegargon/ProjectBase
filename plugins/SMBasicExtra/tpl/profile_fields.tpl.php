@@ -12,10 +12,22 @@ if (!defined('IN_WEB')) { exit; }
 <div id="optional_profile_fields">
     <?php if ($config['smb_xtr_realname']) { ?>
         <dl>
-            <dt><label><?php print $LANGDATA['L_SM_REALNAME'] ?></dt>
+            <dt><label><?php print $LANGDATA['L_SM_REALNAME'] ?></label></dt>
             <dd>
                 <input class="realname" name="realname" type="text"  value="<?php print $data['realname'] ?>" title="" autocomplete="off"/>
             </dd>
         </dl>
+        <dl>
+            <dt><label><?php print $LANGDATA['L_SM_REALNAME_PUBLIC'] ?></label></dt>
+            <dd>
+                <input <?php !empty($data['realname_public']) ? print "checked" : false; ?>  class="realname_public" name="realname_public" type="checkbox"  value="1" />
+            </dd>
+        </dl>
+        <dl>
+            <dt><label><?php print $LANGDATA['L_SM_EMAIL_PUBLIC'] ?></label></dt>
+            <dd>
+                <input <?php !empty($data['email_public']) ? print "checked" : false; ?>  class="email_public" name="email_public" type="checkbox"  value="1" />
+            </dd>
+        </dl>       
     <?php } ?>
 </div>
