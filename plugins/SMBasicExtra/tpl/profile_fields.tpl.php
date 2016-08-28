@@ -24,11 +24,39 @@ if (!defined('IN_WEB')) { exit; }
             </dd>
         </dl>
     <?php } ?>    
+    <dl>
+        <dt><label><?php print $LANGDATA['L_SM_EMAIL_PUBLIC'] ?></label></dt>
+        <dd>
+            <input <?php !empty($data['email_public']) ? print "checked" : false; ?>  class="email_public" name="email_public" type="checkbox"  value="1" />
+        </dd>
+    </dl>       
+    <?php if ($config['smb_xtr_age']) { ?>
         <dl>
-            <dt><label><?php print $LANGDATA['L_SM_EMAIL_PUBLIC'] ?></label></dt>
+            <dt><label><?php print $LANGDATA['L_SM_AGE'] ?></label></dt>
             <dd>
-                <input <?php !empty($data['email_public']) ? print "checked" : false; ?>  class="email_public" name="email_public" type="checkbox"  value="1" />
+                <input class="age" name="age" type="text" maxlength="2" value="<?php !empty($data['age']) ? print $data['age'] : false; ?>" title="" autocomplete="off"/>
             </dd>
-        </dl>       
+        </dl>
+        <dl>
+            <dt><label><?php print $LANGDATA['L_SM_AGE_PUBLIC'] ?></label></dt>
+            <dd>
+                <input <?php !empty($data['age_public']) ? print "checked" : false; ?>  class="age_public" name="age_public" type="checkbox"  value="1" />
+            </dd>
+        </dl>        
+    <?php } ?>
 
+    <?php if ($config['smb_xtr_aboutme']) { ?>
+        <dl>
+            <dt><label><?php print $LANGDATA['L_SM_ABOUTME'] ?></label></dt>
+            <dd>
+                <textarea class="aboutme" name="aboutme"><?php !empty($data['aboutme']) ? print $data['aboutme'] : false; ?></textarea>
+            </dd>
+        </dl>
+        <dl>
+            <dt><label><?php print $LANGDATA['L_SM_ABOUTME_PUBLIC'] ?></label></dt>
+            <dd>
+                <input <?php !empty($data['aboutme_public']) ? print "checked" : false; ?>  class="aboutme_public" name="aboutme_public" type="checkbox"  value="1" />
+            </dd>
+        </dl>    
+    <?php } ?>
 </div>

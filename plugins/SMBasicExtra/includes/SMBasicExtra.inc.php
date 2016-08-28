@@ -31,9 +31,21 @@ function SMB_Ex_ProfileChange() {
         }
         !empty($set_ary_tmp) ? $set_ary = array_merge($set_ary, $set_ary_tmp) : false;
     }
+    if ($age = S_POST_INT("age")) {
+        (strlen($age) <= 2) && (strlen($age) > 0) ? $set_ary['age'] = trim($age) : die('[{"status": "13", "msg": "' . $LANGDATA['L_SM_E_AGE'] . '"}]');
+    }
+    if ($aboutme = S_POST_TEXT_UTF8("aboutme")) {
+        if (mb_strlen($aboutme, $config['CHARSET']) > $config['smb_xtr_aboutme_maxchar']) {
+            die('[{"status": "14", "msg": "' . $LANGDATA['L_SM_E_ABOUTME_MAX'] . '"}]');
+        } else {
+            $set_ary['aboutme'] = $db->escape_strip($aboutme);
+        }
+    }
 
     S_POST_INT("realname_public", 1, 1) ? $set_ary['realname_public'] = 1 : $set_ary['realname_public'] = 0;
     S_POST_INT("email_public", 1, 1) ? $set_ary['email_public'] = 1 : $set_ary['email_public'] = 0;
+    S_POST_INT("age_public", 1, 1) ? $set_ary['age_public'] = 1 : $set_ary['age_public'] = 0;
+    S_POST_INT("aboutme_public", 1, 1) ? $set_ary['aboutme_public'] = 1 : $set_ary['about_public'] = 0;
     if (!empty($set_ary) && !empty($where_ary['uid'])) {
         uXtra_upsert($set_ary, $where_ary);
     }

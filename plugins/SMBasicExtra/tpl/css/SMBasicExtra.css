@@ -10,3 +10,15 @@
 #optional_profile_fields {
     display:none;
 }
+.age {
+ width: 20px;
+}
+.aboutme {
+    width: 100%;
+}
+.v_aboutme {
+    border: 1px solid gray !important;
+    text-align:left;
+    padding: 4px;
+    box-shadow: 0px 0px 10px #000;
+}
