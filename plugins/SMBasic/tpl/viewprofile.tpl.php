@@ -15,7 +15,7 @@ if (!defined('IN_WEB')) { exit; }
                 <?php
             } else {
                 ?>
-                <img width="125" height="150" src="plugins/SMBasic/tpl/img/avatar.png" alt="" />
+                <img width="125" height="150" src="<?php print $config['SMB_IMG_DFLT_AVATAR'] ?>" alt="" />
             <?php } ?>
         </div>
         <div id="profile_fields">
@@ -31,6 +31,7 @@ if (!defined('IN_WEB')) { exit; }
                 <dt><label><?php print $LANGDATA['L_SM_LASTLOGIN'] ?> </span></dt>
                 <dd><span><?php print format_date($data['last_login']) ?> </span></dd>
             </dl>
+            <?php !empty($tpldata['SMB_VIEWPROFILE_FIELDS_BOTTOM']) ? print $tpldata['SMB_VIEWPROFILE_FIELDS_BOTTOM'] : false; ?>            
         </div>
         <p class='p_center_medium'><a href="<?php print $config['BACKLINK'] ?>"><?php print $LANGDATA['L_BACK'] ?></a></p>
     </div>

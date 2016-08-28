@@ -27,7 +27,7 @@ function SMBasic_Init() {
     } else {
         if ($config['smbasic_session_persistence'] && !S_SESSION_INT("anon")) {
             print_debug("Checkcookies trigged", "SM_DEBUG");
-            if($sm->checkCookies() == false) {
+            if ($sm->checkCookies() == false) {
                 $sm->setAnonSession();
             }
         }

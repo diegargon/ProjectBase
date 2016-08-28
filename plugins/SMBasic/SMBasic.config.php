@@ -28,4 +28,4 @@ $config['smbasic_email_confirmation'] = 1;
 // Profile
 $config['smbasic_can_change_username'] = 1;
 $config['smbasic_can_change_email'] = 1;
-$config['IMG_DEFAULT_AVATAR'] = "/plugins/SMBasic/tpl/img/avatar.png";
+$config['SMB_IMG_DFLT_AVATAR'] = "/plugins/SMBasic/tpl/img/avatar.png";

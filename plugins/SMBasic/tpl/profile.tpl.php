@@ -16,12 +16,12 @@ if (!defined('IN_WEB')) { exit; }
                     <?php
                 } else {
                     ?>
-                    <img width="125" height="150" src="<?php print $config['IMG_DEFAULT_AVATAR']; ?>" alt="" />
+                    <img width="125" height="150" src="<?php print $config['SMB_IMG_DFLT_AVATAR']; ?>" alt="" />
                 <?php } ?>
             </div>
-            <?php !empty($tpldata['SMBASIC_PROFILE_POST_AVATAR']) ? print $tpldata['SMBASIC_PROFILE_POST_AVATAR'] : false; ?>
+            <?php !empty($tpldata['SMB_PROFILE_POST_AVATAR']) ? print $tpldata['SMB_PROFILE_POST_AVATAR'] : false; ?>
             <div id="profile_fields">
-                <?php !empty($tpldata['SMBASIC_PROFILE_FIELDS_TOP']) ? print $tpldata['SMBASIC_PROFILE_FIELDS_TOP'] : false; ?>
+                <?php !empty($tpldata['SMB_PROFILE_FIELDS_TOP']) ? print $tpldata['SMB_PROFILE_FIELDS_TOP'] : false; ?>
                 <dl>
                     <dt><label><?php print $LANGDATA['L_USERNAME'] ?></label><br/>
                         <span class="profile_subtext"><?php print $LANGDATA['L_USERNAME_H'] ?> </span>
@@ -89,7 +89,7 @@ if (!defined('IN_WEB')) { exit; }
                     </dd>
                 </dl>
             </div>
-            <?php !empty($tpldata['SMBASIC_PROFILE_FIELDS_BOTTOM']) ? print $tpldata['SMBASIC_PROFILE_FIELDS_BOTTOM'] : false; ?>
+            <?php !empty($tpldata['SMB_PROFILE_FIELDS_BOTTOM']) ? print $tpldata['SMB_PROFILE_FIELDS_BOTTOM'] : false; ?>
             <p class="inputBtnSend"><input type="submit" id="profile" name="profile" value="<?php print $LANGDATA['L_SEND'] ?>" class=""  /></p>                                    
         </form>
     </div>

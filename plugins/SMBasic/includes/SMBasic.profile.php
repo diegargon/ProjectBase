@@ -15,7 +15,7 @@ function SMBasic_ViewProfile() {
 
     $uid = S_GET_INT("viewprofile", 11, 1);
     if (empty($uid)) {
-        $msgbox['MSG'] = "L_SM_E_ACTIVATION";
+        $msgbox['MSG'] = "L_SM_E_USER_NOT_EXISTS";
         do_action("message_page", $msgbox);
     }
     $v_user = $sm->getUserbyID($uid);
