@@ -13,7 +13,7 @@ if (!defined('IN_WEB')) { exit; }
     ) {
         $password = do_action("encrypt_password", $password);
         if (empty($password)) {
-            $msgbox['MSG'] = "L_ERROR_INTERNAL";
+            $msgbox['MSG'] = "L_E_INTERNAL";
             do_action("message_page", $msgbox);
             return false;
         }
@@ -37,11 +37,11 @@ if (!defined('IN_WEB')) { exit; }
                 die('[{"status": "error", "msg": "' . $LANGDATA['L_ACCOUNT_INACTIVE'] . '"}]');
             }
         } else {
-            die('[{"status": "error", "msg": "' . $LANGDATA['L_ERROR_EMAILPASSWORD'] . '"}]');
+            die('[{"status": "error", "msg": "' . $LANGDATA['L_E_EMAILPASSWORD'] . '"}]');
         }
         $db->free($query);
     } else {
-        die('[{"status": "error", "msg": "' . $LANGDATA['L_ERROR_EMAILPASSWORD'] . '"}]');
+        die('[{"status": "error", "msg": "' . $LANGDATA['L_E_EMAILPASSWORD'] . '"}]');
     }
 }
 
@@ -65,7 +65,7 @@ function SMBasic_RequestResetOrActivation() {
     global $LANGDATA, $config, $db;
 
     if (($email = S_POST_EMAIL("email")) == false) {
-        die('[{"status": "1", "msg": "' . $LANGDATA['L_ERROR_EMAIL'] . '"}]');
+        die('[{"status": "1", "msg": "' . $LANGDATA['L_E_EMAIL'] . '"}]');
         return false;
     }
     if (strlen($email) > $config['smbasic_max_email']) {
@@ -74,7 +74,7 @@ function SMBasic_RequestResetOrActivation() {
     }
     $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
-        die('[{"status": "1", "msg": "' . $LANGDATA['L_ERROR_EMAIL_NOEXISTS'] . '"}]');
+        die('[{"status": "1", "msg": "' . $LANGDATA['L_E_EMAIL_NOEXISTS'] . '"}]');
     } else {
         $user = $db->fetch($query);
         if ($user['active'] > 1) {

@@ -10,7 +10,7 @@ require_once("includes/SMBasic.profile.php");
 $user = $sm->getSessionUser();
 
 if (empty($user) || $user['uid'] == 0) {
-    $msgbox['MSG'] = "L_ERROR_NOT_LOGGED";
+    $msgbox['MSG'] = "L_E_NOT_LOGGED";
     do_action("message_page", $msgbox);
     return false;
 }

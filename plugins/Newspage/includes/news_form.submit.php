@@ -16,7 +16,7 @@ function news_form_new() {
         $data['author'] = $user['username'];
         $data['tos_checked'] = 1;
     } else {
-        $msgbox['MSG'] = "L_ERROR_NOACCESS";
+        $msgbox['MSG'] = "L_E_NOACCESS";
         do_action("message_box", $msgbox);        
         return false;
     }

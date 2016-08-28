@@ -22,14 +22,14 @@ function news_show_page() {
 
     if (S_GET_INT("admin")) {
         if (defined("ACL") && !$acl_auth->acl_ask("admin_all||news_admin")) {
-            $msgbox['MSG'] = "L_ERROR_NOACCESS";
+            $msgbox['MSG'] = "L_E_NOACCESS";
             do_action("message_box", $msgbox);
             return false;
         }
         if (!defined('ACL')) {
             $user = $sm->getSessionUser();
             if (empty($user) || $user['isAdmin'] != 1) {
-                $msgbox['MSG'] = "L_ERROR_NOACCESS";
+                $msgbox['MSG'] = "L_E_NOACCESS";
                 do_action("message_box", $msgbox);
                 return false;
             }

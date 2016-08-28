@@ -15,13 +15,13 @@ function Admin_main_page() {
     global $acl_auth, $tpl, $sm;    
               
     if (defined('ACL') && !$acl_auth->acl_ask("admin_read")) {
-        $msgbox['MSG'] = "L_ERROR_NOACCESS";
+        $msgbox['MSG'] = "L_E_NOACCESS";
         do_action("message_page", $msgbox );        
         return false;
     }    
     $user = $sm->getSessionUser();
     if (!defined('ACL') && $user['isAdmin'] != 1) {
-        $msgbox['MSG'] = "L_ERROR_NOACCESS";
+        $msgbox['MSG'] = "L_E_NOACCESS";
         do_action("message_page", $msgbox );        
         return false;        
     }

@@ -6,7 +6,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 $LANGDATA['L_ERROR'] = "Error";
-$LANGDATA['L_ERROR_NOACCESS'] = "You haven't right to access";
+$LANGDATA['L_E_NOACCESS'] = "You haven't right to access";
 $LANGDATA['L_BACKHOME'] = "Back to home";
 $LANGDATA['L_GENERAL'] = "General";
 $LANGDATA['L_SEP'] = ": ";

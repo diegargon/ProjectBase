@@ -118,10 +118,10 @@ function Multilang_ModifyLang() {
             }
             $db->update("lang", $modify_ary, array("lang_id" => "$lang_id"));
         } else {
-            $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_INTERNAL_ID']);
+            $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_E_INTERNAL_ID']);
         }
     } else {
-        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS']);    
+        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_E_FIELDS']);    
     }  
 }
 
@@ -146,10 +146,10 @@ function Multilang_CreateLang() {
             $db->insert("lang", array("lang_name" => "$lang_name", "active" => "$active", "iso_code" => "$iso_code"));
             $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_CREATE_SUCCESFUL']);
         } else {
-            $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS_EXISTS']);
+            $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_E_FIELDS_EXISTS']);
         }
     } else {
-        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_FIELDS']);
+        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_E_FIELDS']);
     }
 }
 function Multilang_DeleteLang() {
@@ -160,6 +160,6 @@ function Multilang_DeleteLang() {
         $db->delete("lang", array("lang_id" => "$lid"));
         $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_DELETE_SUCCESS']);
     } else {
-        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_ERROR_INTERNAL_ID']);
+        $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_E_INTERNAL_ID']);
     }
 }
