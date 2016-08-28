@@ -45,7 +45,7 @@ function SMB_Ex_ProfileChange() {
     S_POST_INT("realname_public", 1, 1) ? $set_ary['realname_public'] = 1 : $set_ary['realname_public'] = 0;
     S_POST_INT("email_public", 1, 1) ? $set_ary['email_public'] = 1 : $set_ary['email_public'] = 0;
     S_POST_INT("age_public", 1, 1) ? $set_ary['age_public'] = 1 : $set_ary['age_public'] = 0;
-    S_POST_INT("aboutme_public", 1, 1) ? $set_ary['aboutme_public'] = 1 : $set_ary['about_public'] = 0;
+    S_POST_INT("aboutme_public", 1, 1) ? $set_ary['aboutme_public'] = 1 : $set_ary['aboutme_public'] = 0;
     if (!empty($set_ary) && !empty($where_ary['uid'])) {
         uXtra_upsert($set_ary, $where_ary);
     }
