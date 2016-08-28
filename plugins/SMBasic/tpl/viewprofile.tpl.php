@@ -24,11 +24,11 @@ if (!defined('IN_WEB')) { exit; }
                 <dd><span><?php print $data['username'] ?> </span></dd>
             </dl>
             <dl>
-                <dt><label><?php print $LANGDATA['L_SM_REGISTERED'] ?> </span></dt>
+                <dt><label><?php print $LANGDATA['L_SM_REGISTERED'] ?></label></dt>
                 <dd><span><?php print format_date($data['regdate']) ?> </span></dd>
             </dl>
             <dl>
-                <dt><label><?php print $LANGDATA['L_SM_LASTLOGIN'] ?> </span></dt>
+                <dt><label><?php print $LANGDATA['L_SM_LASTLOGIN'] ?> </label></dt>
                 <dd><span><?php print format_date($data['last_login']) ?> </span></dd>
             </dl>
             <?php !empty($tpldata['SMB_VIEWPROFILE_FIELDS_BOTTOM']) ? print $tpldata['SMB_VIEWPROFILE_FIELDS_BOTTOM'] : false; ?>            

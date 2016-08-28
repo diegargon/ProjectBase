@@ -41,7 +41,7 @@ if (!defined('IN_WEB')) { exit; }
                     </dd>
                 </dl>
                 <dl>
-                    <dt><label>Avatar</dt>
+                    <dt><label>Avatar</label></dt>
                     <dd>
                         <input class="avatar" name="avatar" type="text"  value="<?php print $data['avatar'] ?>" title="" autocomplete="off"/>
                     </dd>
