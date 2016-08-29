@@ -70,7 +70,7 @@ function news_show_page() {
     }
     $author = $sm->getUserByID($news_row['author_id']);
     $config['PAGE_AUTHOR'] = $author['username'];
-    $news_data['author_avatar'] = "<div class='avatar'><img width='50' src='{$author['avatar']}' alt='' /></div>";
+    $news_data['author_avatar'] =  $author['avatar'];
 
     if ($config['NEWS_SOURCE'] && ($news_source = get_news_source_byID($news_row['nid'])) != false) {
         $news_data['news_sources'] = news_format_source($news_source);
