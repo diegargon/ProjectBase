@@ -35,6 +35,7 @@ function ex_Newspage_submitnews() {
 
 function ex_Newspage_news() {
     plugin_start("NewsAds");
+    plugin_start("NewsUserExtra");
     its_server_stressed() ? false : plugin_start("NewsVote");
     its_server_stressed() ? false : plugin_start("NewsSearch");
     its_server_stressed() ? false : plugin_start("NewsComments");

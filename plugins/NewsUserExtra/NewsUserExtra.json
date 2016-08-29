@@ -1,0 +1,13 @@
+{
+    "plugin_name": "NewsUserExtra",
+    "enabled": 1,
+    "main_file": "NewsUserExtra.php",
+    "function_init": "NewsUserExtra_init",
+    "function_install": "",
+    "provided": "newsXtra1",
+    "depends": "tplbasic1 sessionsXtra1",
+    "autostart": 0,
+    "priority": 5,
+    "optional": "multilang1",
+    "conflicts": ""
+}
