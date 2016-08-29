@@ -1,0 +1,10 @@
+SMBAsicExtra {
+realname
+realname_public
+email_public
+age
+age_public
+aboutme
+aboutme_public
+}
+
