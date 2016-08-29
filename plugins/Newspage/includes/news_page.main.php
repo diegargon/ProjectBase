@@ -39,49 +39,48 @@ function news_show_page() {
     }
     news_process_admin_actions();
 
-    if (($news_row = get_news_byId($nid, $lang, $page)) == false) {
+    if (($news_data = get_news_byId($nid, $lang, $page)) == false) {
         return false;
     }
     //HEAD MOD
-    $config['NEWS_STATS'] ? news_stats($nid, $lang, $page, $news_row['visits']) : false;
-    $config['PAGE_TITLE'] = $news_row['title'] . ": " . $config['TITLE'];
-    $config['NEWS_META_OPENGRAPH'] ? news_add_social_meta($news_row) : false;
-    $config['PAGE_DESC'] = $news_row['title'] . ":" . $news_row['lead'];
+    $config['NEWS_STATS'] ? news_stats($nid, $lang, $page, $news_data['visits']) : false;
+    $config['PAGE_TITLE'] = $news_data['title'] . ": " . $config['TITLE'];
+    $config['NEWS_META_OPENGRAPH'] ? news_add_social_meta($news_data) : false;
+    $config['PAGE_DESC'] = $news_data['title'] . ":" . $news_data['lead'];
     //END HEAD MOD
-    do_action("news_show_page", $news_row);
 
-    $news_data['news_admin_nav'] = news_nav_options($news_row);
-    $config['NEWS_MULTIPLE_PAGES'] ? $news_data['pager'] = news_pager($news_row) : false;
+    $news_data['news_admin_nav'] = news_nav_options($news_data);
+    $config['NEWS_MULTIPLE_PAGES'] ? $news_data['pager'] = news_pager($news_data) : false;
 
-    $news_data['nid'] = $news_row['nid'];
-    $news_data['news_title'] = str_replace('\r\n', '', $news_row['title']);
-    $news_data['news_lead'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);
-    $news_data['news_url'] = "news.php?nid={$news_row['nid']}";
-    $news_data['news_date'] = format_date($news_row['date']);
-    $news_data['news_author'] = $news_row['author'];
-    $news_data['news_author_uid'] = $news_row['author_id'];
+    $news_data['title'] = str_replace('\r\n', '', $news_data['title']);
+    $news_data['lead'] = str_replace('\r\n', PHP_EOL, $news_data['lead']);
+    $news_data['news_url'] = "news.php?nid={$news_data['nid']}";
+    $news_data['date'] = format_date($news_data['date']);
+    $news_data['author'] = $news_data['author'];
+    $news_data['author_uid'] = $news_data['author_id'];
 
     !isset($news_parser) ? $news_parser = new parse_text : false;
-    $news_data['news_text'] = $news_parser->parse($news_row['text']);
+    $news_data['text'] = $news_parser->parse($news_data['text']);
 
-    if (!empty($news_row['translator'])) {
-        $translator = $sm->getUserByUsername($news_row['translator']);
-        $news_data['news_translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
+    if (!empty($news_data['translator'])) {
+        $translator = $sm->getUserByUsername($news_data['translator']); 
+        $news_data['translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }
-    $author = $sm->getUserByID($news_row['author_id']);
+    $author = $sm->getUserByID($news_data['author_id']);
     $config['PAGE_AUTHOR'] = $author['username'];
-    $news_data['author_avatar'] =  $author['avatar'];
+    $news_data['author_avatar'] = $author['avatar'];
 
-    if ($config['NEWS_SOURCE'] && ($news_source = get_news_source_byID($news_row['nid'])) != false) {
+    if ($config['NEWS_SOURCE'] && ($news_source = get_news_source_byID($news_data['nid'])) != false) {
         $news_data['news_sources'] = news_format_source($news_source);
     }
-    if ($config['NEWS_RELATED'] && ($news_related = news_get_related($news_row['nid'])) != false) {
+    if ($config['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid'])) != false) {
         $related_content = "<span>{$LANGDATA['L_NEWS_RELATED']}:</span>";
         foreach ($news_related as $related) {
             $related_content .= "<li><a rel='nofollow' target='_blank' href='{$related['link']}'>{$related['link']}</a></li>";
         }
         $news_data['news_related'] = $related_content;
     }
+    do_action("news_show_page", $news_data);
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body", $news_data));
 }
@@ -123,7 +122,7 @@ function news_process_admin_actions() {
     return true;
 }
 
-function news_nav_options($news) {
+function news_nav_options($news) { //TODO Use Template
     global $LANGDATA, $config, $sm, $acl_auth;
     $content = "";
     $user = $sm->getSessionUser();
