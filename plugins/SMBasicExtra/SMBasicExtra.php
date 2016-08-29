@@ -14,7 +14,6 @@ function SMBasic_Extra_Show() {
     includePluginFiles("SMBasicExtra");
     $tpl->getCSS_filePath("SMBasicExtra");
 
-    plugin_start("UserExtra");
     if (!isset($_GET['viewprofile'])) {
         $tpl->AddScriptFile("standard", "jquery.min", "BOTTOM");
         $tpl->AddScriptFile("SMBasicExtra", "profile_extra", "BOTTOM");
