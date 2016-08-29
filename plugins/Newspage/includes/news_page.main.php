@@ -7,6 +7,8 @@ if (!defined('IN_WEB')) { exit; }
 function news_show_page() {
     global $config, $LANGDATA, $tpl, $sm, $acl_auth;
 
+    $news_data = [];
+
     if ((empty($_GET['nid'])) || ($nid = S_GET_INT("nid", 8, 1)) == false ||
             (empty($_GET['lang'])) || ($lang = S_GET_CHAR_AZ("lang", 2, 2)) == false) {
         $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
@@ -40,45 +42,48 @@ function news_show_page() {
     if (($news_row = get_news_byId($nid, $lang, $page)) == false) {
         return false;
     }
-
+    //HEAD MOD
     $config['NEWS_STATS'] ? news_stats($nid, $lang, $page, $news_row['visits']) : false;
-    $config['NEWS_MULTIPLE_PAGES'] ? $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", news_pager($news_row)) : false;
     $config['PAGE_TITLE'] = $news_row['title'] . ": " . $config['TITLE'];
     $config['NEWS_META_OPENGRAPH'] ? news_add_social_meta($news_row) : false;
-    do_action("news_show_page", $news_row);
-    $tpl->addto_tplvar("NEWS_ADMIN_NAV", news_nav_options($news_row));
     $config['PAGE_DESC'] = $news_row['title'] . ":" . $news_row['lead'];
-    $tpl_data['nid'] = $news_row['nid'];
-    $tpl_data['news_title'] = str_replace('\r\n', '', $news_row['title']);
-    $tpl_data['news_lead'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);
-    $tpl_data['news_url'] = "news.php?nid={$news_row['nid']}";
-    $tpl_data['news_date'] = format_date($news_row['date']);
-    $tpl_data['news_author'] = $news_row['author'];
-    $tpl_data['news_author_uid'] = $news_row['author_id'];
+    //END HEAD MOD
+    do_action("news_show_page", $news_row);
+
+    $news_data['news_admin_nav'] = news_nav_options($news_row);
+    $config['NEWS_MULTIPLE_PAGES'] ? $news_data['pager'] = news_pager($news_row) : false;
+
+    $news_data['nid'] = $news_row['nid'];
+    $news_data['news_title'] = str_replace('\r\n', '', $news_row['title']);
+    $news_data['news_lead'] = str_replace('\r\n', PHP_EOL, $news_row['lead']);
+    $news_data['news_url'] = "news.php?nid={$news_row['nid']}";
+    $news_data['news_date'] = format_date($news_row['date']);
+    $news_data['news_author'] = $news_row['author'];
+    $news_data['news_author_uid'] = $news_row['author_id'];
 
     !isset($news_parser) ? $news_parser = new parse_text : false;
-    $tpl_data['news_text'] = $news_parser->parse($news_row['text']);
+    $news_data['news_text'] = $news_parser->parse($news_row['text']);
+
     if (!empty($news_row['translator'])) {
         $translator = $sm->getUserByUsername($news_row['translator']);
-        $tpl_data['news_translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
+        $news_data['news_translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }
     $author = $sm->getUserByID($news_row['author_id']);
     $config['PAGE_AUTHOR'] = $author['username'];
-    $tpl_data['author_avatar'] = "<div class='avatar'><img width='50' src='{$author['avatar']}' alt='' /></div>";
+    $news_data['author_avatar'] = "<div class='avatar'><img width='50' src='{$author['avatar']}' alt='' /></div>";
 
-    $tpl->addtpl_array($tpl_data);
-
-    if (($news_source = get_news_source_byID($news_row['nid'])) != false && $config['NEWS_SOURCE']) {
-        $tpl->addto_tplvar("NEWS_SOURCE", news_format_source($news_source));
+    if ($config['NEWS_SOURCE'] && ($news_source = get_news_source_byID($news_row['nid'])) != false) {
+        $news_data['news_sources'] = news_format_source($news_source);
     }
     if ($config['NEWS_RELATED'] && ($news_related = news_get_related($news_row['nid'])) != false) {
         $related_content = "<span>{$LANGDATA['L_NEWS_RELATED']}:</span>";
         foreach ($news_related as $related) {
             $related_content .= "<li><a rel='nofollow' target='_blank' href='{$related['link']}'>{$related['link']}</a></li>";
         }
-        $tpl->addto_tplvar("NEWS_RELATED", $related_content);
+        $news_data['news_related'] = $related_content;
     }
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body"));
+
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body", $news_data));
 }
 
 function news_process_admin_actions() {
@@ -266,18 +271,15 @@ function news_approved($nid, $lang_id) {
 
 function news_featured($nid, $featured, $lang_id) {
     global $db;
-    
+
     $time = format_date(time(), true);
-    
+
     if (empty($nid) || empty($lang_id)) {
         return false;
     }
     $update_ary = array("featured" => "$featured");
     $featured == 1 ? $update_ary['featured_date'] = $time : false;
-    
-    //$featured == 1 ? news_clean_featured($lang_id) : false;
-
-    $db->update("news", $update_ary , array("nid" => $nid, "lang_id" => $lang_id));
+    $db->update("news", $update_ary, array("nid" => $nid, "lang_id" => $lang_id));
 
     return true;
 }
@@ -360,7 +362,7 @@ function news_adv_stats($nid, $lang) {
     }
 }
 
-function news_add_social_meta($news) {
+function news_add_social_meta($news) { // TODO: Move to plugin NewsSocialExtra
     global $tpl, $config;
     $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === true ? 'https://' : 'http://';
     $news['url'] = $protocol . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI();

@@ -306,6 +306,7 @@
 /* PAGER */
 #pager {
     text-align: center;
+    margin-top: 10px;
 }
 #pager ul{
     display: inline-block;
