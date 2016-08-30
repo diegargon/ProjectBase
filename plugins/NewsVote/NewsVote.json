@@ -5,7 +5,7 @@
     "function_init": "NewsVote_init",
     "function_install": "",
     "provided": "",
-    "depends" : "tplbasic1 news1",
+    "depends" : "tplbasic1 SQL1 news1 uxtra1",
     "autostart": 0,
     "priority" : 5,
     "optional": "multilang1",

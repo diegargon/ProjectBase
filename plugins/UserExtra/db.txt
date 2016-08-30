@@ -7,4 +7,10 @@ age_public
 aboutme
 aboutme_public
 }
-
+NewsUserExtra {
+realname_display
+}
+NewsVote {
+    rating_user
+    rating_times
+}
