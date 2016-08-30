@@ -27,7 +27,7 @@ if (!defined('IN_WEB')) { exit; }
                                 <input <?php print $data['can_change_author'] ?>   id="news_translator" name="news_translator"  type="text"  maxlength="13" value="<?php print $data['translator'] ?>"/>
                                 <?php if (!empty($data['can_change_author'])) { ?>
                                     <input  name="news_translator"  type="hidden" value="<?php print $data['translator'] ?>"/>
-                                    <input  name="news_translator_uid"  type="hidden" value="<?php print $data['translator_uid'] ?>"/>
+                                    <input  name="news_translator_id"  type="hidden" value="<?php print $data['translator_id'] ?>"/>
                                 <?php } ?>
                             </p>
                         </div>
