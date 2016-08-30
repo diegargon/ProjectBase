@@ -15,22 +15,13 @@ function news_format_source($link) {
     return $result;
 }
 
-function get_news_byId($nid, $lang = null, $page = null) {
-    global $config, $acl_auth, $ml, $db;
+function get_news_byId($nid, $lang_id, $page = null) {
+    global $config, $acl_auth, $db;
 
     empty($page) ? $page = 1 : false;
 
-    $where_ary = array("nid" => $nid, "page" => $page);
+    $where_ary = array("nid" => "$nid", "lang_id" => "$lang_id", "page" => "$page");
 
-    if (defined('MULTILANG') && $lang != null) {
-        $site_langs = $ml->get_site_langs();
-        foreach ($site_langs as $site_lang) {
-            if ($site_lang['iso_code'] == $lang) {
-                $where_ary['lang_id'] = $site_lang['lang_id'];
-                break;
-            }
-        }
-    }
     $query = $db->select_all("news", $where_ary, "LIMIT 1");
 
     if ($db->num_rows($query) <= 0) {

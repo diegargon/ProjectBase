@@ -8,13 +8,13 @@ function news_edit() {
     global $config, $LANGDATA, $acl_auth, $tpl;
 
     $nid = S_GET_INT("nid", 11, 1);
-    $lang = S_GET_CHAR_AZ("lang", 2, 2);
+    $lang_id = S_GET_INT("lang_id", 4, 1);
     $page = S_GET_INT("npage", 11, 1);
     
-    if (empty($nid) || empty($lang) || empty($page)) {
+    if (empty($nid) || empty($lang_id) || empty($page)) {
         return news_error_msg("L_NEWS_NOT_EXIST");
     }
-    if (!($news_data = get_news_byId($nid, $lang, $page))) {
+    if (!($news_data = get_news_byId($nid, $lang_id, $page))) {
         return false; // error already setting in get_news
     }
     if (!news_check_edit_authorized($news_data)) {
@@ -78,13 +78,13 @@ function news_form_edit_process() {
     global $LANGDATA, $config;
 
     $nid = S_GET_INT("nid", 11, 1);
-    $lang = S_GET_CHAR_AZ("lang", 2, 2);
+    $lang_id = S_GET_INT("lang_id", 4, 1);
     $page = S_GET_INT("npage", 11, 1);
 
-    if (empty($nid) || empty($lang) || empty($page)) {
+    if (empty($nid) || empty($lang_id) || empty($page)) {
         return news_error_msg("L_NEWS_NOT_EXIST");
     }
-    if (!($news_orig = get_news_byId($nid, $lang, $page))) {
+    if (!($news_orig = get_news_byId($nid, $lang_id, $page))) {
         return false; // error already setting in get_news
     }
     if (!news_check_edit_authorized($news_orig)) {

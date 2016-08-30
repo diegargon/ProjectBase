@@ -5,7 +5,7 @@
 if (!defined('IN_WEB')) { exit; }
 
 function news_show_page() {
-    global $config, $LANGDATA, $tpl, $sm, $acl_auth;
+    global $config, $LANGDATA, $tpl, $sm, $ml, $acl_auth;
 
     $news_data = [];
 
@@ -39,7 +39,18 @@ function news_show_page() {
     }
     news_process_admin_actions();
 
-    if (($news_data = get_news_byId($nid, $lang, $page)) == false) {
+    if (defined('MULTILANG') && $lang != null) {
+        $site_langs = $ml->get_site_langs();
+        foreach ($site_langs as $site_lang) {
+            if ($site_lang['iso_code'] == $lang) {
+                $lang_id = $site_lang['lang_id'];
+                break;
+            }
+        }
+    } else {
+        $lang_id = $config['WEB_LANG_ID'];
+    }
+    if (($news_data = get_news_byId($nid, $lang_id, $page)) == false) {
         return false;
     }
     //HEAD MOD
