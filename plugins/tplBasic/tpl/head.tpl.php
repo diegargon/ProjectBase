@@ -15,7 +15,7 @@ if (!defined('IN_WEB')) { exit; }
         <meta name="keywords" content="<?php print $config['PAGE_KEYWORDS'] ?>">
         <meta name="referrer" content="always">
         <meta name="description" content="<?php echo $config['PAGE_DESC'] ?>">
-        <meta name="author" content="<?php print $config['PAGE_AUTHOR'] . ", " . $config['ADMIN_MAIL'] ?> ">
+        <meta name="author" content="<?php print $config['PAGE_AUTHOR'] ?> ">
         <?php
         isset($tpldata['HEAD']) ? print $tpldata['HEAD'] : false;
         isset($tpldata['META']) ? print $tpldata['META'] : false;
