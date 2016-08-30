@@ -12,8 +12,6 @@ function SMB_Ex_ProfileChange() {
     $check_ary['uid'] = array("operator" => "<>", "value" => "{$user['uid']}"); //check except own user    
     $set_ary = [];
 
-    plugin_start("UserExtra");
-
     if ($config['smb_xtr_realname'] && ($realname = S_POST_TEXT_UTF8("realname", 64))) {
         $set_ary_tmp['realname'] = trim($db->escape_strip($realname));
 
