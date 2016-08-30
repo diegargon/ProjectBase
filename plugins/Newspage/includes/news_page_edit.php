@@ -10,7 +10,7 @@ function news_edit() {
     $nid = S_GET_INT("nid", 11, 1);
     $lang = S_GET_CHAR_AZ("lang", 2, 2);
     $page = S_GET_INT("npage", 11, 1);
-
+    
     if (empty($nid) || empty($lang) || empty($page)) {
         return news_error_msg("L_NEWS_NOT_EXIST");
     }
@@ -91,7 +91,7 @@ function news_form_edit_process() {
         return false; // error already setting in news_check....
     }
     $news_data = news_form_getPost();
-
+    
     if (news_form_common_field_check($news_data) == false) {
         return false;
     }
