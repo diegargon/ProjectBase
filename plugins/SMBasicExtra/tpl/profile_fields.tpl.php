@@ -57,6 +57,7 @@ if (!defined('IN_WEB')) { exit; }
             <dd>
                 <input <?php !empty($data['aboutme_public']) ? print "checked" : false; ?>  class="aboutme_public" name="aboutme_public" type="checkbox"  value="1" />
             </dd>
-        </dl>    
+        </dl>
+        <?php !empty($tpldata['SMBXTRA_PROFILE_FIELDS_BOTTOM']) ? print $tpldata['SMBXTRA_PROFILE_FIELDS_BOTTOM'] : false; ?>    
     <?php } ?>
 </div>

@@ -19,6 +19,7 @@ function SMBasic_Extra_Show() {
         $tpl->AddScriptFile("SMBasicExtra", "profile_extra", "BOTTOM");
         $user = $sm->getSessionUser();
         $userEx_data = uXtra_get($user['uid']);
+        do_action("profile_xtra_show", $userEx_data);
         $tpl->addto_tplvar("SMB_PROFILE_FIELDS_BOTTOM", $tpl->getTPL_file("SMBasicExtra", "profile_fields", $userEx_data));
         register_action("SMBasic_ProfileChange", "SMB_Ex_ProfileChange");
     } else if ($vid = S_GET_INT("viewprofile", 11, 1)) {
