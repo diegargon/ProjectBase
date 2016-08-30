@@ -26,7 +26,7 @@ function news_new_lang() {
         return false;
     }
     $news_data = $db->fetch($query);
-    $news_data['NEWS_FORM_TITLE'] = $LANGDATA['L_NEWS_NEWLANG'];
+    $news_data['news_form_title'] = $LANGDATA['L_NEWS_NEWLANG'];
 
     $translator = $sm->getSessionUser();
 
@@ -39,7 +39,7 @@ function news_new_lang() {
         return false;
     }
     $news_data['translator'] = $translator['username'];
-    $news_data['translator_id'] = $translator['translator_id'];
+    $news_data['translator_id'] = $translator['uid'];
     $translator['uid'] > 0 ? $news_data['tos_checked'] = 1 : false;
 
     if ((defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) || ((!defined('ACL') && $translator['isAdmin']))
