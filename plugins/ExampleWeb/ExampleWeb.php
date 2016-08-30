@@ -32,6 +32,7 @@ function ex_index_page() {
 
 function ex_Newspage_submitnews() {
     plugin_start("NewsMediaUploader");
+    plugin_start("NewsSearch");
 }
 
 function ex_Newspage_news() {
