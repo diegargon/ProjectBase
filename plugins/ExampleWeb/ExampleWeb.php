@@ -16,6 +16,7 @@ function ExampleWeb_init() {
     register_action("begin_newsedit", "ex_Newspage_submitnews");
     register_action("begin_newspage", "ex_Newspage_submitnews");
     register_action("preload_Newspage_news", "ex_Newspage_news");
+    register_action("preload_SMBasic_profile", "ex_preload_Profile", 4); //4 for call before SMBEXtra
 }
 
 function ex_common_web_structure() {
@@ -40,4 +41,8 @@ function ex_Newspage_news() {
     its_server_stressed() ? false : plugin_start("NewsSearch");
     its_server_stressed() ? false : plugin_start("NewsComments");
     plugin_start("Newspage");
+}
+
+function ex_preload_Profile() {
+    plugin_start("NewsUserExtra");
 }
