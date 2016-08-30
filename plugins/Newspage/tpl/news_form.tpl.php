@@ -8,13 +8,13 @@ if (!defined('IN_WEB')) { exit; }
     <div class="standard_box submit_box">
         <form  id="form_news" action="" autocomplete="on" method="post">
             <section>
-                <h1><?php print $data['NEWS_FORM_TITLE'] ?></h1>
+                <h1><?php print $data['news_form_title'] ?></h1>
                 <div class="news_submit_center_wrapper">
                     <?php !empty($tpldata['NEWS_FORM_TOP_OPTION']) ? print $tpldata['NEWS_FORM_TOP_OPTION'] : false; ?>
                     <div class="submit_items">
                         <p>
                             <label for="news_author"><?php print $LANGDATA['L_NEWS_AUTHOR'] ?> </label>
-                            <input <?php print $data['can_change_author'] ?>   id="news_author" name="news_author" required="required" type="text"  maxlength="13" value="<?php print $data['author'] ?>"/>
+                            <input <?php !empty($data['can_change_author']) ? print $data['can_change_author'] : false; ?>   id="news_author" name="news_author" required="required" type="text"  maxlength="13" value="<?php print $data['author'] ?>"/>
                             <?php if (!empty($data['can_change_author'])) { ?>
                                 <input  name="news_author"  type="hidden" value="<?php print $data['author'] ?>"/>
                             <?php } ?>
@@ -24,10 +24,10 @@ if (!defined('IN_WEB')) { exit; }
                         <div class="submit_items">
                             <p>
                                 <label for="news_translator"><?php print $LANGDATA['L_NEWS_TRANSLATOR'] ?> </label>
-                                <input <?php print $data['can_change_author'] ?>   id="news_translator" name="news_translator"  type="text"  maxlength="13" value="<?php print $data['translator'] ?>"/>
+                                <input <?php !empty($data['can_change_author']) ? print $data['can_change_author'] : false; ?> id="news_translator" name="news_translator"  type="text"  maxlength="13" value="<?php print $data['translator'] ?>"/>
+                                <input  name="news_translator_id"  type="hidden" value="<?php print $data['translator_id'] ?>"/>
                                 <?php if (!empty($data['can_change_author'])) { ?>
-                                    <input  name="news_translator"  type="hidden" value="<?php print $data['translator'] ?>"/>
-                                    <input  name="news_translator_id"  type="hidden" value="<?php print $data['translator_id'] ?>"/>
+                                    <input  name="news_translator"  type="hidden" value="<?php print $data['translator'] ?>"/>                                    
                                 <?php } ?>
                             </p>
                         </div>
@@ -44,7 +44,7 @@ if (!defined('IN_WEB')) { exit; }
                     </div>
                     <div class="submit_items">
                         <label for="news_text"><?php print $LANGDATA['L_NEWS_TEXT'] ?> </label>
-                        <?php !empty($tpldata['NEWS_TEXT_BAR']) ? print $tpldata['NEWS_TEXT_BAR'] : false; ?>
+                        <?php !empty($data['news_text_bar']) ? print $data['news_text_bar'] : false; ?>
                         <textarea required="required"  minlength="<?php print $config['NEWS_TEXT_MIN_LENGHT'] ?>" maxlength="<?php print $config['NEWS_TEXT_MAX_LENGHT'] ?>" id="news_text" name="news_text" ><?php isset($data['text']) ? print $data['text'] : false ?></textarea>
                         <div id="EditorBtnBottomContainer">
                             <input class="btnPreview" type='button' id="btnShowPreview" value="<?php print $LANGDATA['L_NEWS_PREVIEW'] ?>"/>
@@ -89,6 +89,13 @@ if (!defined('IN_WEB')) { exit; }
                                 <input <?php !empty($data['featured']) ? print "checked" : false ?> type="checkbox" name="news_featured" id="news_featured" value="1"/>
                             <?php } ?>
                         </p>
+                        <?php if (!empty($data['news_update'])) { ?>
+                            <input type='hidden' value='1' name='news_update' />
+                            <input type='hidden' value='<?php print $data['lang_id'] ?>' name='news_current_langid' />
+                        <?php } ?>
+                        <?php if (!empty($data['news_submit'])) { ?>
+                            <input type='hidden' value='1' name='news_submit' />
+                        <?php } ?>
                         <?php !empty($tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION']) ? print $tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'] : false; ?>
                         <p>
                             <a href="/terms.php" target="_blank"><?php print $LANGDATA['L_TOS'] ?></a><input <?php !empty($data['tos_checked']) ? print "checked" : false ?> id="tos" name="tos" required="required" type="checkbox"/>

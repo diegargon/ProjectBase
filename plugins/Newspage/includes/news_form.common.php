@@ -4,7 +4,7 @@
  */
 if (!defined('IN_WEB')) { exit; }
 
- function news_get_categories_select($news_data = null, $disabled = null) {
+function news_get_categories_select($news_data = null, $disabled = null) {
     global $db;
     if (empty($disabled)) {
         $query = news_get_categories();
@@ -84,48 +84,6 @@ function news_form_getPost() {
     return $data;
 }
 
-function news_form_process($news_auth) {
-    global $LANGDATA, $config;
-
-    $news_data = news_form_getPost();
-
-    if (news_form_common_field_check($news_data) == false) {
-        return false;
-    }
-
-    if ($news_auth == "admin" || $news_auth == "author") {
-        if (news_form_extra_check($news_data) == false) {
-            return false;
-        }
-    }
-
-    //ALL OK, check if SUBMIT, UPDATE or translate
-
-    if (S_POST_INT("news_update") > 0) {
-        if ($news_auth == "admin" || $news_auth == "author") {
-            if (news_full_update($news_data)) {
-                die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
-            } else {
-                die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
-            }
-        } else if ($news_auth == "translator") {
-            if (news_limited_update($news_data)) {
-                die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
-            } else {
-                die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
-            }
-        }
-    } else {
-        if (news_create_new($news_data)) {
-            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
-        } else {
-            die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
-        }
-    }
-
-    return true;
-}
-
 function news_form_common_field_check($news_data) {
     global $config, $LANGDATA;
 
@@ -196,12 +154,8 @@ function news_form_extra_check(&$news_data) {
     if (($return = do_action("news_form_add_check", $news_data)) && !empty($return)) {
         die('[{"status": "9", "msg": "' . $return . '"}]');
     }
-    //FEATURED
-    //NOCHECK ATM
-    //
-    //ACL
-    //NO CHECK ATM
-    // 
+    //FEATURED NOCHECK ATM
+    //ACL NO CHECK ATM
 
     return true;
 }
@@ -214,7 +168,7 @@ function Newspage_FormScript() {
     $tpl->AddScriptFile("Newspage", "editor", "BOTTOM");
 }
 
-function Newspage_FormPageScript() { //Used for new page and edit non main page for avoid lead check
+function Newspage_FormPageScript() { //Used for new page and edit non main page for avoid js lead check
     global $tpl;
 
     $tpl->AddScriptFile("standard", "jquery.min", "TOP", null);
@@ -272,7 +226,7 @@ function news_get_available_langs($news_data) {
     return $select;
 }
 
-//used when translate a news, omit all already translate langs, exclude original lang too. just missed news langs
+//used when translate a news, omit all already translate langs, exclude original lang too. just show langs without the news translate
 function news_get_missed_langs($nid, $page) {
     global $ml, $db;
 
@@ -300,8 +254,7 @@ function news_editor_getBar() {
     global $tpl;
     do_action("news_add_editor_item");
 
-    $content = $tpl->getTPL_file("Newspage", "NewsEditorBar");
-    $tpl->addto_tplvar("NEWS_TEXT_BAR", $content);
+    return $tpl->getTPL_file("Newspage", "NewsEditorBar");    
 }
 
 function news_form_preview() {

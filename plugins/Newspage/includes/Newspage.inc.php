@@ -35,23 +35,17 @@ function get_news_byId($nid, $lang = null, $page = null) {
 
     if ($db->num_rows($query) <= 0) {
         $query = $db->select_all("news", array("nid" => $nid, "page" => $page), "LIMIT 1");
-        $db->num_rows($query) > 0 ? $msgbox['MSG'] = "L_NEWS_WARN_NOLANG" : $msgbox['MSG'] = "L_NEWS_DELETE_NOEXISTS";
-        do_action("message_box", $msgbox);
-        return false;
+        return $db->num_rows($query) > 0 ? news_error_msg("L_NEWS_WARN_NOLANG") : news_error_msg("L_NEWS_DELETE_NOEXISTS");
     }
     $news_row = $db->fetch($query);
 
     if ('ACL' && !empty($news_row['acl']) && !$acl_auth->acl_ask($news_row['acl'])) {
-        $msgbox['MSG'] = "L_E_NOACCESS";
-        do_action("message_box", $msgbox);
-        return false;
+        return news_error_msg("L_E_NOACCESS");
     }
     $db->free($query);
 
     if ($config['NEWS_MODERATION'] && $news_row['moderation'] && !S_GET_INT("admin")) {
-        $msgbox['MSG'] = "L_NEWS_ERROR_WAITINGMOD";
-        do_action("message_box", $msgbox);
-        return false;
+        return news_error_msg("L_NEWS_ERROR_WAITINGMOD");
     }
 
     return $news_row;
@@ -117,19 +111,7 @@ function news_get_related($nid) {
 
     return $related;
 }
-/* Unused now, not delete old featured bit
-function news_clean_featured($lang_id) {
-    global $db;
 
-    $set_ary['featured'] = '0';
-    if (defined('MULTILANG')) {
-        $where_ary['lang_id'] = $lang_id;
-        $db->update("news", $set_ary, $where_ary);
-    } else {
-        $db->update("news", $set_ary);
-    }
-}
-*/
 function news_friendly_title($title) {
     //FIX: better way for clean all those character?
     $friendly_filter = array('"', '\'', '?', '$', ',', '.', '‘', '’', ':', ';', '[', ']', '{', '}', '*', '!', '¡', '¿', '+', '<', '>', '#', '@', '|', '~', '%', '&', '(', ')', '=', '`', '´', '/', 'º', 'ª', '\\');
@@ -137,4 +119,10 @@ function news_friendly_title($title) {
     $friendly = str_replace($friendly_filter, "", $friendly);
 
     return $friendly;
+}
+
+function news_error_msg($error) {
+    $msgbox['MSG'] = $error;
+    do_action("message_box", $msgbox);
+    return false;
 }

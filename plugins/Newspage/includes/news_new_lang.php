@@ -56,7 +56,7 @@ function news_new_lang() {
         do_action("message_box", $msgbox);
         return false;
     }
-    news_editor_getBar();
+    $news_data['news_text_bar'] = news_editor_getBar();
     do_action("news_newlang_form_add", $news_data);
 
     $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION", "<input type='hidden' value='1' name='post_newlang' />");

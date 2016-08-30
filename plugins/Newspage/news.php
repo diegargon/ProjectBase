@@ -11,22 +11,18 @@ if (!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
     require_once ("includes/news_form.common.php");
     require_once ("includes/news_page_edit.php");
 
-    if (($news_data = news_check_edit_authorized()) != false) {
-        if (!empty($_POST['newsFormSubmit_ST2'])) {
-            news_form_process($news_data['news_auth']);
-        } else if (!empty($_POST['preview'])) {
-            news_form_preview();
-        } else {
-            do_action("common_web_structure");
-            if (!empty($_GET['npage']) && $_GET['npage'] > 1) {
-                Newspage_FormPageScript();
-            } else {
-                Newspage_FormScript();
-            }
-            news_edit($news_data);
-        }
+    if (!empty($_POST['news_update']) && empty($_POST['preview'])) {
+        news_form_edit_process();
+    } else if (!empty($_POST['preview'])) {
+        news_form_preview();
     } else {
-        do_action("common_web_structure"); // error messsage box already set
+        do_action("common_web_structure");
+        if (!empty($_GET['npage']) && $_GET['npage'] > 1) {
+            Newspage_FormPageScript();
+        } else {
+            Newspage_FormScript();
+        }
+        news_edit();
     }
 } else if (!empty($_GET['news_new_lang'])) {
     do_action("begin_news_new_lang");
