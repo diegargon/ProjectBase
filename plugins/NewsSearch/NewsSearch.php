@@ -22,6 +22,7 @@ function NewsSearch_init() {
         register_action("news_mod_submit_insert", "NS_news_mod_insert");
         register_action("news_show_page", "NS_news_tag_show_page");
         register_action("news_edit_form_add", "NS_tags_edit_form_add");
-        register_action("news_edit_mod_set", "NS_news_edit_set_tag");
+        register_action("news_fulledit_mod_set", "NS_news_edit_set_tag");
+        register_action("news_limitededit_mod_set", "NS_news_edit_set_tag");
     }
 }
