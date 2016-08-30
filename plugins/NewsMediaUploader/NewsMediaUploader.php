@@ -35,7 +35,7 @@ function NewsMediaUploader_init() {
 function NMU_form_add($news) {
     global $tpl, $sm, $config;
 
-    if (empty($news['news_auth']) || $news['news_auth'] == "translator") { //translator can upload new files
+    if (!empty($news['news_auth']) && $news['news_auth'] == "translator") { //translator can upload new files
         return false;
     }
     ($user = $sm->getSessionUser()) ? $extra_content['UPLOAD_EXTRA'] = NMU_upload_list($user) : false;
