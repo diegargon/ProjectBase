@@ -63,7 +63,7 @@ function news_show_page() {
     $news_data['text'] = $news_parser->parse($news_data['text']);
 
     if (!empty($news_data['translator_id'])) {
-        $translator = $sm->getUserByID($news_data['translator_id']); 
+        $translator = $sm->getUserByID($news_data['translator_id']);
         $news_data['translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }
     $author = $sm->getUserByID($news_data['author_id']);
@@ -129,7 +129,7 @@ function news_nav_options($news) { //TODO Use Template
     // EDIT && NEW PAGE: ADMIN, AUTHOR or Translator
     if ((defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin")) || (!defined('ACL') && $user['isAdmin'] == 1) || ($news['author'] == $user['username']) || (!empty($news['translator']) && ($news['translator'] == $user['username']))
     ) {
-        $content .= "<li><a rel='nofollow' href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&newsedit={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&newsedit=1&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
     }
     //not translator
     if ($config['NEWS_MULTIPLE_PAGES']) {
