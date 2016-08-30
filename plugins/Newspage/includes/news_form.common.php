@@ -65,6 +65,8 @@ function news_form_getPost() {
     }
 
     $data['nid'] = S_GET_INT("nid", 11, 1);
+    $data['lang_id'] = S_GET_INT("lang_id", 8, 1);
+    $data['page'] = S_GET_INT("npage", 11, 1);    
     $data['title'] = $db->escape_strip(S_POST_TEXT_UTF8("news_title"));
     $data['lead'] = $db->escape_strip(S_POST_TEXT_UTF8("news_lead"));
     $data['text'] = $db->escape_strip(S_POST_TEXT_UTF8("news_text"));
@@ -79,8 +81,7 @@ function news_form_getPost() {
     $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
     $data['news_translator_id'] = S_POST_INT("news_translator_id", 11, 1);
     $data['post_newlang'] = S_POST_INT("post_newlang");
-    $data['page'] = S_GET_INT("npage", 11, 1);
-
+    
     return $data;
 }
 
