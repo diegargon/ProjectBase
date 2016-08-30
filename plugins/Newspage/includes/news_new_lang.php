@@ -32,13 +32,14 @@ function news_new_lang() {
 
     if (empty($translator) && $config['NEWS_ANON_TRANSLATE']) {
         $translator['username'] = $LANGDATA['L_NEWS_ANONYMOUS'];
+        $translator['uid'] = 0;
     } else if (empty($translator)) {
         $msgbox['MSG'] = "L_NEWS_NO_EDIT_PERMISS";
         do_action("message_box", $msgbox);
         return false;
     }
     $news_data['translator'] = $translator['username'];
-
+    $news_data['translator_uid'] = $translator['translator_uid'];
     $translator['uid'] > 0 ? $news_data['tos_checked'] = 1 : false;
 
     if ((defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) || ((!defined('ACL') && $translator['isAdmin']))
@@ -107,6 +108,7 @@ function news_translate($news_data) {
         "lang_id" => $lang_id,
         "page" => $news_data['page'],
         "translator" => $news_data['news_translator'],
+        "translator_uid" => $news_data['news_translator_uid'],
         "title" => $news_data['title'],
         "lead" => $news_data['lead'],
         "text" => $news_data['text'],

@@ -77,6 +77,7 @@ function news_form_getPost() {
     $data['news_new_related'] = S_POST_URL("news_new_related");
     $data['news_related'] = S_POST_URL("news_related");
     $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
+    $data['news_translator_uid'] = S_POST_INT("news_translator_uid", 11, 1);
     $data['post_newlang'] = S_POST_INT("post_newlang");
     $data['page'] = S_GET_INT("npage", 11, 1);
 
