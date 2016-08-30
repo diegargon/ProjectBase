@@ -62,8 +62,8 @@ function news_show_page() {
     !isset($news_parser) ? $news_parser = new parse_text : false;
     $news_data['text'] = $news_parser->parse($news_data['text']);
 
-    if (!empty($news_data['translator'])) {
-        $translator = $sm->getUserByUsername($news_data['translator']); 
+    if (!empty($news_data['translator_id'])) {
+        $translator = $sm->getUserByID($news_data['translator_id']); 
         $news_data['translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }
     $author = $sm->getUserByID($news_data['author_id']);

@@ -22,7 +22,7 @@ function NewsXtra_Modify_N_DisplayName(& $news_data) {
         $config['PAGE_AUTHOR'] = $authorEx_data['realname'];
     }
 
-    if (!empty($news_data['translator'])) {
+    if (!empty($news_data['translator_id'])) {
         $transEx_data = uXtra_get($news_data['translator_id']);
         if ($transEx_data['realname_display']) {
             $news_data['translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$transEx_data['uid']}'>{$transEx_data['realname']}</a>";
