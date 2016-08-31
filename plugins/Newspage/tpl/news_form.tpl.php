@@ -53,6 +53,7 @@ if (!defined('IN_WEB')) { exit; }
                         <div id="preview"></div>
                     </div>
                     <?php !empty($tpldata['NEWS_FORM_MIDDLE_OPTION']) ? print $tpldata['NEWS_FORM_MIDDLE_OPTION'] : false; ?>
+                    
                     <?php if ($config['NEWS_SOURCE'] && !empty($data['news_auth']) && $data['news_auth'] != "translator") { ?>
                         <div class="submit_items">
                             <p> 
@@ -91,10 +92,13 @@ if (!defined('IN_WEB')) { exit; }
                         </p>
                         <?php if (!empty($data['news_update'])) { ?>
                             <input type='hidden' value='1' name='news_update' />
-                        <?php } ?>
-                        <?php if (!empty($data['news_submit'])) { ?>
+                        <?php } 
+                            if (!empty($data['news_submit'])) { ?>
                             <input type='hidden' value='1' name='news_submit' />
-                        <?php } ?>
+                        <?php } 
+                            if (!empty($data['new_lang'])) { ?>
+                            <input type='hidden' value='1' name='post_newlang' />
+                            <?php } ?>
                         <?php !empty($tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION']) ? print $tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'] : false; ?>
                         <p>
                             <a href="/terms.php" target="_blank"><?php print $LANGDATA['L_TOS'] ?></a><input <?php !empty($data['tos_checked']) ? print "checked" : false ?> id="tos" name="tos" required="required" type="checkbox"/>

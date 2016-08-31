@@ -44,8 +44,8 @@ function news_edit() {
         $news_data['select_langs'] = $site_langs;
     }
     $news_data['news_update'] = 1;
-    do_action("news_edit_form_add", $news_data);
     $news_data['news_text_bar'] = news_editor_getBar();
+    do_action("news_edit_form_add", $news_data);
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));
 }
