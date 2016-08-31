@@ -8,36 +8,34 @@ function news_new_page() {
     global $db, $acl_auth, $sm, $tpl, $LANGDATA;
 
     $nid = S_GET_INT("nid", 11, 1);
-    $lang = S_GET_CHAR_AZ("lang", 2, 2);
+    $lang_id = S_GET_INT("lang_id", 4, 1);
 
-    $query = $db->select_all("news", array("nid" => $nid, "lang" => $lang), "ORDER BY page");
-
-    if (($num_pages = $db->num_rows($query)) <= 0) {
-        return false;
+    if (empty($nid) || empty($lang_id)) {
+        return news_error_msg("L_NEWS_NOT_EXIST");
     }
-    $news_first_page = $db->fetch($query);
+    if (!($news_data = get_news_byId($nid, $lang_id, 1))) { //get first page
+        return false; // error already setting in get_news
+    }
 
-    $user = $sm->getSessionUser();
+    if (!($user = $sm->getSessionUser())) {
+        return news_error_msg("L_E_NOACCESS");
+    }
 
-    (!empty($user) && $user['uid'] > 0) ? $form_data['tos_checked'] = 1 : false;
+    $user['uid'] > 0 ? $form_data['tos_checked'] = 1 : false;
 
-    if (( $news_first_page['author_id'] == $user['uid']) || (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) || (!defined('ACL') && $user['isAdmin'])
+    if (( $news_data['author_id'] == $user['uid']) || (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) || (!defined('ACL') && $user['isAdmin'])
     ) {
         //Do nothing
     } else {
-        return false;
+        return news_error_msg("L_E_NOACCESS");
     }
-    $form_data['news_auth'] = ''; //not need extra;
+
     $form_data['news_form_title'] = $LANGDATA['L_NEWS_CREATE_NEW_PAGE'];
     $form_data['can_change_author'] = "disabled";
     $form_data['author'] = $user['username'];
-    do_action("news_newpage_form_add");
     $form_data['news_text_bar'] = news_editor_getBar();
-
-    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OTHER_OPTION", "<input type='hidden' name='nid' value='$nid'/>"
-            . "<input type='hidden' name='news_lang' value='$lang'/>"
-            . "<input type='hidden' name='num_pages' value='$num_pages'/>"
-    );
+    $form_data['new_page'] = 1;
+    do_action("news_newpage_form_add");
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $form_data));
 }
@@ -66,14 +64,9 @@ function news_newpage_form_process() {
     ) {
         die('[{"status": "5", "msg": "' . $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR'] . '"}]');
     }
-
-    $news_data['nid'] = S_POST_INT("nid", 11, 1);
-    $news_data['num_pages'] = S_POST_INT("num_pages", 3, 1);
-
-    if (empty($news_data['lang']) || empty($news_data['nid']) || empty($news_data['num_pages'])) {
+    if (empty($news_data['lang_id']) || empty($news_data['nid'])) {
         die('[{"status": "8", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
     }
-
     if (news_newpage_submit_new($news_data)) {
         die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
     } else {
@@ -84,18 +77,14 @@ function news_newpage_form_process() {
 }
 
 function news_newpage_submit_new($news_data) {
-    global $db, $ml, $config;
+    global $db, $config;
 
-    if (defined('MULTILANG')) {
-        $news_data['lang_id'] = $ml->iso_to_id($news_data['lang']);
-    } else {
-        $news_data['lang_id'] = $config['WEB_LANG_ID'];
+    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"), "ORDER BY page");
+
+    if (($num_pages = $db->num_rows($query)) <= 0) {
+        return news_error_msg("L_NEWS_NOT_EXIST");
     }
 
-    $query = $db->select_all("news", array("nid" => $news_data['nid'], "lang_id" => $news_data['lang_id'], "page" => 1), "LIMIT 1");
-    if (($db->num_rows($query)) <= 0) {
-        return false;
-    }
     $news_father = $db->fetch($query);
 
     $insert_ary = array(
@@ -109,9 +98,8 @@ function news_newpage_submit_new($news_data) {
         "category" => $news_father['category'],
         "lang" => $news_father['lang'],
         "acl" => $news_father['acl'],
-        "moderation" => $news_father['moderation'],
-        "translator" => $news_father['translator'],
-        "page" => ++$news_data['num_pages']
+        "moderation" => $config['NEWS_MODERATION'],
+        "page" => ++$num_pages
     );
     !empty($news_data['lead']) ? $insert_ary['lead'] = $news_data['lead'] : false;
 

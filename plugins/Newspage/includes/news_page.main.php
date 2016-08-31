@@ -146,14 +146,14 @@ function news_nav_options($news) { //TODO Use Template
     if ($config['NEWS_MULTIPLE_PAGES']) {
         if ((defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin")) || (!defined('ACL') && $user['isAdmin'] == 1) || ($news['author'] == $user['username'])
         ) {
-            $content .= "<li><a rel='nofollow' href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&newpage=1'>{$LANGDATA['L_NEWS_NEW_PAGE']}</a></li>";
+            $content .= "<li><a rel='nofollow' href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&newpage=1&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEW_PAGE']}</a></li>";
         }
     }
     // TRANSLATE ADMIN, ANON IF, REGISTERED IF
     if ((defined('MULTILANG')) && ( $config['NEWS_ANON_TRANSLATE'] || (defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin")) || (defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && $acl_auth->acl_ask("registered_all")) || (!defined('ACL') && $user['isAdmin'] == 1) || (!defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && !empty($user)) //NO_ACL registered
             )
     ) {
-        $content .= "<li><a rel='nofollow' href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&news_new_lang={$news['nid']}&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&news_new_lang=1&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
     }
     //REST ONLY ADMIN
     if ((defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin")) || (!defined('ACL') && $user['isAdmin'] == 1)

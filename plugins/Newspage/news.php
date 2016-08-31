@@ -41,7 +41,7 @@ if (!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
     do_action("begin_newspage");
     require_once ("includes/news_form.common.php");
     require_once ("includes/news_new_page.php");
-    if (!empty($_POST['num_pages']) && empty($_POST['preview'])) {
+    if (!empty($_POST['new_page']) && empty($_POST['preview'])) {
         news_newpage_form_process();
     } else if (!empty($_POST['preview'])) {
         news_form_preview();

@@ -98,6 +98,9 @@ if (!defined('IN_WEB')) { exit; }
                         <?php } 
                             if (!empty($data['new_lang'])) { ?>
                             <input type='hidden' value='1' name='post_newlang' />
+                            <?php } 
+                            if (!empty($data['new_page'])) { ?>
+                            <input type='hidden' name='new_page' value='1'/>
                             <?php } ?>
                         <?php !empty($tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION']) ? print $tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'] : false; ?>
                         <p>
