@@ -1,10 +1,11 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
 
- function SMBasic_AdminInit() {
+function SMBasic_AdminInit() {
     register_action("add_admin_menu", "SMBasic_AdminMenu", "5");
 }
 
@@ -25,21 +26,23 @@ function SMBasic_AdminContent($params) {
 
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
-    $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n");
-    $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_SM_SEARCH_USER'] . "</a></li>\n");
-    $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_SM_USERS_LIST'] . "</a></li>\n");
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_SM_SEARCH_USER'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_SM_USERS_LIST'] . "</a></li>\n";
 
     $opt = S_GET_INT("opt");
     if ($opt == 1 || $opt == false) {
-        $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_PL_STATE']);
-        $tpl->addto_tplvar("ADM_CONTENT", Admin_GetPluginState("SMBasic"));
+        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_PL_STATE'];
+        $page_data['ADM_CONTENT'] = Admin_GetPluginState("SMBasic");
     } else if ($opt == 2) {
-        SMBasic_UserSearch();
+        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_SM_SEARCH_USER'];
+        $page_data['ADM_CONTENT'] = $LANGDATA['L_SM_USERS_DESC'] . SMBasic_UserSearch();
     } else if ($opt == 3) {
-        SMBasic_UserList();
+        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_SM_USERS_LIST'];
+        $page_data['ADM_CONTENT'] = $LANGDATA['L_SM_USERS_LIST_DESC'] . SMBasic_UserList();
     }
 
-    return $tpl->getTPL_file("Admin", "admin_std_content");
+    return $tpl->getTPL_file("Admin", "admin_std_content", $page_data);
 }
 
 function SMBasic_UserSearch() {
@@ -55,9 +58,6 @@ function SMBasic_UserSearch() {
         $disable_state = S_POST_INT("member_disable", 1, 1);
         SMBasic_DisableUser($member_id, $disable_state);
     }
-
-    $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_SEARCH_USER']);
-    $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_DESC']);
 
     $content = "<form action='' method='post'>";
     $content .= "<label for='glob'>{$LANGDATA['L_SM_GLOB']}: </label><input type='checkbox' name='posted_glob' id='glob' value='1' />";
@@ -96,13 +96,12 @@ function SMBasic_UserSearch() {
                     $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
                 }
                 $table['ADM_TABLE_ROW'] .= "</form></td>";
-
                 $table['ADM_TABLE_ROW'] .= "</tr>";
             }
             $content .= $tpl->getTPL_file("SMBasic", "memberlist", $table);
         }
     }
-    $tpl->addto_tplvar("ADM_CONTENT", $content);
+    return $content;
 }
 
 function SMBasic_UserList() {
@@ -119,9 +118,6 @@ function SMBasic_UserList() {
         SMBasic_DisableUser($member_id, $disable_state);
     }
 
-    $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_SM_USERS_LIST']);
-    $tpl->addto_tplvar("ADM_CONTENT", $LANGDATA['L_SM_USERS_LIST_DESC']);
-
     $users_list = $sm->getAllUsersArray();
 
     $table['ADM_TABLE_TH'] = "<th>" . $LANGDATA ['L_SM_USERNAME'] . "</th>";
@@ -130,9 +126,7 @@ function SMBasic_UserList() {
     $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_LASTLOGIN'] . "</th>";
     $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_ACTIONS'] . "</th>";
 
-    $active['ADM_TABLE_ROW'] = "";
-    $inactive['ADM_TABLE_ROW'] = "";
-    $disable['ADM_TABLE_ROW'] = "";
+    $active['ADM_TABLE_ROW'] = $inactive['ADM_TABLE_ROW'] = $disable['ADM_TABLE_ROW'] = "";
 
     foreach ($users_list as $user) {
         if ($user['active'] == 0 && !$user['disable']) {
@@ -188,7 +182,8 @@ function SMBasic_UserList() {
     $content = $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $active));
     $content .= $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $inactive));
     $content .= $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $disable));
-    $tpl->addto_tplvar("ADM_CONTENT", $content);
+
+    return $content;
 }
 
 function SMBasic_DeleteUser($uid) {

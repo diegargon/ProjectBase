@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -26,31 +27,31 @@ function SimpleACL_AdminContent($params) {
 
     $tpl->getCSS_filePath("SimpleACL");
 
-    $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n");
-    $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_ACL_ROLES'] . "</a></li>\n");
-    $tpl->addto_tplvar("ADM_ASIDE_OPTION", "<li><a href='?admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_ACL_USER_ROLES'] . "</a></li>\n");
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_ACL_ROLES'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_ACL_USER_ROLES'] . "</a></li>\n";
 
     $opt = S_GET_INT("opt");
     if ($opt == 1 || $opt == false) {
-        $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_PL_STATE']);
-        $tpl->addto_tplvar("ADM_CONTENT", Admin_GetPluginState("SimpleACL"));
+        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_PL_STATE'];
+        $page_data['ADM_CONTENT'] = Admin_GetPluginState("SimpleACL");
     } else if ($opt == 2) {
         isset($_POST['btnNewRole']) ? $msg = SimpleACL_NewRole() : false;
         isset($_POST['btnRoleDelete']) ? $msg = SimpleACL_DeleteRole() : false;
-        SimpleACL_ShowRoles($msg);
+        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_ACL_ROLES'];
+        $page_data['ADM_CONTENT'] = SimpleACL_ShowRoles($msg);
     } else if ($opt == 3) {
-        SimpleACL_UserRoles($msg);
+        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_ACL_USER_ROLES'];
+        $page_data['ADM_CONTENT'] = SimpleACL_UserRoles($msg);
     }
 
-    return $tpl->getTPL_file("Admin", "admin_std_content");
+    return $tpl->getTPL_file("Admin", "admin_std_content", $page_data);
 }
 
 function SimpleACL_ShowRoles($msg) {
     global $db, $tpl, $LANGDATA;
 
     !empty($msg) ? $table['ACL_MSG'] = $msg : false;
-
-    $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_ACL_ROLES']);
 
     $table['ADM_TABLE_TH'] = "<th>" . $LANGDATA['L_ACL_LEVEL'] . "</th>";
     $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA['L_ACL_ROLE_GROUP'] . "</th>";
@@ -82,7 +83,7 @@ function SimpleACL_ShowRoles($msg) {
         $table['ADM_TABLE_ROW'] .= "</td>";
         $table['ADM_TABLE_ROW'] .= "</tr>";
     }
-    $tpl->addto_tplvar("ADM_CONTENT", $tpl->getTPL_file("SimpleACL", "acl_admin_roles", $table));
+    return $tpl->getTPL_file("SimpleACL", "acl_admin_roles", $table);
 }
 
 function SimpleACL_NewRole() {
@@ -92,6 +93,7 @@ function SimpleACL_NewRole() {
     $r_type = S_POST_CHAR_AZ("r_type", 14, 1);
     $r_name = S_POST_CHAR_AZ("r_name", 32, 1);
     $r_description = S_POST_TEXT_UTF8("r_description", 255);
+
     if (empty($r_level) || empty($r_group) || empty($r_type) || empty($r_name)) {
         return $msg = $LANGDATA['L_ACL_E_EMPTY_NEWROLE'];
     }
@@ -118,8 +120,6 @@ function SimpleACL_UserRoles($msg) {
     global $tpl, $LANGDATA, $sm, $acl_auth;
 
     $content = [];
-
-    $tpl->addto_tplvar("ADM_CONTENT_H2", $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_ACL_USER_ROLES']);
 
     if (!empty($_POST['btnSearchUser']) || !empty($_POST['btnAddRole']) || !empty($_POST['btnDeleteRole'])) {
         $search_user = $sm->getUserByUsername(S_POST_STRICT_CHARS("username"));
@@ -157,7 +157,7 @@ function SimpleACL_UserRoles($msg) {
         $msg = $LANGDATA['L_ACL_USER_NOTFOUND'];
     }
     !empty($msg) ? $content['ACL_MSG'] = $msg : false;
-    $tpl->addto_tplvar("ADM_CONTENT", $tpl->getTPL_file("SimpleACL", "acl_user_roles", $content));
+    return $tpl->getTPL_file("SimpleACL", "acl_user_roles", $content);
 }
 
 function SimpleACL_AddRole($user) {
