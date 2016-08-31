@@ -159,7 +159,6 @@ function news_full_update($news_data) {
     }
 
     do_action("news_form_update", $news_data); //MOD
-
     //SOURCE LINK
     if (!empty($news_data['news_source'])) {
         $source_id = $news_data['nid'];

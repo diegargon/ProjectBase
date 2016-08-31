@@ -12,9 +12,7 @@ function news_show_page() {
 
     if ((empty($_GET['nid'])) || ($nid = S_GET_INT("nid", 8, 1)) == false ||
             (empty($_GET['lang'])) || ($lang = S_GET_CHAR_AZ("lang", 2, 2)) == false) {
-        $msgbox['MSG'] = "L_NEWS_NOT_EXIST";
-        do_action("message_box", $msgbox);
-        return false;
+        return news_error_msg("L_NEWS_NOT_EXIST");
     }
 
     if ($config['NEWS_MULTIPLE_PAGES'] && !empty($_GET['npage'])) {
@@ -25,16 +23,12 @@ function news_show_page() {
 
     if (S_GET_INT("admin")) {
         if (defined("ACL") && !$acl_auth->acl_ask("admin_all||news_admin")) {
-            $msgbox['MSG'] = "L_E_NOACCESS";
-            do_action("message_box", $msgbox);
-            return false;
+            return news_error_msg("L_E_NOACCESS");
         }
         if (!defined('ACL')) {
             $user = $sm->getSessionUser();
             if (empty($user) || $user['isAdmin'] != 1) {
-                $msgbox['MSG'] = "L_E_NOACCESS";
-                do_action("message_box", $msgbox);
-                return false;
+                return news_error_msg("L_E_NOACCESS");
             }
         }
     }

@@ -11,16 +11,16 @@ function news_new_form() {
     $form_data['news_form_title'] = $LANGDATA['L_SEND_NEWS'];
 
     $user = $sm->getSessionUser();
-    if (!$user && $config['NEWS_SUBMIT_ANON']) {
+    if (empty($user) && $config['NEWS_SUBMIT_ANON']) {
         $form_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS'];
-    } else if ($user) {
-        $form_data['author'] = $user['username'];
-        $form_data['tos_checked'] = 1;
-    } else {
-        $msgbox['MSG'] = "L_E_NOACCESS";
-        do_action("message_box", $msgbox);
-        return false;
+        $form_data['tos_checked'] = 0;
+    } else if (empty($user)) {
+        return news_error_msg("L_E_NOACCESS");
     }
+    $form_data['author'] = $user['username'];
+    $form_data['tos_checked'] = 1;
+    !empty($user) ? $news_data['tos_checked'] = 1 : $news_data['tos_checked'] = 0;
+
     if (defined('MULTILANG') && ($site_langs = news_get_all_sitelangs()) != false) {
         $form_data['select_langs'] = $site_langs;
     }
@@ -111,18 +111,20 @@ function news_create_new($news_data) {
 }
 
 function news_form_submit_process() {
-    global $LANGDATA, $config;
+    global $LANGDATA, $config, $sm;
 
+    $user = $sm->getSessionUser();
+    if (!$user && !$config['NEWS_SUBMIT_ANON']) {
+        return false;
+    }
     $news_data = news_form_getPost();
 
     if (news_form_common_field_check($news_data) == false) {
         return false;
     }
-
     if (news_form_extra_check($news_data) == false) {
         return false;
     }
-
     if (news_create_new($news_data)) {
         die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
     } else {

@@ -43,55 +43,51 @@ function news_get_categories() {
 function news_form_getPost() {
     global $acl_auth, $sm, $LANGDATA, $db;
 
-    $session_user = $sm->getSessionUser();
-    if ((!defined('ACL') && $session_user['isAdmin']) || ( defined('ACL') && ( $acl_auth->acl_ask('news_admin||admin_all') ) == true)) {
-        !empty($_POST['news_author']) ? $data['author'] = S_POST_STRICT_CHARS("news_author", 25, 3) : false;
-        if (!empty($data['author'])) {
-            if (($selected_user = $sm->getUserByUsername($data['author']))) {
-                $data['author_id'] = $selected_user['uid'];
+    $user = $sm->getSessionUser();
+    //Admin can change author (if the author not exists use admin one.
+    if ((!defined('ACL') && $user['isAdmin']) || ( defined('ACL') && ( $acl_auth->acl_ask('news_admin||admin_all') ) == true)) {
+        if (($form_data['author'] = S_POST_STRICT_CHARS("news_author", 25, 3)) != false && ($form_data['author'] != $user['username'])) {
+            if (($selected_user = $sm->getUserByUsername($form_data['author']))) {
+                $form_data['author_id'] = $selected_user['uid'];
             } else {
-                $data['author'] = false; // author not exists clear for use the session username.
+                unset($form_data['author']); //clear use session username
             }
         }
     }
 
-    if (empty($data['author'])) {
-        if (!empty($session_user)) {
-            $data['author'] = $session_user['username'];
-            $data['author_id'] = $session_user['uid'];
+    if (empty($form_data['author'])) {
+        if (!empty($user)) {
+            $form_data['author'] = $user['username'];
+            $form_data['author_id'] = $user['uid'];
         } else {
-            $data['author'] = $LANGDATA['L_NEWS_ANONYMOUS'];
-            $data['author_id'] = 0;
+            $form_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS'];
+            $form_data['author_id'] = 0;
         }
     }
 
-    $data['nid'] = S_GET_INT("nid", 11, 1);
-    $data['lang_id'] = S_GET_INT("lang_id", 8, 1);
-    $data['page'] = S_GET_INT("npage", 11, 1);
-    $data['title'] = $db->escape_strip(S_POST_TEXT_UTF8("news_title"));
-    $data['lead'] = $db->escape_strip(S_POST_TEXT_UTF8("news_lead"));
-    $data['text'] = $db->escape_strip(S_POST_TEXT_UTF8("news_text"));
-    $data['category'] = S_POST_INT("news_category", 8);
-    $data['featured'] = S_POST_INT("news_featured", 1, 1);
-    $data['lang'] = S_POST_CHAR_AZ("news_lang", 2);
-    $data['acl'] = S_POST_STRICT_CHARS("news_acl");
-    $data['news_source'] = S_POST_URL("news_source");
-    $data['news_new_related'] = S_POST_URL("news_new_related");
-    $data['news_related'] = S_POST_URL("news_related");
-    $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
-    $data['news_translator_id'] = S_POST_INT("news_translator_id", 11, 1);
+    $form_data['nid'] = S_GET_INT("nid", 11, 1);
+    $form_data['lang_id'] = S_GET_INT("lang_id", 8, 1);
+    $form_data['page'] = S_GET_INT("npage", 11, 1);
+    $form_data['title'] = $db->escape_strip(S_POST_TEXT_UTF8("news_title"));
+    $form_data['lead'] = $db->escape_strip(S_POST_TEXT_UTF8("news_lead"));
+    $form_data['text'] = $db->escape_strip(S_POST_TEXT_UTF8("news_text"));
+    $form_data['category'] = S_POST_INT("news_category", 8);
+    $form_data['featured'] = S_POST_INT("news_featured", 1, 1);
+    $form_data['lang'] = S_POST_CHAR_AZ("news_lang", 2);
+    $form_data['acl'] = S_POST_STRICT_CHARS("news_acl");
+    $form_data['news_source'] = S_POST_URL("news_source");
+    $form_data['news_new_related'] = S_POST_URL("news_new_related");
+    $form_data['news_related'] = S_POST_URL("news_related");
+    $form_data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
+    $form_data['news_translator_id'] = S_POST_INT("news_translator_id", 11, 1);
 
-    return $data;
+    return $form_data;
 }
 
 function news_form_common_field_check($news_data) {
     global $config, $LANGDATA;
 
     //USERNAME/AUTHOR
-    if (empty($news_data['author'])) {
-        $news_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS']; //TODO CHECK if anonymous its allowed 
-        $news_data['author_id'] = 0;
-    }
     if ($news_data['author'] == false) {
         die('[{"status": "2", "msg": "' . $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR'] . '"}]');
     }
@@ -253,7 +249,6 @@ function news_form_preview() {
     global $db;
     require_once("parser.class.php");
 
-    //$news_text = $_POST['news_text'];
     $news['news_text'] = $db->escape_strip(S_POST_TEXT_UTF8("news_text"));
     $news['news_text'] = stripcslashes($news['news_text']);
     !isset($news_parser) ? $news_parser = new parse_text : false;

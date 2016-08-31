@@ -44,6 +44,9 @@ function news_new_page() {
 function news_newpage_form_process() {
     global $LANGDATA, $config;
 
+    if (!($user = $sm->getSessionUser())) {
+        return false;
+    }
     $news_data = news_form_getPost();
 
     if ($news_data['title'] == false) {

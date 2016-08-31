@@ -50,7 +50,12 @@ function news_new_lang() {
 }
 
 function news_form_newlang_process() {
-    global $LANGDATA, $config;
+    global $LANGDATA, $config, $sm;
+
+    $user = $sm->getSessionUser();
+    if (!$user && !$config['NEWS_ANON_TRANSLATE']) {
+        return false;
+    }
 
     $news_data = news_form_getPost();
 
