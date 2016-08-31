@@ -13,7 +13,7 @@ if (!empty($_POST['preview'])) {
     return;
 }
 
-if (!empty($_POST['news_submit'])) {
+if (!empty($_POST['fstage'])) {
     news_form_submit_process();
 } else {
     do_action("common_web_structure");

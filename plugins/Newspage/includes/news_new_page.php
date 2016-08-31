@@ -35,7 +35,7 @@ function news_new_page() {
     $form_data['can_change_author'] = "disabled";
     $form_data['author'] = $user['username'];
     $form_data['news_text_bar'] = news_editor_getBar();
-    $form_data['new_page'] = 1;
+
     do_action("news_newpage_form_add");
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $form_data));

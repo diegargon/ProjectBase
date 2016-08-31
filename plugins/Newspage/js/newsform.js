@@ -41,7 +41,7 @@ window.addEventListener("load", function () {
             $('#tos').css("box-shadow", "0 0 10px red");
             alert("You must accept the terms of service");
         } else {
-            $.post("", $("#form_news").serialize(),
+            $.post("", $("#form_news").serialize() + '&fstage=2',
                     function (data) {
                         console.log(data); //DEBUG
                         var json = $.parseJSON(data);

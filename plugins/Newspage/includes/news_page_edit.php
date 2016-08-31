@@ -44,7 +44,7 @@ function news_edit() {
     if (defined('MULTILANG') && ($site_langs = news_get_available_langs($news_data)) != false) {
         $news_data['select_langs'] = $site_langs;
     }
-    $news_data['news_update'] = 1;
+
     $news_data['news_text_bar'] = news_editor_getBar();
     do_action("news_edit_form_add", $news_data);
 
@@ -98,24 +98,16 @@ function news_form_edit_process() {
             return false;
         }
     }
-    //ALL OK, check if SUBMIT NEW, UPDATE or translate
-    if (S_POST_INT("news_update")) {
-        if ($news_orig['news_auth'] == "admin" || $news_orig['news_auth'] == "author") {
-            if (news_full_update($news_data)) {
-                die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
-            } else {
-                die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
-            }
-        } else if ($news_orig['news_auth'] == "translator") {
-            if (news_limited_update($news_data)) {
-                die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
-            } else {
-                die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
-            }
+    //UPDATE or translate
+    if ($news_orig['news_auth'] == "admin" || $news_orig['news_auth'] == "author") {
+        if (news_full_update($news_data)) {
+            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+        } else {
+            die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
         }
-    } else {
-        if (news_create_new($news_data)) {
-            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_SUBMITED_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+    } else if ($news_orig['news_auth'] == "translator") {
+        if (news_limited_update($news_data)) {
+            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
         } else {
             die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
         }

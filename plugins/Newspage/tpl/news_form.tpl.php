@@ -90,18 +90,6 @@
                                 <input <?php !empty($data['featured']) ? print "checked" : false ?> type="checkbox" name="news_featured" id="news_featured" value="1"/>
                             <?php } ?>
                         </p>
-                        <?php if (!empty($data['news_update'])) { ?>
-                            <input type='hidden' value='1' name='news_update' />
-                        <?php } 
-                            if (!empty($data['news_submit'])) { ?>
-                            <input type='hidden' value='1' name='news_submit' />
-                        <?php } 
-                            if (!empty($data['new_lang'])) { ?>
-                            <input type='hidden' value='1' name='post_newlang' />
-                            <?php } 
-                            if (!empty($data['new_page'])) { ?>
-                            <input type='hidden' name='new_page' value='1'/>
-                            <?php } ?>
                         <?php !empty($tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION']) ? print $tpldata['NEWS_FORM_BOTTOM_OTHER_OPTION'] : false; ?>
                         <p>
                             <a href="/terms.php" target="_blank"><?php print $LANGDATA['L_TOS'] ?></a><input <?php !empty($data['tos_checked']) ? print "checked" : false ?> id="tos" name="tos" required="required" type="checkbox"/>

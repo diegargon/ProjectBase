@@ -18,7 +18,7 @@ if (!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
     require_once ("includes/news_form.common.php");
     require_once ("includes/news_page_edit.php");
 
-    if (!empty($_POST['news_update'])) {
+    if (!empty($_POST['fstage'])) {
         news_form_edit_process();
     } else {
         do_action("common_web_structure");
@@ -29,7 +29,7 @@ if (!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
     do_action("begin_news_new_lang");
     require_once ("includes/news_form.common.php");
     require_once ("includes/news_new_lang.php");
-    if (!empty($_POST['post_newlang'])) {
+    if (!empty($_POST['fstage'])) {
         news_form_newlang_process();
     } else {
         do_action("common_web_structure");
@@ -40,7 +40,7 @@ if (!empty($_GET['newsedit']) && !empty($_GET['lang_id'])) {
     do_action("begin_newspage");
     require_once ("includes/news_form.common.php");
     require_once ("includes/news_new_page.php");
-    if (!empty($_POST['new_page'])) {
+    if (!empty($_POST['fstage'])) {
         news_newpage_form_process();
     } else {
         do_action("common_web_structure");
