@@ -10,7 +10,7 @@ function news_edit() {
     $nid = S_GET_INT("nid", 11, 1);
     $lang_id = S_GET_INT("lang_id", 4, 1);
     $page = S_GET_INT("npage", 11, 1);
-    
+
     if (empty($nid) || empty($lang_id) || empty($page)) {
         return news_error_msg("L_NEWS_NOT_EXIST");
     }
@@ -77,21 +77,18 @@ function news_check_edit_authorized(& $news_data) {
 function news_form_edit_process() {
     global $LANGDATA, $config;
 
-    $nid = S_GET_INT("nid", 11, 1);
-    $lang_id = S_GET_INT("lang_id", 4, 1);
-    $page = S_GET_INT("npage", 11, 1);
+    $news_data = news_form_getPost();
 
-    if (empty($nid) || empty($lang_id) || empty($page)) {
+    if (empty($news_data['nid']) || empty($news_data['lang_id']) || empty($news_data['page'])) {
         return news_error_msg("L_NEWS_NOT_EXIST");
     }
-    if (!($news_orig = get_news_byId($nid, $lang_id, $page))) {
+    if (!($news_orig = get_news_byId($news_data['nid'], $news_data['lang_id'], $news_data['page']))) {
         return false; // error already setting in get_news
     }
     if (!news_check_edit_authorized($news_orig)) {
         return false; // error already setting in news_check....
     }
-    $news_data = news_form_getPost();
-    
+
     if (news_form_common_field_check($news_data) == false) {
         return false;
     }
@@ -129,20 +126,13 @@ function news_form_edit_process() {
 function news_full_update($news_data) {
     global $config, $db, $ml;
 
-    if (empty($news_data['page']) || empty($news_data['current_langid'])) {
-        return false; //TODO ERROR?
-    }
-
-    $news_data['nid'] = S_GET_INT("nid");
-    $current_langid = $news_data['current_langid'];
-
     if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($news_data['lang']);
     } else {
         $lang_id = $config['WEB_LANG_ID'];
     }
 
-    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "$current_langid"));
+    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"));
     if (($num_pages = $db->num_rows($query)) <= 0) {
         return false;
     }
@@ -160,7 +150,7 @@ function news_full_update($news_data) {
     do_action("news_fulledit_mod_set", $set_ary);
 
     $where_ary = array(
-        "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid", "page" => $news_data['page']
+        "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}", "page" => "{$news_data['page']}"
     );
     $db->update("news", $set_ary, $where_ary);
     //UPDATE ACL/CATEGORY/LANG/FEATURE on pages;
@@ -170,7 +160,7 @@ function news_full_update($news_data) {
             "category" => $news_data['category'], "lang" => $news_data['lang']
         );
         $page_where_ary = array(
-            "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid", "page" => array("operator" => "!=", "value" => $news_data['page'])
+            "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}", "page" => array("operator" => "!=", "value" => "{$news_data['page']}")
         );
         $db->update("news", $page_set_ary, $page_where_ary);
     }
@@ -228,19 +218,13 @@ function news_full_update($news_data) {
 function news_limited_update($news_data) {
     global $config, $db, $ml;
 
-    if (empty($news_data['page']) || empty($news_data['current_langid'])) {
-        return false; //TODO ERROR?
-    }
-    $news_data['nid'] = S_GET_INT("nid");
-    $current_langid = $news_data['current_langid'];
-
     if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($news_data['lang']);
     } else {
         $lang_id = $config['WEB_LANG_ID'];
     }
 
-    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "$current_langid"));
+    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"));
     if (($num_pages = $db->num_rows($query)) <= 0) {
         return false;
     }
@@ -251,10 +235,9 @@ function news_limited_update($news_data) {
     );
     do_action("news_limitededit_mod_set", $set_ary);
     $where_ary = array(
-        "nid" => "{$news_data['nid']}", "lang_id" => "$current_langid", "page" => $news_data['page']
+        "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}", "page" => "{$news_data['page']}"
     );
     $db->update("news", $set_ary, $where_ary);
 
     return true;
 }
-

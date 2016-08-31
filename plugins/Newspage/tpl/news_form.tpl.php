@@ -91,7 +91,6 @@ if (!defined('IN_WEB')) { exit; }
                         </p>
                         <?php if (!empty($data['news_update'])) { ?>
                             <input type='hidden' value='1' name='news_update' />
-                            <input type='hidden' value='<?php print $data['lang_id'] ?>' name='news_current_langid' />
                         <?php } ?>
                         <?php if (!empty($data['news_submit'])) { ?>
                             <input type='hidden' value='1' name='news_submit' />

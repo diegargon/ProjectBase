@@ -73,8 +73,7 @@ function news_form_getPost() {
     $data['category'] = S_POST_INT("news_category", 8);
     $data['featured'] = S_POST_INT("news_featured", 1, 1);
     $data['lang'] = S_POST_CHAR_AZ("news_lang", 2);
-    $data['acl'] = S_POST_STRICT_CHARS("news_acl");
-    $data['current_langid'] = S_POST_INT("news_current_langid", 8, 1);
+    $data['acl'] = S_POST_STRICT_CHARS("news_acl");    
     $data['news_source'] = S_POST_URL("news_source");
     $data['news_new_related'] = S_POST_URL("news_new_related");
     $data['news_related'] = S_POST_URL("news_related");
