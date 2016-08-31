@@ -169,14 +169,6 @@ function Newspage_FormScript() {
     $tpl->AddScriptFile("Newspage", "editor", "BOTTOM");
 }
 
-function Newspage_FormPageScript() { //Used for new page and edit non main page for avoid js lead check
-    global $tpl;
-
-    $tpl->AddScriptFile("standard", "jquery.min", "TOP", null);
-    $tpl->AddScriptFile("Newspage", "newsform_page", "BOTTOM");
-    $tpl->AddScriptFile("Newspage", "editor", "BOTTOM");
-}
-
 //Used when submit new news, get all site available langs and selected the default/user lang
 function news_get_all_sitelangs() {
     global $config, $ml;

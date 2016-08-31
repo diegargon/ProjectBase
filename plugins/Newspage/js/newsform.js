@@ -7,7 +7,6 @@ window.addEventListener("load", function () {
         $('#newsFormSubmit').attr('disabled', 'disabled');
         var news_author = $("#news_author").val();
         var news_title = $("#news_title").val();
-        var news_lead = $("#news_lead").val();
         var news_text = $("#news_text").val();
 
         if ($("#tos").is(':checked')) {
@@ -22,8 +21,6 @@ window.addEventListener("load", function () {
         $('#news_author').css("border", "1px solid black");
         $('#news_title').css("box-shadow", "0 0 0px black");
         $('#news_title').css("border", "1px solid black");
-        $('#news_lead').css("box-shadow", "0 0 0px black");
-        $('#news_lead').css("border", "1px solid black");
         $('#news_text').css("box-shadow", "0 0 0px black");
         $('#news_text').css("border", "1px solid black");
 
@@ -35,10 +32,6 @@ window.addEventListener("load", function () {
             $('#news_title').css("border", "5px solid red");
             $('#news_title').css("box-shadow", "0 0 5px red");
             alert("Title can't be empty");
-        } else if (news_lead == '') {
-            $('#news_lead').css("border", "5px solid red");
-            $('#news_lead').css("box-shadow", "0 0 5px red");
-            alert("Lead can't be empty");
         } else if (news_text == '') {
             $('#news_text').css("border", "5px solid red");
             $('#news_text').css("box-shadow", "0 0 5px red");
@@ -65,10 +58,6 @@ window.addEventListener("load", function () {
                         } else if (json[0].status == 3) {
                             $('#news_title').css("border", "2px solid red");
                             $('#news_title').css("box-shadow", "0 0 3px red");
-                            alert(json[0].msg);
-                        } else if (json[0].status == 4) {
-                            $('#news_lead').css("border", "2px solid red");
-                            $('#news_lead').css("box-shadow", "0 0 3px red");
                             alert(json[0].msg);
                         } else if (json[0].status == 5) {
                             $('#news_text').css("border", "2px solid red");

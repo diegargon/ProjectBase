@@ -18,7 +18,7 @@ if (!empty($_GET['newsedit']) && !empty($_GET['lang_id']) && empty($_POST['previ
         news_form_edit_process();
     } else {
         do_action("common_web_structure");
-        !empty($_GET['npage']) && $_GET['npage'] > 1 ? Newspage_FormPageScript() : Newspage_FormScript();
+        Newspage_FormScript();
         news_edit();
     }
 } else if (defined('MULTILANG') && !empty($_GET['news_new_lang']) && empty($_POST['preview'])) {
@@ -40,7 +40,7 @@ if (!empty($_GET['newsedit']) && !empty($_GET['lang_id']) && empty($_POST['previ
         news_newpage_form_process();
     } else {
         do_action("common_web_structure");
-        Newspage_FormPageScript();
+        Newspage_FormScript();
         news_new_page();
     }
 } else if (empty($_POST['preview'])) {
