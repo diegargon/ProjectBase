@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 define("NEWSPAGE_DEBUG", true);
 defined('ACL') ? $config['NEWS_HIDDE_PREVIEW_BY_ACL'] = 0 : false;

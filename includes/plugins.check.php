@@ -1,5 +1,5 @@
 <?php
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 function get_all_enabled_plugins() {
     global $registered_plugins;

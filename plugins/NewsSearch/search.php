@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 plugin_start("NewsSearch");
 require_once 'plugins/NewsSearch/includes/NewsSearchPage.inc.php';

@@ -3,7 +3,7 @@
  *  Copyright @ 2016 Diego Garcia
  * ES
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 $LANGDATA['L_HOME'] = "Inicio";
 $LANGDATA['L_E_ERROR'] = "Error";

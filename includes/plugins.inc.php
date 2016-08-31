@@ -1,5 +1,5 @@
 <?php
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 /* 
  *  Copyright @ 2016 Diego Garcia
  * 

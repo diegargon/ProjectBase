@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 function news_show_page() {
     global $config, $LANGDATA, $tpl, $sm, $ml, $acl_auth;

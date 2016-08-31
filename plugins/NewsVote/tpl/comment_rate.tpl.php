@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>
     <div>
         <form id="form_comment_rate[<?php print $data['cid'] ?>]" method="post" action="#">

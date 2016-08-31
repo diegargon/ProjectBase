@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 function NewsComments_init() {
     print_debug("NewsComments initiated", "PLUGIN_LOAD");

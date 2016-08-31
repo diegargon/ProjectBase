@@ -2,7 +2,7 @@
 /*
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>
 <div  class="clear bodysize page">
     <div class="standard_box submit_box">

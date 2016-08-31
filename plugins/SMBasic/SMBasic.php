@@ -4,7 +4,7 @@
  * 
  * do_action("encrypt_password") // Override/set for change default one
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 function SMBasic_Init() {
     global $config, $sm;

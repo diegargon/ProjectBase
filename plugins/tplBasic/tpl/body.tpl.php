@@ -1,5 +1,5 @@
 <?php
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>
 <body id="Top">
     <div class="main_container">

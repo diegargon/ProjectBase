@@ -3,7 +3,7 @@
  *  Copyright @ 2016 Diego Garcia
  * ES
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 $LANGDATA['L_NEWS_WARN_NOLANG'] = "Aviso: No hay versión de esta pagina en su idioma";
 $LANGDATA['L_NEWS_NOT_EXIST'] = "Noticia borrada o no existe";

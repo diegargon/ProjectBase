@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>
 <label><?php print $LANGDATA['L_NMU_UPLOAD_FILES'] ?><span class='text_small'><?php print $LANGDATA['L_NMU_MAX'] . $config['NMU_MAX_FILESIZE'] ?></span></label>
 <div id="upload_container">

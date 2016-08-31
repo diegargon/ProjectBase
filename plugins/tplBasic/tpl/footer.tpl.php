@@ -1,5 +1,5 @@
 <?php
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>
 <div class="row3">
     <footer id="footer" class="clear">

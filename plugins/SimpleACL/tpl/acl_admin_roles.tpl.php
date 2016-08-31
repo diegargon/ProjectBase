@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>
 <br/>
 <?php isset($data['ADM_TABLE_TITLE']) ? print $data['ADM_TABLE_TITLE'] : false; ?>        

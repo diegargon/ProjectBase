@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>
 <p><a href='#new_comment_wrap' class='btnShow'><?php print $LANGDATA['L_SC_NEW_COMMENT']?></a></p>
 <div id="new_comment_wrap">        

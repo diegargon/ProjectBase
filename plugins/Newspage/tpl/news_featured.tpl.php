@@ -2,7 +2,7 @@
 /*
  Copyright @ 2016 Diego Garcia
 */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>  
 <div id="featured_wrap">
     <a href="<?php print $data['url']; ?>">

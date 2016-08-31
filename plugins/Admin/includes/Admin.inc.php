@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 function admin_load_plugin_files() {
     //Load administration side from all register plugins (all enabled) and init the admin_init function.

@@ -4,7 +4,7 @@
  * 
  * Fast Implementation, need some basic ACL now,  work on this later
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 class ACL {
 

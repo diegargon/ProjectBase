@@ -3,5 +3,5 @@
  *  Copyright @ 2016 Diego Garcia
  * ES
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 $LANGDATA['NEWS_XTRA_DISPLAY_REALNAME'] = "Mostrar nombre real en las noticias";

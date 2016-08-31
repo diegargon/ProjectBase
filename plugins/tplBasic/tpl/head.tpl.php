@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 ?>
 <!DOCTYPE html>
 <html dir="<?php print $config['WEB_DIR'] ?>" lang="<?php print $config['WEB_LANG'] ?>">

@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 $config['newsads_main_ad'] = 1; //header add in all pages 
 $config['newsads_sponsors'] = 1; //custom add by news (right column)

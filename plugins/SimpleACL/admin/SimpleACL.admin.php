@@ -2,7 +2,7 @@
 /* 
  *  Copyright @ 2016 Diego Garcia
  */
-if (!defined('IN_WEB')) { exit; }
+!defined('IN_WEB') ? exit : true;
 
 function SimpleACL_AdminInit() {
     register_action("add_admin_menu", "SimpleACL_AdminMenu", 5);
