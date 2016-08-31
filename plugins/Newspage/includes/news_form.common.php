@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -66,21 +67,21 @@ function news_form_getPost() {
 
     $data['nid'] = S_GET_INT("nid", 11, 1);
     $data['lang_id'] = S_GET_INT("lang_id", 8, 1);
-    $data['page'] = S_GET_INT("npage", 11, 1);    
+    $data['page'] = S_GET_INT("npage", 11, 1);
     $data['title'] = $db->escape_strip(S_POST_TEXT_UTF8("news_title"));
     $data['lead'] = $db->escape_strip(S_POST_TEXT_UTF8("news_lead"));
     $data['text'] = $db->escape_strip(S_POST_TEXT_UTF8("news_text"));
     $data['category'] = S_POST_INT("news_category", 8);
     $data['featured'] = S_POST_INT("news_featured", 1, 1);
     $data['lang'] = S_POST_CHAR_AZ("news_lang", 2);
-    $data['acl'] = S_POST_STRICT_CHARS("news_acl");    
+    $data['acl'] = S_POST_STRICT_CHARS("news_acl");
     $data['news_source'] = S_POST_URL("news_source");
     $data['news_new_related'] = S_POST_URL("news_new_related");
     $data['news_related'] = S_POST_URL("news_related");
     $data['news_translator'] = S_POST_STRICT_CHARS("news_translator", 25, 3);
     $data['news_translator_id'] = S_POST_INT("news_translator_id", 11, 1);
     $data['post_newlang'] = S_POST_INT("post_newlang");
-    
+
     return $data;
 }
 
@@ -254,7 +255,7 @@ function news_editor_getBar() {
     global $tpl;
     do_action("news_add_editor_item");
 
-    return $tpl->getTPL_file("Newspage", "NewsEditorBar");    
+    return $tpl->getTPL_file("Newspage", "NewsEditorBar");
 }
 
 function news_form_preview() {

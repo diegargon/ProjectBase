@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -190,33 +191,31 @@ function news_pager($news_page) {
         return false;
     }
     $content = "<div id='pager'><ul>";
+    
+    $news_page['page'] == 1 ? $a_class = "class='active'" : $a_class = '';
     if ($config['FRIENDLY_URL']) {
-        $friendly_title = news_friendly_title($news_page['title']);
-        $news_page['page'] == 1 ? $a_class = "class='active'" : $a_class = "";
+        $friendly_title = news_friendly_title($news_page['title']);        
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/1/$friendly_title'>1</a></li>";
     } else {
-        $news_page['page'] == 1 ? $a_class = "class='active'" : $a_class = "";
         $content .= "<li><a $a_class href='{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=1'>1</a></li>";
     }
 
     $pager = page_pager($config['NEWS_PAGER_MAX'], $num_pages, $news_page['page']);
 
     for ($i = $pager['start_page']; $i < $pager['limit_page']; $i++) {
-        if ($config['FRIENDLY_URL']) {
+        $news_page['page'] == $i ? $a_class = "class='active'" : $a_class = '';        
+        if ($config['FRIENDLY_URL']) {            
             $friendly_title = news_friendly_title($news_page['title']);
-            $news_page['page'] == $i ? $a_class = "class='active'" : $a_class = "";
             $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$i/$friendly_title'>$i</a></li>";
         } else {
-            $news_page['page'] == $i ? $a_class = "class='active'" : $a_class = "";
             $content .= "<li><a $a_class href='{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=$i'>$i</a></li>";
         }
     }
+    $news_page['page'] == $num_pages ? $a_class = "class='active'" : $a_class = '';
     if ($config['FRIENDLY_URL']) {
         $friendly_title = news_friendly_title($news_page['title']);
-        $news_page['page'] == $num_pages ? $a_class = "class='active'" : $a_class = "";
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$num_pages/$friendly_title'>$num_pages</a></li>";
     } else {
-        $news_page['page'] == $num_pages ? $a_class = "class='active'" : $a_class = "";
         $content .= "<li><a $a_class href='{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=$num_pages'>$num_pages</a></li>";
     }
     $content .= "</ul></div>";
@@ -241,12 +240,12 @@ function page_pager($max_pages, $num_pages, $actual_page) {
     }
 
     $limit_page = $actual_page + $middle + $addition;
-    $limit_page > $num_pages ? $limit_page = $num_pages : false;
+    $limit_page > $num_pages ? $limit_page = $num_pages : null;
 
     if (($max_pages + $start_page) > $limit_page) {
         $start_page = $start_page - (($max_pages + $start_page) - $limit_page);
     }
-    $start_page < 2 ? $start_page = 2 : false;
+    $start_page < 2 ? $start_page = 2 : null;
 
     $pager['start_page'] = $start_page;
     $pager['limit_page'] = $limit_page;
@@ -262,7 +261,6 @@ function news_delete($nid, $lang_id) {
     if ($db->num_rows($query) <= 0) {
         $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
         //ATM by default this fuction delete all "links" if no exists the same news in other lang, mod like 
-        //NewsMedia not need clean his "links"
         do_action("news_delete_mod", $nid);
     }
     return true;

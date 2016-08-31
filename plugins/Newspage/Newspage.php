@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -12,14 +13,12 @@ function Newspage_init() {
     $tpl->getCSS_filePath("Newspage");
     $tpl->getCSS_filePath("Newspage", "Newspage-mobile");
 
-    if (news_check_display_submit()) {
-        register_action("nav_element", "news_menu_submit_news");
-    }
+    news_check_display_submit() ? register_action("nav_element", "news_menu_submit_news") : null;
 }
 
 function news_portal() {
     global $config, $tpl;
-   
+
     require_once("includes/news_portal.php");
     do_action("news_portal_begin");
 

@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -97,7 +98,7 @@ function news_form_edit_process() {
             return false;
         }
     }
-    //ALL OK, check if SUBMIT, UPDATE or translate
+    //ALL OK, check if SUBMIT NEW, UPDATE or translate
     if (S_POST_INT("news_update")) {
         if ($news_orig['news_auth'] == "admin" || $news_orig['news_auth'] == "author") {
             if (news_full_update($news_data)) {
@@ -164,8 +165,8 @@ function news_full_update($news_data) {
         );
         $db->update("news", $page_set_ary, $page_where_ary);
     }
-    //Custom/MOD
-    do_action("news_form_update", $news_data);
+
+    do_action("news_form_update", $news_data); //MOD
 
     //SOURCE LINK
     if (!empty($news_data['news_source'])) {

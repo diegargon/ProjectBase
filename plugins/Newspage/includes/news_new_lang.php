@@ -1,11 +1,12 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
 
 function news_new_lang() {
-    global $config, $LANGDATA, $acl_auth, $tpl, $db, $sm;
+    global $config, $LANGDATA, $acl_auth, $tpl, $sm;
 
     $nid = S_GET_INT("nid", 11, 1);
     $lang_id = S_GET_INT("lang_id", 4, 1);
@@ -72,12 +73,10 @@ function news_translate($news_data) {
     if (empty($news_data['nid']) || empty($lang_id)) {
         return false;
     }
-
     $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "$lang_id", "page" => "{$news_data['page']}"));
     if ($db->num_rows($query) > 0) { //already exist
         return false;
     }
-
     //GET original main news (page 1) for copy values
     $orig_news_nid = S_GET_INT("nid", 11, 1);
     $orig_news_lang = S_GET_CHAR_AZ("lang", 2, 2);
@@ -85,7 +84,6 @@ function news_translate($news_data) {
 
     $query = $db->select_all("news", array("nid" => "$orig_news_nid", "lang_id" => "$orig_news_lang_id", "page" => 1), "LIMIT 1");
     $orig_news = $db->fetch($query);
-
     $moderation = $config['NEWS_MODERATION'];
 
     $insert_ary = array(

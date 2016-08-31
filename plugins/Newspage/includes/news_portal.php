@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -79,12 +80,12 @@ function get_news($category = 0, $limit = null, $headlines = 0, $frontpage = 1, 
         $where_ary['nid'] = array("value" => $featured_news['nid'], "operator" => "<>");
     }
 
-    $config['NEWS_SELECTED_FRONTPAGE'] ? $where_ary['frontpage'] = $frontpage : false;
-    $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : false;
+    $config['NEWS_SELECTED_FRONTPAGE'] ? $where_ary['frontpage'] = $frontpage : null;
+    $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : null;
 
-    !empty($category) && $category != 0 ? $where_ary['category'] = $category : false;
+    !empty($category) && $category != 0 ? $where_ary['category'] = $category : null;
     $featured == 1 ? $q_extra = " ORDER BY featured_date DESC" : $q_extra = " ORDER BY date DESC";
-    $limit > 0 ? $q_extra .= " LIMIT $limit" : false;
+    $limit > 0 ? $q_extra .= " LIMIT $limit" : null;
 
     $query = $db->select_all("news", $where_ary, $q_extra);
     if ($db->num_rows($query) <= 0) {
@@ -94,11 +95,11 @@ function get_news($category = 0, $limit = null, $headlines = 0, $frontpage = 1, 
     $catname = null;
     if (defined('MULTILANG') && !empty($category)) {
         $catname = "<h2>";
-        !empty($featured) ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : false;
+        !empty($featured) ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : null;
         $catname .= get_category_name($category, $lang_id) . "</h2>";
     } else if (!empty($category)) {
         $catname = "<h2>";
-        !empty($featured) ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : false;
+        !empty($featured) ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : null;
         $catname .= get_category_name($category) . "</h2>";
     }
 
@@ -113,10 +114,10 @@ function get_news($category = 0, $limit = null, $headlines = 0, $frontpage = 1, 
     $content .= $catname;
 
     $save_img_selector = $config['IMG_SELECTOR'];
-    empty($featured) ? $config['IMG_SELECTOR'] = "thumbs" : false; //no thumb for featured image
+    empty($featured) ? $config['IMG_SELECTOR'] = "thumbs" : null; //no thumb for featured image
     while ($news_row = $db->fetch($query)) {
         if (($news_data = fetch_news_data($news_row)) != false) {
-            $headlines == 1 ? $news_data['headlines'] = 1 : false;
+            $headlines == 1 ? $news_data['headlines'] = 1 : null;
             if ($featured == 1) {
                 do_action("news_featured_mod", $news_data);
                 $content .= $tpl->getTPL_file("Newspage", "news_featured", $news_data);
@@ -163,7 +164,7 @@ function fetch_news_data($row) {
     $mainimage = news_determine_main_image($row);
     if (!empty($mainimage)) {
         require_once 'parser.class.php';
-        !isset($news_parser) ? $news_parser = new parse_text : false;
+        !isset($news_parser) ? $news_parser = new parse_text : null;
         $news['mainimage'] = $news_parser->parse($mainimage);
     }
 
@@ -174,7 +175,7 @@ function get_category_name($cid, $lang_id = null) {
     global $db;
 
     $where_ary['cid'] = $cid;
-    defined('MULTILANG') && $lang_id != null ? $where_ary['lang_id'] = $lang_id : false;
+    defined('MULTILANG') && $lang_id != null ? $where_ary['lang_id'] = $lang_id : null;
 
     $query = $db->select_all("categories", $where_ary, "LIMIT 1");
     $category = $db->fetch($query);
@@ -187,7 +188,7 @@ function news_portal_content() {
     global $config;
     $portal_content = [];
 
-    $config['NEWS_PORTAL_FEATURED'] ? $portal_content['FEATURED'] = getNews_featured() : false;
+    $config['NEWS_PORTAL_FEATURED'] ? $portal_content['FEATURED'] = getNews_featured() : null;
 
     if ($config['NEWS_PORTAL_COLS'] >= 1) {
         $portal_content['COL1_ARTICLES'] = news_getPortalColLayout($config['NEWS_PORTAL_COL1_CONTENT'], $config['NEWS_PORTAL_COL1_CONTENT_LIMIT']);

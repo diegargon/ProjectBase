@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -17,14 +18,11 @@ function news_new_form() {
         $form_data['tos_checked'] = 1;
     } else {
         $msgbox['MSG'] = "L_E_NOACCESS";
-        do_action("message_box", $msgbox);        
+        do_action("message_box", $msgbox);
         return false;
     }
-
-    if (defined('MULTILANG')) {
-        if ( ($site_langs = news_get_all_sitelangs()) != false ) {
-            $form_data['select_langs'] = $site_langs;
-        }
+    if (defined('MULTILANG') && ($site_langs = news_get_all_sitelangs()) != false) {
+        $form_data['select_langs'] = $site_langs;
     }
     if (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) {
         $form_data['select_acl'] = $acl_auth->get_roles_select("news");
@@ -52,21 +50,20 @@ function news_create_new($news_data) {
     if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($news_data['lang']);
     } else {
-        $lang_id  = $config['WEB_LANG_ID'];
+        $lang_id = $config['WEB_LANG_ID'];
     }
-
     !empty($news_data['acl']) ? $acl = $news_data['acl'] : $acl = "";
-    empty($news_data['featured']) ? $news_data['featured'] = 0 : false; //news_clean_featured($lang_id) ;
+    empty($news_data['featured']) ? $news_data['featured'] = 0 : null;
 
     if ($news_data['featured'] == 1 && $config['NEWS_MODERATION'] == 1) {
         $moderation = 0;
-    } else if ($config['NEWS_MODERATION'] == 1){
+    } else if ($config['NEWS_MODERATION'] == 1) {
         $moderation = 1;
     } else {
         $moderation = 0;
     }
 
-    $insert_ary = array (
+    $insert_ary = array(
         "nid" => $news_data['nid'],
         "lang_id" => $lang_id,
         "page" => 1,
@@ -87,13 +84,13 @@ function news_create_new($news_data) {
 
     /* Custom / MOD */
     do_action("news_create_new_insert", $news_data);
- 
+
     $plugin = "Newspage";
 
     //SOURCE LINK
     if (!empty($news_data['news_source'])) {
         $type = "source";
-        $insert_ary = array (
+        $insert_ary = array(
             "source_id" => $news_data['nid'],
             "plugin" => $plugin,
             "type" => $type,
@@ -101,10 +98,10 @@ function news_create_new($news_data) {
         );
         $db->insert("links", $insert_ary);
     }
-   //NEW RELATED
+    //NEW RELATED
     if (!empty($news_data['news_new_related'])) {
         $type = "related";
-        $insert_ary = array (
+        $insert_ary = array(
             "source_id" => $news_data['nid'], "plugin" => $plugin,
             "type" => $type, "link" => $news_data['news_new_related'],
         );
