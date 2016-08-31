@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -8,12 +9,12 @@
 function NS_basicSearchbox() {
     global $tpl, $config;
 
-    if($config['FRIENDLY_URL']) {
+    if ($config['FRIENDLY_URL']) {
         $sbox_data['searchUrl'] = "/{$config['WEB_LANG']}/search";
     } else {
         $sbox_data['searchUrl'] = "/{$config['CON_FILE']}?module=NewsSearch&page=search&lang={$config['WEB_LANG']}";
-    }         
-    
+    }
+
     return $search_box = $tpl->getTPL_file("NewsSearch", "NewsSearchBarbox", $sbox_data);
 }
 
@@ -35,14 +36,14 @@ function NS_news_tag_show_page(& $news_row) {
     if (!empty($news_row['tags'])) {
         $config['PAGE_KEYWORDS'] = $news_row['tags'];
         $exploted_tags = explode(",", $news_row['tags']);
-        $tag_data = "<div class='tags'> <p>". $LANGDATA['L_NS_TAGS'] . ": ";
+        $tag_data = "<div class='tags'> <p>" . $LANGDATA['L_NS_TAGS'] . ": ";
         foreach ($exploted_tags as $tag) {
             $tag = preg_replace('/\s+/', '', $tag);
-            if($config['FRIENDLY_URL']) {
+            if ($config['FRIENDLY_URL']) {
                 $tag_data .= "<a href='/{$config['WEB_LANG']}/searchTag/$tag'>$tag</a> ";
             } else {
                 $tag_data .= "<a href='/{$config['CON_FILE']}&lang={$config['WEB_LANG']}&searchTag=$tag'>$tag</a> ";
-            }            
+            }
         }
         $tag_data .= "</p></div>";
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_BOTTOM", $tag_data);
@@ -51,10 +52,9 @@ function NS_news_tag_show_page(& $news_row) {
     }
 }
 
-function NS_tags_edit_form_add ($news_data) {
+function NS_tags_edit_form_add($news_data) {
     global $tpl;
-
-    $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", NS_tags_option($news_data['tags']));
+    $news_data['page'] == 1 ? $tpl->addto_tplvar("NEWS_FORM_BOTTOM_OPTION", NS_tags_option($news_data['tags'])) : null;
 }
 
 function NS_news_edit_set_tag(& $set_ary) {
