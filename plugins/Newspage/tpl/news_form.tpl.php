@@ -6,7 +6,7 @@
 ?>
 <div  class="clear bodysize page">
     <div class="standard_box submit_box">
-        <form  id="form_news" action="" autocomplete="on" method="post">
+        <form  id="form_news" action="#" autocomplete="on" method="post">
             <section>
                 <h1><?php print $data['news_form_title'] ?></h1>
                 <div class="news_submit_center_wrapper">

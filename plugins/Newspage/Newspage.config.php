@@ -47,7 +47,6 @@ $config['NEWS_PORTAL_COL2_CONTENT'] = array(
 );
 $config['NEWS_PORTAL_COL3_CONTENT'] = array(
     "backpage_h" => "0",
-    "featured_h" => "1"
 );
 $config['NEWS_PORTAL_COL1_CONTENT_LIMIT'] = 10;
 $config['NEWS_PORTAL_COL2_CONTENT_LIMIT'] = 10;
