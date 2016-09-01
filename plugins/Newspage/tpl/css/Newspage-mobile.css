@@ -28,12 +28,6 @@
         width: 98%;
         padding: 1px;
     }
-    #news_title, #news_lead, #news_text, .news_link {
-       width: 360px;
-    }
-    .submit_auth, .submit_lead, .submit_text, .submit_title {
-        width:300px;
-    }
     .feature_article{
         display:block;
     }
@@ -61,9 +55,6 @@
     }
     #featured img {
         margin-left: 1px;
-    }
-    .submit_auth, .submit_lead, .submit_text, .submit_title {
-        width:200px;
     }
     .submit_box h1 {
         font-size: 16px;
