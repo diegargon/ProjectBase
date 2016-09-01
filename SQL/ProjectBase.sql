@@ -2,7 +2,6 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 12-08-2016 a las 02:21:44
 -- Versión del servidor: 5.7.13-0ubuntu0.16.04.2
 -- Versión de PHP: 7.0.8-0ubuntu0.16.04.2
 
@@ -73,7 +72,7 @@ CREATE TABLE `pb_adv_stats` (
   `lang` varchar(2) DEFAULT NULL,
   `rid` int(11) DEFAULT NULL,
   `ip` varchar(32) DEFAULT NULL,
-  `hostname` varchar(32) DEFAULT NULL,
+  `hostname` varchar(64) DEFAULT NULL,
   `referer` varchar(256) DEFAULT NULL,
   `user_agent` varchar(256) DEFAULT NULL,
   `counter` int(11) NOT NULL,
@@ -107,7 +106,9 @@ INSERT INTO `pb_categories` (`cid`, `plugin`, `lang_id`, `name`, `father`) VALUE
 (3, 'Newspage', 2, 'Sports', 1),
 (4, 'Newspage', 1, 'Ocio', 1),
 (4, 'Newspage', 2, 'Enterteiment', 1),
-(5, 'Newspage', 1, 'Otros', 1);
+(5, 'Newspage', 1, 'Otros', 1),
+(6, 'Newspage', 1, 'Cultura', 1),
+(6, 'Newspage', 2, 'Culture', 1);
 
 -- --------------------------------------------------------
 
@@ -121,10 +122,10 @@ CREATE TABLE `pb_comments` (
   `resource_id` int(11) NOT NULL,
   `lang_id` tinyint(2) NOT NULL,
   `message` longtext NOT NULL,
-  `author` varchar(32) NOT NULL,
   `author_id` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `rating` float NOT NULL DEFAULT '0'
+  `rating` float NOT NULL DEFAULT '0',
+  `rating_closed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -160,7 +161,7 @@ CREATE TABLE `pb_links` (
   `source_id` int(11) NOT NULL,
   `type` varchar(11) NOT NULL,
   `link` varchar(256) NOT NULL,
-  `itsmain` tinyint(1) NOT NULL DEFAULT '0'
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -186,9 +187,11 @@ CREATE TABLE `pb_news` (
   `last_edited` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `frontpage` tinyint(1) NOT NULL DEFAULT '0',
   `featured` tinyint(1) NOT NULL DEFAULT '0',
+  `featured_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `moderation` tinyint(1) NOT NULL DEFAULT '0',
   `visits` int(32) NOT NULL DEFAULT '0',
   `translator` varchar(32) DEFAULT NULL,
+  `translator_id` int(11) DEFAULT NULL,
   `disabled` tinyint(1) NOT NULL DEFAULT '0',
   `tags` varchar(128) DEFAULT NULL,
   `rating` float NOT NULL DEFAULT '0',
@@ -212,8 +215,8 @@ CREATE TABLE `pb_news_ads` (
 --
 
 INSERT INTO `pb_news_ads` (`adid`, `lang`, `ad_code`, `resource_id`, `itsmain`) VALUES
-(1, NULL, '<img src="https://static06.cminds.com/wp-content/uploads/banner_functionalvisual-design1.png" alt="" />', 0, 1),
-(2, NULL, '<img src=\'http://www.2015awmanationals.com/images/your_ad_here.jpg\' alt=\'\' />\r\n', 0, 0);
+(1, NULL, '<img class="image_link" src="https://static06.cminds.com/wp-content/uploads/banner_functionalvisual-design1.png" alt="" />', 0, 1),
+(2, NULL, '<img class=\'image_link\' src=\'http://www.2015awmanationals.com/images/your_ad_here.jpg\' alt=\'\' />\r\n', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -242,8 +245,11 @@ CREATE TABLE `pb_sessions` (
   `session_uid` int(11) NOT NULL,
   `session_ip` varchar(11) NOT NULL,
   `session_browser` text NOT NULL,
+  `session_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `session_update` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `session_expire` int(11) NOT NULL,
-  `last_login` int(11) NOT NULL DEFAULT '0'
+  `last_login` int(11) NOT NULL DEFAULT '0',
+  `session_admin` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -263,16 +269,15 @@ CREATE TABLE `pb_users` (
   `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reset` int(11) DEFAULT NULL,
   `avatar` varchar(256) DEFAULT NULL,
-  `tos` tinyint(1) NOT NULL DEFAULT '1',
-  `user_rating` int(11) NOT NULL DEFAULT '0'
+  `tos` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `pb_users`
 --
 
-INSERT INTO `pb_users` (`uid`, `username`, `password`, `email`, `realname`, `regdate`, `active`, `disable`, `isAdmin`, `last_login`, `reset`, `avatar`, `tos`, `user_rating`) VALUES
-(1, 'diego', 'pass', 'no@no.es', 'Diegargon', '2016-07-25 14:04:38', 0, 0, 0, '2016-08-11 23:56:43', 0, 'http://diego.envigo.net/images/Mifoto_Desktop.png', 1, 0);
+INSERT INTO `pb_users` (`uid`, `username`, `password`, `email`, `realname`, `regdate`, `active`, `disable`, `isAdmin`, `last_login`, `reset`, `avatar`, `tos`) VALUES
+(1, 'diego', 'pass', 'no@no', 'fulanito', '2016-07-25 14:04:38', 0, 0, 0, '2016-09-01 10:26:21', 1816155233, 'http://diego.envigo.net/images/Mifoto_Desktop.png', 1);
 
 -- --------------------------------------------------------
 
@@ -281,10 +286,18 @@ INSERT INTO `pb_users` (`uid`, `username`, `password`, `email`, `realname`, `reg
 --
 
 CREATE TABLE `pb_user_extra` (
-  `ueid` int(11) NOT NULL,
+  `kid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
-  `keyword` varchar(16) NOT NULL,
-  `value` varchar(32) NOT NULL
+  `realname` varchar(64) DEFAULT NULL,
+  `realname_public` tinyint(1) NOT NULL DEFAULT '0',
+  `realname_display` tinyint(1) NOT NULL DEFAULT '0',
+  `email_public` tinyint(1) NOT NULL DEFAULT '0',
+  `age` tinyint(2) DEFAULT NULL,
+  `age_public` tinyint(1) NOT NULL DEFAULT '0',
+  `aboutme` text,
+  `aboutme_public` tinyint(1) NOT NULL DEFAULT '0',
+  `rating_user` int(11) NOT NULL DEFAULT '0',
+  `rating_times` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -377,8 +390,9 @@ ALTER TABLE `pb_users`
 -- Indices de la tabla `pb_user_extra`
 --
 ALTER TABLE `pb_user_extra`
-  ADD PRIMARY KEY (`ueid`),
-  ADD UNIQUE KEY `ueid` (`ueid`);
+  ADD PRIMARY KEY (`uid`),
+  ADD UNIQUE KEY `kid` (`kid`,`uid`),
+  ADD KEY `uid` (`uid`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -398,12 +412,12 @@ ALTER TABLE `pb_acl_users`
 -- AUTO_INCREMENT de la tabla `pb_adv_stats`
 --
 ALTER TABLE `pb_adv_stats`
-  MODIFY `advstatid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `advstatid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
 --
 -- AUTO_INCREMENT de la tabla `pb_comments`
 --
 ALTER TABLE `pb_comments`
-  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 --
 -- AUTO_INCREMENT de la tabla `pb_lang`
 --
@@ -413,7 +427,7 @@ ALTER TABLE `pb_lang`
 -- AUTO_INCREMENT de la tabla `pb_links`
 --
 ALTER TABLE `pb_links`
-  MODIFY `link_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
+  MODIFY `link_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
 --
 -- AUTO_INCREMENT de la tabla `pb_news_ads`
 --
@@ -423,14 +437,14 @@ ALTER TABLE `pb_news_ads`
 -- AUTO_INCREMENT de la tabla `pb_rating_track`
 --
 ALTER TABLE `pb_rating_track`
-  MODIFY `rating_id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `rating_id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 --
 -- AUTO_INCREMENT de la tabla `pb_users`
 --
 ALTER TABLE `pb_users`
-  MODIFY `uid` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `uid` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `pb_user_extra`
 --
 ALTER TABLE `pb_user_extra`
-  MODIFY `ueid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `kid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
