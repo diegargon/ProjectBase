@@ -24,10 +24,14 @@ function ex_common_web_structure() {
 }
 
 function ex_index_page() {
+    global $config;
     plugin_start("NewsAds");
     plugin_start("Newspage");
     its_server_stressed() ? false : plugin_start("NewsSearch");
     news_portal();
+    //require_once("plugins/Newspage/portal.php");
+    //$startpage =  $config['CON_FILE'] . "?module=Newspage&page=portal";
+    //header('Location: '.$startpage);
 }
 
 function ex_Newspage_submitnews() {
