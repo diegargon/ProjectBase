@@ -185,7 +185,7 @@ function get_category_name($cid, $lang_id = null) {
 
 function news_portal_content() {
     global $config;
-    
+
     $portal_content = [];
 
     $config['NEWS_PORTAL_FEATURED'] ? $portal_content['featured'] = get_news(array("featured" => 1, "limit" => 1, "cathead" => 1)) : null;
@@ -209,6 +209,6 @@ function news_getPortalColLayout($columnConfigs) {
     foreach ($columnConfigs as $columConfig) {
         $content .= get_news($columConfig);
     }
-    
+
     return $content;
 }

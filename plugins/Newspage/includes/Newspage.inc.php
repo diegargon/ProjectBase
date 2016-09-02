@@ -121,9 +121,9 @@ function news_error_msg($error) {
 
 function cat_menu() {
     global $tpl;
-    
+
     $menu_data['cat_list'] = get_fathers_cat_list();
-    
+
     return $tpl->getTPL_file("Newspage", "news_cat_menu", $menu_data);
 }
 

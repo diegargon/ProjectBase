@@ -87,7 +87,7 @@ function news_show_page() {
         $news_data['news_related'] = $related_content;
     }
     do_action("news_show_page", $news_data);
-    
+
     $tpl->addto_tplvar("ADD_HEADER_END", cat_menu());
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body", $news_data));
 }
@@ -186,10 +186,10 @@ function news_pager($news_page) {
         return false;
     }
     $content = "<div id='pager'><ul>";
-    
+
     $news_page['page'] == 1 ? $a_class = "class='active'" : $a_class = '';
     if ($config['FRIENDLY_URL']) {
-        $friendly_title = news_friendly_title($news_page['title']);        
+        $friendly_title = news_friendly_title($news_page['title']);
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/1/$friendly_title'>1</a></li>";
     } else {
         $content .= "<li><a $a_class href='{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=1'>1</a></li>";
@@ -198,8 +198,8 @@ function news_pager($news_page) {
     $pager = page_pager($config['NEWS_PAGER_MAX'], $num_pages, $news_page['page']);
 
     for ($i = $pager['start_page']; $i < $pager['limit_page']; $i++) {
-        $news_page['page'] == $i ? $a_class = "class='active'" : $a_class = '';        
-        if ($config['FRIENDLY_URL']) {            
+        $news_page['page'] == $i ? $a_class = "class='active'" : $a_class = '';
+        if ($config['FRIENDLY_URL']) {
             $friendly_title = news_friendly_title($news_page['title']);
             $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$i/$friendly_title'>$i</a></li>";
         } else {
@@ -277,7 +277,7 @@ function news_featured($nid, $featured, $lang_id) {
 
     //$time = format_date(time(), true);
     $time = date('Y-m-d H:i:s', time());
-    
+
     if (empty($nid) || empty($lang_id)) {
         return false;
     }

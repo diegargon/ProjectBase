@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -25,7 +26,6 @@ function ex_common_web_structure() {
 }
 
 function ex_index_page() {
-    global $config;
     plugin_start("NewsAds");
     plugin_start("Newspage");
     its_server_stressed() ? false : plugin_start("NewsSearch");
@@ -39,6 +39,7 @@ function ex_Newspage_submitnews() {
     plugin_start("NewsMediaUploader");
     plugin_start("NewsSearch");
 }
+
 function ex_Newspage_section() {
     plugin_start("NewsSearch");
 }
