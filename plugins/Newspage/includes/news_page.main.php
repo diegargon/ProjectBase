@@ -87,7 +87,8 @@ function news_show_page() {
         $news_data['news_related'] = $related_content;
     }
     do_action("news_show_page", $news_data);
-
+    
+    $tpl->addto_tplvar("ADD_HEADER_END", cat_menu());
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body", $news_data));
 }
 
@@ -274,8 +275,9 @@ function news_approved($nid, $lang_id) {
 function news_featured($nid, $featured, $lang_id) {
     global $db;
 
-    $time = format_date(time(), true);
-
+    //$time = format_date(time(), true);
+    $time = date('Y-m-d H:i:s', time());
+    
     if (empty($nid) || empty($lang_id)) {
         return false;
     }

@@ -35,7 +35,6 @@ function get_news($news_select) {
     !isset($news_select['limit']) ? $news_select['limit'] = 0 : null;
     !isset($news_select['featured']) ? $news_select['featured'] = 0 : null;
     !isset($news_select['headlines']) ? $news_select['headlines'] = 0 : null;
-    !isset($news_select['category']) ? $news_select['category'] = 0 : null;
     !isset($news_select['cathead']) ? $news_select['cathead'] = 0 : null;
     !isset($news_select['excl_first_featured']) ? $news_select['excl_first_featured'] = 0 : null;
     !isset($news_select['excl_firstcat_featured']) ? $news_select['excl_firstcat_featured'] = 0 : null;
@@ -80,7 +79,7 @@ function get_news($news_select) {
 
     $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : null;
 
-    $news_select['category'] ? $where_ary['category'] = $news_select['category'] : null;
+    !empty($news_select['category']) ? $where_ary['category'] = $news_select['category'] : null;
     $news_select['featured'] ? $where_ary['featured'] = 1 : null;
     isset($news_select['frontpage']) ? $where_ary['frontpage'] = $news_select['frontpage'] : null;
     $news_select['featured'] ? $q_extra = " ORDER BY featured_date DESC" : $q_extra = " ORDER BY date DESC";
@@ -97,17 +96,17 @@ function get_news($news_select) {
             $catname = "<h2>";
             !empty($news_select['featured']) ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : null;
             $catname .= get_category_name($news_select['category'], $lang_id) . "</h2>";
-        } else if ($news_select['category']) {
+        } else if (!empty($news_select['category'])) {
             $catname = "<h2>";
             $news_select['featured'] ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : null;
             $catname .= get_category_name($news_select['category']) . "</h2>";
         }
 
-        if (!$news_select['category'] && ( isset($news_select['frontpage']) && $news_select['frontpage'] == 0) && !$news_select['featured']) {
+        if (empty($news_select['category']) && ( isset($news_select['frontpage']) && $news_select['frontpage'] == 0) && !$news_select['featured']) {
             $catname = "<h2>" . $LANGDATA['L_NEWS_BACKPAGE'] . "</h2>";
-        } else if (!$news_select['category'] && !isset($news_select['frontpage']) && !$news_select['featured']) {
+        } else if (empty($news_select['category']) && !isset($news_select['frontpage']) && !$news_select['featured']) {
             $catname = "<h2>" . $LANGDATA['L_NEWS_FRONTPAGE'] . "</h2>";
-        } else if (!$news_select['category'] && $news_select['featured']) {
+        } else if (empty($news_select['category']) && $news_select['featured']) {
             $catname = "<h2 class='featured_category'>{$LANGDATA['L_NEWS_FEATURED']}</h2>";
         }
         $content .= $catname;
@@ -212,30 +211,4 @@ function news_getPortalColLayout($columnConfigs) {
     }
     
     return $content;
-}
-
-function cat_menu() {
-    global $tpl;
-    
-    $menu_data['cat_list'] = get_fathers_cat_list();
-    
-    return $tpl->getTPL_file("Newspage", "news_cat_menu", $menu_data);
-}
-
-function get_fathers_cat_list() {
-    global $db, $ml, $config, $LANGDATA;
-
-    $cat_list = "";
-
-    if (defined('MULTILANG')) {
-        $lang_id = $ml->iso_to_id($config['WEB_LANG']);
-    } else {
-        $lang_id = $config['WEB_LANG_ID'];
-    }
-
-    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => 0));
-    while ($cat = $db->fetch($query)) {
-        $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>{$cat['name']}</a></li>";
-    }
-    return $cat_list;
 }

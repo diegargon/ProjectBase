@@ -118,3 +118,29 @@ function news_error_msg($error) {
     do_action("message_box", $msgbox);
     return false;
 }
+
+function cat_menu() {
+    global $tpl;
+    
+    $menu_data['cat_list'] = get_fathers_cat_list();
+    
+    return $tpl->getTPL_file("Newspage", "news_cat_menu", $menu_data);
+}
+
+function get_fathers_cat_list() {
+    global $db, $ml, $config, $LANGDATA;
+
+    $cat_list = "";
+
+    if (defined('MULTILANG')) {
+        $lang_id = $ml->iso_to_id($config['WEB_LANG']);
+    } else {
+        $lang_id = $config['WEB_LANG_ID'];
+    }
+
+    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => 0));
+    while ($cat = $db->fetch($query)) {
+        $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>{$cat['name']}</a></li>";
+    }
+    return $cat_list;
+}
