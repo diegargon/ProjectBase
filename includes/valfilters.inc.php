@@ -10,6 +10,7 @@ function S_GET_INT($var, $max_size = null, $min_size = null) {
     if ( (!isset($_GET[$var]))
             || (!empty($max_size) && (strlen($_GET[$var]) > $max_size) )
             || (!empty($min_size) && (strlen($_GET[$var]) < $min_size))
+            || !is_integer($_GET[$var])
             ) {
         return false;
     }
@@ -94,7 +95,7 @@ function S_POST_STRICT_CHARS ($var, $max_size = null, $min_size = null) {
 }
 
 function S_POST_INT($var, $max_size = null, $min_size = null) {
-    if(!isset($_POST[$var])) {
+    if(!isset($_POST[$var]) || !is_integer($_POST[$var])) {
        return false;
     }    
     
@@ -175,6 +176,7 @@ function S_VAR_INTEGER($var, $max_size = null, $min_size = null) {
     if ( (!isset($var) )
        || (!empty($max_size) && (strlen($var) > $max_size) )
        || (!empty($min_size) && (strlen($var) < $min_size))
+       || !is_integer($var)
             ) {
         return false;
     } 
@@ -288,7 +290,7 @@ function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
 
 //SESSION
 function S_SESSION_INT($var, $max_size = null, $min_size = null) {
-    if (!isset($_SESSION[$var])) { 
+    if (!isset($_SESSION[$var]) || !is_integer($_SESSION[$var])) { 
         return false;
     }
     return S_VAR_INTEGER($_SESSION[$var], $max_size, $min_size);
@@ -308,7 +310,7 @@ function S_SESSION_CHAR_AZNUM($var, $max_size = null, $min_size = null) {
 //COOKIE
 function S_COOKIE_INT($var, $max_size = null, $min_size = null) {
     
-    if (empty($_COOKIE[$var])) { 
+    if (empty($_COOKIE[$var]) || !is_integer($_COOKIE[$var])) { 
         return false;
     }
     return S_VAR_INTEGER($_COOKIE[$var], $max_size, $min_size);
