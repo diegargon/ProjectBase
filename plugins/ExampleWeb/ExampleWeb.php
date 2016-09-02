@@ -16,6 +16,7 @@ function ExampleWeb_init() {
     register_action("begin_newsedit", "ex_Newspage_submitnews");
     register_action("begin_newspage", "ex_Newspage_submitnews");
     register_action("preload_Newspage_news", "ex_Newspage_news");
+    register_action("preload_Newspage_section", "ex_Newspage_section");
     register_action("preload_SMBasic_profile", "ex_preload_Profile", 4); //4 for call before SMBEXtra
 }
 
@@ -36,6 +37,9 @@ function ex_index_page() {
 
 function ex_Newspage_submitnews() {
     plugin_start("NewsMediaUploader");
+    plugin_start("NewsSearch");
+}
+function ex_Newspage_section() {
     plugin_start("NewsSearch");
 }
 

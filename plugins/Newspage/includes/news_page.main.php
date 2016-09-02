@@ -166,7 +166,7 @@ function news_nav_options($news) { //TODO Use Template
         if ($news['page'] == 1) {
             $content .= "<li><a rel='nofollow' href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&news_delete=1&admin=1&backlink=home' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";
         }
-        if ($config['NEWS_SELECTED_FRONTPAGE'] && $news['page'] == 1) {
+        if ($news['page'] == 1) {
             if ($news['frontpage'] == 1) {
                 $content .= "<li><a class='link_active' rel='nofollow' href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&news_frontpage=0&lang_id={$news['lang_id']}'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
             } else {

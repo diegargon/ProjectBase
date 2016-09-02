@@ -1,4 +1,5 @@
 <?php
+//
 /*
  *  Copyright @ 2016 Diego Garcia
  */
@@ -7,18 +8,18 @@
 <div  class="clear bodysize page">
     <?php
     isset($tpldata['ADD_TOP_NEWS']) ? print $tpldata['ADD_TOP_NEWS'] : false;
-    isset($tpldata['FEATURED']) ? print $tpldata['FEATURED'] : false;
+    isset($data['featured']) ? print $data['featured'] : false;
     if ($config['NEWS_PORTAL_COLS'] >= 1) {
         ?>
         <section class="col col2">
-            <?php isset($tpldata['COL1_ARTICLES']) ? print $tpldata['COL1_ARTICLES'] : false ?>
+        <?php isset($data['col1_articles']) ? print $data['col1_articles'] : false ?>
         </section>
         <?php
     }
     if ($config['NEWS_PORTAL_COLS'] >= 2) {
         ?>
         <section class="col col2">            
-            <?php isset($tpldata['COL2_ARTICLES']) ? print $tpldata['COL2_ARTICLES'] : false ?>
+        <?php isset($data['col2_articles']) ? print $data['col2_articles'] : false ?>
         </section>
         <?php
     }

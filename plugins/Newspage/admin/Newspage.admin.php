@@ -29,9 +29,7 @@ function Newspage_AdminContent($params) {
     $page_data['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_NEWS_MODERATION'] . "</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_NEWS_CATEGORY'] . "</a></li>\n";
-    if ($config['NEWS_SELECTED_FRONTPAGE']) {
-        $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=4'>" . $LANGDATA['L_NEWS_INFRONTPAGE'] . "</a></li>\n";
-    }
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=4'>" . $LANGDATA['L_NEWS_INFRONTPAGE'] . "</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_NEWSPAGE_OPT");
 
     $page_data['ADM_CONTENT_H1'] = "Newspage";

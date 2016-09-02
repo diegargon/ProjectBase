@@ -19,20 +19,20 @@ function Newspage_init() {
 function news_portal() {
     global $config, $tpl;
 
-    require_once("includes/news_portal.php");
-    do_action("news_portal_begin");
+    require_once 'includes/news_portal.php';
 
+    do_action("news_portal_begin");
     do_action("common_web_structure");
 
     if ($config['LAYOUT_SWITCH']) {
         $news_nLayout = news_layout_select();
-        $news_layout_tpl = "news_body_style" . $news_nLayout++;
+        $news_layout_tpl = "news_portal_style" . $news_nLayout++;
         $tpl->addto_tplvar("news_nSwitch", $news_nLayout);
         register_action("nav_element", "news_layout_switcher", 6);
     }
 
+    $tpl->addto_tplvar("ADD_HEADER_END", cat_menu());
     $portal_content = news_portal_content();
 
-    $tpl->addtpl_array($portal_content);
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", $news_layout_tpl));
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", $news_layout_tpl, $portal_content));
 }

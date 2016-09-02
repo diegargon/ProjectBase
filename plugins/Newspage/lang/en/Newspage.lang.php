@@ -84,3 +84,5 @@ $LANGDATA['L_NEWS_PREVIEW'] = "Preview";
 $LANGDATA['L_NEWS_HIDDE_PREVIEW'] = "Hide preview";
 $LANGDATA['L_NEWS_EDITOR_PRE'] = "Pre";
 $LANGDATA['L_NEWS_EDITOR_CODE'] = "Code";
+$LANGDATA['L_NEWS_SECTION'] = "section"; //Need mod htaccess if change
+$LANGDATA['L_NEWS_E_SEC_NOEXISTS'] = "Section not exists";
