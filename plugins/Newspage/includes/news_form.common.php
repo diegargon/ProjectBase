@@ -55,7 +55,7 @@ function news_form_getPost() {
         }
     }
 
-    if (empty($form_data['author'])) {
+    if (empty($form_data['author']) || empty($form_data['author_id'])) {
         if (!empty($user)) {
             $form_data['author'] = $user['username'];
             $form_data['author_id'] = $user['uid'];
@@ -64,7 +64,7 @@ function news_form_getPost() {
             $form_data['author_id'] = 0;
         }
     }
-
+      
     $form_data['nid'] = S_GET_INT("nid", 11, 1);
     $form_data['lang_id'] = S_GET_INT("lang_id", 8, 1);
     $form_data['page'] = S_GET_INT("npage", 11, 1);
