@@ -37,6 +37,7 @@ $config['NEWS_PORTAL_STYLES'] = 3;
 $config['NEWS_PORTAL_COLS'] = 3;
 $config['NEWS_PORTAL_FEATURED'] = 1;
 $config['NEWS_PORTAL_COL1_CONTENT'][] = array(
+    "func" => "get_news",
     "category" => 1,
     "frontpage" => 1,
     "cathead" => 1,
@@ -44,6 +45,7 @@ $config['NEWS_PORTAL_COL1_CONTENT'][] = array(
     "limit" => 10,
 );
 $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
+    "func" => "get_news",
     "category" => 5,
     "frontpage" => 1,
     "cathead" => 1,
@@ -51,6 +53,7 @@ $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
     "limit" => 10,
 );
 $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
+    "func" => "get_news",
     "category" => 2,
     "frontpage" => 1,
     "cathead" => 1,
@@ -58,6 +61,7 @@ $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
     "limit" => 10,
 );
 $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
+    "func" => "get_news",
     "category" => 0,
     "frontpage" => 0,
     "cathead" => 1,
@@ -65,6 +69,7 @@ $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
     "limit" => 10,
 );
 $config['NEWS_PORTAL_COL3_CONTENT'][] = array(
+    "func" => "get_news",
     "category" => 0,
     "frontpage" => 0,
     "cathead" => 1,

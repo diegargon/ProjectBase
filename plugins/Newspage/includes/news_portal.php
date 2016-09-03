@@ -206,9 +206,24 @@ function news_portal_content() {
 function news_getPortalColLayout($columnConfigs) {
     $content = "";
 
-    foreach ($columnConfigs as $columConfig) {
-        $content .= get_news($columConfig);
+    foreach ($columnConfigs as $func => $columnConfig) {
+        if (function_exists($columnConfig['func']) && news_func_allowed($columnConfig['func'])) { 
+            $content .= $columnConfig['func']($columnConfig);
+        }
     }
 
     return $content;
+}
+
+function news_func_allowed($func) {
+    $func_allow = array (
+        "get_news" => 1,
+    );
+    do_action("news_func_allow", $func_allow);
+    
+    if (array_key_exists($func, $func_allow) && $func_allow[$func] == 1) {
+        return true;
+    } else {
+        return false;
+    }
 }
