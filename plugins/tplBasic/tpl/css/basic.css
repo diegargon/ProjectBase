@@ -57,7 +57,7 @@ html, body {
 .page {
     padding:10px 0; 
     background-color:#f5f5f5;
-    box-shadow: 0px 10px 10px #ccc;
+    box-shadow: 0px 10px 5px #ccc;
     border-left: 1px solid #000;
     border-right: 1px solid #000;
 }

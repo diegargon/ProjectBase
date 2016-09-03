@@ -68,7 +68,7 @@
     box-shadow: 0 0 10px #ccc;
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;        
-    color:#919191;
+    color:#FF9000;
     background-color:#232323;
     padding-left: 4px;
     text-transform: uppercase;
@@ -191,7 +191,7 @@
 .col h2 { 
     float:left;
     width: 98%;
-    color:#919191;
+    color:#FF9000;
     background-color:#232323;
     box-shadow: 0 0 10px #ccc; 
     border-bottom: 1px solid #dcdcdc;
