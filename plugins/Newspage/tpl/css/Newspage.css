@@ -109,7 +109,7 @@
     /*    float:left; */
     width: 96%;
     box-shadow: 0 0 4px black;
-    /* max-width: 500px; */
+    max-width: 500px;
     margin-bottom: 5px;
     margin-left:5px;
 }

@@ -6,11 +6,11 @@
 ?>
 <div  class="clear bodysize page">
     <?php
-    isset($tpldata['ADD_TOP_SECTION']) ? print $tpldata['ADD_TOP_SECTION'] : false;
-    isset($data['featured']) ? print $data['featured'] : false;
+    isset($tpldata['ADD_TOP_SECTION']) ? print $tpldata['ADD_TOP_SECTION'] : false;    
     if ($config['NEWS_SECTION_COLS'] >= 1) {
         ?>
         <section class="col col<?php print $config['NEWS_SECTION_COLS']; ?>">
+            <div class='featured_container_mod'> <?php isset($data['featured']) ? print $data['featured'] : false; ?> </diV>
             <?php isset($data['col1_articles']) ? print $data['col1_articles'] : false; ?>
         </section>
         <?php
