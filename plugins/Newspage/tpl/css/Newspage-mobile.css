@@ -2,17 +2,11 @@
  Copyright @ 2016 Diego Garcia
 */
 @media only screen and (max-width: 900px) {
-    #featured {
-        margin-left: 10px;
-    }
     .col {
         margin-left: 5px;
     }
 }
 @media only screen and (max-width: 700px) {
-    #featured {
-        margin-left: 5px;
-    }
     .newsbox {
         margin-left: 5px;
     }
@@ -50,11 +44,12 @@
     .newsbox {
 	margin-left: 1px;
     }
-    #featured {
+    .featured {
         margin-left: 2px;
     }
-    #featured img {
+    .featured img {
         margin-left: 1px;
+        max-width: none;
     }
     .submit_box h1 {
         font-size: 16px;
@@ -71,5 +66,11 @@
     }
     .col {
         margin-left: 1px;
+    }
+    .page {
+        border: none;
+    }
+    .footer {
+        font-size: 0.7em;
     }
 }

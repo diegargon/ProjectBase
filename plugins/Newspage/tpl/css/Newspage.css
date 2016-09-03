@@ -53,7 +53,6 @@
 /* FEATURED */
 .featured_wrap {
     border: 0px solid red;
-    overflow: hidden;
     width:97%;
     margin: 0px auto;
     padding-right: 4px;
@@ -67,7 +66,8 @@
     font-size: 1.2em;
     box-shadow: 0 0 10px #ccc;
     border-bottom: 1px solid #dcdcdc;
-    border-right: 1px solid #dcdcdc;        
+    border-right: 1px solid #dcdcdc;   
+    border-top: 2px solid #1f6ba5;
     color:#FF9000;
     background-color:#232323;
     padding-left: 4px;
@@ -78,7 +78,7 @@
 .featured {
     display: table;
     width: 100%;
-    border: 0px solid red;
+    border: 1px solid #999999;
     background-color: #DEDEDE;
     color: #989898;
     box-shadow: 0 0 5px #818181;
@@ -106,8 +106,8 @@
 .featured  img {
     margin-right: 8px;
     float:left;
-    width: 100%;
-    box-shadow: 3px 3px 4px black;
+    width: 96%;
+    box-shadow: 0 0 4px black;
     max-width: 300px;
     margin-bottom: 5px;
     margin-left:5px;
@@ -198,6 +198,7 @@
     border-right: 1px solid #dcdcdc;    
     padding-left: 4px;
     margin-bottom: 3px;
+    border-top: 2px solid #1f6ba5;
 }
 #news_menu {
     border: 1px solid black;
@@ -440,13 +441,14 @@
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    padding: 4px;
+    padding: 1px;
+    margin-right: 5%;
     transition: 0.3s;
     font-size: 1.0em;
     border: none;
     color: inherit;
     background-color: transparent;
-    height: 20px;    
+    height: 20px;
 }
 #cat_menu li a:hover {
     background: linear-gradient(#2f5d81, #0b2a42);
