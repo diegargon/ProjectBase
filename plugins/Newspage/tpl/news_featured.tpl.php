@@ -8,7 +8,7 @@
     <a href="<?php print $data['url']; ?>">
         <section class="featured">
             <?php
-            !empty($data['mainimage'] && empty($data['headlines'])) ? print $data['mainimage'] : false;
+            !empty($data['mainimage']) && empty($data['headlines']) ? print $data['mainimage'] : false;
             !empty($tpldata['news_featured_article_pre']) ? print $tpldata['news_featured_article_pre'] : false;
             ?>
             <h1><?php echo $data['title'] ?></h1>            
