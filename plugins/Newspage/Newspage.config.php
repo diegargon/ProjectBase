@@ -16,7 +16,7 @@ $config['NEWS_LEAD_MAX_LENGHT'] = 600;
 $config['NEWS_LEAD_MIN_LENGHT'] = 80;
 $config['NEWS_TEXT_MAX_LENGHT'] = 20000; //utf8 "text" about 21000
 $config['NEWS_TEXT_MIN_LENGHT'] = 200;
-$config['NEWS_MODERATION'] = 1;
+$config['NEWS_MODERATION'] = 0;
 $config['NEWS_NUM_LIST_MOD'] = 100;
 $config['NEWS_ACL_PREVIEW_CHECK'] = 0;
 $config['NEWS_SOURCE'] = 1;
@@ -44,7 +44,7 @@ $config['NEWS_PORTAL_COL1_CONTENT'][] = array(
     "limit" => 10,
 );
 $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
-    "category" => 6,
+    "category" => 5,
     "frontpage" => 1,
     "cathead" => 1,
     "excl_first_featured" => 1,

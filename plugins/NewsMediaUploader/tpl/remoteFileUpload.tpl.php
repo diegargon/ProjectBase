@@ -9,7 +9,7 @@
     $("#btnRemoteUpload").on('click', function() {
         $('#btnRemoteUpload').hide();
         var remote_url = $("#news_remote_media").val();
-        //TODO: Do extra basic URL check on client side
+        //TODO: Do basic URL check on client side
         $('#news_remote_media').css("border","1px solid black");
         $('#news_remote_media').css("box-shadow","0 0 3px black");        
         if (remote_url == '') {
