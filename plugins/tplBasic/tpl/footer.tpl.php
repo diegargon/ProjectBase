@@ -8,8 +8,6 @@
         <p class="fl_right"><a href=""><?php echo $config['TITLE'] ?></a></p>
     </footer>
 </div>
-
-</div> <!-- Main Container ex_header.tpl -->
 </div> <!-- Container -->
 <?php isset($tpldata['SCRIPTS_BOTTOM']) ? print $tpldata['SCRIPTS_BOTTOM'] : false; ?>
 </body>

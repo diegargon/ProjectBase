@@ -5,18 +5,20 @@
 .newsbox {
     display:block;
     float:left;
-    margin:0 0px 5px 0px;
+    margin:0 0px 4px 0px;
     text-decoration: none;
     color: gray;
     background-color: #FFFFFF;
-    border-bottom: 1px solid #dcdcdc;
-    border-right: 1px solid #dcdcdc;
+    border: 1px solid #dcdcdc;
     padding: 5px;
-    box-shadow: 0 0 10px #ccc;
+    /* box-shadow: 0 0 10px #cecece; */
     width:97%;
 }
 .newsbox:hover {
     box-shadow: 0 0 10px #000;
+}
+.newsbox:visited {
+    background-color: red;
 }
 .newsbox:hover h3, .newsbox:hover h4{
     color: blue;
@@ -61,17 +63,17 @@
 .featured_wrap a {
     text-decoration: none;
 }
-.featured_category {    
+.featured_category { 
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1.0em;
     box-shadow: 0 0 10px #ccc;
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;   
     border-top: 2px solid #1f6ba5;
-    color:#FF9000;
-    background-color:#232323;
+    color:#000;
+    /* background-color:#232323; */
     padding-left: 4px;
-    text-transform: uppercase;
     width: 97%;
     margin: 0 auto;
 }
@@ -176,23 +178,25 @@
 .col {
     border: 0px solid red;
     float:left;
-    margin-left: 10px;
+    margin-left: 1%;
     font-size: 0.6em;
 }
 .col1 {
     width: 99.5%;    
 }
 .col2 {
-    width: 48%;    
+    width: 48.5%;    
 }
 .col3 {
     width: 32%;    
 }
-.col h2 { 
+.col h2 {
+    font-family: 'Montserrat', sans-serif;
     float:left;
     width: 98%;
-    color:#FF9000;
-    background-color:#232323;
+    color:#000;
+    font-size: 1.8em;
+    /* background-color:#232323; */
     box-shadow: 0 0 10px #ccc; 
     border-bottom: 1px solid #dcdcdc;
     border-right: 1px solid #dcdcdc;    
@@ -393,8 +397,7 @@
 }
 .newsbox img {
     float: left;
-    width: 100px;
-    height: 75px;
+    width: 45%;
     margin: 0 10px 10px 0;
     border: 0px solid black;
     box-shadow: 3px 3px 4px black;
@@ -420,7 +423,8 @@
 #cat_menu {
     text-align: center;
     background: blue;
-   
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
 /*    
     background: -webkit-linear-gradient(white, blue); 
     background: -o-linear-gradient(red, yellow); 
