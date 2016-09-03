@@ -1,7 +1,6 @@
 /*
  Copyright @ 2016 Diego Garcia
 */
-/* NEWS */
 .newsbox {
     display:block;
     float:left;
@@ -25,7 +24,7 @@
 }
 .newsbox h2 {
     font-size: 1.5em;
-    margin-bottom: 10px;    
+    margin-bottom: 10px;
 }
 .newsbox h3 {
     font-size: 1.4em;
@@ -42,7 +41,7 @@
 }
 .p-small {
     font-size: 1.0em !important;
-    margin:0 auto;   
+    margin:0 auto;
 }
 .p-extra-small {
     font-size: 0.9em !important;
@@ -54,7 +53,6 @@
 }
 /* FEATURED */
 .featured_wrap {
-    border: 0px solid red;
     width:97%;
     margin: 0px auto;
     padding-right: 4px;
@@ -69,7 +67,7 @@
     font-size: 1.0em;
     box-shadow: 0 0 10px #ccc;
     border-bottom: 1px solid #dcdcdc;
-    border-right: 1px solid #dcdcdc;   
+    border-right: 1px solid #dcdcdc;
     border-top: 2px solid #1f6ba5;
     color:#000;
     /* background-color:#232323; */
@@ -95,7 +93,7 @@
 }
 .featured h2 {
     font-size: 1.2em;
-    font-weight: normal;        
+    font-weight: normal;
 } 
 .featured h3 {
     font-size: 1.0em;
@@ -117,10 +115,8 @@
 .featured:hover img{
     opacity: 0.8; 
 }
-
 .featured:hover div{
     box-shadow: 0 0 10px gray;
-
 }
 .featured:hover h1 {
     color: blue !important;
@@ -158,7 +154,7 @@
     float:left;
     width: 31%;
     border:0px solid black;
-    margin: 10px 10px 0px 10px;    
+    margin: 10px 10px 0px 10px;
 }
 .article_lead {
     font-style: italic; 
@@ -185,10 +181,10 @@
     width: 99.5%;    
 }
 .col2 {
-    width: 48.5%;    
+    width: 48.5%;
 }
 .col3 {
-    width: 32%;    
+    width: 32%;
 }
 .col h2 {
     font-family: 'Montserrat', sans-serif;
@@ -199,7 +195,7 @@
     /* background-color:#232323; */
     box-shadow: 0 0 10px #ccc; 
     border-bottom: 1px solid #dcdcdc;
-    border-right: 1px solid #dcdcdc;    
+    border-right: 1px solid #dcdcdc;
     padding-left: 4px;
     margin-bottom: 3px;
     border-top: 2px solid #1f6ba5;
@@ -212,7 +208,7 @@
     overflow: hidden;
     padding:20px;
     width: 80%;
-    margin: 0 auto;         
+    margin: 0 auto;
 }
 .submit_box h1 {
     padding-bottom: 15px;
@@ -228,7 +224,7 @@
     margin-bottom: 5px;
 }
 .submit_box input {}
-.btnSubmitNews {     
+.btnSubmitNews {
     margin-top: 5px;
     width: 100px !important;
 }
@@ -258,8 +254,8 @@
     width: 99%;
     margin-top: 5px;
 }
-.news_submit_center_wrapper {    
-    border:0px solid black;  
+.news_submit_center_wrapper {
+    border:0px solid black;
 }
 .submit_buttom {
     text-align: center;    
@@ -317,7 +313,7 @@
 #pager ul{
     display: inline-block;
     padding: 0;
-    margin: 0;    
+    margin: 0;
 }
 #pager ul li {
     display:inline;
@@ -425,11 +421,11 @@
     background: blue;
     border-left: 1px solid #000;
     border-right: 1px solid #000;
-/*    
-    background: -webkit-linear-gradient(white, blue); 
-    background: -o-linear-gradient(red, yellow); 
-    background: -moz-linear-gradient(red, yellow);
-*/
+    /*    
+        background: -webkit-linear-gradient(white, blue); 
+        background: -o-linear-gradient(red, yellow); 
+        background: -moz-linear-gradient(red, yellow);
+    */
     color:white;
     background: linear-gradient(#55a0db, #1f6ba5);
 }
@@ -458,10 +454,10 @@
     background: linear-gradient(#2f5d81, #0b2a42);
 }
 #cat_menu li a:active {
-	color: black;
-	background: rgb(245, 245, 245) none repeat scroll 0% 0%;
-        border-right: 1px solid #999999;
-	border-left: 1px solid #999999;
+    color: black;
+    background: rgb(245, 245, 245) none repeat scroll 0% 0%;
+    border-right: 1px solid #999999;
+    border-left: 1px solid #999999;
 }
 #cat_sub_menu {
     text-align: center;
@@ -487,7 +483,7 @@
     border: none;
     color: inherit;
     background-color: transparent;
-    height: 20px;    
+    height: 20px;
 }
 #cat_sub_menu li a:hover {
     background: linear-gradient(#2f5d81, #0b2a42);
