@@ -11,7 +11,15 @@
         ?>
         <section class="col col<?php print $config['NEWS_PORTAL_COLS'] ?>">
             <?php
-            isset($data['featured']) ? print $data['featured'] : false;
+            if (!empty($data['featured'])) {
+                ?>
+                <div class='featured_container_mod'>
+                    <?php
+                    print $data['featured'];
+                    ?>
+                </div>
+            <?php
+            }
             isset($data['col1_articles']) ? print $data['col1_articles'] : false;
             ?>
         </section>
@@ -20,14 +28,14 @@
     if ($config['NEWS_PORTAL_COLS'] >= 2) {
         ?>
         <section class="col col<?php print $config['NEWS_PORTAL_COLS'] ?>">
-            <?php isset($data['col2_articles']) ? print $data['col2_articles'] : false ?>
+        <?php isset($data['col2_articles']) ? print $data['col2_articles'] : false ?>
         </section>
         <?php
     }
     if ($config['NEWS_PORTAL_COLS'] >= 3) {
         ?>
         <section class="col col<?php print $config['NEWS_PORTAL_COLS'] ?>">
-            <?php isset($data['col3_articles']) ? print $data['col3_articles'] : false ?>
+        <?php isset($data['col3_articles']) ? print $data['col3_articles'] : false ?>
         </section>
         <?php
     }

@@ -36,6 +36,7 @@ $config['NEWS_META_OPENGRAPH'] = 1;
 $config['NEWS_PORTAL_STYLES'] = 3;
 $config['NEWS_PORTAL_COLS'] = 3;
 $config['NEWS_PORTAL_FEATURED'] = 1;
+$config['NEWS_PORTAL_FEATURED_LIMIT'] = 3;
 $config['NEWS_PORTAL_COL1_CONTENT'][] = array(
     "func" => "get_news",
     "category" => 1,
@@ -75,7 +76,6 @@ $config['NEWS_PORTAL_COL3_CONTENT'][] = array(
     "cathead" => 1,
     "limit" => 10,
 );
-
 //END PORTAL CONFIG
 //BEGIN SECTION CONFIG
 $config['NEWS_SECTION_STYLES'] = 1;

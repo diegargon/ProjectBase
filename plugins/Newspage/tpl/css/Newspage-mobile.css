@@ -16,6 +16,17 @@
     .col1, .col2, .col3 {
         width:96%;
     }
+    .featured {
+        float:none;
+        height: 100%;
+    }
+    .featured img {
+        max-width: 300px;
+        float:left;
+    }
+    .featured_col1, .featured_col2, .featured_col3 {
+        width:99%;
+    }
 }
 @media only screen and (max-width: 640px) {
     .submit_box {

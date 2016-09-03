@@ -1,12 +1,12 @@
 <?php
 /*
- Copyright @ 2016 Diego Garcia
-*/
+  Copyright @ 2016 Diego Garcia
+ */
 !defined('IN_WEB') ? exit : true;
 ?>  
-<div class="featured_wrap">
+<div class="featured_wrap <?php !empty($data['numcols_class_extra']) ? print $data['numcols_class_extra'] : false ?>">
     <a href="<?php print $data['url']; ?>">
-        <section class="featured">
+        <section class="featured ">
             <?php
             !empty($data['mainimage']) && empty($data['headlines']) ? print $data['mainimage'] : false;
             !empty($tpldata['news_featured_article_pre']) ? print $tpldata['news_featured_article_pre'] : false;

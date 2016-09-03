@@ -28,7 +28,8 @@ function news_layout_switcher() {
     return $switcher_tpl;
 }
 
-function get_news($news_select) {
+function get_news($news_select, $xtr_data = null) {
+    
     global $config, $db, $tpl, $ml, $LANGDATA;
     $content = "";
 
@@ -119,6 +120,7 @@ function get_news($news_select) {
             $news_select['headlines'] ? $news_data['headlines'] = 1 : null;
             if ($news_select['featured']) {
                 do_action("news_featured_mod", $news_data);
+                $news_data['numcols_class_extra'] = "featured_col" . $config['NEWS_PORTAL_FEATURED_LIMIT'];
                 $content .= $tpl->getTPL_file("Newspage", "news_featured", $news_data);
             } else {
                 do_action("news_get_news_mod", $news_data);
@@ -188,7 +190,12 @@ function news_portal_content() {
 
     $portal_content = [];
 
-    $config['NEWS_PORTAL_FEATURED'] ? $portal_content['featured'] = get_news(array("featured" => 1, "limit" => 1, "cathead" => 1)) : null;
+    $featured_ary = array(
+        "featured" => 1,
+        "limit" => $config['NEWS_PORTAL_FEATURED_LIMIT'],
+        "cathead" => 1
+    );
+    $config['NEWS_PORTAL_FEATURED'] ? $portal_content['featured'] = get_news($featured_ary) : null;
 
     if ($config['NEWS_PORTAL_COLS'] >= 1) {
         $portal_content['col1_articles'] = news_getPortalColLayout($config['NEWS_PORTAL_COL1_CONTENT']);
