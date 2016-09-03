@@ -18,6 +18,7 @@ function NewsAds_ShowAds () {
         $main_banner = "<div class='center' id='main_banner'>" . $ad_code ."</div>";
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_TOP", $main_banner);
         $tpl->addto_tplvar("ADD_TOP_NEWS", $main_banner );
+        $tpl->addto_tplvar("ADD_TOP_SECTION", $main_banner );
     }
     
     if ( S_GET_INT("nid") && ($config['newsads_sponsors'] || $config['newsads_global_sponsors']) ) {

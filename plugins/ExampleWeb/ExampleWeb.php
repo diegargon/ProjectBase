@@ -41,6 +41,7 @@ function ex_Newspage_submitnews() {
 }
 
 function ex_Newspage_section() {
+    plugin_start("NewsAds");
     plugin_start("NewsSearch");
 }
 
