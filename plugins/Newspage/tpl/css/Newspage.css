@@ -490,9 +490,16 @@
 }
 #cat_sub_menu {
     text-align: center;
-    background: blue;
-    color:white;
-    background: linear-gradient(#55a0db, #1f6ba5);
+    background: #cccccc;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    /*    
+        background: -webkit-linear-gradient(white, blue); 
+        background: -o-linear-gradient(red, yellow); 
+        background: -moz-linear-gradient(red, yellow);
+    */
+    color: #000;
+    /* background: linear-gradient(#55a0db, #1f6ba5); */
 }
 #cat_sub_menu ul {
     padding:0px;
@@ -506,7 +513,8 @@
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    padding: 4px;
+    padding: 1px;
+    margin-right: 5%;
     transition: 0.3s;
     font-size: 1.0em;
     border: none;

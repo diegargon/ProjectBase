@@ -18,8 +18,24 @@ if (empty($category_name = S_GET_TEXT_UTF8("section")) || preg_match("/\s+/", $c
 if (!$category = getCatIDbyName($category_name)) {
     return news_error_msg("L_NEWS_E_SEC_NOEXISTS");
 }
+/*
+  if (defined('MULTILANG')) { //TODO CHECK if we have lang_id in url
+  $lang_id = $ml->iso_to_id($config['WEB_LANG']);
+  } else {
+  $lang_id = $config['WEB_LANG_ID'];
+  }
 
-$section_data['featured'] = get_news(array("category" => $category, "featured" => 1, "limit" => 1));
+  $cat_id = getCatIDbyName($category);
+  $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "cid" => "$cat_id"), "LIMIT 1");
+  $cat_actual = $db->fetch($query);
+ */
+
+$section_data['col1_articles'] = $section_data['col2_articles'] = $section_data['featured'] = "";
+
+//TODO: Feature if cat its father not get most recent of actual and childs
+$section_data['featured'] = get_news(array("category" => $category, "featured" => 1, "limit" => 1), "ORDER BY featured_date DESC");
+
+//TODO: modify get_news  for get "father" => $category and when category its father(0) get childs news
 $section_data['col1_articles'] = get_news(array("category" => $category, "frontpage" => 1, "limit" => 10, "excl_firstcat_featured" => 1));
 $section_data['col2_articles'] = get_news(array("category" => $category, "frontpage" => 0, "limit" => 10, "excl_firstcat_featured" => 1));
 $news_section_layout = "news_section_style1"; //TODO MULTIPLE

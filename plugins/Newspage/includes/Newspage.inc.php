@@ -123,7 +123,8 @@ function cat_menu() {
     global $tpl;
 
     $menu_data['cat_list'] = get_fathers_cat_list();
-
+    !empty($_GET['section']) ? $menu_data['cat_sub_list'] = get_childs_cat_list() : null;
+    
     return $tpl->getTPL_file("Newspage", "news_cat_menu", $menu_data);
 }
 
@@ -143,4 +144,39 @@ function get_fathers_cat_list() {
         $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>{$cat['name']}</a></li>";
     }
     return $cat_list;
+}
+
+function get_childs_cat_list() {
+    global $db, $ml, $config, $LANGDATA;
+
+    $cat = $_GET['section']; //TODO FILTER
+    $cat_list = "";
+
+    if (defined('MULTILANG')) { //TODO CHECK if we have lang_id in url
+        $lang_id = $ml->iso_to_id($config['WEB_LANG']);
+    } else {
+        $lang_id = $config['WEB_LANG_ID'];
+    }
+
+    $cat_id = getCatIDbyName($cat);
+
+    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => "$cat_id"));
+    if ($db->num_rows($query) > 0) {
+        while ($cat = $db->fetch($query)) {
+            $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>{$cat['name']}</a></li>";
+        }
+    } else {
+        $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "cid" => "$cat_id"), "LIMIT 1");
+        $cat_actual = $db->fetch($query);
+
+        $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => "{$cat_actual['father']}"));
+        while ($cat = $db->fetch($query)) {
+            if ($cat['father'] == 0) {
+                break;
+            } else {
+                $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>{$cat['name']}</a></li>";
+            }
+        }
+    }
+    return !empty($cat_list) ? $cat_list : false;
 }
