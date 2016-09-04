@@ -12,8 +12,8 @@ RewriteRule  ^es\/news/([0-9]+)/([0-9]+)/(.*)$   app.php?module=Newspage&page=ne
 RewriteRule  ^en\/news/([0-9]+)/([0-9]+)/(.*)$   app.php?module=Newspage&page=news&lang=en&nid=$1&npage=$2 [NC]
 RewriteRule  ^es\/submitnews$   app.php?module=Newspage&page=submitnews&lang=es [NC]
 RewriteRule  ^en\/submitnews$   app.php?module=Newspage&page=submitnews&lang=en[NC]
-RewriteRule  ^es\/sección/(.*)$   app.php?module=Newspage&page=section&lang=es&section=$1 [NC]
-RewriteRule  ^en\/section/(.*)$   app.php?module=Newspage&page=section&lang=en&section=$1 [NC]
+RewriteRule  ^es\/sec(.*)/(.*)$   app.php?module=Newspage&page=section&lang=es&section=$2 [NC]
+RewriteRule  ^en\/sec(.*)/(.*)$   app.php?module=Newspage&page=section&lang=en&section=$2 [NC]
 
 #SMBasic
 RewriteRule  ^es\/login(.*)$   app.php?module=SMBasic&page=login&lang=es$1
