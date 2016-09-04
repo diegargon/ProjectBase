@@ -125,7 +125,7 @@ class Database {
             !empty($where_s_fields) ? $where_s_fields .= " OR " : false;
 
             foreach ($s_words_ary as $s_word) {
-                if (mb_strlen($s_word) > $config['L_SEARCH_MIN_CHAR']) {
+                if (mb_strlen($s_word, $config['CHARSET']) > $config['L_SEARCH_MIN_CHAR']) {
                     !empty($where_s_tmp) ? $where_s_tmp .= " AND " : false;
                     $where_s_tmp .= " $field LIKE '%$s_word%' ";
                 }

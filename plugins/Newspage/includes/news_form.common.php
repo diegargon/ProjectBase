@@ -95,22 +95,22 @@ function news_form_common_field_check($news_data) {
     if ($news_data['title'] == false) {
         die('[{"status": "3", "msg": "' . $LANGDATA['L_NEWS_TITLE_ERROR'] . '"}]');
     }
-    if ((strlen($news_data['title']) > $config['NEWS_TITLE_MAX_LENGHT']) ||
-            (strlen($news_data['title']) < $config['NEWS_TITLE_MIN_LENGHT'])
+    if ((mb_strlen($news_data['title'], $config['CHARSET']) > $config['NEWS_TITLE_MAX_LENGHT']) ||
+            (mb_strlen($news_data['title'], $config['CHARSET']) < $config['NEWS_TITLE_MIN_LENGHT'])
     ) {
         die('[{"status": "3", "msg": "' . $LANGDATA['L_NEWS_TITLE_MINMAX_ERROR'] . '"}]');
     }
     //LEAD
     if (isset($_GET['npage']) && $_GET['npage'] > 1) {
-        if ((strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT'])) {
+        if ((mb_strlen($news_data['lead'], $config['CHARSET']) > $config['NEWS_LEAD_MAX_LENGHT'])) {
             die('[{"status": "4", "msg": "' . $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR'] . '"}]');
         }
     } else {
         if ($news_data['lead'] == false) {
             die('[{"status": "4", "msg": "' . $LANGDATA['L_NEWS_LEAD_ERROR'] . '"}]');
         }
-        if ((strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT']) ||
-                (strlen($news_data['lead']) < $config['NEWS_LEAD_MIN_LENGHT'])
+        if ((mb_strlen($news_data['lead'], $config['CHARSET']) > $config['NEWS_LEAD_MAX_LENGHT']) ||
+                (mb_strlen($news_data['lead'], $config['CHARSET']) < $config['NEWS_LEAD_MIN_LENGHT'])
         ) {
             die('[{"status": "4", "msg": "' . $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR'] . '"}]');
         }
@@ -119,8 +119,8 @@ function news_form_common_field_check($news_data) {
     if ($news_data['text'] == false) {
         die('[{"status": "5", "msg": "' . $LANGDATA['L_NEWS_TEXT_ERROR'] . '"}]');
     }
-    if ((strlen($news_data['text']) > $config['NEWS_TEXT_MAX_LENGHT']) ||
-            (strlen($news_data['text']) < $config['NEWS_TEXT_MIN_LENGHT'])
+    if ((mb_strlen($news_data['text'], $config['CHARSET']) > $config['NEWS_TEXT_MAX_LENGHT']) ||
+            (mb_strlen($news_data['text'], $config['CHARSET']) < $config['NEWS_TEXT_MIN_LENGHT'])
     ) {
         die('[{"status": "5", "msg": "' . $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR'] . '"}]');
     }
