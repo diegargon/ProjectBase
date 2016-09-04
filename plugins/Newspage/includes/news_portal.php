@@ -70,26 +70,36 @@ function get_news($news_select, $xtr_data = null) {
             $excluded_news[] = $featured_news['nid'];
         }
     }
-
+    $childs_id = "";
+    if (!empty($news_select['get_childs'])) {
+        $childs_id = getCatChildsID($news_select['category']);
+    }
     if ($news_select['excl_firstcat_featured'] && !empty($news_select['category'])) {
         $featured_ary = array(
             "featured" => 1,
             "page" => 1,
             "lang_id" => "$lang_id",
         );
-        $featured_ary['category'] = $news_select['category'];
+        //$featured_ary['category'] = $news_select['category'];
+        $featured_ary['category'] = array("value" => "({$news_select['category']}$childs_id)", "operator" => "IN");
         $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT 1");
         $featured_news = $db->fetch($featured_query);
-        $where_ary['nid'] = array("value" => $featured_news['nid'], "operator" => "<>");
+
+        !empty($featured_news) ? $where_ary['nid'] = array("value" => $featured_news['nid'], "operator" => "<>") : null;
     }
 
     $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : null;
 
-    !empty($news_select['category']) ? $where_ary['category'] = $news_select['category'] : null;
     $news_select['featured'] ? $where_ary['featured'] = 1 : null;
     isset($news_select['frontpage']) ? $where_ary['frontpage'] = $news_select['frontpage'] : null;
     $news_select['featured'] ? $q_extra = " ORDER BY featured_date DESC" : $q_extra = " ORDER BY date DESC";
     $news_select['limit'] > 0 ? $q_extra .= " LIMIT {$news_select['limit']}" : null;
+
+    if (!empty($news_select['category']) && !empty($news_select['get_childs'])) {
+        $where_ary['category'] = array("value" => "({$news_select['category']}$childs_id)", "operator" => "IN");
+    } else if (!empty($news_select['category'])) {
+        $where_ary['category'] = $news_select['category'];
+    }
 
     $query = $db->select_all("news", $where_ary, $q_extra);
     if ($db->num_rows($query) <= 0) {

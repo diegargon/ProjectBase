@@ -16,3 +16,15 @@ function getCatIDbyName($cat) {
     $cat_data = $db->fetch($query);
     return $cat_data['cid'];
 }
+
+function getCatChildsID($cat) {
+    global $db;
+    $cat_ids = "";
+
+    $query = $db->select_all("categories", array("father" => $cat));
+    while ($c_row = $db->fetch($query)) {
+        !empty($cat_ids) ? $cat_ids = "," : null;
+        $cat_ids .= $c_row['cid'];
+    }
+    return $cat_ids;
+}
