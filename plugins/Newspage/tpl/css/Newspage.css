@@ -112,7 +112,6 @@
     width: 96%;
     box-shadow: 0 0 4px black;
     max-width: 500px;
-    margin-bottom: 5px;
     margin-left:5px;
 }
 .featured:hover img{
@@ -146,11 +145,21 @@
 .featured_container {
     /* border: 1px solid red; */
     /* height: 500px; */
+    overflow:hidden;
 }
-.featured_container_mod div  {
-    width: 98%;
+.featured_container_section div  {
+    width: 98%;    
 }
-.featured_container_mod section {
+.featured_container_section h1  {
+    font-size: 1.8em;
+}
+.featured_container_section h2  {
+    font-size: 1.6em;
+}
+.featured_container_section h3  {
+    font-size: 1.4em;
+}
+.featured_container_section section {
     height: 100%;
 }
 /* BUTTON */
