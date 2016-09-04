@@ -42,7 +42,7 @@ $config['NEWS_PORTAL_COL1_CONTENT'][] = array(
     "category" => 1,
     "frontpage" => 1,
     "cathead" => 1,
-    "excl_first_featured" => 1,
+    "excl_portal_featured" => 1,
     "limit" => 10,
 );
 $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
@@ -50,7 +50,7 @@ $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
     "category" => 5,
     "frontpage" => 1,
     "cathead" => 1,
-    "excl_first_featured" => 1,
+    "excl_portal_featured" => 1,
     "limit" => 10,
 );
 $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
@@ -58,7 +58,7 @@ $config['NEWS_PORTAL_COL2_CONTENT'][] = array(
     "category" => 2,
     "frontpage" => 1,
     "cathead" => 1,
-    "excl_first_featured" => 1,
+    "excl_portal_featured" => 1,
     "limit" => 10,
 );
 $config['NEWS_PORTAL_COL2_CONTENT'][] = array(

@@ -29,7 +29,7 @@ function news_layout_switcher() {
 }
 
 function get_news($news_select, $xtr_data = null) {
-    
+
     global $config, $db, $tpl, $ml, $LANGDATA;
     $content = "";
 
@@ -37,7 +37,7 @@ function get_news($news_select, $xtr_data = null) {
     !isset($news_select['featured']) ? $news_select['featured'] = 0 : null;
     !isset($news_select['headlines']) ? $news_select['headlines'] = 0 : null;
     !isset($news_select['cathead']) ? $news_select['cathead'] = 0 : null;
-    !isset($news_select['excl_first_featured']) ? $news_select['excl_first_featured'] = 0 : null;
+    !isset($news_select['excl_portal_featured']) ? $news_select['excl_portal_featured'] = 0 : null;
     !isset($news_select['excl_firstcat_featured']) ? $news_select['excl_firstcat_featured'] = 0 : null;
 
     $where_ary = array(
@@ -55,15 +55,18 @@ function get_news($news_select, $xtr_data = null) {
         }
     }
 
-    if ($news_select['excl_first_featured']) {
+    $excluded_news = [];
+
+    if ($news_select['excl_portal_featured']) {
         $featured_ary = array(
             "featured" => 1,
             "page" => 1,
             "lang_id" => "$lang_id",
         );
-        $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT 1");
-        $featured_news = $db->fetch($featured_query);
-        $where_ary['nid'] = array("value" => $featured_news['nid'], "operator" => "<>");
+        $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT {$config['NEWS_PORTAL_FEATURED_LIMIT']}");
+        while ($featured_news = $db->fetch($featured_query)) {
+            $excluded_news[] = $featured_news['nid'];
+        }
     }
 
     if ($news_select['excl_firstcat_featured'] && !empty($news_select['category'])) {
@@ -123,8 +126,10 @@ function get_news($news_select, $xtr_data = null) {
                 $news_data['numcols_class_extra'] = "featured_col" . $config['NEWS_PORTAL_FEATURED_LIMIT'];
                 $content .= $tpl->getTPL_file("Newspage", "news_featured", $news_data);
             } else {
-                do_action("news_get_news_mod", $news_data);
-                $content .= $tpl->getTPL_file("Newspage", "news_preview", $news_data);
+                if (!in_array($news_data['nid'], $excluded_news)) {
+                    do_action("news_get_news_mod", $news_data);
+                    $content .= $tpl->getTPL_file("Newspage", "news_preview", $news_data);
+                }
             }
         }
     }
