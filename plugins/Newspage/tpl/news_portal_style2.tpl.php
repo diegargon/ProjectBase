@@ -13,7 +13,7 @@
             <?php
             if (!empty($data['featured'])) {
                 ?>
-                <div class='featured_container_mod'>
+                <div class='featured_container_section'>
                     <?php
                     print $data['featured'];
                     ?>
