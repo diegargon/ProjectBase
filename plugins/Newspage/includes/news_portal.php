@@ -53,6 +53,8 @@ function get_news($news_select, $xtr_data = null) {
                 break;
             }
         }
+    } else {
+        $lang_id = $config['WEB_LANG_ID'];
     }
 
     $excluded_news = [];

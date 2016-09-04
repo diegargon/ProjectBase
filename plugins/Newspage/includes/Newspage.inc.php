@@ -141,7 +141,8 @@ function get_fathers_cat_list() {
 
     $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => 0));
     while ($cat = $db->fetch($query)) {
-        $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>{$cat['name']}</a></li>";
+        $cat_display_name = preg_replace('/\_/', ' ', $cat['name']);
+        $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>$cat_display_name</a></li>";
     }
     return $cat_list;
 }
@@ -163,7 +164,8 @@ function get_childs_cat_list() {
     $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => "$cat_id"));
     if ($db->num_rows($query) > 0) {
         while ($cat = $db->fetch($query)) {
-            $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>{$cat['name']}</a></li>";
+            $cat_display_name = preg_replace('/\_/', ' ', $cat['name']);
+            $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>$cat_display_name</a></li>";
         }
     } else {
         $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "cid" => "$cat_id"), "LIMIT 1");
@@ -174,7 +176,8 @@ function get_childs_cat_list() {
             if ($cat['father'] == 0) {
                 break;
             } else {
-                $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>{$cat['name']}</a></li>";
+                $cat_display_name = preg_replace('/\_/', ' ', $cat['name']);
+                $cat_list .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>$cat_display_name</a></li>";
             }
         }
     }
