@@ -34,7 +34,7 @@ function get_news($news_select, $xtr_data = null) {
     $content = "";
 
     !isset($news_select['limit']) ? $news_select['limit'] = 0 : null;
-    !isset($news_select['featured']) ? $news_select['featured'] = 0 : null;
+//    !isset($news_select['featured']) ? $news_select['featured'] = 0 : null;
     !isset($news_select['headlines']) ? $news_select['headlines'] = 0 : null;
     !isset($news_select['cathead']) ? $news_select['cathead'] = 0 : null;
     !isset($news_select['excl_portal_featured']) ? $news_select['excl_portal_featured'] = 0 : null;
@@ -90,9 +90,9 @@ function get_news($news_select, $xtr_data = null) {
 
     $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : null;
 
-    $news_select['featured'] ? $where_ary['featured'] = 1 : null;
+    isset($news_select['featured']) ? $where_ary['featured'] = $news_select['featured'] : null;
     isset($news_select['frontpage']) ? $where_ary['frontpage'] = $news_select['frontpage'] : null;
-    $news_select['featured'] ? $q_extra = " ORDER BY featured_date DESC" : $q_extra = " ORDER BY date DESC";
+    isset($news_select['featured']) && !empty($news_select['featured']) ? $q_extra = " ORDER BY featured_date DESC" : $q_extra = " ORDER BY date DESC";
     $news_select['limit'] > 0 ? $q_extra .= " LIMIT {$news_select['limit']}" : null;
 
     if (!empty($news_select['category']) && !empty($news_select['get_childs'])) {
@@ -118,22 +118,22 @@ function get_news($news_select, $xtr_data = null) {
             $catname .= get_category_name($news_select['category']) . "</h2>";
         }
 
-        if (empty($news_select['category']) && ( isset($news_select['frontpage']) && $news_select['frontpage'] == 0) && !$news_select['featured']) {
+        if (empty($news_select['category']) && ( isset($news_select['frontpage']) && $news_select['frontpage'] == 0) && empty($news_select['featured'])) {
             $catname = "<h2>" . $LANGDATA['L_NEWS_BACKPAGE'] . "</h2>";
-        } else if (empty($news_select['category']) && !isset($news_select['frontpage']) && !$news_select['featured']) {
+        } else if (empty($news_select['category']) && !isset($news_select['frontpage']) && empty($news_select['featured'])) {
             $catname = "<h2>" . $LANGDATA['L_NEWS_FRONTPAGE'] . "</h2>";
-        } else if (empty($news_select['category']) && $news_select['featured']) {
+        } else if (empty($news_select['category']) && !empty($news_select['featured'])) {
             $catname = "<h2 class='featured_category'>{$LANGDATA['L_NEWS_FEATURED']}</h2>";
         }
         $content .= $catname;
     }
 
     $save_img_selector = $config['IMG_SELECTOR'];
-    !$news_select['featured'] ? $config['IMG_SELECTOR'] = "thumbs" : null; //no thumb for featured image
+    empty($news_select['featured']) ? $config['IMG_SELECTOR'] = "thumbs" : null; //no thumb for featured image
     while ($news_row = $db->fetch($query)) {
         if (($news_data = fetch_news_data($news_row)) != false) {
             $news_select['headlines'] ? $news_data['headlines'] = 1 : null;
-            if ($news_select['featured']) {
+            if (!empty($news_select['featured'])) {
                 do_action("news_featured_mod", $news_data);
                 $news_data['numcols_class_extra'] = "featured_col" . $config['NEWS_PORTAL_FEATURED_LIMIT'];
                 $content .= $tpl->getTPL_file("Newspage", "news_featured", $news_data);
