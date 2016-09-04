@@ -29,6 +29,13 @@
         </section>
         <?php
     }
+    if ($config['NEWS_SECTION_COLS'] >= 4) {
+        ?>
+        <section class="col col<?php print $config['NEWS_SECTION_COLS']; ?>">
+            <?php isset($data['col4_articles']) ? print $data['col4_articles'] : false; ?>
+        </section>
+        <?php
+    }    
     isset($tpldata['ADD_BOTTOM_SECTION']) ? print $tpldata['ADD_BOTTOM_SECTION'] : false;
     ?>
 </div>

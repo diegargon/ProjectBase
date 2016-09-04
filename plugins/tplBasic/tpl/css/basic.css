@@ -212,3 +212,7 @@ h1,h2,h3,h4,h5,h6{
 .resp-icon:hover {
     background-color: black;
 }
+#main_banner {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
