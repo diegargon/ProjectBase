@@ -532,3 +532,7 @@
 #cat_sub_menu li a:hover {
     background: linear-gradient(#2f5d81, #0b2a42);
 }
+/* ADMIN */
+.news_adm_id, .news_adm_order, .news_adm_father {
+    width: 22px;
+}

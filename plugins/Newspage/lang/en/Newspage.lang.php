@@ -86,3 +86,5 @@ $LANGDATA['L_NEWS_EDITOR_PRE'] = "Pre";
 $LANGDATA['L_NEWS_EDITOR_CODE'] = "Code";
 $LANGDATA['L_NEWS_SECTION'] = "section"; //Need mod htaccess if change
 $LANGDATA['L_NEWS_E_SEC_NOEXISTS'] = "Section not exists";
+$LANGDATA['L_NEWS_FATHER'] = "Father";
+$LANGDATA['L_NEWS_ORDER'] = "Weight";

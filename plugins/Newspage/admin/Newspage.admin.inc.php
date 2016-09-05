@@ -8,16 +8,38 @@
 function Newspage_AdminCategories() {
     global $config, $LANGDATA, $ml, $db;
 
+    $content = "";
+    $catfather = "";
+
     if (defined('MULTILANG')) {
         $langs = $ml->get_site_langs();
     } else {
         $langs['lang_id'] = $config['WEB_LANG_ID'];
         $langs['lang_name'] = $config['WEB_LANG'];
     }
+    //NEW CAT
+    $content .= "<div class='catlist'>";
+    $content .= "<p>{$LANGDATA['L_NEWS_CREATE_CAT']}</p>";
+    $content .= "<form id='cat_new' method='post' action=''>";
+    $content .= "<div>";
 
-    $content = "<div class='catlist'>";
+    foreach ($langs as $lang) {
+        $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";
+    }
+    $content .= "<label>{$LANGDATA['L_NEWS_FATHER']}</label>";
+    $content .= "<input class='news_adm_father' type='text' maxlength='3' name='father' value='0' />";
+    $content .= "<label>{$LANGDATA['L_NEWS_ORDER']}</label>";
+    $content .= "<input class='news_adm_order' type='text' maxlength='3' name='weight' value='0' />";
+    $content .= "<input type='submit' name='NewCatSubmit' value='{$LANGDATA['L_NEWS_CREATE']}' />";
+    $content .= "</div>";
+
+    $content .= "</form>";
+    $content .= "</div>";
+
+    //CATLIST
+    $content .= "<div class='catlist'>";
     $content .= "<p>{$LANGDATA['L_NEWS_MODIFIED_CATS']}</p>";
-    $query = $db->select_all("categories", array("plugin" => "Newspage"), "ORDER BY cid");
+    $query = $db->select_all("categories", array("plugin" => "Newspage"), "ORDER BY father, cid");
 
     $cats = $catsids = [];
 
@@ -30,11 +52,16 @@ function Newspage_AdminCategories() {
     foreach ($catsids as $catid) {
         $content .= "<form id='cat_mod' method='post' action=''>";
         $content .= "<div>";
+        $content .= "<label>Id</label>";
+        $content .= "<input type='text' disable name='cid' class='news_adm_id' value='$catid' />";        
         foreach ($langs as $lang) {
             foreach ($cats as $cat) {
                 if (($catid == $cat['cid']) && ($cat['lang_id'] == $lang['lang_id'])) {
-                    $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='{$cat['name']}' />";
+                    $content .= "<label>{$lang['lang_name']}</label>";
+                    $content .= "<input type='text' name='{$lang['lang_id']}' class='news_adm_name' value='{$cat['name']}' />";
                     $foundit = 1;
+                    $catFather = $cat['father'];
+                    $catWeight = $cat['weight'];
                 }
             }
             if ($foundit == 0) {
@@ -42,24 +69,15 @@ function Newspage_AdminCategories() {
             }
             $foundit = 0;
         }
-        $content .= "<input type='hidden' name='cid' value='$catid' />";
+        $content .= "<label>{$LANGDATA['L_NEWS_FATHER']}</label>";
+        $content .= "<input class='news_adm_father' type='text' maxlength='3' name='father' value='$catFather' />";
+        $content .= "<label>{$LANGDATA['L_NEWS_ORDER']}</label>";
+        $content .= "<input class='news_adm_order' type='text' maxlength='3' name='weight' value='$catWeight' />";
+
         $content .= "<input type='submit' name='ModCatSubmit' value='{$LANGDATA['L_NEWS_MODIFY']}' />";
         $content .= "</div></form>";
     }
-    //NEW CAT
-    $content .= "<div class='catlist'>";
-    $content .= "<p>{$LANGDATA['L_NEWS_CREATE_CAT']}</p>";
-    $content .= "<form id='cat_new' method='post' action=''>";
-    $content .= "<div>";
-
-    foreach ($langs as $lang) {
-        $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";
-    }
-    $content .= "<input type='submit' name='NewCatSubmit' value='{$LANGDATA['L_NEWS_CREATE']}' />";
-    $content .= "</div>";
-    $content .= "</form>";
-    $content .= "</div>";
-
+    
     return $content;
 }
 
@@ -76,13 +94,17 @@ function Newspage_ModCategories() {
         $lang_id = $lang['lang_id'];
         $posted_name = S_POST_STRICT_CHARS("$lang_id"); // field name value its 1 or 2 depend of lang_id, we get GET['1']
         if (!empty($posted_name)) {
-            $posted_cid = S_POST_INT("cid");
+            $posted_cid = S_POST_INT("cid", 11, 1);
+            $posted_father = S_POST_INT("father", 3, 1);
+            $posted_weight = S_POST_INT("weight", 3, 1);
             if ($posted_cid != false) {
+                empty($posted_father) ? $posted_father = 0 : null;
+                empty($posted_weight) ? $posted_weight = 0 : null;
                 $query = $db->select_all("categories", array("plugin" => "Newspage", "cid" => "$posted_cid", "lang_id" => "$lang_id"));
                 if ($db->num_rows($query) > 0) {
-                    $db->update("categories", array("name" => "$posted_name"), array("cid" => "$posted_cid", "lang_id" => "$lang_id"));
+                    $db->update("categories", array("name" => "$posted_name", "father" => "$posted_father", "weight" => "$posted_weight"), array("cid" => "$posted_cid", "lang_id" => "$lang_id"));
                 } else {
-                    $db->insert("categories", array("cid" => "$posted_cid", "lang_id" => "$lang_id", "plugin" => "Newspage", "name" => "$posted_name"));
+                    $db->insert("categories", array("cid" => "$posted_cid", "father" => "$posted_father", "weight" => "$posted_weight", "lang_id" => "$lang_id", "plugin" => "Newspage", "name" => "$posted_name"));
                 }
             }
         }
@@ -103,8 +125,18 @@ function Newspage_NewCategory() {
     foreach ($langs as $lang) {
         $lang_id = $lang['lang_id'];
         $posted_name = S_POST_TEXT_UTF8("$lang_id"); //POST['1'] 2... id return text value
+        $posted_father = S_POST_INT("father", 3, 1);
+        $posted_weight = S_POST_INT("weight", 3, 1);        
         if (!empty($posted_name)) {
-            $db->insert("categories", array("cid" => "$new_cid", "lang_id" => "{$lang['lang_id']}", "plugin" => "Newspage", "name" => "$posted_name"));
+            $new_cat_ary = array(
+                "cid" => "$new_cid", 
+                "lang_id" => "{$lang['lang_id']}",
+                "plugin" => "Newspage", 
+                "name" => "$posted_name", 
+                "father" => "$posted_father", 
+                "weight" => "$posted_weight"
+            );
+            $db->insert("categories", $new_cat_ary);
         }
     }
 }
