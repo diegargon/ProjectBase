@@ -5,7 +5,7 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-function news_get_categories_select($news_data = null, $disabled = null) {
+function news_get_categories_select($news_data = null) {
     global $db, $acl_auth, $sm;
 
     $user = $sm->getSessionUser();
@@ -15,25 +15,18 @@ function news_get_categories_select($news_data = null, $disabled = null) {
     } else {
         $admin = $user['isAdmin'];
     }
-    if (empty($disabled)) {
-        $query = news_get_categories();
-        $select = "<select name='news_category' id='news_category'>";
-        while ($row = $db->fetch($query)) {
-            if (($row['admin'] == 1 && $admin == 1) || ($row['admin'] == 0)) {
-                if (($news_data != null) && ($row['cid'] == $news_data['category']) && $row['father'] != 0) {
-                    $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>";
-                } else if ($row['father'] != 0) {
-                    $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";
-                }
+    $query = news_get_categories();
+    $select = "<select name='news_category' id='news_category'>";
+    while ($row = $db->fetch($query)) {
+        if (($row['admin'] == 1 && $admin == 1) || ($row['admin'] == 0)) {
+            if (($news_data != null) && ($row['cid'] == $news_data['category']) && $row['father'] != 0) {
+                $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>";
+            } else if ($row['father'] != 0) {
+                $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";
             }
         }
-        $select .= "</select>";
-    } else {
-        $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => $news_data['lang_id'], "cid" => $news_data['category']), "LIMIT 1");
-        $cat = $db->fetch($query);
-        $select = "<input type='text' value='{$cat['name']}' readonly />";
-        $select .= "<input type='hidden' name='news_category' value='{$news_data['category']}' />";
     }
+    $select .= "</select>";
     return $select;
 }
 
