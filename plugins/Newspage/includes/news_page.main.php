@@ -86,6 +86,8 @@ function news_show_page() {
         }
         $news_data['news_related'] = $related_content;
     }
+    $config['NEWS_BREADCRUMB'] ? $news_data['NEWS_BREADCRUMB'] = getNewsCatBreadcrumb($news_data) : false;
+
     do_action("news_show_page", $news_data);
 
     $tpl->addto_tplvar("ADD_HEADER_END", cat_menu());
@@ -381,4 +383,40 @@ function news_add_social_meta($news) { // TODO: Move to plugin NewsSocialExtra
     $news['mainimage'] = $config['STATIC_SRV_URL'] . $url;
     $content = $tpl->getTPL_file("Newspage", "NewsSocialmeta", $news);
     $tpl->addto_tplvar("META", $content);
+}
+
+function getNewsCatBreadcrumb($news_data) {
+    global $db, $config;
+
+    $content = "<div id='news_breadcrumb'><ul class='breadcrumb'>";
+
+    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => $news_data['lang_id']));
+    while ($cat_row = $db->fetch($query)) {
+        $categories[$cat_row['cid']] = $cat_row;
+    }
+    $news_cat_id = $news_data['category'];
+    
+    $cat_list = "";
+    $cat_check = $categories[$news_cat_id]['father'];
+    do {
+        $cat_list = $categories[$cat_check]['name'] . "," . $cat_list;
+        $cat_check = $categories[$cat_check]['father'];
+    } while ($cat_check != 0);
+
+    $cat_list = $cat_list . $categories[$news_cat_id]['name'];
+    $cat_ary = explode(",", $cat_list);
+    
+    $breadcrumb = "";
+    $cat_path = "";
+    foreach($cat_ary as $cat) {
+        $cat_path .= $cat;
+        !empty($breadcrumb) ? $breadcrumb .= $config['NEWS_BREADCRUMB_SEPARATOR'] : null;
+        $cat = preg_replace('/\_/', ' ', $cat);
+        $breadcrumb .= "<li><a href='/{$config['WEB_LANG']}/section/$cat_path'>$cat</a></li>";
+        $cat_path .= ".";
+    }
+    $content .= $breadcrumb;
+    $content .= "</ul></div>";
+
+    return $content;
 }

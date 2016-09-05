@@ -139,7 +139,7 @@ function get_fathers_cat_list() {
         $lang_id = $config['WEB_LANG_ID'];
     }
 
-    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => 0));
+    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => 0), "ORDER BY weight ASC");
     while ($cat = $db->fetch($query)) {
         $cat_display_name = preg_replace('/\_/', ' ', $cat['name']);
         $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>$cat_display_name</a></li>";
@@ -168,7 +168,7 @@ function get_childs_cat_list() {
 
     $cat_id = getCatIDbyName($cat_choice);
 
-    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => "$cat_id"));
+    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => "$cat_id"), "ORDER BY weight ASC");
     if ($db->num_rows($query) > 0) {
         if (count($cats_explode) > 1) {
             array_pop($cats_explode);

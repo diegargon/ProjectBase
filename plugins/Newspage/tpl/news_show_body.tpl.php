@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -10,8 +10,11 @@
         if (!empty($data['news_msg']) && !empty($data['news_msg'])) {
             ?>
             <div class="news_msg"><p><?php print $data['news_msg'] ?></p></div>
-        <?php } ?>
-        <?php !empty($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP'] : false ?>
+            <?php
+        }
+        !empty($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP'] : false;
+        !empty($data['NEWS_BREADCRUMB']) ? print $data['NEWS_BREADCRUMB'] : null;
+        ?>
         <section class="article_body">
             <h1>
                 <?php !empty($data['title']) ? print $data['title'] : false ?>
