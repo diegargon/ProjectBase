@@ -6,15 +6,25 @@
 !defined('IN_WEB') ? exit : true;
 
 function news_get_categories_select($news_data = null, $disabled = null) {
-    global $db;
+    global $db, $acl_auth, $sm;
+    
+    $user = $sm->getSessionUser();
+    
+    if(defined('ACL')) {
+        $admin = $acl_auth->acl_ask("admin_all||news_admin");
+    } else {
+        $admin = $user['isAdmin'];
+    }
     if (empty($disabled)) {
         $query = news_get_categories();
         $select = "<select name='news_category' id='news_category'>";
         while ($row = $db->fetch($query)) {
-            if (($news_data != null) && ($row['cid'] == $news_data['category'])) {
+            if (($row['admin'] == 1 && $admin == 1) || ($row['admin'] == 0)) { 
+            if (($news_data != null) && ($row['cid'] == $news_data['category']) && $row['father'] != 0) {
                 $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>";
-            } else {
+            } else if ($row['father'] != 0) {
                 $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";
+            }
             }
         }
         $select .= "</select>";
