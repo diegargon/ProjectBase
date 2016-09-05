@@ -7,10 +7,10 @@
 
 function news_get_categories_select($news_data = null, $disabled = null) {
     global $db, $acl_auth, $sm;
-    
+
     $user = $sm->getSessionUser();
-    
-    if(defined('ACL')) {
+
+    if (defined('ACL')) {
         $admin = $acl_auth->acl_ask("admin_all||news_admin");
     } else {
         $admin = $user['isAdmin'];
@@ -19,12 +19,12 @@ function news_get_categories_select($news_data = null, $disabled = null) {
         $query = news_get_categories();
         $select = "<select name='news_category' id='news_category'>";
         while ($row = $db->fetch($query)) {
-            if (($row['admin'] == 1 && $admin == 1) || ($row['admin'] == 0)) { 
-            if (($news_data != null) && ($row['cid'] == $news_data['category']) && $row['father'] != 0) {
-                $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>";
-            } else if ($row['father'] != 0) {
-                $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";
-            }
+            if (($row['admin'] == 1 && $admin == 1) || ($row['admin'] == 0)) {
+                if (($news_data != null) && ($row['cid'] == $news_data['category']) && $row['father'] != 0) {
+                    $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>";
+                } else if ($row['father'] != 0) {
+                    $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";
+                }
             }
         }
         $select .= "</select>";
