@@ -155,9 +155,7 @@ function get_childs_cat_list() {
     if (empty($list_cats)) {
         return false;
     }
-    $list_cats = $db->escape_strip($list_cats);
     $cats_explode = explode(".", $list_cats);
-    $cat_choice = end($cats_explode);
     $cat_data = "";
 
     if (defined('MULTILANG')) {
@@ -166,7 +164,7 @@ function get_childs_cat_list() {
         $lang_id = $config['WEB_LANG_ID'];
     }
 
-    $cat_id = getCatIDbyName($cat_choice);
+    $cat_id = getCatIDbyName_LIST($list_cats);
 
     $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => "$cat_id"), "ORDER BY weight ASC");
     if ($db->num_rows($query) > 0) {

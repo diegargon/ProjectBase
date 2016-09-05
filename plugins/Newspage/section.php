@@ -12,13 +12,11 @@ do_action("common_web_structure");
 
 $tpl->addto_tplvar("ADD_HEADER_END", cat_menu());
 
-if (empty($category_name = S_GET_TEXT_UTF8("section")) || preg_match("/\s+/", $category_name)) {
+if (empty($category_list = S_GET_TEXT_UTF8("section")) || preg_match("/\s+/", $category_list)) {
     return news_error_msg("L_NEWS_E_SEC_NOEXISTS");
 }
-$cat_list = explode(".", $category_name);
-$category_name = end($cat_list);
 
-if (!$category = getCatIDbyName($category_name)) {
+if (!$category = getCatIDbyName_LIST($category_list)) {
     return news_error_msg("L_NEWS_E_SEC_NOEXISTS");
 }
 if (defined('MULTILANG')) {

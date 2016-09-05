@@ -5,9 +5,8 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-function getCatIDbyName($cat) {
+function getCatIDbyName($catname) {
     global $db;
-    $catname = $db->escape_strip($cat);
 
     $query = $db->select_all("categories", array("name" => $catname), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
@@ -16,19 +15,24 @@ function getCatIDbyName($cat) {
     $cat_data = $db->fetch($query);
     return $cat_data['cid'];
 }
-/* WORKS but checking use recursion with Multiple for less querys
-  function getCatChildsID($cat, $lang_id) {
-  global $db;
-  $cat_ids = "";
 
-  $query = $db->select_all("categories", array("lang_id" => $lang_id, "father" => $cat));
-  while ($c_row = $db->fetch($query)) {
-  $cat_ids .= "," . $c_row['cid'];
-  $cat_ids .= getCatChildsID($c_row['cid'], $lang_id);
-  }
-  return $cat_ids;
-  }
- */
+function getCatIDbyName_LIST($cat_list) {
+    global $db;
+
+    //FIX: That give problems/conflict with same category name in other sections
+    //check and get father match one    
+    $cat_list = explode(".", $cat_list);
+    $catname = end($cat_list);
+
+    $catname = $db->escape_strip($catname);
+
+    $query = $db->select_all("categories", array("name" => $catname), "LIMIT 1");
+    if ($db->num_rows($query) <= 0) {
+        return false;
+    }
+    $cat_data = $db->fetch($query);
+    return $cat_data['cid'];
+}
 
 function getCatChildsID($cat, $lang_id) {
     global $db;
