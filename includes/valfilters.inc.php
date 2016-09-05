@@ -265,15 +265,60 @@ function S_VAR_TEXT_UTF8 ($var, $max_size = null, $min_size = null) {
             ) {
         return false;
     } 
-    //  UTF-8 
+    //  TODO
     if (!preg_match("//u", $var)) {       
         return false;
     }
     
     return $var;
-
 }
 
+function S_VAR_CHAR_NUM_UNICODE ($var, $max_size = null, $min_size = null) {
+    // NO TESTED: Unicode chars and nums only
+    if ( (empty($var) )
+       || (!empty($max_size) && (strlen($var) > $max_size) )
+       || (!empty($min_size) && (strlen($var) < $min_size))
+            ) {
+        return false;
+    } 
+
+    if (!preg_match('/^[\p{L}\p{N}]+$/', $var)) {       
+        return false;
+    }
+    
+    return $var;
+}
+function S_VAR_CHAR_UNICODE ($var, $max_size = null, $min_size = null) {
+    // NO TESTED  Unicode chars only
+    if ( (empty($var) )
+       || (!empty($max_size) && (strlen($var) > $max_size) )
+       || (!empty($min_size) && (strlen($var) < $min_size))
+            ) {
+        return false;
+    } 
+
+    if (!preg_match('/^[\p{L}]+$/', $var)) {       
+        return false;
+    }
+    
+    return $var;
+}
+function S_VAR_CHAR_MIDDLE_UNDERSCORE_UNICODE ($var, $max_size = null, $min_size = null) {
+    // NO TESTED Unicode chars and _ in middle
+    
+    if ( (empty($var) )
+       || (!empty($max_size) && (strlen($var) > $max_size) )
+       || (!empty($min_size) && (strlen($var) < $min_size))
+            ) {
+        return false;
+    } 
+    
+    if (!preg_match('/^[\p{L}]*(?:_[\p{L}]+)*$/', $var)) {       
+        return false;
+    }
+    
+    return $var;
+}
 function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
     if ( (empty($var) )
        || (!empty($max_size) && (strlen($var) > $max_size) )
