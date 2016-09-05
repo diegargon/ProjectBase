@@ -180,9 +180,11 @@ function get_childs_cat_list() {
             $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/$list_cats.{$cat['name']}'>$cat_display_name</a></li>";
         }
     } else {
-        array_pop($cats_explode);
-        $list_cats = implode(".", $cats_explode);
-        $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/$list_cats'>[<<]</a></li>";        
+        if (count($cats_explode) > 1) {
+            array_pop($cats_explode);
+            $list_cats = implode(".", $cats_explode);
+            $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/$list_cats'>[<<]</a></li>";
+        }
     }
 
     return !empty($cat_data) ? $cat_data : false;
