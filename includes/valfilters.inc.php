@@ -122,6 +122,15 @@ function S_POST_URL($var, $max_size = null, $min_size = null) {
         return S_VAR_URL($_POST[$var], $max_size, $min_size);
     }
 }
+
+function S_POST_CHARNUM_MIDDLE_UNDERSCORE_UNICODE ($var, $max_size = null, $min_size = null) {
+    if(empty($_POST[$var])) {
+       return false;
+    }    
+
+    return S_VAR_CHARNUM_MIDDLE_UNDERSCORE_UNICODE($_POST[$var], $max_size, $min_size);    
+}
+
 //$_SERVER
 function S_SERVER_REQUEST_URI() {
     if(empty($_SERVER['REQUEST_URI'])) {
@@ -313,10 +322,24 @@ function S_VAR_CHAR_MIDDLE_UNDERSCORE_UNICODE ($var, $max_size = null, $min_size
         return false;
     } 
     
-    if (!preg_match('/^[\p{L}]*(?:_[\p{L}]+)*$/', $var)) {       
+    if (!preg_match('/^[\p{L}][\p{L}]*(?:_[\p{L}]+)*$/', $var)) {
         return false;
     }
+    return $var;
+}
+function S_VAR_CHARNUM_MIDDLE_UNDERSCORE_UNICODE ($var, $max_size = null, $min_size = null) {
+    // NO TESTED Unicode chars and _ in middle
     
+    if ( (empty($var) )
+       || (!empty($max_size) && (strlen($var) > $max_size) )
+       || (!empty($min_size) && (strlen($var) < $min_size))
+            ) {
+        return false;
+    } 
+    
+    if (!preg_match('/^[\p{L}\p{N}][\p{L}\p{N}]*(?:_[\p{L}\p{N}]+)*$/', $var)) {
+        return false;
+    }
     return $var;
 }
 function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
