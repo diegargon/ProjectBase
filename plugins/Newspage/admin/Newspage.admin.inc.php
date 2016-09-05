@@ -92,7 +92,7 @@ function Newspage_ModCategories() {
 
     foreach ($langs as $lang) {
         $lang_id = $lang['lang_id'];
-        $posted_name = S_POST_STRICT_CHARS("$lang_id"); // field name value its 1 or 2 depend of lang_id, we get GET['1']
+        $posted_name = S_POST_CHAR_MIDDLE_UNDERSCORE_UNICODE("$lang_id"); // field name value its 1 or 2 depend of lang_id, we get GET['1']
         if (!empty($posted_name)) {
             $posted_cid = S_POST_INT("cid", 11, 1);
             $posted_father = S_POST_INT("father", 3, 1);
@@ -124,7 +124,7 @@ function Newspage_NewCategory() {
 
     foreach ($langs as $lang) {
         $lang_id = $lang['lang_id'];
-        $posted_name = S_POST_TEXT_UTF8("$lang_id"); //POST['1'] 2... id return text value
+        $posted_name = S_POST_CHARNUM_MIDDLE_UNDERSCORE_UNICODE("$lang_id"); //POST['1'] 2... id return text value
         $posted_father = S_POST_INT("father", 3, 1);
         $posted_weight = S_POST_INT("weight", 3, 1);        
         if (!empty($posted_name)) {
