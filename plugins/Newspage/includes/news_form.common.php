@@ -17,12 +17,23 @@ function news_get_categories_select($news_data = null) {
     }
     $query = news_get_categories();
     $select = "<select name='news_category' id='news_category'>";
+    $fathers = [];
     while ($row = $db->fetch($query)) {
+        $fathers_name = "";
+
+        if (array_key_exists($row['father'], $fathers)) {
+            $fathers[$row['cid']] = $fathers[$row['father']] . $row['name'] . "->";
+        } else {
+            $fathers[$row['cid']] = $row['name'] . "->";
+        }
+        $row['father'] ? $fathers_name = $fathers[$row['father']] : null;
+
         if (($row['admin'] == 1 && $admin == 1) || ($row['admin'] == 0)) {
             if (($news_data != null) && ($row['cid'] == $news_data['category']) && $row['father'] != 0) {
-                $select .= "<option selected value='{$row['cid']}'>{$row['name']}</option>";
+                $select .= "<option selected value='{$row['cid']}'>$fathers_name {$row['name']}</option>";
             } else if ($row['father'] != 0) {
-                $select .= "<option value='{$row['cid']}'>{$row['name']}</option>";
+
+                $select .= "<option value='{$row['cid']}'>$fathers_name {$row['name']}</option>";
             }
         }
     }
@@ -38,7 +49,7 @@ function news_get_categories() {
     } else {
         $lang_id = $config['WEB_LANG_ID'];
     }
-    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id"));
+    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id"), "ORDER by father");
 
     return $query;
 }
