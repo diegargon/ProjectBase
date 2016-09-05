@@ -72,15 +72,14 @@ function get_news($news_select, $xtr_data = null) {
     }
     $childs_id = "";
     if (!empty($news_select['get_childs'])) {
-        $childs_id = getCatChildsID($news_select['category']);
+        $childs_id = getCatChildsID($news_select['category'], $lang_id);
     }
     if ($news_select['excl_firstcat_featured'] && !empty($news_select['category'])) {
         $featured_ary = array(
             "featured" => 1,
             "page" => 1,
             "lang_id" => "$lang_id",
-        );
-        //$featured_ary['category'] = $news_select['category'];
+        );        
         $featured_ary['category'] = array("value" => "({$news_select['category']}$childs_id)", "operator" => "IN");
         $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT 1");
         $featured_news = $db->fetch($featured_query);
