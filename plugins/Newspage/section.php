@@ -15,6 +15,9 @@ $tpl->addto_tplvar("ADD_HEADER_END", cat_menu());
 if (empty($category_name = S_GET_TEXT_UTF8("section")) || preg_match("/\s+/", $category_name)) {
     return news_error_msg("L_NEWS_E_SEC_NOEXISTS");
 }
+$cat_list = explode(".", $category_name);
+$category_name = end($cat_list);
+
 if (!$category = getCatIDbyName($category_name)) {
     return news_error_msg("L_NEWS_E_SEC_NOEXISTS");
 }
