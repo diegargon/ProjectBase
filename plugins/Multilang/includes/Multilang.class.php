@@ -12,6 +12,11 @@ class Multilang {
         $this->get_site_langs();
     }
 
+    function getSessionlang() {
+        global $config;
+        $lid = $this->iso_to_id($config['WEB_LANG']);
+        return $this->site_langs[$lid];
+    }
     function get_nav() { 
         global $config;
 
@@ -63,9 +68,9 @@ class Multilang {
         }
         while($lang_row = $db->fetch($query)) {
             if ($active) { 
-                $this->active_site_langs[] = $lang_row;
+                $this->active_site_langs[$lang_row['lang_id']] = $lang_row;
             } else {
-                $this->site_langs[] = $lang_row;
+                $this->site_langs[$lang_row['lang_id']] = $lang_row;
             }
         }
         $db->free($query);
