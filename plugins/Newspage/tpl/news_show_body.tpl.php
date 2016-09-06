@@ -20,13 +20,11 @@
                 <?php !empty($data['title']) ? print $data['title'] : false ?>
             </h1>                
             <?php if (!empty($data['news_admin_nav'])) { ?>
-                <div id='adm_nav_container'>
-                    <nav id='adm_nav'>
-                        <ul>
-                            <?php print $data['news_admin_nav'] ?>
-                        </ul>
-                    </nav>
-                </div>
+                <nav id='adm_nav'>
+                    <ul>
+                        <?php print $data['news_admin_nav'] ?>
+                    </ul>
+                </nav>
             <?php } ?>
             <div id="news_info">
                 <?php if (!empty($data['author_avatar'])) { ?> 
