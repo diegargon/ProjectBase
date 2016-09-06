@@ -15,5 +15,5 @@ function MysqlDB_Init() {
 
     !isset($db) ? $db = new Database : false;
 
-    register_action("finalize", array($db, "close"), "5");
+    //register_action("finalize", array($db, "close"), "5"); we use destructor now;
 }
