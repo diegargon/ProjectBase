@@ -12,11 +12,15 @@ class Multilang {
         $this->get_site_langs();
     }
 
-    function getSessionlang() {
+    function getSessionLang() {
         global $config;
-        $lid = $this->iso_to_id($config['WEB_LANG']);
-        return $this->site_langs[$lid];
+        $lid = $this->iso_to_id($config['WEB_LANG']);        
+        return $this->active_site_langs[$lid];
     }
+    function getSessionLangId() {
+        $s_lang = $this->getSessionLang();
+        return $s_lang['lang_id'];
+    }    
     function get_nav() { 
         global $config;
 
