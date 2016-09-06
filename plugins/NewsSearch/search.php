@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -14,7 +15,10 @@ if (!empty($_POST['searchText'])) {
         NS_msgbox($msg);
     }
     $searchText = $db->escape_strip($searchText);
-    $query = $db->search("news", "title lead text", $searchText, array("lang" => $config['WEB_LANG']), " LIMIT {$config['NS_RESULT_LIMIT']} ");
+    $where_ary['lang'] = $config['WEB_LANG'];
+    $config['NEWS_MODERATION'] ? $where_ary['moderation'] = 0 : null;
+
+    $query = $db->search("news", "title lead text", $searchText, $where_ary, " LIMIT {$config['NS_RESULT_LIMIT']} ");
 
     if ($query) {
         NS_build_result_page($query);
@@ -31,7 +35,9 @@ if (!empty($_GET["searchTag"])) {
         NS_msgbox($msg);
     }
     $searchTag = $db->escape_strip($searchTag);
-    $query = $db->search("news", "tags", $searchTag, array("lang" => $config['WEB_LANG']), " LIMIT {$config['NS_RESULT_LIMIT']} ");
+    $where_ary['lang'] = $config['WEB_LANG'];
+    $config['NEWS_MODERATION'] ? $where_ary['moderation'] = 0 : null;
+    $query = $db->search("news", "tags", $searchTag, $where_ary, " LIMIT {$config['NS_RESULT_LIMIT']} ");
     if ($query) {
         NS_build_result_page($query);
     } else {
