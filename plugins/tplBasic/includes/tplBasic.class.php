@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -47,7 +48,12 @@ class TPL {
         $web_body = do_action("get_body");
         //END BODY
         //BEGIN FOOTER
+        if (defined('SQL') && $config['STATS_QUERYS']) {
+            global $db;
+            $this->tpldata['ADD_TO_FOOTER'] .= "<p class='center'>Querys(" . $db->num_querys() . ")</p>";
+        }
         $this->tpldata['ADD_TO_FOOTER'] .= do_action("add_to_footer");
+
         $web_footer = do_action("get_footer");
         //END FOOTER
 

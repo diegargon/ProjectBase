@@ -1,12 +1,19 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
 
 class Database {
 
-    var $dblink;
+    private $dblink;
+    private $query_stats;
+
+    function __construct() {
+        $this->connect();
+        $this->query_stats = 0;
+    }
 
     function connect() {
         $this->dblink = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB);
@@ -20,6 +27,7 @@ class Database {
     }
 
     function query($string) {
+        $this->query_stats++;
         $query = $this->dblink->query($string) or $this->dbdie($query);
         return $query;
     }
@@ -195,6 +203,10 @@ class Database {
         $insert_data = array_merge($where_ary, $set_ary);
         $set_data = $this->set_process($set_ary);
         $this->insert($table, $insert_data, "ON DUPLICATE KEY UPDATE $set_data");
+    }
+
+    function num_querys() {
+        return $this->query_stats;
     }
 
     private function insert_process($insert_data) {

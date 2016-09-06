@@ -9,6 +9,6 @@
     "depends": "",
     "autostart": 1,
     "priority": 5,
-    "optional": "",
+    "optional": "SQL1",
     "conflicts": ""
 }
