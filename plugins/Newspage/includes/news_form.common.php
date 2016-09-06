@@ -173,7 +173,7 @@ function news_form_extra_check(&$news_data) {
 function Newspage_FormScript() {
     global $tpl;
 
-    $tpl->AddScriptFile("standard", "jquery.min", "TOP", null);
+    $tpl->AddScriptFile("standard", "jquery", "TOP", null);
     $tpl->AddScriptFile("Newspage", "newsform", "BOTTOM");
     $tpl->AddScriptFile("Newspage", "editor", "BOTTOM");
 }

@@ -6,7 +6,7 @@
 
 function SMBasic_ProfileScript() {
     global $tpl;
-    $tpl->AddScriptFile("standard", "jquery.min", "BOTTOM");
+    $tpl->AddScriptFile("standard", "jquery", "BOTTOM");
     $tpl->AddScriptFile("SMBasic", "profile", "BOTTOM");
 }
 

@@ -133,6 +133,6 @@ function SMBasic_randomPassword() {
 function SMBasic_LoginScript() {
     global $tpl;
 
-    $tpl->AddScriptFile("standard", "jquery.min", "TOP");
+    $tpl->AddScriptFile("standard", "jquery", "TOP");
     $tpl->AddScriptFile("SMBasic", "login", "BOTTOM");
 }

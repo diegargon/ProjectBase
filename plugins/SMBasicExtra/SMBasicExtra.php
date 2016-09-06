@@ -15,7 +15,7 @@ function SMBasic_Extra_Show() {
     $tpl->getCSS_filePath("SMBasicExtra");
 
     if (!isset($_GET['viewprofile'])) {
-        $tpl->AddScriptFile("standard", "jquery.min", "BOTTOM");
+        $tpl->AddScriptFile("standard", "jquery", "BOTTOM");
         $tpl->AddScriptFile("SMBasicExtra", "profile_extra", "BOTTOM");
         $user = $sm->getSessionUser();
         $userEx_data = uXtra_get($user['uid']);

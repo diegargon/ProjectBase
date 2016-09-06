@@ -21,7 +21,7 @@ function NewsVote_init() {
 
 function newsvote_common_scripts() {
     global $tpl;
-    $tpl->AddScriptFile("standard", "jquery.min", "BOTTOM");
+    $tpl->AddScriptFile("standard", "jquery", "BOTTOM");
     $tpl->AddScriptFile("NewsVote", "newsvote", "BOTTOM");
 }
 

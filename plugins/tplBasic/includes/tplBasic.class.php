@@ -9,7 +9,20 @@ class TPL {
     private $tpldata;
     private $scripts = [];
     private $standard_remote_scripts = array(//TODO LOAD LIST
-        "jquery.min" => "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js",
+        "jquery" => "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js",
+        "font-awesome" => "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css",
+        "bootstrap" => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
+        "angular" => "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js",
+        "dogo" => "https://ajax.googleapis.com/ajax/libs/dojo/1.11.2/dojo/dojo.js",
+        "ext-core" => "https://ajax.googleapis.com/ajax/libs/ext-core/3.1.0/ext-core.js",
+        "hammer" => "https://ajax.googleapis.com/ajax/libs/hammerjs/2.0.8/hammer.min.js",
+        "mootools" => "https://ajax.googleapis.com/ajax/libs/mootools/1.6.0/mootools.min.js",
+        "prototype" => "https://ajax.googleapis.com/ajax/libs/prototype/1.7.3.0/prototype.js",
+        "scriptaculous" => "https://ajax.googleapis.com/ajax/libs/scriptaculous/1.9.0/scriptaculous.js",
+        "spf" => "https://ajax.googleapis.com/ajax/libs/spf/2.4.0/spf.js",
+        "swfobject" => "https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
+        "three" => "https://ajax.googleapis.com/ajax/libs/threejs/r76/three.min.js",
+        "webfont" => "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js",
     );
     private $css_cache_filepaths;
     private $css_cache_onefile;
