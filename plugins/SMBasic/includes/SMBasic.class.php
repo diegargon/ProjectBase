@@ -28,7 +28,6 @@ class SessionManager {
     }
 
     function getSessionUser() {
-        empty($this->user) ? $this->setSessionUser() : false;
         return $this->user;
     }
 
@@ -136,7 +135,7 @@ class SessionManager {
         );
 
         $db->insert("sessions", $q_ary);
-        $db->update("users", array("last_login" => date("Y-m-d H:i:s", time())), array("uid" => $user['uid']));
+        $db->update("users", array("last_login" => date("Y-m-d H:i:s", time())), array("uid" => $user['uid']));        
         
     }
 
@@ -182,13 +181,18 @@ class SessionManager {
         $sid = S_SESSION_CHAR_AZNUM("sid");
         $s_uid = S_SESSION_INT("uid");
         if(empty($sid) || empty($s_uid)) {
+            $this->destroy();
             return false;
         }
         $query = $db->select_all("sessions", array("session_id" => "$sid", "session_uid" => "$s_uid"), "LIMIT 1");
 
         if ($db->num_rows($query) <= 0) {
+            $this->destroy();
             return false;
         }
+        
+        $this->user = $this->getUserbyID($s_uid);
+        
         $session = $db->fetch($query);
         $db->free($query);
         if ($config['smbasic_check_ip'] == 1 && (!$this->check_IP($session['session_ip']))) {
