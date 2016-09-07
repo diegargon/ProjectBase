@@ -36,8 +36,8 @@ class SessionManager {
         global $db; 
         
         //checkSession before set and use on init set Session and not checksession?        
-        ($uid = S_SESSION_INT("uid", 11, 1)) == false ? $this->user = false : false;
-        if (empty($uid)) {
+        if ( ($uid = S_SESSION_INT("uid", 11, 1)) == false) {
+            $this->user = false;
             return false;
         }
         $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
