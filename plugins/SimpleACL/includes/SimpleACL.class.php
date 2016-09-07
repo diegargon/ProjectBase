@@ -144,12 +144,13 @@ class ACL {
     }
 
     private function SetUserRoles() {
-        global $db;
+        global $db, $sm;
 
-        if (!$uid = S_VAR_INTEGER($_SESSION['uid'], 11, 0)) { //TODO change to a global user variable?                                
+        if (!$user = $sm->getSessionUser()) {
             return false;
         }
-        $query = $db->select_all("acl_users", array("uid" => "$uid"));
+
+        $query = $db->select_all("acl_users", array("uid" => "{$user['uid']}"));
         if ($db->num_rows($query) > 0) {
             while ($row = $db->fetch($query)) {
                 $this->user_roles[] = $row;
