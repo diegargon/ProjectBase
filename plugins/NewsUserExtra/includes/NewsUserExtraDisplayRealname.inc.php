@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -15,15 +16,15 @@ function NewsXtra_ProfileChange(& $set_ary) {
 }
 
 function NewsXtra_Modify_N_DisplayName(& $news_data) {
-    global $config;
-    $authorEx_data = uXtra_get($news_data['author_id']);
+    global $config, $UXtra;
+    $authorEx_data = $UXtra->getById($news_data['author_id']);
     if ($authorEx_data['realname_display']) {
         $news_data['author'] = $authorEx_data['realname'];
         $config['PAGE_AUTHOR'] = $authorEx_data['realname'];
     }
 
     if (!empty($news_data['translator_id'])) {
-        $transEx_data = uXtra_get($news_data['translator_id']);
+        $transEx_data = $UXtra->getById($news_data['translator_id']);
         if ($transEx_data['realname_display']) {
             $news_data['translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$transEx_data['uid']}'>{$transEx_data['realname']}</a>";
         }
@@ -31,7 +32,8 @@ function NewsXtra_Modify_N_DisplayName(& $news_data) {
 }
 
 function NewsXtra_Modify_C_DisplayName(& $comment) {
-    $userEx_data = uXtra_get($comment['uid']);
+    global $UXtra;
+    $userEx_data = $UXtra->getById($comment['uid']);
     if ($userEx_data['realname_display']) {
         $comment['username'] = $userEx_data['realname'];
     }

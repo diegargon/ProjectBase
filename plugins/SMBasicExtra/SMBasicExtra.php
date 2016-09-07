@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -10,7 +11,7 @@ function SMBasicExtra_init() {
 }
 
 function SMBasic_Extra_Show() {
-    global $tpl, $sm, $tpl;
+    global $tpl, $sm, $tpl, $UXtra;
     includePluginFiles("SMBasicExtra");
     $tpl->getCSS_filePath("SMBasicExtra");
 
@@ -18,13 +19,13 @@ function SMBasic_Extra_Show() {
         $tpl->AddScriptFile("standard", "jquery", "BOTTOM");
         $tpl->AddScriptFile("SMBasicExtra", "profile_extra", "BOTTOM");
         $user = $sm->getSessionUser();
-        $userEx_data = uXtra_get($user['uid']);
+        $userEx_data = $UXtra->getById($user['uid']);
         do_action("profile_xtra_show", $userEx_data);
         $tpl->addto_tplvar("SMB_PROFILE_FIELDS_BOTTOM", $tpl->getTPL_file("SMBasicExtra", "profile_fields", $userEx_data));
         register_action("SMBasic_ProfileChange", "SMB_Ex_ProfileChange");
-    } else if ($vid = S_GET_INT("viewprofile", 11, 1)) {
+    } else if (($vid = S_GET_INT("viewprofile", 11, 1))) {
         $v_user = $sm->getUserByID($vid);
-        $userEx_data = uXtra_get($vid);
+        $userEx_data = $UXtra->getById($vid);
         if (!empty($userEx_data['email_public'])) {
             $profile_data['profile_title'] = "L_EMAIL";
             $profile_data['profile_content'] = $v_user['email'];
