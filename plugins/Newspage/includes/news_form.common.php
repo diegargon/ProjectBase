@@ -45,7 +45,7 @@ function news_get_categories() {
     global $config, $ml, $db;
 
     if (defined('MULTILANG')) {
-        $lang_id = $ml->iso_to_id($config['WEB_LANG']);
+        $lang_id = $ml->getSessionLangId();
     } else {
         $lang_id = $config['WEB_LANG_ID'];
     }

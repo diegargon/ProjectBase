@@ -18,8 +18,7 @@ class Multilang {
         return $this->active_site_langs[$lid];
     }
     function getSessionLangId() {
-        $s_lang = $this->getSessionLang();
-        return $s_lang['lang_id'];
+        return $this->iso_to_id($config['WEB_LANG']);
     }    
     function get_nav() { 
         global $config;
