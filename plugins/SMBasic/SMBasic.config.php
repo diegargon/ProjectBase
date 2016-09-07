@@ -8,6 +8,7 @@ global $config;
 define('SM', true); //SESSION MANAGER TRUE
 //define('SM_DEBUG', true);
 
+$config['smbasic_php_buildin_session'] = 1;
 $config['smbasic_session_persistence'] = 1;
 $config['smbasic_max_email'] = 60;
 $config['sm_max_password'] = 60;

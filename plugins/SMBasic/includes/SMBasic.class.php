@@ -148,23 +148,31 @@ class SessionManager {
         setcookie($cookie_name_uid, $uid, $cookie_expire, '/');
     }
 
-    function checkCookies() {
-        global $config, $db;
-
-        $cookie_uid = S_COOKIE_INT("{$config['smbasic_cookie_prefixname']}uid", 11);
-        $cookie_sid = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefixname']}sid", 32);
+    function getCookies() {
+        global $config;
+        
+        $cookie['uid'] = S_COOKIE_INT("{$config['smbasic_cookie_prefixname']}uid", 11);
+        $cookie['sid'] = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefixname']}sid", 32);
 
         if ($cookie_uid == false || $cookie_sid == false) {
             return false;
         }
+        return $cookies;
+    }
+    function checkCookies() {
+        global $db;
 
-        $query = $db->select_all("sessions", array("session_id" => "$cookie_sid", "session_uid" => "$cookie_uid"), "LIMIT 1");
+        if (!$cookies = $this->getCookies()) {
+            return false;
+        }
+
+        $query = $db->select_all("sessions", array("session_id" => "{$cookie['sid']}", "session_uid" => "{$cookie['uid']}"), "LIMIT 1");
         if( $db->num_rows($query) <= 0 ) {
             $this->destroy();
             return false;
         }
 
-        if (($user = $this->getUserbyID($cookie_uid)) != false) {
+        if (($user = $this->getUserbyID($cookie['uid'])) != false) {
             $this->setSession($user);
             $this->setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11)); //New sid by setSession -> new cookies
             return true;
@@ -228,5 +236,16 @@ class SessionManager {
         $user_agent = S_SERVER_USER_AGENT();
         return ($user_agent == $db_user_agent) ? true : false;
     }
-
+    function getSessionSID() {
+        global $config;
+        
+        if($config['smbasic_php_buildin_session']) {
+            $sid = S_SESSION_CHAR_AZNUM("sid");
+        } else {
+            $cookies = $this->getCookies();
+            $sid = $cookies['sid'];
+        }
+        
+        return $sid;
+    }
 }

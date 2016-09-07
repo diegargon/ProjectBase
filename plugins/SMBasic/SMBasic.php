@@ -32,7 +32,7 @@ function SMBasic_Init() {
             }
         }
     }
-    if (defined('SM_DEBUG') && ($sm->getSessionUser() != false)) {
+    if (defined('SM_DEBUG')) {
         SMBasic_sessionDebugDetails();
     }
     register_action("nav_element", "SMBasic_navLogReg");

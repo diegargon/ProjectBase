@@ -15,16 +15,21 @@ function SMBasic_encrypt_password($password) {
 }
 
 function SMBasic_sessionDebugDetails() {
-    global $db;
+    global $db, $sm;
 
+    $user = $sm->getSessionUser();
+    
+    if(!$user) { 
+        return false;
+    }
     print_debug("<hr><br/><h2>Session Details</h2>", "SM_DEBUG");
     print_debug("Time Now: " . format_date(time(), true) . "", "SM_DEBUG");
     print_debug("Session VAR ID: {$_SESSION['uid']}", "SM_DEBUG");
     print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
 
-    $s_uid = S_SESSION_INT("uid");
-    $s_sid = S_SESSION_CHAR_AZNUM("sid");
-    $query = $db->select_all("sessions", array("session_uid" => "$s_uid", "session_id" => "$s_sid"), "LIMIT 1");
+    $s_sid = $sm->getSessionSID();
+    
+    $query = $db->select_all("sessions", array("session_uid" => "{$user['uid']}", "session_id" => "$s_sid"), "LIMIT 1");
     $session = $db->fetch($query);
     print_debug("Session DB IP: {$session['session_ip']}", "SM_DEBUG");
     print_debug("Session DB Browser: {$session['session_browser']}", "SM_DEBUG");
