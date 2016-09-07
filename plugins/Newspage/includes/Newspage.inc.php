@@ -13,12 +13,12 @@ function news_format_source($link) {
     } else {
         return false;
     }
+
     return $result;
 }
 
 function get_news_byId($nid, $lang_id, $page = null) {
     global $config, $acl_auth, $db;
-
     empty($page) ? $page = 1 : false;
 
     $where_ary = array("nid" => "$nid", "lang_id" => "$lang_id", "page" => "$page");
@@ -119,71 +119,12 @@ function news_error_msg($error) {
     return false;
 }
 
-function cat_menu() {
-    global $tpl;
+function news_cat_menu() {
+    global $tpl, $ctgs;
+    $cat_path = S_GET_TEXT_UTF8("section");
 
-    $menu_data['cat_list'] = get_fathers_cat_list();
-    !empty($_GET['section']) ? $menu_data['cat_sub_list'] = get_childs_cat_list() : null;
+    $menu_data['cat_list'] = $ctgs->root_cats("Newspage");
+    !empty($cat_path) ? $menu_data['cat_sub_list'] = $ctgs->childs_of_cat("Newspage", $cat_path) : null;
 
     return $tpl->getTPL_file("Newspage", "news_cat_menu", $menu_data);
-}
-
-function get_fathers_cat_list() {
-    global $db, $ml, $config, $LANGDATA;
-
-    $cat_data = "";
-
-    if (defined('MULTILANG')) {
-        $lang_id = $ml->iso_to_id($config['WEB_LANG']);
-    } else {
-        $lang_id = $config['WEB_LANG_ID'];
-    }
-
-    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => 0), "ORDER BY weight ASC");
-    while ($cat = $db->fetch($query)) {
-        $cat_display_name = preg_replace('/\_/', ' ', $cat['name']);
-        $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$cat['name']}'>$cat_display_name</a></li>";
-    }
-    return $cat_data;
-}
-
-function get_childs_cat_list() {
-    global $db, $ml, $config, $LANGDATA;
-
-    $list_cats = S_GET_TEXT_UTF8("section");
-
-    if (empty($list_cats)) {
-        return false;
-    }
-    $cats_explode = explode(".", $list_cats);
-    $cat_data = "";
-
-    if (defined('MULTILANG')) {
-        $lang_id = $ml->iso_to_id($config['WEB_LANG']);
-    } else {
-        $lang_id = $config['WEB_LANG_ID'];
-    }
-
-    $cat_id = getCatIDbyName_LIST($list_cats);
-
-    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id", "father" => "$cat_id"), "ORDER BY weight ASC");
-    if ($db->num_rows($query) > 0) {
-        if (count($cats_explode) > 1) {
-            array_pop($cats_explode);
-            $p_cats = implode(".", $cats_explode);
-            $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/$p_cats'>[<<]</a></li>";
-        }
-        while ($cat = $db->fetch($query)) {
-            $cat_display_name = preg_replace('/\_/', ' ', $cat['name']);
-            $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/$list_cats.{$cat['name']}'>$cat_display_name</a></li>";
-        }
-    } else {
-        if (count($cats_explode) > 1) {
-            array_pop($cats_explode);
-            $list_cats = implode(".", $cats_explode);
-            $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/$list_cats'>[<<]</a></li>";
-        }
-    }
-
-    return !empty($cat_data) ? $cat_data : false;
 }

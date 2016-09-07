@@ -5,13 +5,13 @@
 !defined('IN_WEB') ? exit : true;
 ?>
 
-<div id="cat_menu">
+<div id="news_cat_menu">
     <ul>
         <?php !empty($data['cat_list']) ? print $data['cat_list'] : null; ?>
     </ul>
 </div>
 <?php if (!empty($data['cat_sub_list'])) { ?>
-    <div id="cat_sub_menu">
+    <div id="news_cat_submenu">
         <ul>
             <?php !empty($data['cat_sub_list']) ? print $data['cat_sub_list'] : null; ?>
         </ul>

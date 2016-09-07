@@ -29,30 +29,19 @@ function news_layout_switcher() {
 }
 
 function get_news($news_select, $xtr_data = null) {
-
-    global $config, $db, $tpl, $ml, $LANGDATA;
+    global $config, $db, $tpl, $ml, $LANGDATA, $ctgs;
     $content = "";
 
     !isset($news_select['limit']) ? $news_select['limit'] = 0 : null;
-//    !isset($news_select['featured']) ? $news_select['featured'] = 0 : null;
     !isset($news_select['headlines']) ? $news_select['headlines'] = 0 : null;
     !isset($news_select['cathead']) ? $news_select['cathead'] = 0 : null;
     !isset($news_select['excl_portal_featured']) ? $news_select['excl_portal_featured'] = 0 : null;
     !isset($news_select['excl_firstcat_featured']) ? $news_select['excl_firstcat_featured'] = 0 : null;
 
-    $where_ary = array(
-        "page" => 1,
-    );
+    $where_ary['page'] = 1;
 
     if (defined('MULTILANG')) {
-        $site_langs = $ml->get_site_langs();
-        foreach ($site_langs as $site_lang) {
-            if ($site_lang['iso_code'] == $config['WEB_LANG']) {
-                $lang_id = $site_lang['lang_id'];
-                $where_ary['lang_id'] = $lang_id;
-                break;
-            }
-        }
+        $lang_id = $where_ary['lang_id'] = $ml->getSessionLangId();
     } else {
         $lang_id = $config['WEB_LANG_ID'];
     }
@@ -72,14 +61,14 @@ function get_news($news_select, $xtr_data = null) {
     }
     $childs_id = "";
     if (!empty($news_select['get_childs'])) {
-        $childs_id = getCatChildsID($news_select['category'], $lang_id);
+        $childs_id = $ctgs->getCatChildsID("Newspage", $news_select['category']);
     }
     if ($news_select['excl_firstcat_featured'] && !empty($news_select['category'])) {
         $featured_ary = array(
             "featured" => 1,
             "page" => 1,
             "lang_id" => "$lang_id",
-        );        
+        );
         $featured_ary['category'] = array("value" => "({$news_select['category']}$childs_id)", "operator" => "IN");
         $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT 1");
         $featured_news = $db->fetch($featured_query);
@@ -230,7 +219,7 @@ function news_getPortalColLayout($columnConfigs) {
     $content = "";
 
     foreach ($columnConfigs as $func => $columnConfig) {
-        if (function_exists($columnConfig['func']) && news_func_allowed($columnConfig['func'])) { 
+        if (function_exists($columnConfig['func']) && news_func_allowed($columnConfig['func'])) {
             $content .= $columnConfig['func']($columnConfig);
         }
     }
@@ -239,11 +228,11 @@ function news_getPortalColLayout($columnConfigs) {
 }
 
 function news_func_allowed($func) {
-    $func_allow = array (
+    $func_allow = array(
         "get_news" => 1,
     );
     do_action("news_func_allow", $func_allow);
-    
+
     if (array_key_exists($func, $func_allow) && $func_allow[$func] == 1) {
         return true;
     } else {

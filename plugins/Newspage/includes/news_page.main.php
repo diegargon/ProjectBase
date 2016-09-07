@@ -90,7 +90,7 @@ function news_show_page() {
 
     do_action("news_show_page", $news_data);
 
-    $tpl->addto_tplvar("ADD_HEADER_END", cat_menu());
+    $tpl->addto_tplvar("ADD_HEADER_END", news_cat_menu());
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body", $news_data));
 }
 
@@ -150,14 +150,14 @@ function news_nav_options($news) { //TODO Use Template
     } else if ($news['featured'] == 1) {
         $content .= "<li><a class='link_active' rel='nofollow' href=''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";
     }
-    if ($admin && $news['page'] == 1 && $news['frontpage'] == 1 ) {
-         $content .= "<li><a class='link_active' rel='nofollow' href='$news_url&news_frontpage=0'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
+    if ($admin && $news['page'] == 1 && $news['frontpage'] == 1) {
+        $content .= "<li><a class='link_active' rel='nofollow' href='$news_url&news_frontpage=0'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
     } else if ($admin && $news['page'] == 1) {
         $content .= "<li><a rel='nofollow' href='$news_url&news_frontpage=1'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
-    } else if($news['frontpage'] == 1) {
+    } else if ($news['frontpage'] == 1) {
         $content .= "<li><a class='link_active' rel='nofollow' href=''>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
     }
-    
+
     if ($admin || $news['author'] == $user['username'] || !empty($news['translator'] && ($news['translator'] == $user['username']))) {
         $content .= "<li><a rel='nofollow' href='$news_url&newsedit=1'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
     }
@@ -168,8 +168,7 @@ function news_nav_options($news) { //TODO Use Template
 
     // TRANSLATE ADMIN, ANON IF, REGISTERED IF
     if (defined('MULTILANG')) {
-        if ($config['NEWS_ANON_TRANSLATE'] || $admin || (defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && $acl_auth->acl_ask("registered_all")) 
-                || (!defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && !empty($user))                
+        if ($config['NEWS_ANON_TRANSLATE'] || $admin || (defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && $acl_auth->acl_ask("registered_all")) || (!defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && !empty($user))
         ) {
             $content .= "<li><a rel='nofollow' href='$news_url&news_new_lang=1'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
         }
@@ -184,7 +183,7 @@ function news_nav_options($news) { //TODO Use Template
             $content .= "<li><a rel='nofollow' href='$news_url&news_delete=1&admin=1&backlink=home' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";
         }
     }
-    
+
     return $content;
 }
 
@@ -403,7 +402,7 @@ function getNewsCatBreadcrumb($news_data) {
         $categories[$cat_row['cid']] = $cat_row;
     }
     $news_cat_id = $news_data['category'];
-    
+
     $cat_list = "";
     $cat_check = $categories[$news_cat_id]['father'];
     do {
@@ -413,10 +412,10 @@ function getNewsCatBreadcrumb($news_data) {
 
     $cat_list = $cat_list . $categories[$news_cat_id]['name'];
     $cat_ary = explode(",", $cat_list);
-    
+
     $breadcrumb = "";
     $cat_path = "";
-    foreach($cat_ary as $cat) {
+    foreach ($cat_ary as $cat) {
         $cat_path .= $cat;
         !empty($breadcrumb) ? $breadcrumb .= $config['NEWS_BREADCRUMB_SEPARATOR'] : null;
         $cat = preg_replace('/\_/', ' ', $cat);

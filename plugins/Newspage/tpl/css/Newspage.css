@@ -471,7 +471,7 @@
     float:left;
     padding-right: 5px;
 }
-#cat_menu {
+#news_cat_menu {
     text-align: center;
     background: blue;
     border-left: 1px solid #000;
@@ -484,15 +484,15 @@
     color:white;
     background: linear-gradient(#55a0db, #1f6ba5);
 }
-#cat_menu ul {
+#news_cat_menu ul {
     padding:0px;
     margin:0px;
     /*margin-bottom: 4px;*/
 }
-#cat_menu li {
+#news_cat_menu li {
     display: inline;
 }
-#cat_menu li a {
+#news_cat_menu li a {
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -505,16 +505,16 @@
     background-color: transparent;
     height: 20px;
 }
-#cat_menu li a:hover {
+#news_cat_menu li a:hover {
     background: linear-gradient(#2f5d81, #0b2a42);
 }
-#cat_menu li a:active {
+#news_cat_menu li a:active {
     color: black;
     background: rgb(245, 245, 245) none repeat scroll 0% 0%;
     border-right: 1px solid #999999;
     border-left: 1px solid #999999;
 }
-#cat_sub_menu {
+#news_cat_submenu {
     text-align: center;
     background: #cccccc;
     border-left: 1px solid #000;
@@ -527,14 +527,14 @@
     color: #000;
     background: linear-gradient(#1f6ba5, #55a0db); 
 }
-#cat_sub_menu ul {
+#news_cat_submenu ul {
     padding:0px;
     margin:0px;
 }
-#cat_sub_menu li {
+#news_cat_submenu li {
     display: inline;
 }
-#cat_sub_menu li a {
+#news_cat_submenu li a {
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -546,7 +546,7 @@
     background-color: transparent;
     height: 20px;
 }
-#cat_sub_menu li a:hover {
+#news_cat_submenu li a:hover {
     background: linear-gradient(#2f5d81, #0b2a42);
 }
 /* ADMIN */
@@ -604,7 +604,6 @@
     left: 100%;
     z-index: 1; 
 }
-
 .breadcrumb li:first-child a {
     padding-left: 5px;
 }
