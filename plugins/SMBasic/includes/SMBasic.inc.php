@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -18,24 +19,29 @@ function SMBasic_sessionDebugDetails() {
     global $db, $sm;
 
     $user = $sm->getSessionUser();
-    
-    if(!$user) { 
+
+    if (!$user) {
         return false;
     }
     print_debug("<hr><br/><h2>Session Details</h2>", "SM_DEBUG");
     print_debug("Time Now: " . format_date(time(), true) . "", "SM_DEBUG");
-    print_debug("Session VAR ID: {$_SESSION['uid']}", "SM_DEBUG");
-    print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
-
+    if (isset($_SESSION)) {
+        print_debug("Session VAR ID: {$_SESSION['uid']}", "SM_DEBUG");
+        print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
+    } else {
+        print_debug("Session ins't set", "SM_DEBUG");
+    }
     $s_sid = $sm->getSessionSID();
-    
+
     $query = $db->select_all("sessions", array("session_uid" => "{$user['uid']}", "session_id" => "$s_sid"), "LIMIT 1");
     $session = $db->fetch($query);
-    print_debug("Session DB IP: {$session['session_ip']}", "SM_DEBUG");
-    print_debug("Session DB Browser: {$session['session_browser']}", "SM_DEBUG");
-    print_debug("Session DB Create: {$session['session_created']}", "SM_DEBUG");
-    print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) . "", "SM_DEBUG");
-    print_debug("Session DB Admin: {$session['session_admin']} ", "SM_DEBUG");
+    if ($session) {
+        print_debug("Session DB IP: {$session['session_ip']}", "SM_DEBUG");
+        print_debug("Session DB Browser: {$session['session_browser']}", "SM_DEBUG");
+        print_debug("Session DB Create: {$session['session_created']}", "SM_DEBUG");
+        print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) . "", "SM_DEBUG");
+        print_debug("Session DB Admin: {$session['session_admin']} ", "SM_DEBUG");
+    }
     print_debug("PHP Session expire: " . ini_get('session.gc_maxlifetime'), "SM_DEBUG");
     print_debug("Cookies State:", "SM_DEBUG");
     if (isset($_COOKIE)) {

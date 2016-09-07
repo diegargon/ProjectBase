@@ -1,5 +1,6 @@
- <?php
-/* 
+<?php
+
+/*
  *  Copyright @ 2016 Diego Garcia
  * 
  * do_action("encrypt_password") // Override/set for change default one
@@ -7,7 +8,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function SMBasic_Init() {
-    global $config, $sm;
+    global $sm;
 
     print_debug("SMBasic initialice", "PLUGIN_LOAD");
 
@@ -19,21 +20,14 @@ function SMBasic_Init() {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }
 
-    if ((S_SESSION_INT("uid") != false && S_SESSION_CHAR_AZNUM("sid") != false)) {
-        if (!($sm->checkSession())) {
-            print_debug("Check session failed on SMBasic_Init destroy session", "SM_DEBUG");
-            $sm->destroy();
-        }
+    if (!$sm->checkSession()) {
+        print_debug("Check session return false", "SM_DEBUG");
+        $sm->setAnonSession();
     } else {
-        if ($config['smbasic_session_persistence'] && !S_SESSION_INT("anon")) {
-            print_debug("Checkcookies trigged", "SM_DEBUG");
-            if ($sm->checkCookies() == false) {
-                $sm->setAnonSession();
-            }
-        }
+        print_debug("SMBasic: Check session OK", "SM_DEBUG");
     }
-    if (defined('SM_DEBUG')) {
-        SMBasic_sessionDebugDetails();
-    }
+
+    defined('SM_DEBUG') ? SMBasic_sessionDebugDetails() : null;
+
     register_action("nav_element", "SMBasic_navLogReg");
 }

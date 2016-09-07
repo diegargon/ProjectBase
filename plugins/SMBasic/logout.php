@@ -1,14 +1,12 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
 
 plugin_start("SMBasic");
 
-$user = $sm->getSessionUser();
+$sm->destroy();
 
-if ($user && $user['uid'] != 0) {
-    $sm->destroy();
-}
 header('Location: ./');

@@ -17,7 +17,7 @@
                 <input id="password" name="password" required="required" type="password"  placeholder="<?php print $LANGDATA['L_PASSWORD_EXAMPLE'] ?>" /> 
             </p>
             <p class="rememberme">                                 
-                <?php if ($config['smbasic_session_persistence']) { ?>
+                <?php if ($config['smbasic_persistence']) { ?>
                     <input  type="checkbox" name="rememberme" id="rememberme" value="2" /> 
                     <label id="label_rememberme" for="rememberme"><?php print $LANGDATA['L_REMEMBERME'] ?></label>
                 <?php } ?>

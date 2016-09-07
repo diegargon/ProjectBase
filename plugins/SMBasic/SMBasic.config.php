@@ -6,10 +6,11 @@
 
 global $config;
 define('SM', true); //SESSION MANAGER TRUE
-//define('SM_DEBUG', true);
+define('SM_DEBUG', true);
 
-$config['smbasic_php_buildin_session'] = 1;
-$config['smbasic_session_persistence'] = 1;
+$config['smbasic_php_buildin_session'] = 1; //use build in or not
+$config['smbasic_session_start'] = 0; //start session_start use or not php buildin for session manager
+$config['smbasic_persistence'] = 1;
 $config['smbasic_max_email'] = 60;
 $config['sm_max_password'] = 60;
 $config['sm_min_password'] = 8;
@@ -21,7 +22,7 @@ $config['smbasic_public_salt'] = "4455";
 //$config['smbasic_cookie_domain'] = "envigo.net";
 $config['smbasic_session_expire'] = 86400;
 $config['smbasic_cookie_expire'] = 86400;
-$config['smbasic_cookie_prefixname'] = "projectbase_";
+$config['smbasic_cookie_prefix'] = "projectbase_";
 $config['smbasic_check_user_agent'] = 0; // activate give problems on movile devices
 $config['smbasic_check_ip'] = 1;
 $config['smbasic_need_username'] = 1;

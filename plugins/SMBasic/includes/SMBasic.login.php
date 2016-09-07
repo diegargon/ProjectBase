@@ -23,10 +23,8 @@
                 if ($user['disable'] == 1) {
                     die('[{"status": "error", "msg": "' . $LANGDATA['L_SM_E_DISABLE'] . '"}]');
                 } else {
-                    $sm->setSession($user);
-                    if (($config['smbasic_session_persistence']) && !empty($_POST['rememberme'])) {
-                        $sm->setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11));
-                    }
+                    !empty($_POST['rememberme']) ? $rememberme = 1 : $rememberme = 0;                    
+                    $sm->setUserSession($user, $rememberme);
                     die('[{"status": "ok", "msg": "' . $config['WEB_URL'] . '"}]');
                 }
             } else {
