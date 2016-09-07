@@ -12,7 +12,7 @@ class SessionManager {
 
     function __construct() {
         global $config;
-        $config['smbasic_php_buildin_session'] || $config['smbasic_session_start'] ? session_start() : false;
+        $config['smbasic_default_session'] || $config['smbasic_session_start'] ? session_start() : false;
     }
 
     function getUserbyID($uid) {
@@ -57,7 +57,7 @@ class SessionManager {
     function getSessionSID() {
         global $config;
 
-        if ($config['smbasic_php_buildin_session']) {
+        if ($config['smbasic_default_session']) {
             $sid = S_SESSION_CHAR_AZNUM("sid");
         } else {
             $cookies = $this->getCookies();
@@ -81,7 +81,7 @@ class SessionManager {
             return true;
         }
 
-        if ($config['smbasic_php_buildin_session']) {
+        if ($config['smbasic_default_session']) {
             return $this->check_phpbuildin_session();
         } else {
             return $this->check_custom_session();
@@ -98,12 +98,12 @@ class SessionManager {
         //TODO PHP7 supports change session expire DOIT, <7 will destroy and use default 20m
         $session_expire = time() + $config['smbasic_session_expire'];
 
-        if ($config['smbasic_php_buildin_session']) {
+        if ($config['smbasic_default_session']) {
             $_SESSION['uid'] = $user['uid'];
             $_SESSION['sid'] = $sid;
         }
 
-        if (!$config['smbasic_php_buildin_session'] || ($config['smbasic_persistence'] && $remember)) {
+        if (!$config['smbasic_default_session'] || ($config['smbasic_persistence'] && $remember)) {
             $ip = $db->escape_strip(S_SERVER_REMOTE_ADDR());
             $user_agent = $db->escape_strip(S_SERVER_USER_AGENT());
 
@@ -157,7 +157,7 @@ class SessionManager {
         setcookie($cookie_name_sid, 0, time() - 3600, '/');
         setcookie($cookie_name_uid, 0, time() - 3600, '/');
         setcookie($cookie_name_anon, 0, time() - 3600, '/');
-        $config['smbasic_php_buildin_session'] || $config['smbasic_session_start'] ? setcookie('phpsessid', 0, time() - 3600) : false;
+        $config['smbasic_default_session'] || $config['smbasic_session_start'] ? setcookie('phpsessid', 0, time() - 3600) : false;
     }
 
     function setCookies($sid, $uid, $remember) {
@@ -209,7 +209,7 @@ class SessionManager {
     function checkAnonSession() {
         global $config;
 
-        if ($config['smbasic_php_buildin_session']) {
+        if ($config['smbasic_default_session']) {
             print_debug("SMBasic: Checking if anon (buildin)", "SM_DEBUG");
             return isset($_SESSION['anonymous']) ? true : false;
         } else {
@@ -222,7 +222,7 @@ class SessionManager {
     function setAnonSession() {
         global $config;
 
-        if ($config['smbasic_php_buildin_session']) {
+        if ($config['smbasic_default_session']) {
             print_debug("SMBasic: Setting session as anonymous ", "SM_DEBUG");
             $this->clearCookies();
             $_SESSION = [];
@@ -238,7 +238,7 @@ class SessionManager {
     function unsetAnonSession() {
         global $config;
 
-        if ($config['smbasic_php_buildin_session']) {
+        if ($config['smbasic_default_session']) {
             print_debug("SMBasic: Unsetting anonymous session ", "SM_DEBUG");
             unset($_SESSION['anonymous']);
         } else {
@@ -359,6 +359,22 @@ class SessionManager {
         $db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
 
         return $session;
+    }
+
+    private function regenerate_sid() {
+        global $config, $db, $sm;
+        if ($config['smbasic_default_session'] || $config['smbasic_session_start']) {
+            session_regenerate_id();
+        }
+        if (!$config['smbasic_default_session'] || $config['smbasic_persistence']) {
+            if ((!$user = $sm->getSessionUser())) {
+                return false;
+            }
+            $new_sid = $this->createSID();
+            $next_expire = time() + $config['smbasic_session_expire'];
+            print_debug("Renereate SID and Update session expire on user {$user['username']}", "SM_DEBUG");
+            $db->update("sessions", array("session_expire" => "$next_expire", "session_id" => "$new_sid"), array("session_uid" => "{$user['uid']}"), "LIMIT 1");
+        }
     }
 
     private function check_extra($check) {

@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -8,7 +9,7 @@ global $config;
 define('SM', true); //SESSION MANAGER TRUE
 define('SM_DEBUG', true);
 
-$config['smbasic_php_buildin_session'] = 1; //use build in or not
+$config['smbasic_default_session'] = 1; //use php build in or not
 $config['smbasic_session_start'] = 0; //start session_start use or not php buildin for session manager
 $config['smbasic_persistence'] = 1;
 $config['smbasic_max_email'] = 60;
