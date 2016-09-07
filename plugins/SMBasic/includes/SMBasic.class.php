@@ -28,8 +28,6 @@ class SessionManager {
     }
 
     function getSessionUser() {
-        global $db;
-
         empty($this->user) ? $this->setSessionUser() : false;
         return $this->user;
     }
@@ -39,6 +37,9 @@ class SessionManager {
         
         //checkSession before set and use on init set Session and not checksession?        
         ($uid = S_SESSION_INT("uid", 11, 1)) == false ? $this->user = false : false;
+        if (empty($uid)) {
+            return false;
+        }
         $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
         $db->num_rows($query) <= 0 ? $this->user = false : $this->user = $db->fetch($query);
     }
