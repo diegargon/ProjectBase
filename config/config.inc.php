@@ -9,6 +9,7 @@ $config = [];
 define("DEBUG", true);
 //define("PLUGIN_LOAD", true);    
 
+$config['CORE_VERSION'] = "";
 $config['CHARSET'] = "UTF-8";
 $config['PAGE_DESC'] = "Noticias";
 $config['WEB_NAME'] = "Project Base";
