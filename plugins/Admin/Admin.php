@@ -6,11 +6,17 @@
 !defined('IN_WEB') ? exit : true;
 
 function Admin_init() {
+    global $sm;
     print_debug("Admin Inititated", "PLUGIN_LOAD");
 
     //includePluginFiles("Admin");
-
-    register_action("nav_element", "action_menu_opt");
+    $user = $sm->getSessionUser();
+    if ($user) {
+        global $acl_auth;
+        if ((defined('ACL') && $acl_auth->acl_ask("admin_all")) || (!defined('ACL') && $user['isAdmin'])) {
+            register_action("nav_element", "action_menu_opt");
+        }
+    }
     //register_action("common_web_structure", "adm_menu_opt");
 }
 
