@@ -2,23 +2,22 @@ RewriteEngine On
 RewriteBase /
 
 #Admin
-RewriteRule  ^(.*)\/admin(.*)$   app.php?module=Admin&page=adm&lang=$1$2
+RewriteRule  ^([a-zA-z]{2})\/admin(.*)$   app.php?module=Admin&page=adm&lang=$1$2
 
 #NewsSearch
-RewriteRule  ^(.*)\/searchTag/(.*)$   app.php?module=NewsSearch&page=search&lang=$1&searchTag=$2
-RewriteRule  ^(.*)\/search$   app.php?module=NewsSearch&page=search&lang=$1
+RewriteRule  ^([a-zA-z]{2})\/searchTag/(.*)$   app.php?module=NewsSearch&page=search&lang=$1&searchTag=$2
+RewriteRule  ^([a-zA-z]{2})\/search$   app.php?module=NewsSearch&page=search&lang=$1
 
 #Newspage
-RewriteRule  ^(.*)\/news/([0-9]+)/([0-9]+)/(.*)$   app.php?module=Newspage&page=news&lang=$1&nid=$2&npage=$3 [NC]
-RewriteRule  ^(.*)\/submitnews$   app.php?module=Newspage&page=submitnews&lang=$1 [NC]
-RewriteRule  ^es\/sec(.*)/(.*)$   app.php?module=Newspage&page=section&lang=es&section=$2 [NC]
-RewriteRule  ^en\/sec(.*)/(.*)$   app.php?module=Newspage&page=section&lang=en&section=$2 [NC]
+RewriteRule  ^([a-zA-Z]{2})\/news/([0-9]+)\/([0-9]+)\/(.*)$   app.php?module=Newspage&page=news&lang=$1&nid=$2&npage=$3 [NC]
+RewriteRule  ^([a-zA-z]{2})\/submitnews$   app.php?module=Newspage&page=submitnews&lang=$1 [NC]
+RewriteRule  ^([a-zA-z]{2})\/sec.*/(.*)$   app.php?module=Newspage&page=section&lang=$1&section=$2 [NC]
 
 #SMBasic
-RewriteRule  ^(.*)\/login(.*)$   app.php?module=SMBasic&page=login&lang=$1$2
-RewriteRule  ^(.*)\/logout$   app.php?module=SMBasic&page=logout&lang=$1
-RewriteRule  ^(.*)\/profile(.*)$   app.php?module=SMBasic&page=profile&lang=$1$2
-RewriteRule  ^(.*)\/register$   app.php?module=SMBasic&page=register&lang=$1
+RewriteRule  ^([a-zA-z]{2})\/login(.*)$   app.php?module=SMBasic&page=login&lang=$1$2
+RewriteRule  ^([a-zA-z]{2})\/logout$   app.php?module=SMBasic&page=logout&lang=$1
+RewriteRule  ^([a-zA-z]{2})\/profile(.*)$   app.php?module=SMBasic&page=profile&lang=$1$2
+RewriteRule  ^([a-zA-z]{2})\/register$   app.php?module=SMBasic&page=register&lang=$1
 
 RewriteRule ^(es|en)(.*)$  $2?lang=$1 [QSA]
 
