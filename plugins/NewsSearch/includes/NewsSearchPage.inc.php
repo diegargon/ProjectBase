@@ -1,19 +1,20 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
 
-function NS_build_result_page($query) {
+function NS_build_result_page(& $query) {
     global $db, $config, $tpl;
-
     $content = "";
-    if( ($num_rows = $db->num_rows($query)) > 0) {
+
+    if ($query && ($num_rows = $db->num_rows($query)) > 0) {
         $counter = 0;
         do_action("common_web_structure");
         while ($result = $db->fetch($query)) {
             $counter == 0 ? $result['TPL_FIRST'] = 1 : false;
-            $counter == ($num_rows -1 )? $result['TPL_LAST'] = 1 : false;
+            $counter == ($num_rows - 1 ) ? $result['TPL_LAST'] = 1 : false;
             $counter++;
             if ($config['FRIENDLY_URL']) {
                 $friendly_title = news_friendly_title($result['title']);

@@ -18,6 +18,7 @@ class Database {
     function __destruct() {
         $this->close();
     }
+
     function connect() {
         $this->dblink = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB);
         if (!$this->dblink) {
