@@ -1,6 +1,9 @@
 RewriteEngine On
 RewriteBase /
 
+#Admin
+RewriteRule  ^(.*)\/admin(.*)$   app.php?module=Admin&page=adm&lang=$1$2
+
 #NewsSearch
 RewriteRule  ^es\/searchTag/(.*)$   app.php?module=NewsSearch&page=search&lang=es&searchTag=$1
 RewriteRule  ^en\/searchTag/(.*)$   app.php?module=NewsSearch&page=search&lang=en&searchTag=$1

@@ -13,9 +13,9 @@ function SMBasic_AdminMenu($params) {
     $tab_num = 100; //TODO: A WAY TO ASSIGN UNIQ NUMBERS
     if ($params['admtab'] == $tab_num) {
         register_uniq_action("admin_get_content", "SMBasic_AdminContent");
-        return "<li class='tab_active'><a href='?admtab=$tab_num'>SMBasic</a></li>";
+        return "<li class='tab_active'><a href='admin&admtab=$tab_num'>SMBasic</a></li>";
     } else {
-        return "<li><a href='?admtab=$tab_num'>SMBasic</a></li>";
+        return "<li><a href='admin&admtab=$tab_num'>SMBasic</a></li>";
     }
 }
 
@@ -26,9 +26,9 @@ function SMBasic_AdminContent($params) {
 
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
-    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_SM_SEARCH_USER'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_SM_USERS_LIST'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='?admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_SM_SEARCH_USER'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_SM_USERS_LIST'] . "</a></li>\n";
 
     $opt = S_GET_INT("opt");
     if ($opt == 1 || $opt == false) {

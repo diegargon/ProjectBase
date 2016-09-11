@@ -13,9 +13,9 @@ function Newspage_AdminMenu($params) {
     $tab_num = 101; //TODO: A WAY TO ASSIGN UNIQ NUMBERS
     if ($params['admtab'] == $tab_num) {
         register_uniq_action("admin_get_content", "Newspage_AdminContent");
-        return "<li class='tab_active'><a href='?admtab=$tab_num'>Newspage</a></li>";
+        return "<li class='tab_active'><a href='admin&admtab=$tab_num'>Newspage</a></li>";
     } else {
-        return "<li><a href='?admtab=$tab_num'>Newspage</a></li>";
+        return "<li><a href='admin&admtab=$tab_num'>Newspage</a></li>";
     }
 }
 
@@ -26,10 +26,10 @@ function Newspage_AdminContent($params) {
     $tpl->getCSS_filePath("Newspage");
     $tpl->getCSS_filePath("Newspage", "Newspage-mobile");
 
-    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='?admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_NEWS_MODERATION'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_NEWS_CATEGORY'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='?admtab=" . $params['admtab'] . "&opt=4'>" . $LANGDATA['L_NEWS_INFRONTPAGE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_NEWS_MODERATION'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_NEWS_CATEGORY'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=4'>" . $LANGDATA['L_NEWS_INFRONTPAGE'] . "</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_NEWSPAGE_OPT");
 
     $page_data['ADM_CONTENT_H1'] = "Newspage";
