@@ -102,7 +102,7 @@ class TPL {
                 $this->css_cache_onefile .= "-" . $filename;
             }
         } else {
-            if($config['CSS_INLINE'] == 0) {
+            if ($config['CSS_INLINE'] == 0) {
                 if (file_exists($USER_PATH)) {
                     $css = "<link rel='stylesheet' href='/$USER_PATH'>\n";
                 } else if (file_exists($DEFAULT_PATH)) {
@@ -195,7 +195,6 @@ class TPL {
         if (empty($tpl_ary)) {
             return false;
         }
-
         foreach ($tpl_ary as $key => $value) {
             $this->addto_tplvar($key, $value);
         }
@@ -236,7 +235,7 @@ class TPL {
     private function css_cache() {
         global $config;
         $css_code = "";
-        
+
         $cssfile = $this->css_cache_onefile . ".css";
         print_debug("CSS One file Unify $cssfile", "TPL_DEBUG");
         if (!file_exists("cache/css/$cssfile")) {
@@ -247,7 +246,7 @@ class TPL {
             $css_code = $this->css_strip($css_code);
             file_put_contents("cache/css/$cssfile", $css_code);
         }
-        if($config['CSS_INLINE'] == 0) {
+        if ($config['CSS_INLINE'] == 0) {
             $this->addto_tplvar("LINK", "<link rel='stylesheet' href='/cache/css/$cssfile'>\n");
         } else {
             $css_code = codetovar("cache/css/$cssfile");
