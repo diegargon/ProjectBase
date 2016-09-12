@@ -13,7 +13,7 @@
             <?php
         }
         !empty($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP'] : false;
-        if (!emptY($data['NEWSBREADCRUMB'])) {
+        if (!empty($data['NEWS_BREADCRUMB'])) {
             ?>
             <div id='news_breadcrumb'>
                 <ul class='breadcrumb'>
@@ -21,8 +21,7 @@
                 </ul>
             </div>
             <?php
-        }
-        !empty($data['NEWS_BREADCRUMB']) ? print $data['NEWS_BREADCRUMB'] : null;
+        }        
         ?>
         <section class="article_body">
             <h1>
