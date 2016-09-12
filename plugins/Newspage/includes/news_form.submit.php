@@ -24,13 +24,13 @@ function news_new_form() {
     if (defined('MULTILANG') && ($site_langs = news_get_all_sitelangs()) != false) {
         $form_data['select_langs'] = $site_langs;
     }
-    if (defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) {
+    if ($user && defined('ACL') && $acl_auth->acl_ask("news_admin||admin_all")) {
         $form_data['select_acl'] = $acl_auth->get_roles_select("news");
         $form_data['news_auth'] = "admin";
     } else {
         $form_data['can_change_author'] = "disabled";
     }
-    if (!defined('ACL') && $user['isAdmin']) {
+    if ($user && !defined('ACL') && $user['isAdmin']) {
         $form_data['news_auth'] = "admin";
     } else {
         $form_data['can_change_author'] = "disabled";

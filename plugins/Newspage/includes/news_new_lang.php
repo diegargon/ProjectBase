@@ -33,7 +33,7 @@ function news_new_lang() {
     $news_data['translator_id'] = $translator['uid'];
     $translator['uid'] > 0 ? $news_data['tos_checked'] = 1 : false;
 
-    if ((defined('ACL') && !$acl_auth->acl_ask("news_admin||admin_all")) || ((!defined('ACL') && !$translator['isAdmin']))) {
+    if (($translator['uid'] != 0 && defined('ACL') && !$acl_auth->acl_ask("news_admin||admin_all")) || ($translator && !defined('ACL') && !$translator['isAdmin'])) {
         $news_data['can_change_author'] = "disabled";
     }
 

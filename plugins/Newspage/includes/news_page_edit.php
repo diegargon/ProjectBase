@@ -54,7 +54,7 @@ function news_edit() {
 function news_check_edit_authorized(& $news_data) {
     global $config, $sm, $acl_auth;
 
-    if ((!$user = $sm->getSessionUser())) {
+    if (!($user = $sm->getSessionUser())) {
         return news_error_msg("L_E_NOACCESS");
     } else {
         $news_data['tos_checked'] = 1;

@@ -19,7 +19,8 @@ class ACL {
 
         print_debug("ACL_ASK-> $roles_demand", "ACL_DEBUG");
 
-        if (defined('SM') && !($user = $sm->getSessionUser())) {
+        $user = $sm->getSessionUser();
+        if (!$user) {
             return false;
         } 
         
@@ -146,7 +147,7 @@ class ACL {
     private function SetUserRoles() {
         global $db, $sm;
 
-        if (!$user = $sm->getSessionUser()) {
+        if (!($user = $sm->getSessionUser())) {
             return false;
         }
 

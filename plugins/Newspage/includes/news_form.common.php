@@ -10,11 +10,14 @@ function news_get_categories_select($news_data = null) {
 
     $user = $sm->getSessionUser();
 
-    if (defined('ACL')) {
+    if ($user && defined('ACL')) {
         $admin = $acl_auth->acl_ask("admin_all||news_admin");
-    } else {
+    } else if ($user && !define('ACL')) {
         $admin = $user['isAdmin'];
+    } else {
+        $admin = false;
     }
+    
     $query = news_get_categories();
     $select = "<select name='news_category' id='news_category'>";
     $fathers = [];
@@ -59,7 +62,7 @@ function news_form_getPost() {
 
     $user = $sm->getSessionUser();
     //Admin can change author (if the author not exists use admin one.
-    if ((!defined('ACL') && $user['isAdmin']) || ( defined('ACL') && ( $acl_auth->acl_ask('news_admin||admin_all') ) == true)) {
+    if (($user && !defined('ACL') && $user['isAdmin']) || ( $user && defined('ACL') && ( $acl_auth->acl_ask('news_admin||admin_all') ) == true)) {
         if (($form_data['author'] = S_POST_STRICT_CHARS("news_author", 25, 3)) != false && ($form_data['author'] != $user['username'])) {
             if (($selected_user = $sm->getUserByUsername($form_data['author']))) {
                 $form_data['author_id'] = $selected_user['uid'];

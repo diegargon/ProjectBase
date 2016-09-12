@@ -80,7 +80,7 @@ function news_check_display_submit() {
     if ((!empty($user) && $config['NEWS_SUBMIT_REGISTERED']) || (empty($user) && $config['NEWS_SUBMIT_ANON'] )) {
         return true;
     }
-    if (defined('ACL') && ( $acl_auth->acl_ask("news_submit||admin_all") )) {
+    if ($user && defined('ACL') && ( $acl_auth->acl_ask("news_submit||admin_all") )) {
         return true;
     } else if (!defined('ACL') && !empty($user) && $user['isAdmin']) {
         return true;

@@ -96,3 +96,4 @@ $LANGDATA['L_TOS'] = "Terminos de servicio";
 $LANGDATA['L_SM_PROFILE_OPTIONAL'] = "Opciones adicionales:";
 $LANGDATA['L_SM_ACTIVATION_OK'] = "Activación correcta, ya puede identificarse";
 $LANGDATA['L_SM_RESET_OK'] = "Reinicio de la contraseña correcto";
+$LANGDATA['L_E_NOACCESS'] = "No tienes permiso para acceder";

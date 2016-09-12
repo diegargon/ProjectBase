@@ -21,15 +21,13 @@ function news_show_page() {
         $page = 1;
     }
 
+    $user = $sm->getSessionUser();
     if (S_GET_INT("admin")) {
-        if (defined("ACL") && !$acl_auth->acl_ask("admin_all||news_admin")) {
+        if (!$user ||(defined("ACL") && !$acl_auth->acl_ask("admin_all||news_admin"))) {
             return news_error_msg("L_E_NOACCESS");
         }
-        if (!defined('ACL')) {
-            $user = $sm->getSessionUser();
-            if (empty($user) || $user['isAdmin'] != 1) {
-                return news_error_msg("L_E_NOACCESS");
-            }
+        if (!defined('ACL') && $user['isAdmin'] != 1) {           
+            return news_error_msg("L_E_NOACCESS");
         }
     }
     news_process_admin_actions();
@@ -97,13 +95,13 @@ function news_show_page() {
 function news_process_admin_actions() {
     global $config, $acl_auth, $sm, $ml;
 
-    //if we enter with &admin=1 already passing the admin check in news_show_page, check if not enter with admin=1
-    if (defined("ACL") && !S_GET_INT("admin")) {
-        if (!$acl_auth->acl_ask("admin_all || news_admin")) {
+    //if we enter with &admin=1 already passing the admin check in news_show_page, check if not enter with admin=1 , do again and remove if?
+    $user = $sm->getSessionUser();
+    if (!S_GET_INT("admin")) {
+        if (!$user || (defined("ACL") && !$acl_auth->acl_ask("admin_all || news_admin"))) {
             return false;
         }
-    } else if (!defined("ACL") && !S_GET_INT("admin")) {
-        if (($user = $sm->getSessionUser()) == false || $user['isAdmin'] != 1) {
+        if (!defined("ACL") && $user['isAdmin'] != 1) {
             return false;
         }
     }
@@ -137,7 +135,7 @@ function news_nav_options($news) { //TODO Use Template
     $news_url = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&lang_id={$news['lang_id']}";
     $user = $sm->getSessionUser();
     // EDIT && NEW PAGE: ADMIN, AUTHOR or Translator
-    if ((defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin")) || (!defined('ACL') && $user['isAdmin'] == 1)) {
+    if (( $user && defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin")) || ( $user && !defined('ACL') && $user['isAdmin'] == 1)) {
         $admin = 1;
     } else {
         $admin = 0;
@@ -168,7 +166,7 @@ function news_nav_options($news) { //TODO Use Template
 
     // TRANSLATE ADMIN, ANON IF, REGISTERED IF
     if (defined('MULTILANG')) {
-        if ($config['NEWS_ANON_TRANSLATE'] || $admin || (defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && $acl_auth->acl_ask("registered_all")) || (!defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && !empty($user))
+        if ($config['NEWS_ANON_TRANSLATE'] || $admin || ($user && defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && $acl_auth->acl_ask("registered_all")) || ($user && !defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'])
         ) {
             $content .= "<li><a rel='nofollow' href='$news_url&news_new_lang=1'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
         }
