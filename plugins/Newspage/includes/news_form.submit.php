@@ -17,8 +17,8 @@ function news_new_form() {
     } else if (empty($user)) {
         return news_error_msg("L_E_NOACCESS");
     }
-    $form_data['author'] = $user['username'];
-    $form_data['tos_checked'] = 1;
+    $user ? $form_data['author'] = $user['username'] : null;
+    $user ?$form_data['tos_checked'] = 1 : null;
     !empty($user) ? $news_data['tos_checked'] = 1 : $news_data['tos_checked'] = 0;
 
     if (defined('MULTILANG') && ($site_langs = news_get_all_sitelangs()) != false) {
