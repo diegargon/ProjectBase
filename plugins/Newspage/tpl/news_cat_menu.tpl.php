@@ -20,4 +20,4 @@
             <?php !empty($data['cat_sub_list']) ? print $data['cat_sub_list'] : null; ?>
         </ul>
     </div>
-<?php } ?>
+<?php }
