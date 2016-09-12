@@ -26,7 +26,7 @@ function SMBasic_AdminContent($params) {
 
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
-    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='?admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_SM_SEARCH_USER'] . "</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_SM_USERS_LIST'] . "</a></li>\n";
 
@@ -78,8 +78,13 @@ function SMBasic_UserSearch() {
             $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_ACTIONS'] . "</th>";
             $table['ADM_TABLE_ROW'] = "";
             foreach ($users_ary as $user_match) {
+                if($config['FRIENDLY_URL']) {
+                    $url = "/{$config['WEB_LANG']}/profile?viewprofile={$user_match['uid']}";
+                } else {
+                    $url = "/{$config['CON_FILE']}?module=SMBasic&page=profile?lang={$config['WEB_LANG']}&viewprofile={$user_match['uid']}";
+                }
                 $table['ADM_TABLE_ROW'] .= "<tr>";
-                $table['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user_match['uid']}'>" . $user_match['username'] . "</a></td>";
+                $table['ADM_TABLE_ROW'] .= "<td><a href='$url'>" . $user_match['username'] . "</a></td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['email'] . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . format_date($user_match['regdate']) . "</td>";
                 $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['last_login'] . "</td>";
@@ -130,8 +135,13 @@ function SMBasic_UserList() {
 
     foreach ($users_list as $user) {
         if ($user['active'] == 0 && !$user['disable']) {
+            if ($config['FRIENDLY_URL']) {
+                $url = "/{$config['WEB_LANG']}/profile?viewprofile={$user['uid']}";
+            } else {
+                $url = "/{$config['CON_FILE']}?module=SMBasic&page=profile?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}";
+            }
             $active['ADM_TABLE_ROW'] .= "<tr>";
-            $active['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
+            $active['ADM_TABLE_ROW'] .= "<td><a href='$url'>" . $user['username'] . "</a></td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
             $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
