@@ -35,7 +35,7 @@ class SessionManager {
     function getUserByUsername($username) {
         global $db;
 
-        if ($uid = array_search($username, array_column($this->users_cache_db, 'username'))) {
+        if  (($uid = array_search($username, array_column($this->users_cache_db, 'username')))) {
             return $this->users_cache_db[$uid];
         }
 
@@ -182,13 +182,13 @@ class SessionManager {
             return false;
         }
 
-        $query = $db->select_all("sessions", array("session_id" => "{$cookie['sid']}", "session_uid" => "{$cookie['uid']}"), "LIMIT 1");
+        $query = $db->select_all("sessions", array("session_id" => "{$cookies['sid']}", "session_uid" => "{$cookies['uid']}"), "LIMIT 1");
         if ($db->num_rows($query) <= 0) {
             $this->destroy();
             return false;
         }
 
-        if (($user = $this->getUserbyID($cookie['uid'])) != false) {
+        if (($user = $this->getUserbyID($cookies['uid'])) != false) {
             $this->setUserSession($user);
             $this->setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11)); //New sid by setSession -> new cookies
             return true;
@@ -267,15 +267,15 @@ class SessionManager {
 
         if (!empty($email)) {
             if (empty($glob)) {
-                $where_ary = array("email" => array("value" => $string, "operator" => "LIKE"));
+                $where_ary = array("email" => array("value" => "'" . $string . "'", "operator" => "LIKE"));
             } else {
-                $where_ary = array("email" => array("value" => "%" . $string . "%", "operator" => "LIKE"));
+                $where_ary = array("email" => array("value" => "'%" . $string . "%'", "operator" => "LIKE"));
             }
         } else {
             if (empty($glob)) {
-                $where_ary = array("username" => array("value" => $string, "operator" => "LIKE"));
+                $where_ary = array("username" => array("value" => "'" . $string . "'", "operator" => "LIKE"));
             } else {
-                $where_ary = array("username" => array("value" => "%" . $string . "%", "operator" => "LIKE"));
+                $where_ary = array("username" => array("value" => "'%" . $string . "%'", "operator" => "LIKE"));
             }
         }
         $query = $db->select_all("users", $where_ary);
