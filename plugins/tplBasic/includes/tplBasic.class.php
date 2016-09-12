@@ -102,10 +102,19 @@ class TPL {
                 $this->css_cache_onefile .= "-" . $filename;
             }
         } else {
-            if (file_exists($USER_PATH)) {
-                $css = "<link rel='stylesheet' href='/$USER_PATH'>\n";
-            } else if (file_exists($DEFAULT_PATH)) {
-                $css = "<link rel='stylesheet' href='/$DEFAULT_PATH'>\n";
+            if($config['CSS_INLINE'] == 0) {
+                if (file_exists($USER_PATH)) {
+                    $css = "<link rel='stylesheet' href='/$USER_PATH'>\n";
+                } else if (file_exists($DEFAULT_PATH)) {
+                    $css = "<link rel='stylesheet' href='/$DEFAULT_PATH'>\n";
+                }
+            } else {
+                if (file_exists($USER_PATH)) {
+                    $css_code = codetovar("$USER_PATH");
+                } else if (file_exists($DEFAULT_PATH)) {
+                    $css_code = codetovar("$DEFAULT_PATH");
+                }
+                isset($css_code) ? $css = "<style>$css_code</style>" : null;
             }
             if (isset($css)) {
                 $this->addto_tplvar("LINK", $css);
@@ -225,7 +234,9 @@ class TPL {
     }
 
     private function css_cache() {
+        global $config;
         $css_code = "";
+        
         $cssfile = $this->css_cache_onefile . ".css";
         print_debug("CSS One file Unify $cssfile", "TPL_DEBUG");
         if (!file_exists("cache/css/$cssfile")) {
@@ -236,7 +247,12 @@ class TPL {
             $css_code = $this->css_strip($css_code);
             file_put_contents("cache/css/$cssfile", $css_code);
         }
-        $this->addto_tplvar("LINK", "<link rel='stylesheet' href='/cache/css/$cssfile'>\n");
+        if($config['CSS_INLINE'] == 0) {
+            $this->addto_tplvar("LINK", "<link rel='stylesheet' href='/cache/css/$cssfile'>\n");
+        } else {
+            $css_code = codetovar("cache/css/$cssfile");
+            $this->addto_tplvar("LINK", "<style>$css_code</style>\n");
+        }
     }
 
     private function css_strip($css) { #by nyctimus
