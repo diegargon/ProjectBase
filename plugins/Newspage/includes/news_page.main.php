@@ -89,7 +89,7 @@ function news_show_page() {
     do_action("news_show_page", $news_data);
 
     $tpl->addto_tplvar("ADD_HEADER_END", news_cat_menu());
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_show_body", $news_data));
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body", $news_data));
 }
 
 function news_process_admin_actions() {
@@ -392,9 +392,8 @@ function news_add_social_meta($news) { // TODO: Move to plugin NewsSocialExtra
 
 function getNewsCatBreadcrumb($news_data) {
     global $db, $config;
-
-    $content = "<div id='news_breadcrumb'><ul class='breadcrumb'>";
-
+    $content = "";
+    
     $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => $news_data['lang_id']));
     while ($cat_row = $db->fetch($query)) {
         $categories[$cat_row['cid']] = $cat_row;
@@ -420,8 +419,7 @@ function getNewsCatBreadcrumb($news_data) {
         $breadcrumb .= "<li><a href='/{$config['WEB_LANG']}/section/$cat_path'>$cat</a></li>";
         $cat_path .= ".";
     }
-    $content .= $breadcrumb;
-    $content .= "</ul></div>";
+    $content .= $breadcrumb;    
 
     return $content;
 }
