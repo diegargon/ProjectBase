@@ -1,11 +1,27 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
 
 function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
-    global $db;
+    global $db, $config;
+
+    if ($config['NEWSVOTE_CHECK_VOTE_IP']) {
+        $ip = S_SERVER_REMOTE_ADDR();
+        $where_ary = array(
+            "ip" => $ip,
+            "section" => $section,
+            "resource_id" => $rid,
+            "lang_id" => $lid,
+        );
+        $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
+        if ($db->num_rows($query) > 0) {
+            return false;
+        }
+    }
+
     $where_ary = array(
         "uid" => $uid,
         "section" => $section,
@@ -17,6 +33,7 @@ function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
     if ($db->num_rows($query) > 0) {
         return false;
     } else {
+        //check if its the author
         if ($section == "news_rate") {
             $query = $db->select_all("news", array("nid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");
         } else if ($section == "news_comments_rate") {

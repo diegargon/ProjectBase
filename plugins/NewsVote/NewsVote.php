@@ -57,8 +57,10 @@ function newsvote_rate_news($user, $user_rate) {
     if (!NewsVote_check_if_can_vote($user['uid'], $news['nid'], $news['lang_id'], "news_rate")) {
         die('[{"status": "2", "msg": "' . $LANGDATA['L_VOTE_CANT_VOTE'] . '"}]');
     } else {
+        $ip = S_SERVER_REMOTE_ADDR();
         $insert_ary = array(
             "uid" => "{$user['uid']}",
+            "ip" => "$ip",
             "section" => "news_rate",
             "resource_id" => "{$news['nid']}",
             "lang_id" => "{$news['lang_id']}",
@@ -86,8 +88,10 @@ function newsvote_rate_comment($user, $user_rate) {
     if (!NewsVote_check_if_can_vote($user['uid'], $comment['cid'], $comment['lang_id'], "news_comments_rate")) {
         die('[{"status": "5", "msg": "' . $LANGDATA['L_VOTE_CANT_VOTE'] . '"}]');
     } else {
+        $ip = S_SERVER_REMOTE_ADDR();
         $insert_ary = array(
             "uid" => "{$user['uid']}",
+            "ip" => "$ip",
             "section" => "news_comments_rate",
             "resource_id" => "{$comment['cid']}",
             "lang_id" => "{$comment['lang_id']}",
