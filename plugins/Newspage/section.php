@@ -9,7 +9,7 @@ require_once 'includes/news_portal.php';
 do_action("section_page_begin");
 do_action("common_web_structure");
 
-$tpl->addto_tplvar("ADD_HEADER_END", news_cat_menu());
+news_cat_menu();
 
 if (empty($category_list = S_GET_TEXT_UTF8("section")) || preg_match("/\s+/", $category_list)) {
     return news_error_msg("L_NEWS_E_SEC_NOEXISTS");

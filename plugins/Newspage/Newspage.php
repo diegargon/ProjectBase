@@ -31,7 +31,7 @@ function news_portal() {
         register_action("nav_element", "news_layout_switcher", 6);
     }
 
-    $tpl->addto_tplvar("ADD_HEADER_END", news_cat_menu());
+    news_cat_menu();
     $portal_content = news_portal_content();
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", $news_layout_tpl, $portal_content));
 }

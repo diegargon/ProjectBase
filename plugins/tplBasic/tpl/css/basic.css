@@ -210,3 +210,50 @@ h1,h2,h3,h4,h5,h6{
 .center {
     text-align:center;
 }
+#sections_menu, #sections_submenu {
+    text-align: center;
+    background: blue;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    /*    
+        background: -webkit-linear-gradient(white, blue); 
+        background: -o-linear-gradient(red, yellow); 
+        background: -moz-linear-gradient(red, yellow);
+    */
+    color:white;
+    background: linear-gradient(#55a0db, #1f6ba5);
+}
+#sections_menu ul, #sections_submenu ul {
+    padding:0px;
+    margin:0px;
+    /*margin-bottom: 4px;*/
+}
+#sections_menu li, #sections_submenu li {
+    display: inline;
+}
+#sections_menu li a, #sections_submenu li a{
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    padding: 1px;
+    margin-right: 5%;
+    transition: 0.3s;
+    font-size: 1.0em;
+    border: none;
+    color: inherit;
+    background-color: transparent;
+    height: 20px;
+}
+#sections_menu li a:hover, #sections_submenu li a:hover {
+    background: linear-gradient(#2f5d81, #0b2a42);
+}
+#sections_menu li a:active, #sections_submenu li a:active {
+    color: black;
+    background: rgb(245, 245, 245) none repeat scroll 0% 0%;
+    border-right: 1px solid #999999;
+    border-left: 1px solid #999999;
+}
+#sections_submenu {
+    color: #000;
+    background: linear-gradient(#1f6ba5, #55a0db); 
+}

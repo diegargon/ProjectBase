@@ -32,7 +32,28 @@
                         <?php echo $config['TITLE'] ?></a><br/>
                     <span><?php echo $config['WEB_DESC'] ?></span>
                 </div>
-
+                <?php
+                if (!empty($tpldata['SECTIONS_MENU'])) {
+                    ?>
+                    <div id="sections_menu">
+                        <ul>
+                            <?php
+                            !empty($tpldata['SECTIONS_MENU']) ? print $tpldata['SECTIONS_MENU'] : false;
+                            ?>
+                        </ul>
+                    </div>
+                    <?php
+                }
+                if (!empty($tpldata['SECTIONS_SUBMENU'])) {
+                    ?>
+                    <div id="sections_submenu">
+                        <ul>            
+                            <?php !empty($tpldata['SECTIONS_SUBMENU']) ? print $tpldata['SECTIONS_SUBMENU'] : null; ?>
+                        </ul>
+                    </div>
+                    <?php
+                }
+                ?>
                 <?php isset($tpldata['ADD_HEADER_END']) ? print $tpldata['ADD_HEADER_END'] : false ?>
             </header>
         </div>
@@ -40,3 +61,4 @@
         isset($tpldata['PRE_ACTION_ADD_TO_BODY']) ? print $tpldata['PRE_ACTION_ADD_TO_BODY'] : false;
         !isset($tpldata['ADD_TO_BODY']) ? print "<p>Hello World</p>" : print $tpldata['ADD_TO_BODY'];
         isset($tpldata['POST_ACTION_ADD_TO_BODY']) ? print $tpldata['POST_ACTION_ADD_TO_BODY'] : false;
+        

@@ -123,8 +123,9 @@ function news_cat_menu() {
     global $tpl, $ctgs;
     $cat_path = S_GET_TEXT_UTF8("section");
 
-    $menu_data['cat_list'] = $ctgs->root_cats("Newspage");
-    !empty($cat_path) ? $menu_data['cat_sub_list'] = $ctgs->childs_of_cat("Newspage", $cat_path) : null;
+    $menu_data = $ctgs->root_cats("Newspage");
+    !empty($cat_path) ? $submenu_data = $ctgs->childs_of_cat("Newspage", $cat_path) : null;
 
-    return $tpl->getTPL_file("Newspage", "news_cat_menu", $menu_data);
+    $tpl->addto_tplvar("SECTIONS_MENU", $menu_data);
+    isset($submenu_data) ? $tpl->addto_tplvar("SECTIONS_SUBMENU", $submenu_data) : null;
 }

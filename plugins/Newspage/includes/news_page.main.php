@@ -88,7 +88,7 @@ function news_show_page() {
 
     do_action("news_show_page", $news_data);
 
-    $tpl->addto_tplvar("ADD_HEADER_END", news_cat_menu());
+    news_cat_menu();
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body", $news_data));
 }
 
