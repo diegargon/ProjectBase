@@ -28,7 +28,7 @@ function ex_common_web_structure() {
 function ex_index_page() {
     plugin_start("NewsAds");
     plugin_start("Newspage");
-    its_server_stressed() ? false : plugin_start("NewsSearch");
+    its_server_stressed() ? null : plugin_start("NewsSearch");
     news_portal();
     //require_once("plugins/Newspage/portal.php");
     //$startpage =  $config['CON_FILE'] . "?module=Newspage&page=portal";
@@ -48,9 +48,9 @@ function ex_Newspage_section() {
 function ex_Newspage_news() {
     plugin_start("NewsAds");
     plugin_start("NewsUserExtra");
-    its_server_stressed() ? false : plugin_start("NewsVote");
-    its_server_stressed() ? false : plugin_start("NewsSearch");
-    its_server_stressed() ? false : plugin_start("NewsComments");
+    its_server_stressed() ? null : plugin_start("NewsVote");
+    its_server_stressed() ? null : plugin_start("NewsSearch");
+    its_server_stressed() ? null : plugin_start("NewsComments");
     plugin_start("Newspage");
 }
 
