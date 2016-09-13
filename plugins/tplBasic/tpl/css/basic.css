@@ -37,9 +37,13 @@ html, body {
     visibility:hidden;
     line-height:0;
 }
-#header,#footer{
+#header, #footer{
     display:block;
     margin:0 auto;
+}
+#header{
+    overflow:hidden;
+    margin-top: 4px;
 }
 #footer {
     border: 0px solid green;
@@ -53,14 +57,6 @@ html, body {
     border-left: 1px solid #000;
     border-right: 1px solid #000;
 }
-figure {
-    display:block;
-    margin:0;
-    padding:0;
-}
-#header{
-    overflow:hidden;
-}
 #brand {
     padding-left: 30px;
     border: 0px solid red;
@@ -71,13 +67,11 @@ figure {
 #brand a{
     font-family: Rockwell, "Courier Bold", Courier, Georgia, Times, "Times New Roman", serif;
     font-size:3.0em;
+    text-decoration: none;
 }
 #brand span {
     font-family: Copperplate, "Copperplate Gothic Light", fantasy;
     font-size: 1.3em;  
-}
-#header a {
-    text-decoration: none;
 }
 .row1, .row3 {
     margin: 0 auto;
@@ -105,24 +99,21 @@ h1,h2,h3,h4,h5,h6{
     font-style:normal;
     line-height:normal;
 }
-.lastbox{
-    margin-right:0;
-}
-#header nav{
+#main-nav{
     display:block;
     background-color:#232323;
     overflow:hidden;
 }
-#header nav ul{
+#main-nav ul{
     margin:0;
     padding:0;
     list-style:none;
 }
-#header nav li{
+#main-nav li{
     display:inline;
     text-transform:uppercase;
 }
-#header nav li a{
+#main-nav li a{
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -131,20 +122,20 @@ h1,h2,h3,h4,h5,h6{
     font-size: 1.0em;
     border: none;
     color: inherit;
-    background-color:#232323;
+    background-color: transparent;
     height: 20px;
 }
-#header nav li a:hover {background-color: black;}
+#main-nav li a:hover {background-color: black;}
 .nav_left {
     float:left;
 }
 .nav_right {
     float:right;
 }
-#header nav li.last{
+#main-nav li.last{
     margin-right:0;
 }
-#header nav select {
+#main-nav select {
     -moz-appearance: none; 
     -webkit-appearance: none;
     /* appearance: none;*/
@@ -159,7 +150,7 @@ h1,h2,h3,h4,h5,h6{
     margin-top: 2px;
     overflow: hidden;
 }
-#header nav img {
+#main-nav img {
     padding-left: 10px;
     padding-right: 10px;
     width:20px;

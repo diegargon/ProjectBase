@@ -23,7 +23,7 @@
     }
 }
 @media only screen and (max-width: 640px) {
-    #header nav li:not(:first-child) {
+    #main-nav li:not(:first-child) {
         display: none; 
         float:none;
     }
