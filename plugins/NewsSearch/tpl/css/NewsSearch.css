@@ -27,8 +27,8 @@
     margin-bottom: 4px;
 }
 #searchTextInput {
-    margin-top:5px;
-    border: 0px;
+    margin-top:3px;
+    /* border: 0px;*/
 }
 .s_news_title {
     font-weight: bold;

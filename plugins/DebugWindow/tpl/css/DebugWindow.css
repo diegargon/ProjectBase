@@ -8,9 +8,8 @@
     overflow-y:scroll;
     margin:0 auto;
 }
-
 .DebugContainer {
     float:left;
-    background-color: #333333;
+    background-color: inherit;
     width:100%;
 }

@@ -50,7 +50,7 @@ class TPL {
         //BEGIN FOOTER
         if (defined('SQL') && $config['STATS_QUERYS']) {
             global $db;
-            $this->tpldata['ADD_TO_FOOTER'] .= "<p class='center'>Querys(" . $db->num_querys() . ")</p>";
+            $this->tpldata['ADD_TO_FOOTER'] .= "<p class='center zero'>Querys(" . $db->num_querys() . ")</p>";
         }
         $this->tpldata['ADD_TO_FOOTER'] .= do_action("add_to_footer");
 

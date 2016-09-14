@@ -46,23 +46,23 @@ html, body {
     margin-top: 4px;
 }
 #footer {
-    border: 0px solid green;
+    /* border: 1px solid green; */
     width: 100%;
-    background-color: #333;
+    background-color: #000;
 }
 .page {
-    padding:10px 0; 
+    padding: 10px 0; 
     background-color:#eeeeee;
-    box-shadow: 0px 10px 5px #ccc;
     border-left: 1px solid #000;
     border-right: 1px solid #000;
 }
 #brand {
     padding-left: 30px;
-    border: 0px solid red;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    /* border: 1px solid red; */
+    padding-top: 20px;
+    padding-bottom: 20px;
     line-height: 1.3em;
+    background-color: #000;
 }
 #brand a{
     font-family: Rockwell, "Courier Bold", Courier, Georgia, Times, "Times New Roman", serif;
@@ -76,10 +76,9 @@ html, body {
 .row1, .row3 {
     margin: 0 auto;
 }
-.row1, .row1 a{
-    color:#C0BAB6;
-    background-color:#333333;
-    border: 0px solid red;
+.row1, .row1 a {
+    color:#DCDCDC;
+    /* border: 1px solid red; */
 }
 .row2{
     color:#979797;
@@ -90,7 +89,7 @@ html, body {
     background-color:#FFFFFF;
 }
 .row3,.row3 a{
-    color:#919191;
+    color:#DCDCDC;
 }
 h1,h2,h3,h4,h5,h6{
     margin:0;
@@ -101,8 +100,10 @@ h1,h2,h3,h4,h5,h6{
 }
 #main-nav{
     display:block;
-    background-color:#232323;
+    background-color:#EEE;
     overflow:hidden;
+    color: #870505;
+    border: 1px solid #000;
 }
 #main-nav ul{
     margin:0;
@@ -150,6 +151,7 @@ h1,h2,h3,h4,h5,h6{
     margin-top: 2px;
     overflow: hidden;
 }
+#main-nav select:hover {background-color: black;}
 #main-nav img {
     padding-left: 10px;
     padding-right: 10px;
@@ -210,6 +212,10 @@ h1,h2,h3,h4,h5,h6{
 .center {
     text-align:center;
 }
+.zero {
+    padding: 0px;
+    margin: 0;
+}
 #sections_menu, #sections_submenu {
     text-align: center;
     background: blue;
@@ -222,6 +228,9 @@ h1,h2,h3,h4,h5,h6{
     */
     color:white;
     background: linear-gradient(#55a0db, #1f6ba5);
+}
+#sections_menu {
+   border: 1px solid #000;
 }
 #sections_menu ul, #sections_submenu ul {
     padding:0px;
@@ -255,5 +264,5 @@ h1,h2,h3,h4,h5,h6{
 }
 #sections_submenu {
     color: #000;
-    background: linear-gradient(#1f6ba5, #55a0db); 
+    background: linear-gradient(#898484, #eee); 
 }
