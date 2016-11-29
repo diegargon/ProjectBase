@@ -1,9 +1,11 @@
 -- phpMyAdmin SQL Dump
+-- version 4.5.4.1deb2ubuntu2
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Versión del servidor: 5.7.13-0ubuntu0.16.04.2
--- Versión de PHP: 7.0.8-0ubuntu0.16.04.2
+-- Tiempo de generación: 29-11-2016 a las 16:47:24
+-- Versión del servidor: 5.7.16-0ubuntu0.16.04.1
+-- Versión de PHP: 7.0.8-0ubuntu0.16.04.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -79,8 +81,6 @@ CREATE TABLE `pb_adv_stats` (
   `last_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
 --
 -- Estructura de tabla para la tabla `pb_categories`
 --
@@ -90,25 +90,64 @@ CREATE TABLE `pb_categories` (
   `plugin` varchar(11) NOT NULL,
   `lang_id` int(11) NOT NULL,
   `name` varchar(32) NOT NULL,
-  `father` tinyint(1) NOT NULL DEFAULT '1'
+  `father` smallint(3) NOT NULL DEFAULT '0',
+  `weight` smallint(3) NOT NULL DEFAULT '0',
+  `acl` varchar(32) DEFAULT NULL,
+  `admin` tinyint(1) NOT NULL DEFAULT '0',
+  `views` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `pb_categories`
 --
 
-INSERT INTO `pb_categories` (`cid`, `plugin`, `lang_id`, `name`, `father`) VALUES
-(1, 'Newspage', 1, 'Actualidad', 1),
-(1, 'Newspage', 2, 'News', 1),
-(2, 'Newspage', 1, 'Tecnologia', 1),
-(2, 'Newspage', 2, 'Tech', 1),
-(3, 'Newspage', 1, 'Deportes', 1),
-(3, 'Newspage', 2, 'Sports', 1),
-(4, 'Newspage', 1, 'Ocio', 1),
-(4, 'Newspage', 2, 'Enterteiment', 1),
-(5, 'Newspage', 1, 'Otros', 1),
-(6, 'Newspage', 1, 'Cultura', 1),
-(6, 'Newspage', 2, 'Culture', 1);
+INSERT INTO `pb_categories` (`cid`, `plugin`, `lang_id`, `name`, `father`, `weight`, `acl`, `admin`, `views`) VALUES
+(1, 'Newspage', 1, 'Noticias', 0, 1, NULL, 0, 0),
+(1, 'Newspage', 2, 'News', 0, 1, NULL, 0, 0),
+(2, 'Newspage', 1, 'Tecnologia', 1, 0, NULL, 0, 0),
+(2, 'Newspage', 2, 'Tech', 1, 0, NULL, 0, 0),
+(3, 'Newspage', 1, 'Deportes', 1, 0, NULL, 0, 0),
+(3, 'Newspage', 2, 'Sports', 1, 0, NULL, 0, 0),
+(4, 'Newspage', 1, 'Ocio', 1, 0, NULL, 0, 0),
+(4, 'Newspage', 2, 'Entertainment', 1, 0, NULL, 0, 0),
+(5, 'Newspage', 1, 'Cultura', 1, 0, NULL, 0, 0),
+(5, 'Newspage', 2, 'Culture', 1, 0, NULL, 0, 0),
+(6, 'Newspage', 1, 'Futbol', 3, 0, NULL, 0, 0),
+(6, 'Newspage', 2, 'Football', 3, 0, NULL, 0, 0),
+(7, 'Newspage', 1, 'Baloncesto', 3, 0, NULL, 0, 0),
+(7, 'Newspage', 2, 'Basket', 3, 0, NULL, 0, 0),
+(8, 'Newspage', 1, 'Nacional', 1, 0, NULL, 0, 0),
+(8, 'Newspage', 2, 'National', 1, 0, NULL, 0, 0),
+(9, 'Newspage', 1, 'Internacional', 1, 0, NULL, 0, 0),
+(9, 'Newspage', 2, 'International', 1, 0, NULL, 0, 0),
+(10, 'Newspage', 1, 'Libros', 5, 0, NULL, 0, 0),
+(10, 'Newspage', 2, 'Books', 5, 0, NULL, 0, 0),
+(11, 'Newspage', 1, 'Cine', 5, 0, NULL, 0, 0),
+(11, 'Newspage', 2, 'Movies', 5, 0, NULL, 0, 0),
+(12, 'Newspage', 1, 'Formula_1', 3, 0, NULL, 0, 0),
+(12, 'Newspage', 2, 'Formule_1', 3, 0, NULL, 0, 0),
+(13, 'Newspage', 1, 'Opinión', 0, 2, NULL, 0, 0),
+(13, 'Newspage', 2, 'Opinion', 0, 2, NULL, 0, 0),
+(14, 'Newspage', 1, 'Editoriales', 13, 0, NULL, 1, 0),
+(14, 'Newspage', 2, 'Editorials', 13, 0, NULL, 1, 0),
+(15, 'Newspage', 1, 'Lectores', 13, 0, NULL, 0, 0),
+(15, 'Newspage', 2, 'Readers', 13, 0, NULL, 0, 0),
+(16, 'Newspage', 1, 'España', 8, 0, NULL, 0, 0),
+(16, 'Newspage', 2, 'Spain', 8, 0, NULL, 0, 0),
+(17, 'Newspage', 1, 'USA', 8, 0, NULL, 0, 0),
+(17, 'Newspage', 2, 'US', 8, 0, NULL, 0, 0),
+(18, 'Newspage', 1, 'Inglaterra', 8, 0, NULL, 0, 0),
+(18, 'Newspage', 2, 'England', 8, 0, NULL, 0, 0),
+(19, 'Newspage', 1, 'Francia', 8, 0, NULL, 0, 0),
+(19, 'Newspage', 2, 'France', 8, 0, NULL, 0, 0),
+(20, 'Newspage', 1, 'Alemania', 8, 0, NULL, 0, 0),
+(20, 'Newspage', 2, 'Germany', 8, 0, NULL, 0, 0),
+(21, 'Newspage', 1, 'Columnistas', 13, 0, NULL, 0, 0),
+(21, 'Newspage', 2, 'Columnists', 13, 0, NULL, 0, 0),
+(23, 'Newspage', 1, 'Belgica', 8, 0, NULL, 0, 0),
+(23, 'Newspage', 2, 'Belgium', 8, 0, NULL, 0, 0),
+(24, 'Newspage', 1, 'Articulos', 0, 3, NULL, 0, 0),
+(24, 'Newspage', 2, 'Articles', 0, 3, NULL, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -127,8 +166,6 @@ CREATE TABLE `pb_comments` (
   `rating` float NOT NULL DEFAULT '0',
   `rating_closed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `pb_lang`
@@ -164,7 +201,6 @@ CREATE TABLE `pb_links` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `pb_news`
@@ -187,7 +223,7 @@ CREATE TABLE `pb_news` (
   `last_edited` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `frontpage` tinyint(1) NOT NULL DEFAULT '0',
   `featured` tinyint(1) NOT NULL DEFAULT '0',
-  `featured_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `featured_date` timestamp NULL DEFAULT NULL,
   `moderation` tinyint(1) NOT NULL DEFAULT '0',
   `visits` int(32) NOT NULL DEFAULT '0',
   `translator` varchar(32) DEFAULT NULL,
@@ -197,6 +233,7 @@ CREATE TABLE `pb_news` (
   `rating` float NOT NULL DEFAULT '0',
   `rating_closed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Estructura de tabla para la tabla `pb_news_ads`
@@ -215,8 +252,8 @@ CREATE TABLE `pb_news_ads` (
 --
 
 INSERT INTO `pb_news_ads` (`adid`, `lang`, `ad_code`, `resource_id`, `itsmain`) VALUES
-(1, NULL, '<img class="image_link" src="https://static06.cminds.com/wp-content/uploads/banner_functionalvisual-design1.png" alt="" />', 0, 1),
-(2, NULL, '<img class=\'image_link\' src=\'http://www.2015awmanationals.com/images/your_ad_here.jpg\' alt=\'\' />\r\n', 0, 0);
+(1, NULL, '<img class="image_link" src="http://projectbase.envigo.net/news_img/desktop/file_57cb6478432e5.jpg" alt="" />', 0, 1),
+(2, NULL, '<img class=\'image_link\' src=\'https://cdn.makerclub.org/app/uploads/sites/2/2016/05/ComingSoonBanner.png\' alt=\'\' />\r\n', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -231,10 +268,10 @@ CREATE TABLE `pb_rating_track` (
   `section` varchar(32) NOT NULL,
   `resource_id` int(11) NOT NULL,
   `lang_id` int(6) DEFAULT NULL,
-  `vote_value` float NOT NULL
+  `vote_value` float NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
 
 --
 -- Estructura de tabla para la tabla `pb_sessions`
@@ -301,10 +338,6 @@ CREATE TABLE `pb_user_extra` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Índices para tablas volcadas
---
-
---
 -- Indices de la tabla `pb_acl_roles`
 --
 ALTER TABLE `pb_acl_roles`
@@ -326,8 +359,7 @@ ALTER TABLE `pb_adv_stats`
 -- Indices de la tabla `pb_categories`
 --
 ALTER TABLE `pb_categories`
-  ADD PRIMARY KEY (`cid`,`plugin`,`lang_id`),
-  ADD UNIQUE KEY `name` (`name`);
+  ADD PRIMARY KEY (`cid`,`plugin`,`lang_id`);
 
 --
 -- Indices de la tabla `pb_comments`
@@ -412,12 +444,12 @@ ALTER TABLE `pb_acl_users`
 -- AUTO_INCREMENT de la tabla `pb_adv_stats`
 --
 ALTER TABLE `pb_adv_stats`
-  MODIFY `advstatid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=154;
+  MODIFY `advstatid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=373;
 --
 -- AUTO_INCREMENT de la tabla `pb_comments`
 --
 ALTER TABLE `pb_comments`
-  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT de la tabla `pb_lang`
 --
@@ -427,7 +459,7 @@ ALTER TABLE `pb_lang`
 -- AUTO_INCREMENT de la tabla `pb_links`
 --
 ALTER TABLE `pb_links`
-  MODIFY `link_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
+  MODIFY `link_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
 --
 -- AUTO_INCREMENT de la tabla `pb_news_ads`
 --
@@ -437,7 +469,7 @@ ALTER TABLE `pb_news_ads`
 -- AUTO_INCREMENT de la tabla `pb_rating_track`
 --
 ALTER TABLE `pb_rating_track`
-  MODIFY `rating_id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+  MODIFY `rating_id` int(32) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 --
 -- AUTO_INCREMENT de la tabla `pb_users`
 --
@@ -447,4 +479,4 @@ ALTER TABLE `pb_users`
 -- AUTO_INCREMENT de la tabla `pb_user_extra`
 --
 ALTER TABLE `pb_user_extra`
-  MODIFY `kid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `kid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
