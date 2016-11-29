@@ -21,8 +21,8 @@ class Database {
 
     function connect() {
         $this->dblink = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB);
-        if (!$this->dblink) {
-            die('Failed to connect to database: ' . $this->mysqli->connect_error());
+        if ($this->dblink->connect_errno) {
+            printf("Failed to connect to database: %\n ", $this->dblink->connect_error);
             exit();
         }
         $this->query("SET NAMES " . DB_CHARSET . "");
@@ -59,9 +59,9 @@ class Database {
     }
 
     private function dbdie($query) {
-        echo "\n<b>Error: Unable to retrieve information.</b>";
-        echo "\n<br>$query";
-        echo "\n<br>reported: " . $this->dblink->error;
+        printf("\n<b>Error: Unable to retrieve information.</b>");
+        printf("\n<br>%s" , $query);
+        printf("\n<br>reported: %s", $this->dblink->error);
         $this->close();
         exit;
     }
