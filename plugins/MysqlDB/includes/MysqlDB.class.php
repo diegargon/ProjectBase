@@ -22,7 +22,7 @@ class Database {
     function connect() {
         $this->dblink = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB);
         if ($this->dblink->connect_errno) {
-            printf("Failed to connect to database: %\n ", $this->dblink->connect_error);
+            printf("Failed to connect to database: %s\n ", $this->dblink->connect_error);
             exit();
         }
         $this->query("SET NAMES " . DB_CHARSET . "");
