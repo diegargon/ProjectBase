@@ -19,10 +19,11 @@ function print_debug($msg, $filter = null) {
 function getserverload() { // Return server load respect cpu's number 1.0 = 100% all cores
     $load = sys_getloadavg();
     $cmd = "cat /proc/cpuinfo | grep processor | wc -l"; 
-    $num_cpus = trim(shell_exec($cmd), 2);
+    $num_cpus = trim(shell_exec($cmd));
+    
     if (empty($load[0]) ||empty($num_cpus)) { return false; }
     $current_load = round($load[0] / $num_cpus, 2);
-
+    
     return $current_load;
 }
 
