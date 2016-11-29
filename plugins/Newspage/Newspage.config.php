@@ -86,3 +86,4 @@ $config['NEWS_PARSER_ALLOW_IMG'] = 1;
 $config['NEWS_PARSER_ALLOW_URL'] = 1;
 $config['NEWS_BREADCRUMB'] = 1;
 $config['NEWS_BREADCRUMB_SEPARATOR'] = "";
+$config['NEWS_BACKPAGE_SECTION'] = 0;

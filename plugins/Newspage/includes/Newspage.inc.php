@@ -120,10 +120,18 @@ function news_error_msg($error) {
 }
 
 function news_cat_menu() {
-    global $tpl, $ctgs;
+    global $tpl, $ctgs, $config, $LANGDATA;
     $cat_path = S_GET_TEXT_UTF8("section");
 
     $menu_data = $ctgs->root_cats("Newspage");
+    if ($config['NEWS_BACKPAGE_SECTION']) {
+        if ($config['FRIENDLY_URL']) {
+            $url = "/{$config['WEB_LANG']}";
+        } else {
+            $url = "";
+        }
+        $menu_data .= "<li><a href='$url'>" . $LANGDATA['L_NEWS_BACKPAGE'] . "</a></li>";
+    }
     !empty($cat_path) ? $submenu_data = $ctgs->childs_of_cat("Newspage", $cat_path) : null;
 
     $tpl->addto_tplvar("SECTIONS_MENU", $menu_data);
