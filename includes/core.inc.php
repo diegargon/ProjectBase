@@ -9,7 +9,7 @@ global $debug;
 $debug = [];
 
 require_once "config.inc.php";
-file_exists("config/config.php") ? require_once "config/config.inc.php" : false; //rewrite config
+file_exists("config/config.inc.php") ? require_once "config/config.inc.php" : false; //rewrite config
 
 require_once "includes/valfilters.inc.php";
 require_once "includes/core.functions.php";
