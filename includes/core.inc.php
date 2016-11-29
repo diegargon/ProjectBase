@@ -8,8 +8,8 @@ global $debug;
 
 $debug = [];
 
-require_once "config/config.inc.php";
-file_exists("tpl/config/config.php") ? require_once "tpl/config/config.inc.php" : false; //rewrite config
+require_once "config.inc.php";
+file_exists("config/config.php") ? require_once "config/config.inc.php" : false; //rewrite config
 
 require_once "includes/valfilters.inc.php";
 require_once "includes/core.functions.php";
