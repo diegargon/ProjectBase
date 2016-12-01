@@ -29,6 +29,8 @@ function news_portal() {
         $news_layout_tpl = "news_portal_style" . $news_nLayout++;
         $tpl->addto_tplvar("news_nSwitch", $news_nLayout);
         register_action("nav_element", "news_layout_switcher", 6);
+    } else {
+        $news_layout_tpl = "news_portal_style1";
     }
 
     news_cat_menu();
