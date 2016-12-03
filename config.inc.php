@@ -37,4 +37,5 @@ $config['EMAIL_SENDMAIL'] = "no-reply@envigo.net";
 $config['SERVER_STRESS'] = 0.8;
 $config['CON_FILE'] = "app.php";
 $config['IMG_SELECTOR'] = "desktop";
+$config['FOOT_COPYRIGHT'] = "Copyright &copy; 2016 - 2016 Diego García All Rights Reserved";
 //$config['']
