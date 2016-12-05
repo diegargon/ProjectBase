@@ -17,6 +17,7 @@ if ($user && $user['uid'] != 0) {
 
 if (isset($_GET['active'])) {
     if (!SMBasic_user_activate_account()) {
+        $msgbox['title'] = "L_SM_REGISTERED";
         $msgbox['MSG'] = "L_SM_E_ACTIVATION";
         $msgbox['backlink'] = $config['WEB_URL'];
         do_action("message_page", $msgbox);
