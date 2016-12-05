@@ -32,6 +32,8 @@ TODO
 
 chown www-data:www-data ???? && chmod 755 ????
 
+php-gd ||php5.6-gd
+
 INSTALLATION
 ============
 TODO
