@@ -58,7 +58,7 @@ function SMBasic_Register() {
 
     if ($query) {
         mail($email, $LANGDATA['L_REG_EMAIL_SUBJECT'], $mail_msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
-        die('[{"status": "ok", "msg": "' . $register_message . ', "url": "' . $config['WEB_URL'] . '"}]');
+        die('[{"status": "ok", "msg": "' . $register_message . '", "url": "' . $config['WEB_URL'] . '"}]');
     } else {
         die('[{"status": "7", "msg": "' . $LANGDATA['L_REG_ERROR_WHILE_REG'] . '"}]');
     }
