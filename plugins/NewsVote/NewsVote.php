@@ -167,6 +167,10 @@ function newsvote_news_user_rating($nid, $lang_id, $user_rating) {
     $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => $lang_id, "page" => 1), "LIMIT 1");
     $news_data = $db->fetch($query);
     $author_xtrData = $UXtra->getById($news_data['author_id']);
+    if($author_xtrData == false) {
+        $author_xtrData['uid'] = $news_data['author_id'];
+        $author_xtrData['rating_user'] = 0;
+    }
     $new_rating = $author_xtrData['rating_user'] + $user_rating;
     $new_rating_times = ++$author_xtrData['rating_times'];
 
@@ -186,6 +190,10 @@ function newsvote_comment_user_rating($cid, $lang_id, $user_rating) {
     $query = $db->select_all("comments", array("cid" => "$cid", "lang_id" => $lang_id), "LIMIT 1");
     $comment_data = $db->fetch($query);
     $author_xtrData = $UXtra->getById($comment_data['author_id']);
+    if($author_xtrData == false) {
+        $author_xtrData['uid'] = $news_data['author_id'];
+        $author_xtrData['rating_user'] = 0;
+    }    
     if ($config['NEWSVOTE_COMMENT_USER_RATING_MODE'] == 1) {
         $new_rating = ++$author_xtrData['rating_user'];
     } else if ($config['NEWSVOTE_COMMENT_USER_RATING_MODE'] == "div2") {
