@@ -28,7 +28,7 @@ class parse_text {
         '~\[blockquote\](.*?)\[/blockquote\]~si'                            => '<blockquote>$1</blockquote>',
         '~\[code\](.*?)\[/code\]~si'                                        => '<code>$1</code>',
         '~\[br\]~si'                                                        => '<br/>',
-        '~\[youtube\]https:\/\/www.youtube.com\/watch\?v=(.*?)\[\/youtube\]~si' => '<div><iframe src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe><div>',
+        '~\[youtube\]https:\/\/www.youtube.com\/watch\?v=(.*?)\[\/youtube\]~si' => '<div><iframe src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe></div>',
         '~\[youtube w=((?:[1-9][0-9]?[0-9]?)) h=((?:[1-9][0-9]?[0-9]?))\]https:\/\/www.youtube.com\/watch\?v=(.*?)\[\/youtube\]~si' => '<div><iframe width="$1" height="$2" src="https:\/\/www.youtube.com\/embed\/$3" frameborder="0" allowfullscreen></iframe></div>',
     );
 
