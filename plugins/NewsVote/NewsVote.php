@@ -170,6 +170,7 @@ function newsvote_news_user_rating($nid, $lang_id, $user_rating) {
     if($author_xtrData == false) {
         $author_xtrData['uid'] = $news_data['author_id'];
         $author_xtrData['rating_user'] = 0;
+        $author_xtrData['rating_times'] = 0;
     }
     $new_rating = $author_xtrData['rating_user'] + $user_rating;
     $new_rating_times = ++$author_xtrData['rating_times'];
@@ -193,6 +194,7 @@ function newsvote_comment_user_rating($cid, $lang_id, $user_rating) {
     if($author_xtrData == false) {
         $author_xtrData['uid'] = $news_data['author_id'];
         $author_xtrData['rating_user'] = 0;
+        $author_xtrData['rating_times'] = 0;
     }    
     if ($config['NEWSVOTE_COMMENT_USER_RATING_MODE'] == 1) {
         $new_rating = ++$author_xtrData['rating_user'];
