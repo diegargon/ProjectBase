@@ -103,4 +103,10 @@
     .footer {
         font-size: 0.7rem;
     }
+    .news_img_float_r {
+        padding-left:1px;
+    }
+    .news_img_float_l {    
+        padding-right: 1px;
+    }    
 }
