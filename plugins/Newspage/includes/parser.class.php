@@ -39,7 +39,8 @@ class parse_text {
             $this->bbcode['~\[img w=((?:[1-9][0-9]?[0-9]?))\](.*?)\[\/img\]~si'] = '<p><img class="user_image_link" width="$1" src="$2" alt="" /></p>';
         }
         if ($config['NEWS_PARSER_ALLOW_URL']) {
-            $this->bbcode['~\[url\]((?:ftp|https?)://.*?)\[/url\]~si'] = '<a rel="nofollow" href="$1">$1</a>';
+            $this->bbcode['~\[url\]((?:ftps|https?)://.*?)\[/url\]~si'] = '<a rel="nofollow" href="$1">$1</a>';
+            $this->bbcode['~\[url=((?:ftps?|https?)://.*?)\](.*?)\[/url\]~si'] = '<a rel="nofollow" href="$1">$2</a>';
         }
     }
 
