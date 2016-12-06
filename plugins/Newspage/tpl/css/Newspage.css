@@ -541,13 +541,13 @@
 .breadcrumb li a:hover:after { border-left-color: hsla(206,85%,25%,1) !important; }
 
 .video-container {
-  max-width: 420px;
+  /* max-width: 420px; */
   margin: 0px auto;
 }
 
 .video-container > div {
   position: relative;
-  padding-bottom: 75%;
+  padding-bottom: 60%;
   height: 0px;
 }
 
