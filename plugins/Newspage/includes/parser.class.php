@@ -40,7 +40,7 @@ class parse_text {
         }
         if ($config['NEWS_PARSER_ALLOW_URL']) {
             $this->bbcode['~\[url\]((?:ftps|https?)://.*?)\[/url\]~si'] = '<a rel="nofollow" target="_blank" href="$1">$1</a>';
-            $this->bbcode['~\[url=((?:ftps?|https?)://.*?)\](.*?)\[/url\]~si'] = '<a rel="nofollow" target="_blank"  href="$1">$2</a>';
+            $this->bbcode['~\[url=((?:ftps?|https?)://.*?)\](.*?)\[/url\]~si'] = '<a rel="nofollow" target="_blank" href="$1">$2</a>';
         }
     }
 

@@ -353,6 +353,7 @@
 
 }
 .related {
+    font-size: 0.85em;
     margin-top: 5px;
     border: 1px solid #999999;
     background: #cccccc;
