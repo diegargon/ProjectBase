@@ -53,5 +53,4 @@ class parse_text {
         $text = preg_replace('/\[S\]/si', DIRECTORY_SEPARATOR . $config['IMG_SELECTOR'] . DIRECTORY_SEPARATOR, $text);
         return $text;
     }
-
 }
