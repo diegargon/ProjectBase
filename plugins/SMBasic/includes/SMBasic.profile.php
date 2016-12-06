@@ -32,7 +32,7 @@ function SMBasic_ViewProfile() {
 
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config, $db, $sm;
-
+    
     if (empty($_POST['cur_password']) || strlen($_POST['cur_password']) < $config['sm_min_password']) {
         die('[{"status": "1", "msg": "' . $LANGDATA['L_E_PASSWORD_EMPTY_SHORT'] . '"}]');
     }
