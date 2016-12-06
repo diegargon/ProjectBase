@@ -42,7 +42,7 @@ function news_new_page() {
 }
 
 function news_newpage_form_process() {
-    global $LANGDATA, $config;
+    global $LANGDATA, $config, $sm;
 
     if (!($user = $sm->getSessionUser())) {
         return false;
