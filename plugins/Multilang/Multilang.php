@@ -31,7 +31,7 @@ function Multilang_init(){
         if ($config['FRIENDLY_URL']) {
             $request_uri = $config['WEB_URL'] . $config['WEB_LANG'];
         } else {
-        $request_uri = $config['WEB_URL'] . "?lang=" . $config['WEB_LANG'];
+            $request_uri = $config['WEB_URL'] . "?lang=" . $config['WEB_LANG'];
         }
         header('Location:' .$request_uri);
     }
