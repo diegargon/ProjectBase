@@ -6,7 +6,7 @@
     float:left;
     margin:0 0px 4px 0px;
     text-decoration: none;
-    color: gray;
+    color: #473636;
     background-color: #FFFFFF;
     border: 1px solid #dcdcdc;
     padding: 5px;
@@ -80,7 +80,7 @@
     display: table;
     /* border: 1px solid #999999; */
     background-color: #DEDEDE;
-    color: #989898;
+    color: #473636;
     box-shadow: 0 0 5px #818181;
     margin: 0 auto;
     margin-bottom: 4px;
@@ -103,7 +103,7 @@
     font-weight: normal;
 }
 .featured h1, .featured, h2, .featured h3 {
-    color: #989898;
+    color: #473636;
     text-transform: none;
 }
 .featured  img {
