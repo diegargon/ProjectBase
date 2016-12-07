@@ -21,12 +21,10 @@ RewriteRule  ^([a-zA-z]{2})\/register$   app.php?module=SMBasic&page=register&la
 
 RewriteRule ^(es|en)(.*)$  $2?lang=$1 [QSA]
 
-#MODEXPIRE WARNING YOU NEED MOD_EXPIRE and AllowOverride Indexes or THAT GIVE INTERNAL ERROR
-ExpiresActive on
-ExpiresByType image/png "access plus 1 month"
-ExpiresByType image/gif "access plus 1 month"
-ExpiresByType image/jpeg "access plus 1 month"
-
-#ExpiresByType text/css "access plus 1 days"
-AddType image/favicon.ico .ico
-ExpiresByType image/favicon.ico "access plus 3 months"
+<ifmodule mod_expires.c>
+<Filesmatch "\.(jpg|jpeg|png|gif|js|css|swf|ico|woff|mp3)$">
+    ExpiresActive on
+    ExpiresDefault "access plus 30 days"
+</Filesmatch>
+#ExpiresByType image/x-icon "access plus 1 day/month/year"
+</ifmodule>
