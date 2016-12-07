@@ -14,19 +14,22 @@ function Multilang_init(){
 
     $request_uri = S_SERVER_REQUEST_URI();
 
-    if ( (isset($_GET['lang'])) &&
-        (($lang = S_VAR_CHAR_AZ($_GET['lang'], 2, 2) ) != false)
-        ) {
-            $config['WEB_URL'] = $config['WEB_URL'] . "$lang";
-            $config['WEB_LANG'] = $lang;
+    if($config['ML_FORCEUSE_DFL_LANG']) {
+        $lang = $config['WEB_LANG'];
     } else {
-        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ) {
-            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
-            isset($lang) ? $config['WEB_LANG'] = $lang : false;
+        if ( (isset($_GET['lang'])) &&  (($lang = S_VAR_CHAR_AZ($_GET['lang'], 2, 2) ) != false)) {
+                $config['WEB_URL'] = $config['WEB_URL'] . "$lang";
+                $config['WEB_LANG'] = $lang;
         } else {
-            $lang = $config['WEB_LANG'];
+            if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ) {
+                $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+                isset($lang) ? $config['WEB_LANG'] = $lang : false;
+            } else {
+                $lang = $config['WEB_LANG'];
+            }
         }
     }
+
     if ($request_uri == '/') {
         if ($config['FRIENDLY_URL']) {
             $request_uri = $config['WEB_URL'] . $config['WEB_LANG'];
