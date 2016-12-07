@@ -19,7 +19,7 @@ RewriteRule  ^([a-zA-z]{2})\/logout$   app.php?module=SMBasic&page=logout&lang=$
 RewriteRule  ^([a-zA-z]{2})\/profile(.*)$   app.php?module=SMBasic&page=profile&lang=$1$2
 RewriteRule  ^([a-zA-z]{2})\/register$   app.php?module=SMBasic&page=register&lang=$1
 
-RewriteRule ^(es|en)(.*)$  $2?lang=$1 [QSA]
+RewriteRule ^(es|en)$  $2?lang=$1 [QSA]
 
 <ifmodule mod_expires.c>
 <Filesmatch "\.(jpg|jpeg|png|gif|js|css|swf|ico|woff|mp3)$">

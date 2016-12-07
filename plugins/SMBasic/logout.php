@@ -9,4 +9,4 @@ plugin_start("SMBasic");
 
 $sm->destroy();
 
-header('Location: ./');
+header('Location: /');
