@@ -40,9 +40,9 @@ function NS_news_tag_show_page(& $news_row) {
         foreach ($exploted_tags as $tag) {
             $tag = preg_replace('/\s+/', '', $tag);
             if ($config['FRIENDLY_URL']) {
-                $tag_data .= "<a rel=nofollow href='/{$config['WEB_LANG']}/searchTag/$tag'>$tag</a> ";
+                $tag_data .= "<a href='/{$config['WEB_LANG']}/searchTag/$tag'>$tag</a> ";
             } else {
-                $tag_data .= "<a rel=nofollow href='/{$config['CON_FILE']}&lang={$config['WEB_LANG']}&searchTag=$tag'>$tag</a> ";
+                $tag_data .= "<a href='/{$config['CON_FILE']}&lang={$config['WEB_LANG']}&searchTag=$tag'>$tag</a> ";
             }
         }
         $tag_data .= "</p></div>";
