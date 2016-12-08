@@ -24,7 +24,7 @@ $config['WEB_LANG_ID'] = "1"; //used when not ML
 $config['WEB_DIR'] = "ltr";
 $config['WEB_DESC'] = "Noticias y algo más";
 $config['PAGE_KEYWORDS'] = "test";
-$config['PAGE_VIEWPORT'] = "width=device-width, initial-scale=1.0";
+$config['PAGE_VIEWPORT'] = "width=device-width,initial-scale=1.0";
 $config['PAGE_AUTHOR'] = "ProjectBase";
 $config['FRIENDLY_URL'] = 1;
 $config['DEFAULT_TIMEZONE'] = "UTC";

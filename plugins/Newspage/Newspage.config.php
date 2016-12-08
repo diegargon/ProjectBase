@@ -87,3 +87,4 @@ $config['NEWS_PARSER_ALLOW_URL'] = 1;
 $config['NEWS_BREADCRUMB'] = 1;
 $config['NEWS_BREADCRUMB_SEPARATOR'] = "";
 $config['NEWS_BACKPAGE_SECTION'] = 0;
+$config['NEWS_FB_APPID'] = "1481492868545684";
