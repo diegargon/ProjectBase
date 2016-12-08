@@ -114,7 +114,7 @@ class TPL {
                 } else if (file_exists($DEFAULT_PATH)) {
                     $css_code = codetovar("$DEFAULT_PATH");
                 }
-                isset($css_code) ? $css = "<style>$css_code</style>" : null;
+                isset($css_code) ? $css = "<style>" . $this->css_strip($css_code) . "</style>" : null;
             }
             if (isset($css)) {
                 $this->addto_tplvar("LINK", $css);
