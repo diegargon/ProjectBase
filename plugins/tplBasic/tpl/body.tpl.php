@@ -19,7 +19,7 @@
                                 <li class='nav_left lihome'>
                                     <a href='/<?php
                                     $config['FRIENDLY_URL'] ? print $config['WEB_LANG'] : print "?lang={$config['WEB_LANG']}";
-                                    ?>'><img src='<?php print $config['IMG_HOME'] ?>' alt='<?php print $LANGDATA['L_HOME'] ?>' />
+                                    ?>/'><img src='<?php print $config['IMG_HOME'] ?>' alt='<?php print $LANGDATA['L_HOME'] ?>' />
                                     </a></li>
                             <?php } ?>
                             <?php isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false; ?>
@@ -27,7 +27,7 @@
                     </nav>
                 <?php } ?>
                 <div id="brand">
-                    <a href="/<?php $config['FRIENDLY_URL'] ? print $config['WEB_LANG'] : print "?lang={$config['WEB_LANG']}"; ?>">
+                    <a href="/<?php $config['FRIENDLY_URL'] ? print $config['WEB_LANG'] : print "?lang={$config['WEB_LANG']}"; ?>/">
                         <?php echo $config['WEB_NAME'] ?></a><br/>
                     <span><?php echo $config['WEB_DESC'] ?></span>
                 </div>

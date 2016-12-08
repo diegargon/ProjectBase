@@ -18,7 +18,7 @@ function Multilang_init(){
         $lang = $config['WEB_LANG'];
     } else {
         if ( (isset($_GET['lang'])) &&  (($lang = S_VAR_CHAR_AZ($_GET['lang'], 2, 2) ) != false)) {
-                $config['WEB_URL'] = $config['WEB_URL'] . "$lang";
+                $config['WEB_URL'] = $config['WEB_URL'] . "$lang" . "/";
                 $config['WEB_LANG'] = $lang;
         } else {
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ) {
