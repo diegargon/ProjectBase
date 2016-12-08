@@ -203,6 +203,9 @@
 .article_text {
     min-height: 330px;
 }
+.article_text a {
+    text-decoration:none;
+}
 .news_msg {
     font-size:12em;
     font-weight: bold;
