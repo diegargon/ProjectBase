@@ -28,8 +28,3 @@ RewriteRule ^(es|en)/$  $2?lang=$1 [QSA]
 </Filesmatch>
 #ExpiresByType image/x-icon "access plus 1 day/month/year"
 </ifmodule>
-
-Order Allow,Deny
-Deny from 46.229.168.
-Deny from 163.172.
-allow from all
