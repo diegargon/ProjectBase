@@ -46,6 +46,7 @@
 }
 .tags {
     font-size: 0.9em;
+    line-height: 2.5em;
 }
 .tags p{
     background-color: #ffffcc;
