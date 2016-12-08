@@ -105,8 +105,10 @@
     }
     .news_img_float_r {
         padding-left:1px;
+        width: 100%;
     }
     .news_img_float_l {    
         padding-right: 1px;
+        width: 100%;
     }    
 }
