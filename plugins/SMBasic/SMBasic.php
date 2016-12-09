@@ -29,5 +29,5 @@ function SMBasic_Init() {
 
     defined('SM_DEBUG') ? SMBasic_sessionDebugDetails() : null;
 
-    register_action("nav_element", "SMBasic_navLogReg");
+    register_action("header_menu_element", "SMBasic_navLogReg");
 }
