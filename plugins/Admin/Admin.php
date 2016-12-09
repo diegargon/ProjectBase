@@ -14,7 +14,7 @@ function Admin_init() {
     if ($user) {
         global $acl_auth;
         if ((defined('ACL') && $acl_auth->acl_ask("admin_all")) || (!defined('ACL') && $user['isAdmin'])) {
-            register_action("nav_element", "action_menu_opt");
+            register_action("header_menu_element", "action_menu_opt");
         }
     }
     //register_action("common_web_structure", "adm_menu_opt");
@@ -37,5 +37,5 @@ function adm_menu_opt() {
     $data .= "'>" . "Admin" . "</a>";
     $data .= "</li>";
 
-    $tpl->addto_tplvar("NAV_ELEMENT", $data);
+    $tpl->addto_tplvar("HEADER_MENU_ELEMENT", $data);
 }

@@ -8,7 +8,7 @@ define('TPL', true);
 //define('TPL_DEBUG', true);
 
 $config['NAV_MENU'] = 1;
-$config['NAV_MENU_HOME'] = 1;
+$config['HEADER_MENU_HOME'] = 1;
 $config['IMG_HOME'] = "/plugins/tplBasic/img/home.png";
 $config['CSS_OPTIMIZE'] = 0; //need cache writable
 $config['CSS_INLINE'] = 1;

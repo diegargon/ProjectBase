@@ -43,5 +43,5 @@ function Multilang_init(){
         $request_uri = str_replace("lang=". $config['WEB_LANG'], "lang=".$choose_lang, $request_uri);
         header('Location:' .$request_uri);
     }
-    register_action("nav_element", array($ml, "get_nav"), 6);
+    register_action("header_menu_element", array($ml, "get_nav"), 6);
 }

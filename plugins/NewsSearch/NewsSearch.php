@@ -14,7 +14,7 @@ function NewsSearch_init() {
         return false;
     }
     $tpl->getCSS_filePath("NewsSearch");
-    register_action("nav_element", "NS_basicSearchbox", 5);
+    register_action("header_menu_element", "NS_basicSearchbox", 5);
 
     /* TAGS */
     if ($config['NS_TAGS_SUPPORT']) {
