@@ -40,8 +40,8 @@ class TPL {
         //END HEAD
         //BEGIN BODY
         if ($config['NAV_MENU']) { //we use do_action for select order
-            !isset($this->tpldata['NAV_ELEMENT']) ? $this->tpldata['NAV_ELEMENT'] = "" : false;
-            $this->tpldata['NAV_ELEMENT'] .= do_action("nav_element");
+            !isset($this->tpldata['HEADER_MENU_ELEMENT']) ? $this->tpldata['HEADER_MENU_ELEMENT'] = "" : false;
+            $this->tpldata['HEADER_MENU_ELEMENT'] .= do_action("header_menu_element");
         }
 
         $this->tpldata['ADD_TO_BODY'] .= do_action("add_to_body");

@@ -9,22 +9,22 @@
                 <?php if ($config['NAV_MENU']) { ?>
                     <script>
                         function toggleMenu() {
-                            document.getElementsByClassName("main-nav")[0].classList.toggle("responsive");
+                            document.getElementsByClassName("header-menu")[0].classList.toggle("responsive");
                         }
                     </script>
-                    <nav id="main-nav">
-                        <ul class="main-nav">
+                    <div id="header-menu">
+                        <ul class="header-menu">
                             <li class="nav_right resp-icon"><a rel="nofollow" href="javascript:void(0);" onclick="toggleMenu()">&#9776;</a></li>
-                            <?php if ($config['NAV_MENU_HOME']) { ?>
+                            <?php if ($config['HEADER_MENU_HOME']) { ?>
                                 <li class='nav_left lihome'>
                                     <a href='/<?php
                                     $config['FRIENDLY_URL'] ? print $config['WEB_LANG'] : print "?lang={$config['WEB_LANG']}";
                                     ?>/'><img src='<?php print $config['IMG_HOME'] ?>' alt='<?php print $LANGDATA['L_HOME'] ?>' />
                                     </a></li>
                             <?php } ?>
-                            <?php isset($tpldata['NAV_ELEMENT']) ? print $tpldata['NAV_ELEMENT'] : false; ?>
+                            <?php isset($tpldata['HEADER_MENU_ELEMENT']) ? print $tpldata['HEADER_MENU_ELEMENT'] : false; ?>
                         </ul>
-                    </nav>
+                    </div>
                 <?php } ?>
                 <div id="brand">
                     <a href="/<?php $config['FRIENDLY_URL'] ? print $config['WEB_LANG'] : print "?lang={$config['WEB_LANG']}"; ?>/">
@@ -34,22 +34,22 @@
                 <?php
                 if (!empty($tpldata['SECTIONS_MENU'])) {
                     ?>
-                    <div id="sections_menu">
+                    <nav id="sections_menu" role="navigation">
                         <ul>
                             <?php
                             !empty($tpldata['SECTIONS_MENU']) ? print $tpldata['SECTIONS_MENU'] : false;
                             ?>
                         </ul>
-                    </div>
+                    </nav>
                     <?php
                 }
                 if (!empty($tpldata['SECTIONS_SUBMENU'])) {
                     ?>
-                    <div id="sections_submenu">
+                    <nav id="sections_submenu" role="navigation">
                         <ul>
                             <?php !empty($tpldata['SECTIONS_SUBMENU']) ? print $tpldata['SECTIONS_SUBMENU'] : null; ?>
                         </ul>
-                    </div>
+                    </nav>
                     <?php
                 }
                 ?>
