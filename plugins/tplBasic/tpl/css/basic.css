@@ -99,23 +99,23 @@ h1,h2,h3,h4,h5,h6{
     font-style:normal;
     line-height:normal;
 }
-#main-nav{
+#header-menu{
     display:block;
     background-color:#EEE;
     overflow:hidden;
     color: #870505;
     border: 1px solid #000;
 }
-#main-nav ul{
+#header-menu ul{
     margin:0;
     padding:0;
     list-style:none;
 }
-#main-nav li{
+#header-menu li{
     display:inline;
     text-transform:uppercase;
 }
-#main-nav li a{
+#header-menu li a{
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -127,17 +127,17 @@ h1,h2,h3,h4,h5,h6{
     background-color: transparent;
     height: 20px;
 }
-#main-nav li a:hover {background-color: black;}
+#header-menu li a:hover {background-color: black;}
 .nav_left {
     float:left;
 }
 .nav_right {
     float:right;
 }
-#main-nav li.last{
+#header-menu li.last{
     margin-right:0;
 }
-#main-nav select {
+#header-menu select {
     -moz-appearance: none; 
     -webkit-appearance: none;
     /* appearance: none;*/
@@ -152,8 +152,8 @@ h1,h2,h3,h4,h5,h6{
     margin-top: 2px;
     overflow: hidden;
 }
-#main-nav select:hover {background-color: black;}
-#main-nav img {
+#header-menu select:hover {background-color: black;}
+#header-menu img {
     padding-left: 10px;
     padding-right: 10px;
     width:20px;
