@@ -15,7 +15,7 @@
 }
 #searchResult th {
     border: 1px solid #242424;
-    font-size:1.0em;
+    font-size:1em;
     background-color: #232323;
     color: #C0BAB6;
 }
@@ -32,7 +32,7 @@
 }
 .s_news_title {
     font-weight: bold;
-    font-size: 1.0em;
+    font-size: 1em;
     background-color: #2C2D2C;
     color: #C0BAB6;
     padding-left: 5px;

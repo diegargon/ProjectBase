@@ -2,7 +2,7 @@
  Copyright @ 2016 Diego Garcia
 */
 #comments { 
-    border: 0px solid black;
+    border: 0px solid #000;
     margin-top: 10px;
 }
 #comments h2 {
@@ -32,7 +32,7 @@
     min-height: 55px;
 }
 .comment p {
-    line-height: 1.0em;
+    line-height: 1em;
 /*    margin-top: 40px; */
     margin-bottom: 5px;
     /* margin-left: 45px;*/
@@ -46,7 +46,7 @@
     padding: 5px;
     text-align: center;
     border-radius: 1px;
-    color: black;
+    color: #000;
     font-weight: bold;
     text-transform: uppercase;
     text-decoration: none;
