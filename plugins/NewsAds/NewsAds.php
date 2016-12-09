@@ -15,7 +15,7 @@ function NewsAds_ShowAds () {
     
     if ($config['newsads_main_ad']) {
         $ad_code = NewsAds_GetMainAd();
-        $main_banner = "<div class='center' id='main_banner'>" . $ad_code ."</div>";
+        $main_banner = "<aside class='center' id='main_banner'>" . $ad_code ."</aside>";
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_TOP", $main_banner);
         $tpl->addto_tplvar("ADD_TOP_NEWS", $main_banner );
         $tpl->addto_tplvar("ADD_TOP_SECTION", $main_banner );
@@ -23,7 +23,7 @@ function NewsAds_ShowAds () {
     
     if ( S_GET_INT("nid") && ($config['newsads_sponsors'] || $config['newsads_global_sponsors']) ) {
         $sponsors = NewsAdds_Sponsors();
-        $sponsors = "<div class='sponsors center'>" . $sponsors ."</div>";
+        $sponsors = "<aside class='sponsors center'>" . $sponsors ."</aside>";
         !empty($sponsors) ? $tpl->addto_tplvar("ADD_TO_NEWS_SIDE", $sponsors) : false;                    
     }
 }
