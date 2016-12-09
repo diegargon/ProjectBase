@@ -134,6 +134,6 @@ function news_cat_menu() {
     }
     !empty($cat_path) ? $submenu_data = $ctgs->childs_of_cat("Newspage", $cat_path) : null;
 
-    $tpl->addto_tplvar("SECTIONS_MENU", $menu_data);
+    $tpl->addto_tplvar("SECTIONS_NAV", $menu_data);
     isset($submenu_data) ? $tpl->addto_tplvar("SECTIONS_SUBMENU", $submenu_data) : null;
 }

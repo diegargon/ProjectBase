@@ -32,12 +32,12 @@
                     <span><?php echo $config['WEB_DESC'] ?></span>
                 </div>
                 <?php
-                if (!empty($tpldata['SECTIONS_MENU'])) {
+                if (!empty($tpldata['SECTIONS_NAV'])) {
                     ?>
-                    <nav id="sections_menu" role="navigation">
+                    <nav id="sections_nav" role="navigation">
                         <ul>
                             <?php
-                            !empty($tpldata['SECTIONS_MENU']) ? print $tpldata['SECTIONS_MENU'] : false;
+                            !empty($tpldata['SECTIONS_NAV']) ? print $tpldata['SECTIONS_NAV'] : false;
                             ?>
                         </ul>
                     </nav>

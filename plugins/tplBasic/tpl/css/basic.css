@@ -217,7 +217,7 @@ h1,h2,h3,h4,h5,h6{
     padding: 0px;
     margin: 0;
 }
-#sections_menu, #sections_submenu {
+#sections_nav, #sections_submenu {
     text-align: center;
     background: blue;
     border-left: 1px solid #000;
@@ -230,18 +230,18 @@ h1,h2,h3,h4,h5,h6{
     color:white;
     background: linear-gradient(#55a0db, #1f6ba5);
 }
-#sections_menu {
+#sections_nav {
    border: 1px solid #000;
 }
-#sections_menu ul, #sections_submenu ul {
+#sections_nav ul, #sections_submenu ul {
     padding:0px;
     margin:0px;
     /*margin-bottom: 4px;*/
 }
-#sections_menu li, #sections_submenu li {
+#sections_nav li, #sections_submenu li {
     display: inline;
 }
-#sections_menu li a, #sections_submenu li a{
+#sections_nav li a, #sections_submenu li a{
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -254,10 +254,10 @@ h1,h2,h3,h4,h5,h6{
     background-color: transparent;
     height: 20px;
 }
-#sections_menu li a:hover, #sections_submenu li a:hover {
+#sections_nav li a:hover, #sections_submenu li a:hover {
     background: linear-gradient(#2f5d81, #0b2a42);
 }
-#sections_menu li a:active, #sections_submenu li a:active {
+#sections_nav li a:active, #sections_submenu li a:active {
     color: black;
     background: rgb(245, 245, 245) none repeat scroll 0% 0%;
     border-right: 1px solid #999999;
