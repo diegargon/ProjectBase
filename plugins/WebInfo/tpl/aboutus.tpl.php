@@ -16,7 +16,7 @@ news_cat_menu();
         </p>
         <div class="vcard">
             <address>        
-                <p><?php print $LANGDATA['L_WEBINF_BY'] ?> <a href="mailto:<?php $config['CONTACT_EMAIL'] ?> "><?php print $config['WEB_NAME'] ?></a></p>
+                <p><?php print $LANGDATA['L_WEBINF_BY'] ?> <a href="mailto:<?php print $config['CONTACT_EMAIL'] ?> "><?php print $config['WEB_NAME'] ?></a></p>
                 <p><?php print $LANGDATA['L_WEBINF_VISITUS'] ?><a href="<?php print $config['WEB_URL'] ?>"><?php print $config['WEB_URL'] ?></a><br></p>
                 <p><?php print $config['WEB_NAME'] ?></p>
                 <p><?php print $LANGDATA['L_WEBINF_COUNTRY'] ?></p>
