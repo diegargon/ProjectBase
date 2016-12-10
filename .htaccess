@@ -19,6 +19,12 @@ RewriteRule  ^([a-zA-z]{2})\/logout$   app.php?module=SMBasic&page=logout&lang=$
 RewriteRule  ^([a-zA-z]{2})\/profile(.*)$   app.php?module=SMBasic&page=profile&lang=$1$2
 RewriteRule  ^([a-zA-z]{2})\/register$   app.php?module=SMBasic&page=register&lang=$1
 
+#WebInfo
+RewriteRule  ^([a-zA-z]{2})\/AboutUs$   app.php?module=WebInfo&page=AboutUs&lang=$1
+RewriteRule  ^([a-zA-z]{2})\/Contact$   app.php?module=WebInfo&page=Contact&lang=$1
+RewriteRule  ^([a-zA-z]{2})\/Advertise$   app.php?module=WebInfo&page=Advertise&lang=$1
+RewriteRule  ^([a-zA-z]{2})\/Terms$   app.php?module=WebInfo&page=Terms&lang=$1
+
 RewriteRule ^(es|en)/$  $2?lang=$1 [QSA]
 
 <ifmodule mod_expires.c>

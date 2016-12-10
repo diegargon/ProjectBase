@@ -34,7 +34,7 @@
                 <?php
                 if (!empty($tpldata['SECTIONS_NAV'])) {
                     ?>
-                    <nav id="sections_nav" role="navigation">
+                    <nav id="sections_nav">
                         <ul>
                             <?php
                             !empty($tpldata['SECTIONS_NAV']) ? print $tpldata['SECTIONS_NAV'] : false;
@@ -45,7 +45,7 @@
                 }
                 if (!empty($tpldata['SECTIONS_SUBMENU'])) {
                     ?>
-                    <nav id="sections_submenu" role="navigation">
+                    <nav id="sections_submenu">
                         <ul>
                             <?php !empty($tpldata['SECTIONS_SUBMENU']) ? print $tpldata['SECTIONS_SUBMENU'] : null; ?>
                         </ul>

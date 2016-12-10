@@ -1,0 +1,13 @@
+{
+    "plugin_name": "WebInfo",
+    "enabled": 1,
+    "main_file": "WebInfo.php",
+    "function_init": "WebInfo_init",
+    "function_install": "",
+    "provided": "",
+    "depends": "tplbasic1",
+    "autostart": 1,
+    "priority": 5,
+    "optional": "multilang1",
+    "conflicts": ""
+}
