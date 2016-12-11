@@ -9,7 +9,7 @@ class TPL {
 
     private $tpldata;
     private $scripts = [];
-    private $standard_remote_scripts = array(//TODO LOAD LIST
+    private $std_remote_scripts = array(//TODO LOAD LIST
         "jquery" => "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js",
         "font-awesome" => "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css",
         "bootstrap" => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
@@ -24,7 +24,6 @@ class TPL {
         "swfobject" => "https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
         "three" => "https://ajax.googleapis.com/ajax/libs/threejs/r76/three.min.js",
         "webfont" => "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js",
-        "recaptcha" => "https://www.google.com/recaptcha/api.js",
     );
     private $css_cache_filepaths;
     private $css_cache_onefile;
@@ -131,8 +130,8 @@ class TPL {
 
         if (!empty($plugin) && ($plugin == "standard")) {
             if (!$this->check_script($filename)) {
-                if (array_key_exists($filename, $this->standard_remote_scripts)) {
-                    $script_url = $this->standard_remote_scripts[$filename];
+                if (array_key_exists($filename, $this->std_remote_scripts)) {
+                    $script_url = $this->std_remote_scripts[$filename];
                     $script = "<script type='text/javascript' src='$script_url' charset='UTF-8' $async></script>\n";
                     $this->addto_tplvar("SCRIPTS_" . $place . "", $script);
                     $this->scripts[] = $filename;
@@ -209,6 +208,12 @@ class TPL {
         return $this->tpldata;
     }
 
+    function addStdScript($key, $url) {
+        if(array_key_exists($key, $this->std_remote_scripts)) {
+            return 0;
+        }
+        $this->std_remote_scripts[$key] = $url;
+    }
     private function check_script($script) {
         foreach ($this->scripts as $value) {
             if ($value == $script) {
