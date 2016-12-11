@@ -3,14 +3,10 @@
 */
 
 .footer_menu {
-    /*border: 1px solid #ff0000; */
     font-size: 0.9em;
 }
-.footer_menu_inner {
-    /* border: 1px solid #0000cc; */
-}
+.footer_menu_inner {}
 .footer_menu_inner ul {
-    /* position: relative; */
     list-style-type: none;
     font: inherit;
     overflow: hidden;
@@ -19,13 +15,10 @@
 .footer_menu_inner li {
     display:inline;
     margin-right:5%;
-/*     min-width: 0;  */
 }
 .footer_menu_inner a {
     text-decoration: none;
-
-    transition: .3s;
-    
+    transition: .3s; 
 }
 .aboutus-container, .advertise-container, .terms-container, .contact-container {
     padding-left: 2%;
@@ -45,7 +38,21 @@
 }
 .contact-container {
     padding: 5%;
-    border: 1px solid red;
-    width: 90%;
+    width: 60%;
     margin: 0 auto;
+}
+.info-panel {
+    background: #ddd;    
+    width:50%;
+    margin:0 auto;
+    padding:1%;
+    text-align:center;
+}
+.submit-buttons {
+    text-align:center;
+}
+.contact_form {}
+.contact_form label {}
+.form_inputbox {
+    width: 100%;
 }

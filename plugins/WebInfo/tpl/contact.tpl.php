@@ -1,61 +1,39 @@
 <?php
-/* 
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
 plugin_start("Newspage");
 news_cat_menu();
-
 ?>
-
-<?php 
-if(defined('RECAPTCHA') && $config['WEBINFO_RECAPTCHA']) { ?>
-                <div id="captcha_hidden">
-                    <div class="g-recaptcha" data-size="" data-theme="light" data-sitekey="<?php print $config['RC_PUBLIC_KEY'] ?>" style="transform:scale(0.77);transform-origin:0 0">
-                        Hola
-                    </div>
-                </div>
-<?php }  ?>
-
 <div class="page">
     <div class="contact-container">
-        <form method="post" action="#" id="post">
-            <div class="info-panel">
-                jhiohoihihoih oih oihoi h
+        <div id="info-panel" class="info-panel">
+            <span><?php print $LANGDATA['L_WEBINFO_CONTACT_INFO'] ?></span>
+        </div>
+        <br class="clear" />        
+        <form method="post" action="#" id="contact_form">
+            <div class="contact_form">
+                <label for="email"><?php print $LANGDATA['L_CONTACT_YOUREMAIL'] ?></label>
+                <input class="form_inputbox " type="text" name="email" id="email" size="50" maxlength="100" tabindex="1" value="" />
+                <label for="name"><?php print $LANGDATA['L_CONTACT_YOURNAME'] ?></label>
+                <input class="form_inputbox " type="text" name="name" id="name" size="50" tabindex="2" value="" />
+                <label for="subject"><?php print $LANGDATA['L_CONTACT_SUBJECT'] ?></label>
+                <input class="form_inputbox " type="text" name="subject" id="subject" size="50" tabindex="3" value="" />
+                <label for="message"><?php print $LANGDATA['L_CONTACT_BODY'] ?></label>
+                <textarea class="form_inputbox " name="message" id="message" rows="15" cols="76" tabindex="4"></textarea>
             </div>
-            <br class="clear" />
-            <div class="content">
-                <fieldset class="fields2">
-                    <dl>
-                        <dt><label>Destinatario:</label></dt>
-                        <dd><strong>Administrador</strong></dd>
-                    </dl>
-                    <dl>
-                        <dt><label for="email">Su dirección de correo electrónico:</label></dt>
-                        <dd><input class="inputbox autowidth" type="text" name="email" id="email" size="50" maxlength="100" tabindex="1" value="" /></dd>
-                    </dl>
-                    <dl>
-                        <dt><label for="name">Su nombre:</label></dt>
-                        <dd><input class="inputbox autowidth" type="text" name="name" id="name" size="50" tabindex="2" value="" /></dd>
-                    </dl>
-                    <dl>
-                        <dt><label for="subject">Asunto:</label></dt>
-                        <dd><input class="inputbox autowidth" type="text" name="subject" id="subject" size="50" tabindex="3" value="" /></dd>
-                    </dl>
-                    <dl>
-                        <dt><label for="message">Cuerpo del mensaje:</label><br />
-                            <span>Este mensaje será enviado como texto plano, no incluya HTML o BBCode. La dirección del remitente será su dirección de email.</span></dt>
-                        <dd><textarea class="inputbox" name="message" id="message" rows="15" cols="76" tabindex="4"></textarea></dd>
-                    </dl>
-                </fieldset>
-            </div>
-                <div class="content">
-                    <fieldset class="submit-buttons">
-                        <input type="submit" tabindex="6" name="submit" class="button1" value="Enviar email" />
-                    </fieldset>
+            <div class="contact_form">
+                <?php if (defined('RECAPTCHA') && $config['WEBINFO_RECAPTCHA']) { ?>
+                    <div id="captcha" class="center">
+                        <div class="g-recaptcha" data-callback="rc_cb" data-sitekey="<?php print $config['RC_PUBLIC_KEY'] ?>">
+                        </div>
+                    </div>
+                <?php } ?>              
+                <div id="submitbtn" class="center">
+                    <input disabled id="btnSend" type="submit" tabindex="6" name="submit" value="<?php print $LANGDATA['L_SEND'] ?>" />
                 </div>
-                <input type="hidden" name="creation_time" value="1481403113" />
-                <input type="hidden" name="form_token" value="2f564ed4abc520061b53a644aca9b38208eb88ec" />
+            </div>        
         </form>
     </div>
 </div>

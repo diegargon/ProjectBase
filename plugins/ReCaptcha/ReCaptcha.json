@@ -1,0 +1,13 @@
+{
+    "plugin_name": "ReCaptcha",
+    "enabled": 1,
+    "main_file": "ReCaptcha.php",
+    "function_init": "ReCaptcha_init",
+    "function_install": "",
+    "provided": "recaptcha1",
+    "depends": "tplbasic1",
+    "autostart": 0,
+    "priority": 5,
+    "optional": "",
+    "conflicts": ""
+}

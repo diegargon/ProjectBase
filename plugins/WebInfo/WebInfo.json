@@ -8,6 +8,6 @@
     "depends": "tplbasic1",
     "autostart": 1,
     "priority": 5,
-    "optional": "multilang1 recaptcha",
+    "optional": "multilang1 recaptcha1",
     "conflicts": ""
 }
