@@ -24,6 +24,7 @@ class TPL {
         "swfobject" => "https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js",
         "three" => "https://ajax.googleapis.com/ajax/libs/threejs/r76/three.min.js",
         "webfont" => "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js",
+        "recaptcha" => "https://www.google.com/recaptcha/api.js",
     );
     private $css_cache_filepaths;
     private $css_cache_onefile;
