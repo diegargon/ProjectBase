@@ -29,7 +29,7 @@ if (!empty($_POST)) {
     $mail['to'] = $config['CONTACT_EMAIL'];
 
     if (ContactSendMail($mail) == 0) {
-        die('{"status": "ok", "msg": "' . $LANGDATA['L_CONTACT_MAIL_SUCESS'] . '"}');
+        die('{"status": "ok", "msg": "' . $LANGDATA['L_CONTACT_MAIL_SUCCESS'] . '"}');
     }
 } else {
     do_action("common_web_structure");

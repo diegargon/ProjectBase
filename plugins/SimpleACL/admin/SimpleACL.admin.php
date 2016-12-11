@@ -175,7 +175,7 @@ function SimpleACL_AddRole($user) {
             return $LANGDATA['L_ACL_USER_ALREADY_ROLE'];
         } else {
             $db->insert("acl_users", $role_ary);
-            return $LANGDATA['L_ACL_ADD_SUCESSFUL'];
+            return $LANGDATA['L_ACL_ADD_SUCCESSFUL'];
         }
     }
     return $LANGDATA['L_ACL_E_ID'];
@@ -187,7 +187,7 @@ function SimpleACL_DelRole($user) {
     $role = S_POST_INT("del_role_id");
     if (!empty($role)) {
         $db->delete("acl_users", array("uid" => "{$user['uid']}", "role_id" => "$role"));
-        return $LANGDATA['L_ACL_DEL_SUCESSFUL'];
+        return $LANGDATA['L_ACL_DEL_SUCCESSFUL'];
     }
 
     return $LANGDATA['L_ACL_E_ID'];

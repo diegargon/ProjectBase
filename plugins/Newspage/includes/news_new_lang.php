@@ -64,7 +64,7 @@ function news_form_newlang_process() {
     }
 
     if (news_translate($news_data)) {
-        die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_TRANSLATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+        die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_TRANSLATE_SUCCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
     } else {
         die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
     }

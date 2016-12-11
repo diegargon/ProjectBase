@@ -25,4 +25,4 @@ $LANGDATA['L_CONTACT_E_SUBJECT'] = "Subject incorrect";
 $LANGDATA['L_CONTACT_E_MESSAGE'] = "Menssage incorrect";
 $LANGDATA['L_CONTACT_E_CAPTCHA'] = "Captcha incorrect";
 $LANGDATA['L_CONTACT_E_CAPTCHA_NOPASS'] = "¿are you a bot right? captcha check fail";
-$LANGDATA['L_CONTACT_MAIL_SUCESS'] = "Menssage submit successful";
+$LANGDATA['L_CONTACT_MAIL_SUCCESS'] = "Menssage submit successful";

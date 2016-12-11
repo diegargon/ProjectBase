@@ -101,13 +101,13 @@ function news_form_edit_process() {
     //UPDATE or translate
     if ($news_orig['news_auth'] == "admin" || $news_orig['news_auth'] == "author") {
         if (news_full_update($news_data)) {
-            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
         } else {
             die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
         }
     } else if ($news_orig['news_auth'] == "translator") {
         if (news_limited_update($news_data)) {
-            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
         } else {
             die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
         }

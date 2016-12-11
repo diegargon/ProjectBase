@@ -72,7 +72,7 @@ function news_newpage_form_process() {
         die('[{"status": "8", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
     }
     if (news_newpage_submit_new($news_data)) {
-        die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+        die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
     } else {
         die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
     }
