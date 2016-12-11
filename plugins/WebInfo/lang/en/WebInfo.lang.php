@@ -12,3 +12,4 @@ $LANGDATA['L_WEBINF_TOS'] = "Terms";
 $LANGDATA['L_WEBINF_BY'] ="Create by:";
 $LANGDATA['L_WEBINF_VISITUS'] ="Visit us at:";
 $LANGDATA['L_WEBINF_COUNTRY'] ="Spain";
+$LANGDATA['L_WEBINFO_ABOUTUS_CONTACT'] = "For contact us please use the contact form";

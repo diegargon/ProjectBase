@@ -20,7 +20,7 @@ function WebInfo_footer() {
     
     if ($config['FRIENDLY_URL']) {
         $footer_data['footer_menu'] = '<li><a href="AboutUs">'. $LANGDATA['L_WEBINF_ABOUTUS'] .'</a></li>';
-        //$footer_data['footer_menu'] .= '<li><a href="Contact">'. $LANGDATA['L_WEBINF_CONTACT'] .'</a></li>';
+        $footer_data['footer_menu'] .= '<li><a href="Contact">'. $LANGDATA['L_WEBINF_CONTACT'] .'</a></li>';
         $footer_data['footer_menu'] .= '<li><a href="Advertise">'. $LANGDATA['L_WEBINF_ADVERTISE'] .'</a></li>';
         $footer_data['footer_menu'] .= '<li><a href="Terms">'. $LANGDATA['L_WEBINF_TOS'] .'</a></li>';
     } else {

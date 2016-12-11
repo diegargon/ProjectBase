@@ -8,6 +8,15 @@ news_cat_menu();
 
 ?>
 
+<?php 
+if(defined('RECAPTCHA') && $config['WEBINFO_RECAPTCHA']) { ?>
+                <div id="captcha_hidden">
+                    <div class="g-recaptcha" data-size="" data-theme="light" data-sitekey="<?php print $config['RC_PUBLIC_KEY'] ?>" style="transform:scale(0.77);transform-origin:0 0">
+                        Hola
+                    </div>
+                </div>
+<?php }  ?>
+
 <div class="page">
     <div class="contact-container">
         <form method="post" action="#" id="post">

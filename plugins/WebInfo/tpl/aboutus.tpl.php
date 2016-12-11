@@ -20,7 +20,7 @@ news_cat_menu();
                 <p><?php print $LANGDATA['L_WEBINF_VISITUS'] ?><a href="<?php print $config['WEB_URL'] ?>"><?php print $config['WEB_URL'] ?></a><br></p>
                 <p><?php print $config['WEB_NAME'] ?></p>
                 <p><?php print $LANGDATA['L_WEBINF_COUNTRY'] ?></p>
-                <p><?php print $LANGDATA['L_WEBINF_CONTACT'] ?>: <a href="mailto:<?php print $config['CONTACT_EMAIL'] ?>"><?php print $config['CONTACT_EMAIL'] ?></a>
+                <p><?php !empty($data['CONTACT']) ? print $data['CONTACT'] : false ?></p>
             </address>
             <time datetime="<?php print $config['CONTACT_TIME_DATATIME'] ?>"><?php print $config['CONTACT_TIME_HUMAN'] ?></time>
         </div>
