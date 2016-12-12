@@ -27,7 +27,7 @@ window.addEventListener("load", function() {
         $('#rpassword').css("border","1px solid black");
         $('#rpassword').css("box-shadow","0 0 0px black");
         $('#tos').css("box-shadow","0 0 0px black");
-        
+
         if( $('#username').length ) {
             if ( username == '' || username == null) {
                 $('#username').css("border","2px solid red");
@@ -61,7 +61,7 @@ window.addEventListener("load", function() {
             $('#tos').css("border","2px solid red");
             $('#tos').css("box-shadow","0 0 3px red");
             alert("You must accept the terms of service for register");
-        } else {
+         } else {
             $.post("", $( "#register_form" ).serialize() ,
             function(data) {
                 console.log(data); //DEBUG
