@@ -36,7 +36,7 @@ function news_new_form() {
         $form_data['can_change_author'] = "disabled";
     }
     $form_data['select_categories'] = news_get_categories_select();
-
+    $form_data['terms_url'] = $config['TERMS_URL'] = "Terms";
     do_action("news_new_form_add", $form_data);
     $form_data['news_text_bar'] = news_editor_getBar();
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $form_data));
