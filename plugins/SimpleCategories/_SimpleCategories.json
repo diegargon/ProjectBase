@@ -4,7 +4,7 @@
     "main_file": "SimpleCategories.php",
     "function_init": "SimpleCategories_init",
     "function_install": "",
-    "provided": "ctgs1",
+    "provided": "SCats1",
     "depends": "SQL1 tplbasic1",
     "autostart": 0,
     "priority": 6,
