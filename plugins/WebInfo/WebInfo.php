@@ -17,12 +17,12 @@ function WebInfo_footer() {
     $tpl->getCSS_filePath("WebInfo");
 
     if ($config['FRIENDLY_URL']) {
-        $footer_data['footer_menu'] = '<li><a href="AboutUs">' . $LANGDATA['L_WEBINF_ABOUTUS'] . '</a></li>';
+        $footer_data['footer_menu'] = '<li><a href="/'. $config['WEB_LANG'] .'/AboutUs">' . $LANGDATA['L_WEBINF_ABOUTUS'] . '</a></li>';
         if ($config['WEBINFO_CONTACT_FORM']) {
-            $footer_data['footer_menu'] .= '<li><a href="Contact">' . $LANGDATA['L_WEBINF_CONTACT'] . '</a></li>';
+            $footer_data['footer_menu'] .= '<li><a href="/'. $config['WEB_LANG'] .'/Contact">' . $LANGDATA['L_WEBINF_CONTACT'] . '</a></li>';
         }
-        $footer_data['footer_menu'] .= '<li><a href="Advertise">' . $LANGDATA['L_WEBINF_ADVERTISE'] . '</a></li>';
-        $footer_data['footer_menu'] .= '<li><a href="Terms">' . $LANGDATA['L_WEBINF_TOS'] . '</a></li>';
+        $footer_data['footer_menu'] .= '<li><a href="/'. $config['WEB_LANG'] .'/Advertise">' . $LANGDATA['L_WEBINF_ADVERTISE'] . '</a></li>';
+        $footer_data['footer_menu'] .= '<li><a href="/'. $config['WEB_LANG'] .'/Terms">' . $LANGDATA['L_WEBINF_TOS'] . '</a></li>';
     } else {
         $footer_data['footer_menu'] = '<li><a href="app.php?module=WebInfo&page=AboutUs&lang=' . $config['WEB_LANG'] . '>AboutUs</a></li>';
     }
