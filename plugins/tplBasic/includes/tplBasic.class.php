@@ -67,9 +67,12 @@ class TPL {
 
         print_debug("getTPL_file called by-> $plugin for get a $filename", "TPL_DEBUG");
 
+        $USER_PATH_LANG = "tpl/{$config['THEME']}/$filename.{$config['WEB_LANG']}.tpl.php";
         $USER_PATH = "tpl/{$config['THEME']}/$filename.tpl.php";
         $DEFAULT_PATH = "plugins/$plugin/tpl/$filename.tpl.php";
-        if (file_exists($USER_PATH)) {
+        if (file_exists($USER_PATH_LANG)) {
+            $tpl_file_content = codetovar($USER_PATH_LANG, $data);
+        } else if (file_exists($USER_PATH)) {
             $tpl_file_content = codetovar($USER_PATH, $data);
         } else if (file_exists($DEFAULT_PATH)) {
             $tpl_file_content = codetovar($DEFAULT_PATH, $data);
@@ -209,11 +212,12 @@ class TPL {
     }
 
     function addStdScript($key, $url) {
-        if(array_key_exists($key, $this->std_remote_scripts)) {
+        if (array_key_exists($key, $this->std_remote_scripts)) {
             return 0;
         }
         $this->std_remote_scripts[$key] = $url;
     }
+
     private function check_script($script) {
         foreach ($this->scripts as $value) {
             if ($value == $script) {
