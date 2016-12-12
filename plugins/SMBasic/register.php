@@ -1,4 +1,5 @@
 <?php
+
 /*
  *  Copyright @ 2016 Diego Garcia
  */
@@ -22,7 +23,8 @@ if ((!isset($_POST['email']) || ($config['smbasic_need_username'] == 1) && !isse
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
     SMBasic_RegisterScript();
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "register"));
+    $register_data['terms_url'] = $config['smbasic_terms_url'];
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "register", $register_data));
 } else {
     SMBasic_Register();
 }

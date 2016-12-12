@@ -31,7 +31,7 @@
                 <input id="rpassword" name="rpassword" required="required" type="password" placeholder=""/>
             </p>
             <p>
-                <a href="/terms.php" target="_blank"><?php print $LANGDATA['L_TOS'] ?></a><input id="tos" name="tos" required="required" type="checkbox"/>
+                <a href="<?php print $data['terms_url'] ?>" target="_blank"><?php print $LANGDATA['L_TOS'] ?></a><input id="tos" name="tos" required="required" type="checkbox"/>
             </p>
             <p class="register button">
                 <input type="submit" id="register" name="register" class="btnRegister" value="<?php print $LANGDATA['L_REGISTER'] ?>" />
