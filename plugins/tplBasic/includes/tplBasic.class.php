@@ -174,7 +174,7 @@ class TPL {
             $SCRIPT_PATH = $DEFAULT_PATH;
         }
         if (!empty($SCRIPT_PATH)) {
-            $script = "<script type='text/javascript' src='/$SCRIPT_PATH' charset='UTF-8' $async></script>\n";
+            $script = "<script type='text/javascript' src='{$config['STATIC_SRV_URL']}$SCRIPT_PATH' charset='UTF-8' $async></script>\n";
         } else {
             print_debug("AddScriptFile called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
             return false;
