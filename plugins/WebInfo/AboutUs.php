@@ -6,8 +6,8 @@
 
 do_action("common_web_structure");
 if ($config['WEBINFO_SHOWEMAIL_ABOUTUS']) {
-    $aboutus['CONTACT'] = $LANGDATA['L_WEBINF_CONTACT'] = "Contacto: " . $config['CONTACT_EMAIL'];
+    $aboutus['CONTACT'] = $LANGDATA['L_WEBINF_CONTACT'] = $LANGDATA['L_WEBINF_CONTACT'] . ": " . $config['CONTACT_EMAIL'];
 } else {
-    $aboutus['CONTACT'] = $LANGDATA['L_WEBINF_CONTACT'] = "Contacto: " . $LANGDATA['L_WEBINFO_ABOUTUS_CONTACT'];
+    $aboutus['CONTACT'] = $LANGDATA['L_WEBINF_CONTACT'] = $LANGDATA['L_WEBINF_CONTACT'] . ": " . $LANGDATA['L_WEBINFO_ABOUTUS_CONTACT'];
 }
 $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("WebInfo", "aboutus", $aboutus));

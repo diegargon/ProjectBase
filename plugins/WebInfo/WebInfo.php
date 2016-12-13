@@ -21,7 +21,9 @@ function WebInfo_footer() {
         if ($config['WEBINFO_CONTACT_FORM']) {
             $footer_data['footer_menu'] .= '<li><a href="/'. $config['WEB_LANG'] .'/Contact">' . $LANGDATA['L_WEBINF_CONTACT'] . '</a></li>';
         }
-        $footer_data['footer_menu'] .= '<li><a href="/'. $config['WEB_LANG'] .'/Advertise">' . $LANGDATA['L_WEBINF_ADVERTISE'] . '</a></li>';
+        if(defined('NEWSADS')) {
+            $footer_data['footer_menu'] .= '<li><a href="/'. $config['WEB_LANG'] .'/Advertise">' . $LANGDATA['L_WEBINF_ADVERTISE'] . '</a></li>';
+        }
         $footer_data['footer_menu'] .= '<li><a href="/'. $config['WEB_LANG'] .'/Terms">' . $LANGDATA['L_WEBINF_TOS'] . '</a></li>';
     } else {
         $footer_data['footer_menu'] = '<li><a href="app.php?module=WebInfo&page=AboutUs&lang=' . $config['WEB_LANG'] . '>AboutUs</a></li>';

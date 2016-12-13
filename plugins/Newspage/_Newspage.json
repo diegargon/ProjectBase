@@ -9,6 +9,6 @@
     "depends": "SQL1 tplbasic1 sessions1 SCats1",
     "autostart": 0,
     "priority": 5,
-    "optional": "multilang1 acl1",
+    "optional": "multilang1 acl1 newsads1",
     "conflicts": ""
 }

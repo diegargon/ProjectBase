@@ -4,10 +4,10 @@
     "main_file" : "NewsAds.php",
     "function_init": "NewsAds_init",
     "function_install": "",
-    "provided": "",
+    "provided": "newsads1",
     "depends" : "news1 SQL1",
-    "autostart": 0,
-    "priority" : 6,
+    "autostart": 1,
+    "priority" : 4,
     "optional": "",
     "conflicts": ""
 }

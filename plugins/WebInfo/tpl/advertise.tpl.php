@@ -25,6 +25,6 @@ news_cat_menu();
                 <span>El banner se muestra en  una noticia y/o articulo en particular por debajo del preferente</span>
             </li>
         </ol>
-        <p>Para más información contacte con: <a href="<?php print $config['ADVERTISE_CONTACT'] ?>"><?php print $config['ADVERTISE_CONTACT'] ?></a>
+        <p>Para más información contacte con: <a href="<?php print $config['ADS_CONTACT'] ?>"><?php print $config['ADS_CONTACT'] ?></a>
     </div>
 </div>

@@ -26,7 +26,6 @@ function ex_common_web_structure() {
 }
 
 function ex_index_page() {
-    plugin_start("NewsAds");
     plugin_start("Newspage");
     its_server_stressed() ? null : plugin_start("NewsSearch");
     news_portal();
@@ -41,12 +40,10 @@ function ex_Newspage_submitnews() {
 }
 
 function ex_Newspage_section() {
-    plugin_start("NewsAds");
     plugin_start("NewsSearch");
 }
 
 function ex_Newspage_news() {
-    plugin_start("NewsAds");
     plugin_start("NewsUserExtra");
     its_server_stressed() ? null : plugin_start("NewsVote");
     its_server_stressed() ? null : plugin_start("NewsSearch");
