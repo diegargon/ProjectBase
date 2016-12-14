@@ -6,7 +6,7 @@
  ?>
 <div  class="clear bodysize page">   
     <div class="login_box">
-        <form  id="login_form" action=""  method="post"> 
+        <form  id="login_form" action="#"  method="post"> 
             <h1><?php print $LANGDATA['L_LOGIN'] ?></h1> 
             <p> 
                 <label for="email"><?php print $LANGDATA['L_EMAIL'] ?></label>
@@ -22,7 +22,7 @@
                     <label id="label_rememberme" for="rememberme"><?php print $LANGDATA['L_REMEMBERME'] ?></label>
                 <?php } ?>
                 <input type="checkbox" name="reset_password_chk" id="reset_password_chk" value="3" /> 
-                <label  for="reset_password"><?php print $LANGDATA['L_RESET_PASSWORD'] ?></label>
+                <label  for="reset_password_chk"><?php print $LANGDATA['L_RESET_PASSWORD'] ?></label>
             </p>                                
             <p class="login button"> 
                 <input type="submit" id="login" name="login" class="btnLogin" value="<?php print $LANGDATA['L_LOGIN'] ?>" /> 
