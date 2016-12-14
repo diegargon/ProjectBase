@@ -1,7 +1,9 @@
 /*
  Copyright @ 2016 Diego Garcia
 */
-#searchResult {}
+#searchResult h2 {
+    color: #C0BAB6;
+}
 #searchResult table {
     width:100%;
     margin: 0 auto;
@@ -13,11 +15,12 @@
     text-decoration: none;
     color:#000;
 }
-#searchResult th {
+#searchResult tr:first-child td{
     border: 1px solid #242424;
     font-size:1em;
     background-color: #232323;
     color: #C0BAB6;
+    text-align: center;
 }
 #searchResult td {
     border:1px solid #232323;
