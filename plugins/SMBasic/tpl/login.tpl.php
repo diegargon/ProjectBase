@@ -1,9 +1,9 @@
 <?php
-/* 
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
- ?>
+?>
 <div  class="clear bodysize page">   
     <div class="login_box">
         <form  id="login_form" action="#"  method="post"> 
