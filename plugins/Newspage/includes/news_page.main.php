@@ -378,14 +378,13 @@ function news_add_social_meta($news) { // TODO: Move to plugin NewsSocialExtra
     $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === true ? 'https://' : 'http://';
     $news['url'] = $protocol . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI();
     $news['web_title'] = $config['TITLE'];
-    $match_regex = "/img\](.*)\[\/.*img\]/";
-    $match = false;
+    $match_regex = "/\[.*img(.*)\[\/.*img\]/";
+    $match = "";
     preg_match($match_regex, $news['text'], $match);
-    if (empty($match[1])) {
-        return false;
+    if (!empty($match[1])) {
+        $url = preg_replace('/\[S\]/si', $config['IMG_SELECTOR'] . "/", $match[1]);
+        $news['mainimage'] = $config['STATIC_SRV_URL'] . $url;
     }
-    $url = preg_replace('/\[S\]/si', "/" . $config['IMG_SELECTOR'] . "/", $match[1]);
-    $news['mainimage'] = $config['STATIC_SRV_URL'] . $url;
     $content = $tpl->getTPL_file("Newspage", "NewsSocialmeta", $news);
     $tpl->addto_tplvar("META", $content);
 }
