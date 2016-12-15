@@ -383,7 +383,7 @@ function news_add_social_meta($news) { // TODO: Move to plugin NewsSocialExtra
     preg_match($match_regex, $news['text'], $match);
     if (!empty($match[1])) {
         $url = preg_replace('/\[S\]/si', $config['IMG_SELECTOR'] . "/", $match[1]);
-        $news['mainimage'] = $config['STATIC_SRV_URL'] . $url;
+        $news['mainimage'] = $config['STATIC_SRV_URL'] . $config['IMG_UPLOAD_DIR'] . "/" . $url;
     }
     $content = $tpl->getTPL_file("Newspage", "NewsSocialmeta", $news);
     $tpl->addto_tplvar("META", $content);
