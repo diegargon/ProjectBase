@@ -46,6 +46,8 @@ function news_edit() {
     }
 
     $news_data['news_text_bar'] = news_editor_getBar();
+    $news_data['terms_url'] = $config['WEB_LANG'] . "/" . $config['TERMS_URL'];
+    
     do_action("news_edit_form_add", $news_data);
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));
