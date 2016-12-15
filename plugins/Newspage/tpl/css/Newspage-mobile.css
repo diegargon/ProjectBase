@@ -69,6 +69,9 @@
     .featured_wrap {
         margin: 0 auto;
     }
+    .video-center-container {
+        width:100%;
+    }
 }
 @media only screen and (max-width: 400px) {
     .newsbox {
@@ -110,5 +113,5 @@
     .news_img_float_l {    
         padding-right: 1px;
         width: 100%;
-    }    
+    }
 }
