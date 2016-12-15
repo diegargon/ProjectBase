@@ -37,12 +37,13 @@ function NS_news_tag_show_page(& $news_row) {
         $config['PAGE_KEYWORDS'] = $news_row['tags'];
         $exploted_tags = explode(",", $news_row['tags']);
         $tag_data = "<div class='tags'> <p>" . $LANGDATA['L_NS_TAGS'] . ": ";
-        foreach ($exploted_tags as $tag) {
-            $tag = preg_replace('/\s+/', '', $tag);
+        foreach ($exploted_tags as $tag) {            
+            $tag = trim($tag);
+            $link_tag = urldecode($tag);
             if ($config['FRIENDLY_URL']) {
-                $tag_data .= "<a href='/{$config['WEB_LANG']}/searchTag/$tag'>$tag</a> ";
+                $tag_data .= "<a href='/{$config['WEB_LANG']}/searchTag/$link_tag'>$tag</a> ";
             } else {
-                $tag_data .= "<a href='/{$config['CON_FILE']}&lang={$config['WEB_LANG']}&searchTag=$tag'>$tag</a> ";
+                $tag_data .= "<a href='/{$config['CON_FILE']}&lang={$config['WEB_LANG']}&searchTag=$link_tag'>$tag</a> ";
             }
         }
         $tag_data .= "</p></div>";
