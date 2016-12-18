@@ -56,3 +56,7 @@
 .form_inputbox {
     width: 100%;
 }
+.date {
+    font: 14px roboto_condensedregular,robotocondensed,Arial ;
+    padding-top:5px;
+}

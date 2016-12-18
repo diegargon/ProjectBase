@@ -11,4 +11,4 @@ $config['CONTACT_TIME_HUMAN'] = "1 de diciembre del 2016";
 $config['WEBINFO_RECAPTCHA'] = 1;
 $config['WEBINFO_SHOWEMAIL_ABOUTUS'] = 0;
 $config['WEBINFO_CONTACT_FORM'] = 1;
-//$config[''] = ;
+$config['WEBINFO_SHOWDATE'] = 1;
