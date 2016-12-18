@@ -43,7 +43,7 @@ function news_new_lang() {
         return news_error_msg("L_NEWS_E_ALREADY_TRANSLATE_ALL");
     }
     $news_data['news_text_bar'] = news_editor_getBar();
-
+    $news_data['terms_url'] = $config['TERMS_URL'];
     do_action("news_newlang_form_add", $news_data);
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));

@@ -6,7 +6,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function news_new_page() {
-    global $acl_auth, $sm, $tpl, $LANGDATA;
+    global $config, $acl_auth, $sm, $tpl, $LANGDATA;
 
     $nid = S_GET_INT("nid", 11, 1);
     $lang_id = S_GET_INT("lang_id", 4, 1);
@@ -35,7 +35,8 @@ function news_new_page() {
     $form_data['can_change_author'] = "disabled";
     $form_data['author'] = $user['username'];
     $form_data['news_text_bar'] = news_editor_getBar();
-
+    $form_data['terms_url'] = $config['TERMS_URL'];
+    
     do_action("news_newpage_form_add");
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $form_data));
