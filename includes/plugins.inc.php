@@ -13,12 +13,12 @@ function register_action($event, $func, $priority = 5) {
     $actions[$event][] = array ("function_name" => $func, "priority" => $priority);
 }
 
-function register_uniq_action($event, $func, $priority = 0) {
+function register_uniq_action($event, $func, $priority = 5) {
      global $actions;
 
     foreach($actions as $key => $value)  {
         if ($key == $event) {
-            $actions[$key][0] = array("function_name" => $func, "protiry" => $priority);
+            $actions[$key][0] = array("function_name" => $func, "priority" => $priority);
             return;
         }
     }
