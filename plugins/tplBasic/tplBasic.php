@@ -17,7 +17,7 @@ function tplBasic_init() {
 
     $tpl->getCSS_filePath("tplBasic", "basic");
     $tpl->getCSS_filePath("tplBasic", "basic-mobile");
-    register_action("common_web_structure", "tplBasic_web_structure", "0");
+    register_action("common_web_structure", "tplBasic_web_structure", 0);
     register_uniq_action("index_page", "tplBasic_index_page", "5");
     register_uniq_action("message_page", "tplBasic_message_page");
     register_uniq_action("message_box", "tplBasic_message_box");
