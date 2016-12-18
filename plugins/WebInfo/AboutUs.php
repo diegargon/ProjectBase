@@ -10,4 +10,4 @@ if ($config['WEBINFO_SHOWEMAIL_ABOUTUS']) {
 } else {
     $aboutus['CONTACT'] = $LANGDATA['L_WEBINF_CONTACT'] = $LANGDATA['L_WEBINF_CONTACT'] . ": " . $LANGDATA['L_WEBINFO_ABOUTUS_CONTACT'];
 }
-$tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("WebInfo", "aboutus", $aboutus));
+$tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("WebInfo", "aboutus", $aboutus));

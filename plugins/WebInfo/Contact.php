@@ -35,7 +35,7 @@ if (!empty($_POST)) {
     do_action("common_web_structure");
     $tpl->AddScriptFile("WebInfo", "contactform", "TOP", "");
     $tpl->AddScriptFile("standard", "jquery");
-    $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("WebInfo", "contact"));
+    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("WebInfo", "contact"));
 }
 
 function ContactSendMail($mail) {

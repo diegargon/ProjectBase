@@ -24,7 +24,7 @@ function NS_build_result_page(& $query) {
             }
             $content .= $tpl->getTPL_file("NewsSearch", "NewsSearch-results", $result);
         }
-        $tpl->addto_tplvar("ADD_TO_BODY", $content);
+        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $content);
     } else {
         $msg['MSG'] = "L_NS_NORESULT";
         NS_msgbox($msg);
