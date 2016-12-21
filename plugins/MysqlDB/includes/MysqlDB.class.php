@@ -118,7 +118,7 @@ class Database {
 
     /* */
 
-    function search($table, $s_fields, $searchText, $where, $extra = null) {
+    function search($table, $s_fields, $searchText, $where = null, $extra = null) {
         global $config;
 
         $s_words_ary = explode(" ", $searchText);
