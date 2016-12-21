@@ -61,14 +61,14 @@ function SMBasic_create_reg_mail($active) {
 
     if ($active > 1) {
         if ($config['FRIENDLY_URL']) {
-            $URL = $config['WEB_URL'] . "login&active=$active";
+            $URL = $config['WEB_URL'] . $config['WEB_LANG'] . "/login&active=$active";
         } else {
             $URL = $config['CON_FILE'] . "?module=SMBasic&page=login&active=$active";
         }
         $msg = $LANGDATA['L_REG_EMAIL_MSG_ACTIVE'] . "\n" . "$URL";
     } else {
         if ($config['FRIENDLY_URL']) {
-            $URL = $config['WEB_URL'] . "login";
+            $URL = $config['WEB_URL'] . $config['WEB_LANG'] . "login";
         } else {
             $URL = $config['CON_FILE'] . "?module=SMBasic&page=login";
         }
