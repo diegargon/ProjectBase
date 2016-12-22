@@ -364,7 +364,7 @@
 .related span {
     font-weight: bold;
 }
-.related li {
+.related ol {
     margin-bottom: 10px;
 }
 /* PAGER */
