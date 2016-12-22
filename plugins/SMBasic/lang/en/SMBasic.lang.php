@@ -97,3 +97,4 @@ $LANGDATA['L_SM_PROFILE_OPTIONAL'] = "Additional options:";
 $LANGDATA['L_SM_ACTIVATION_OK'] = "Activation success, you can log in";
 $LANGDATA['L_SM_RESET_OK'] = "Reset success";
 $LANGDATA['L_E_NOACCESS'] = "You haven't right to access";
+$LANGDATA['L_SM_TITLE_OK'] = "Done!";

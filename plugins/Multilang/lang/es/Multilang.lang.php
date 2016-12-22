@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  * ES
  */
@@ -10,7 +11,7 @@ $LANGDATA['L_ML_MODIFY_LANGS'] = "Modificar idiomas";
 $LANGDATA['L_ML_CREATE_LANG'] = "Crear idioma";
 $LANGDATA['L_ML_NAME'] = "Nombre";
 $LANGDATA['L_ML_ACTIVE'] = "Activo";
-$LANGDATA['L_ML_ISOCODE'] = "Iso code";
+$LANGDATA['L_ML_ISOCODE'] = "Codigo Iso";
 $LANGDATA['L_ML_MODIFY'] = "Modificar";
 $LANGDATA['L_ML_CREATE'] = "Crear";
 $LANGDATA['L_ML_DELETE'] = "Eliminar";
