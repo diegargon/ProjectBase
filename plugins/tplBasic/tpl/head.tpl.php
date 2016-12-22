@@ -26,7 +26,7 @@
         isset($tpldata['HEAD']) ? print $tpldata['HEAD'] : false;
         isset($tpldata['META']) ? print $tpldata['META'] : false;
         ?>
-        <link rel="apple-touch-icon" sizes="76x76" href="<?php print $config['STATIC_SRV_URL'] ?>apple-touch-icon.png" />
+        <link rel="apple-touch-icon icon" sizes="76x76" href="<?php print $config['STATIC_SRV_URL'] ?>apple-touch-icon.png" />
         <link rel="icon" type="image/png" href="<?php print $config['STATIC_SRV_URL'] ?>favicon-32x32.png" sizes="32x32" />
         <link rel="icon" type="image/png" href="<?php print $config['STATIC_SRV_URL'] ?>favicon-16x16.png" sizes="16x16" />
         <link rel="manifest" href="<?php print $config['STATIC_SRV_URL'] ?>manifest.json" />
