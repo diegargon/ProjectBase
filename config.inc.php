@@ -20,7 +20,7 @@ $config['WEB_URL'] = "http://projectbase.envigo.net/";
 $config['STATIC_SRV_URL'] = $config['WEB_URL'];
 $config['WEB_LANG'] = "es";
 $config['WEB_LANG_NAME'] = "Español";
-$config['WEB_LANG_ID'] = "1"; //used when not ML
+$config['WEB_LANG_ID'] = 1; //used when not ML
 $config['WEB_DIR'] = "ltr";
 $config['WEB_DESC'] = "Noticias y algo más";
 $config['PAGE_KEYWORDS'] = "test";
@@ -41,4 +41,6 @@ $config['IMG_SELECTOR'] = "desktop";
 $config['FOOT_COPYRIGHT'] = "Copyright &copy; 2016 - 2016 Diego García All Rights Reserved";
 $config['TERMS_URL'] = "Terms";
 $config['IMG_UPLOAD_DIR'] = "news_img";
+$config['WELCOME_BOTS'] = "Google|MSN|Yahoo|Lycos|Bing|twitter|Facebook";
+$config['BAD_BOTS'] = "ia_archiver|Altavista|eStyle|MJ12bot|ips-agent|Yandex|Semrush|Baidu|Sogou";
 //$config['']
