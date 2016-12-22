@@ -16,7 +16,11 @@ function Multilang_init(){
 
     if($config['ML_FORCEUSE_DFL_LANG']) {
         $lang = $config['WEB_LANG'];
-        $config['WEB_URL'] = $config['WEB_URL'] . "$lang/";
+        if ($config['FRIENDLY_URL']) {
+            $config['WEB_URL'] = $config['WEB_URL'] . "$lang/";
+        } else {
+            $config['WEB_URL'] = $config['WEB_URL'] . "?lang=" . $config['WEB_LANG'];
+        }
     } else {
         if ( (isset($_GET['lang'])) &&  (($lang = S_VAR_CHAR_AZ($_GET['lang'], 2, 2) ) != false)) {
                 $config['WEB_URL'] = $config['WEB_URL'] . "$lang/";
@@ -31,18 +35,19 @@ function Multilang_init(){
         }
     }
 
-    if ($request_uri == '/') {
+    if ($request_uri == '/' && !$config['ML_FORCEUSE_DFL_LANG']) {
         if ($config['FRIENDLY_URL']) {
-            $request_uri = $config['WEB_URL'];
+            $request_uri = $config['WEB_URL'] . $config['WEB_LANG'] . "/";
         } else {
             $request_uri = $config['WEB_URL'] . "?lang=" . $config['WEB_LANG'];
         }
-        header('Location:' .$request_uri);
+       // header('Location:' .$request_uri);
     }
-    if( isset($_POST['choose_lang']) && (($choose_lang = S_POST_CHAR_AZ("choose_lang", 2, 2)) != false)) {
+    if(!$config['ML_FORCEUSE_DFL_LANG'] && isset($_POST['choose_lang']) && (($choose_lang = S_POST_CHAR_AZ("choose_lang", 2, 2)) != false)) {
         $request_uri = str_replace("/". $config['WEB_LANG'], "/".$choose_lang, $request_uri); // FIX better method than can replace something not wanted.
         $request_uri = str_replace("lang=". $config['WEB_LANG'], "lang=".$choose_lang, $request_uri);
         header('Location:' .$request_uri);
+        
     }
-    register_action("header_menu_element", array($ml, "get_nav"), 6);
+    !$config['ML_FORCEUSE_DFL_LANG'] ? register_action("header_menu_element", array($ml, "get_nav"), 6) : false;
 }

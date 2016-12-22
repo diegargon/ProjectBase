@@ -106,7 +106,7 @@ function SMBasic_user_reset_password() {
         $password = SMBasic_randomPassword();
         $password_encrypted = do_action("encrypt_password", $password);
         $db->update("users", array("password" => "$password_encrypted", "reset" => "0"), array("uid" => "{$user['uid']}"));
-        $URL = "{$config['WEB_URL']}" . "/login";
+        $URL = "{$config['WEB_URL']}" . "login";
         $msg = $LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] . "\n" . "$password\n" . "$URL";
         mail($email, $LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'], $msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
         echo $LANGDATA['L_RESET_PASSWORD_SUCCESS'];

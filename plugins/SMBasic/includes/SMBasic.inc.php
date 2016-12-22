@@ -61,7 +61,7 @@ function SMBasic_create_reg_mail($active) {
 
     if ($active > 1) {
         if ($config['FRIENDLY_URL']) {
-            $URL = $config['WEB_URL'] . "/login&active=$active";
+            $URL = $config['WEB_URL'] . "login&active=$active";
         } else {
             $URL = $config['CON_FILE'] . "?module=SMBasic&page=login&active=$active";
         }
