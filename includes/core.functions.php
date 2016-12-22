@@ -140,3 +140,21 @@ function getLib($libname, $version) {
     }
     return true;
 }
+
+function botDetect($match_type = 0) {
+    global $config;
+
+    if ($match_type == 1) {
+        $botList = $config['BAD_BOTS'];
+    } else if ($match_type == 2) {
+        $botList = $config['WELCOME_BOTS'];
+    } else {
+        $botList = $config['WELCOME_BOTS'] . "|" . $config['BAD_BOTS'];
+    }
+  
+    preg_match("/$botList/i", S_SERVER_USER_AGENT(), $matches);
+
+    return (empty($matches)) ? false : true;
+}
+
+?>
