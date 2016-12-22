@@ -72,9 +72,9 @@
             <?php if (!empty($data['news_related'])) {
                 ?>
                 <div class="related">
-                    <ul>
+                    <ol>
                         <?php print $data['news_related'] ?>
-                    </ul>
+                    </ol>
                 </div>
             <?php } ?>
             <?php !empty($data['pager']) ? print $data['pager'] : false ?>

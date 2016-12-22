@@ -25,7 +25,7 @@
                 } else {
                     !empty($_POST['rememberme']) ? $rememberme = 1 : $rememberme = 0;                    
                     $sm->setUserSession($user, $rememberme);
-                    die('[{"status": "ok", "msg": "' . $config['WEB_URL'] . $config['WEB_LANG'] . "/" . '"}]');
+                    die('[{"status": "ok", "msg": "' . $config['WEB_URL'] .'"}]');
                 }
             } else {
                 if ($user['active'] > 0) { //-1 disable by admin not send email
@@ -82,7 +82,7 @@ function SMBasic_RequestResetOrActivation() {
         } else {
             $reset = mt_rand(11111111, 2147483647);
             $db->update("users", array("reset" => "$reset"), array("email" => "$email"));
-            $URL = $config['WEB_URL'] . $config['WEB_LANG'] . "/login" . "&reset=$reset&email=$email";
+            $URL = $config['WEB_URL'] . "/login" . "&reset=$reset&email=$email";
             $msg = $LANGDATA['L_RESET_EMAIL_MSG'] . "\n" . "$URL";
             mail($email, $LANGDATA['L_RESET_EMAIL_SUBJECT'], $msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
             die('[{"status": "2", "msg": "' . $LANGDATA['L_RESET_EMAIL'] . '"}]');
@@ -106,7 +106,7 @@ function SMBasic_user_reset_password() {
         $password = SMBasic_randomPassword();
         $password_encrypted = do_action("encrypt_password", $password);
         $db->update("users", array("password" => "$password_encrypted", "reset" => "0"), array("uid" => "{$user['uid']}"));
-        $URL = "{$config['WEB_URL']}" . $config['WEB_LANG'] . "/login";
+        $URL = "{$config['WEB_URL']}" . "/login";
         $msg = $LANGDATA['L_RESET_SEND_NEWMAIL_MSG'] . "\n" . "$password\n" . "$URL";
         mail($email, $LANGDATA['L_RESET_SEND_NEWMAIL_SUBJECT'], $msg, "From: {$config['EMAIL_SENDMAIL']} \r\n");
         echo $LANGDATA['L_RESET_PASSWORD_SUCCESS'];
