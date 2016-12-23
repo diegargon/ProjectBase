@@ -178,7 +178,7 @@ h1,h2,h3,h4,h5,h6{
     margin-bottom: 100px;
 }
 .standard_box h1 {
-    font-size: 38px;
+    font-size: 2em;
     color: #066A75;	
     font-family: 'FranchiseRegular','Arial Narrow',Arial,sans-serif;
     padding-bottom: 30px;
