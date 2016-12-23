@@ -10,7 +10,7 @@ window.addEventListener("load", function () {
 
         if (rate_rid === null || rate_lid === null) {
             alert("Internal error, please reload");
-        } else {
+            } else {
             $.post("", $("#form_news_rate").serialize() + '&news_rate=' + $(this).val(),
                     function (data) {
                         console.log(data);
