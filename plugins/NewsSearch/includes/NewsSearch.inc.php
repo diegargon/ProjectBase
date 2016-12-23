@@ -39,6 +39,7 @@ function NS_news_tag_show_page(& $news_row) {
         $tag_data = "<div class='tags'> <p>" . $LANGDATA['L_NS_TAGS'] . ": ";
         foreach ($exploted_tags as $tag) {            
             $tag = trim($tag);
+            preg_replace("/\s+/", "%20", $tag); 
             $link_tag = urldecode($tag);
             if ($config['FRIENDLY_URL']) {
                 $tag_data .= "<a href='/{$config['WEB_LANG']}/searchTag/$link_tag'>$tag</a> ";
