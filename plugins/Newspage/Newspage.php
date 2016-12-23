@@ -35,5 +35,8 @@ function news_portal() {
 
     news_cat_menu();
     $portal_content = news_portal_content();
+    if ($config['ITS_BOT'] && $config['INCLUDE_DATA_STRUCTURE']) {
+        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_portal_struct"));
+    }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", $news_layout_tpl, $portal_content));
 }

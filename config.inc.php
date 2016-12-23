@@ -17,6 +17,7 @@ $config['TITLE'] = $config['WEB_NAME'];
 $config['PAGE_TITLE'] = $config['TITLE'];
 $config['THEME'] = "default";
 $config['WEB_URL'] = "http://projectbase.envigo.net/";
+$config['WEB_LOGO'] = "";
 $config['STATIC_SRV_URL'] = $config['WEB_URL'];
 $config['WEB_LANG'] = "es";
 $config['WEB_LANG_NAME'] = "Español";
@@ -43,4 +44,8 @@ $config['TERMS_URL'] = "Terms";
 $config['IMG_UPLOAD_DIR'] = "news_img";
 $config['WELCOME_BOTS'] = "Google|MSN|Yahoo|Lycos|Bing|twitter|Facebook";
 $config['BAD_BOTS'] = "ia_archiver|Altavista|eStyle|MJ12bot|ips-agent|Yandex|Semrush|Baidu|Sogou";
+$config['INCLUDE_MICRODATA'] = 1;
+$config['INCLUDE_DATA_STRUCTURE'] = 1;
+$config['SOCIAL_FACEBOOK_URL'] = "";
+$config['SOCIAL_TWEETER_URL'] = "";
 //$config['']

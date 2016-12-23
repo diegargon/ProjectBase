@@ -23,10 +23,10 @@ function news_show_page() {
 
     $user = $sm->getSessionUser();
     if (S_GET_INT("admin")) {
-        if (!$user ||(defined("ACL") && !$acl_auth->acl_ask("admin_all||news_admin"))) {
+        if (!$user || (defined("ACL") && !$acl_auth->acl_ask("admin_all||news_admin"))) {
             return news_error_msg("L_E_NOACCESS");
         }
-        if (!defined('ACL') && $user['isAdmin'] != 1) {           
+        if (!defined('ACL') && $user['isAdmin'] != 1) {
             return news_error_msg("L_E_NOACCESS");
         }
     }
@@ -89,6 +89,17 @@ function news_show_page() {
     do_action("news_show_page", $news_data);
 
     news_cat_menu();
+    if ($config['ITS_BOT'] && $config['INCLUDE_MICRODATA']) {
+        $news_data['ITEM_OL'] = "itemscope itemtype=\"http://schema.org/BreadcrumbList\"";
+    } else {
+        $news_data['ITEM_OL'] = "";
+    }
+    if ($config['ITS_BOT'] && $config['INCLUDE_DATA_STRUCTURE']) {
+        preg_match("/src=\"(.*?)\"/i", $news_data['text'], $matchs);
+        $news_data['ITEM_MAINIMAGE'] = $matchs[1];
+        $news_data['ITEM_CREATED'] = preg_replace("/ /", "T", $news_data['created']) . "Z";
+        $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body_struct", $news_data));
+    }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body", $news_data));
 }
 
@@ -392,7 +403,7 @@ function news_add_social_meta($news) { // TODO: Move to plugin NewsSocialExtra
 function getNewsCatBreadcrumb($news_data) {
     global $db, $config;
     $content = "";
-    
+
     $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => $news_data['lang_id']));
     while ($cat_row = $db->fetch($query)) {
         $categories[$cat_row['cid']] = $cat_row;
@@ -411,14 +422,29 @@ function getNewsCatBreadcrumb($news_data) {
 
     $breadcrumb = "";
     $cat_path = "";
+    $list_counter = 1;
     foreach ($cat_ary as $cat) {
+        if ($config['ITS_BOT'] && $config['INCLUDE_MICRODATA']) {
+            $ITEM_LI = "itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\">";
+            $ITEM_HREF = "itemscope itemtype=\"http://schema.org/Thing\" itemprop=\"item\"";
+            $ITEM_NAME = "itemprop=\"name\"";
+            $ITEM_POS = "<meta itemprop=\"position\" content=\"$list_counter\" />";
+        } else {
+            $ITEM_LI = "";
+            $ITEM_HREF = "";
+            $ITEM_NAME = "";
+            $ITEM_POS = "";
+        }
         $cat_path .= $cat;
         !empty($breadcrumb) ? $breadcrumb .= $config['NEWS_BREADCRUMB_SEPARATOR'] : null;
         $cat = preg_replace('/\_/', ' ', $cat);
-        $breadcrumb .= "<li><a href='/{$config['WEB_LANG']}/section/$cat_path'>$cat</a></li>";
+        $breadcrumb .= "<li $ITEM_LI>";
+        $breadcrumb .= "<a $ITEM_HREF href='/{$config['WEB_LANG']}/section/$cat_path'>";
+        $breadcrumb .= "<span $ITEM_NAME>$cat</span></a>$ITEM_POS</li>";
         $cat_path .= ".";
+        $list_counter++;
     }
-    $content .= $breadcrumb;    
+    $content .= $breadcrumb;
 
     return $content;
 }
