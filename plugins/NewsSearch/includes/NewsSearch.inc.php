@@ -10,7 +10,7 @@ function NS_basicSearchbox() {
     global $tpl, $config;
 
     if ($config['FRIENDLY_URL']) {
-        $sbox_data['searchUrl'] = "/{$config['WEB_LANG']}/search";
+        $sbox_data['searchUrl'] = "/{$config['WEB_LANG']}/search/";
     } else {
         $sbox_data['searchUrl'] = "/{$config['CON_FILE']}?module=NewsSearch&page=search&lang={$config['WEB_LANG']}";
     }

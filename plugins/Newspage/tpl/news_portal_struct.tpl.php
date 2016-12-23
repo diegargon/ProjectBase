@@ -33,7 +33,7 @@ if (!empty($config['WEB_LOGO'])) {
   "url": "<?php print $config['WEB_URL'] ?>",
   "potentialAction": {
   "@type": "SearchAction",
-  "target": "<?php print $config['WEB_URL'] ?>/search?q={search_term_string}",
+  "target": "<?php print $config['WEB_URL'] ?>/search/?q={search_term_string}",
   "query-input": "required name=search_term_string"
   }
 }

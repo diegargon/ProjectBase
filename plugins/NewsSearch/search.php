@@ -8,18 +8,18 @@
 plugin_start("NewsSearch");
 require_once 'plugins/NewsSearch/includes/NewsSearchPage.inc.php';
 
-if (!empty($_POST['searchText'])) {
-    $searchText = S_POST_TEXT_UTF8("searchText", $config['NS_MAX_S_TEXT'], $config['NS_MIN_S_TEXT']);
-
-    if (empty($searchText)) {
+if (!empty($_GET['q'])) {
+    $q = S_GET_TEXT_UTF8("q", $config['NS_MAX_S_TEXT'], $config['NS_MIN_S_TEXT']);
+    
+    if (empty($q)) {
         $msg['MSG'] = "L_NS_SEARCH_ERROR";
         NS_msgbox($msg);
     }
-    $searchText = $db->escape_strip($searchText);
+    $q = $db->escape_strip($q);
     $where_ary['lang'] = $config['WEB_LANG'];
     $config['NEWS_MODERATION'] ? $where_ary['moderation'] = 0 : null;
 
-    $query = $db->search("news", "title lead text", $searchText, $where_ary, " LIMIT {$config['NS_RESULT_LIMIT']} ");
+    $query = $db->search("news", "title lead text", $q, $where_ary, " LIMIT {$config['NS_RESULT_LIMIT']} ");
 
     NS_build_result_page($query);
 }
@@ -40,4 +40,8 @@ if (!empty($_GET["searchTag"])) {
     } else {
         return false;
     }
+}
+if (empty($_GET['q']) && empty($_GET["searchTag"])) {
+    $msg['MSG'] = "L_NS_SEARCH_ERROR";
+    NS_msgbox($msg);
 }
