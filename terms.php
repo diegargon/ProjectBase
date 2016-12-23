@@ -26,14 +26,14 @@ if (file_exists("config/config.inc.php")) {
 
     <ol style="margin: 18px auto;">
         <li style="margin-bottom: 16px;">
-            <b>Privacidad</b><br><br>
+            <span class="bold">Privacidad</span><br><br>
             Tu privacidad es muy importante para nosotros. Diseñamos nuestra Política de datos para ayudarte a comprender cómo puedes usar 
             <?php print $config['WEB_NAME']  ?> para compartir información con otras personas. Utilizamos cookies para el funcionamiento del uso. Nos reservamos el derecho aarónica
             a recopilar datos de uso y usar dichos datos dentro de las obligaciones de las normativa legal de nuestro país.
-            <b>En ningún momento</b> cederemos datos recopilados a terceras personas sin su consentimiento explicito.
+            <span class="bold">En ningún momento</span> cederemos datos recopilados a terceras personas sin su consentimiento explicito.
         </li>
         <li style="margin-bottom: 16px;">
-            <b>Compartir contenido e información</b><br><br>
+            <span class="bold">Compartir contenido e información</span><br><br>
             Eres el propietario y responsable de todo el contenido y la información que publicas en <?php print $config['WEB_NAME']  ?>. Asimismo:<br />
 
             En el caso de contenido protegido por derechos de propiedad intelectual, ya sea texto, fotos y videos , nos concedes específicamente 
@@ -51,7 +51,7 @@ if (file_exists("config/config.inc.php")) {
             por ellos (del mismo modo que tú no tienes obligación de proporcionarlos).<br />
         </li>
         <li style="margin-bottom: 16px;">
-            <b>Seguridad</b><br><br>
+            <span class="bold">Seguridad</span><br><br>
             Hacemos todo lo posible para que <?php print $config['WEB_NAME']  ?> sea un sitio seguro, pero no podemos garantizarlo. Necesitamos tu ayuda para que así sea, lo que 
             implica los siguientes compromisos de tu parte:<br />
 
@@ -80,7 +80,7 @@ if (file_exists("config/config.inc.php")) {
             consideramos oportuno.<br />
         </li>
         <li style="margin-bottom: 16px;">
-            <b>Protección de los derechos de otras personas</b><br><br>
+            <span class="bold">Protección de los derechos de otras personas</span><br><br>
 
             No publicarás contenido ni realizarás ninguna acción en <?php print $config['WEB_NAME']  ?> que infrinja o vulnere los derechos de terceros o que vulnere la ley de algún modo.<br />
 

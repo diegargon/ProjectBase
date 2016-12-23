@@ -9,9 +9,9 @@ class parse_text {
     
     private $bbcode = array(
         '~\[p\](.*?)\[/p\]~si'                                              => '<p>$1</p>',
-        '~\[b\](.*?)\[/b\]~si'                                              => '<b>$1</b>',
-	'~\[i\](.*?)\[/i\]~si'                                              => '<i>$1</i>',
-	'~\[u\](.*?)\[/u\]~si'                                              => '<span style="text-decoration:underline;">$1</span>',
+        '~\[b\](.*?)\[/b\]~si'                                              => '<span class="bold">$1</span>',
+	'~\[i\](.*?)\[/i\]~si'                                              => '<span class="italic">$1</span>',
+	'~\[u\](.*?)\[/u\]~si'                                              => '<span class="underline">$1</span>',
 	'~\[pre\](.*?)\[/pre\]~si'                                          => '<pre>$1</pre>',
 	'~\[size=((?:[1-9][0-9]?[0-9]?))\](.*?)\[/size\]~si'                => '<span style="font-size:$1px;">$2</span>',
 	'~\[color=((?:[a-zA-Z]|#[a-fA-F0-9]{3,6})+)\](.*?)\[/color\]~si'    => '<span style="color:$1;">$2</span>',

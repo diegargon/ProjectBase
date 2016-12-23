@@ -67,10 +67,10 @@ $LANGDATA['L_NEWS_E_ALREADY_TRANSLATE_ALL'] = "La noticia ya esta traducida a to
 $LANGDATA['L_NEWS_NEW_PAGE'] = "Nueva pagina";
 $LANGDATA['L_NEWS_CREATE_NEW_PAGE'] = "Crear pagina nueva";
 $LANGDATA['L_NEWS_DELETE_NOEXISTS'] = "Noticia borrada o inexistente";
-$LANGDATA['L_NEWS_EDITOR_BOLD'] = "<b>N</b>";
-$LANGDATA['L_NEWS_EDITOR_ITALIC'] = "<i>I</i>";
+$LANGDATA['L_NEWS_EDITOR_BOLD'] = "<span class='bold'>B</span>";
+$LANGDATA['L_NEWS_EDITOR_ITALIC'] = "<span class=\"italic\">I</span>";
 $LANGDATA['L_NEWS_EDITOR_PARAGRAPH'] = "P";
-$LANGDATA['L_NEWS_EDITOR_UNDERLINE'] = "<span style='text-decoration:underline;'>U</span>";
+$LANGDATA['L_NEWS_EDITOR_UNDERLINE'] = "<span class=\"underline\">U</span>";
 $LANGDATA['L_NEWS_EDITOR_H2'] = "H2";
 $LANGDATA['L_NEWS_EDITOR_H3'] = "H3";
 $LANGDATA['L_NEWS_EDITOR_H4'] = "H4";

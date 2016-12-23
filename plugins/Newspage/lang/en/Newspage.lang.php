@@ -67,10 +67,10 @@ $LANGDATA['L_NEWS_E_ALREADY_TRANSLATE_ALL'] = "News already translate to all act
 $LANGDATA['L_NEWS_NEW_PAGE'] = "New page";
 $LANGDATA['L_NEWS_CREATE_NEW_PAGE'] = "Create new page";
 $LANGDATA['L_NEWS_DELETE_NOEXISTS'] = "News deleted or inexistent";
-$LANGDATA['L_NEWS_EDITOR_BOLD'] = "<b>B</b>";
-$LANGDATA['L_NEWS_EDITOR_ITALIC'] = "<i>I</i>";
+$LANGDATA['L_NEWS_EDITOR_BOLD'] = "<span class=\"bold\">B</span>";
+$LANGDATA['L_NEWS_EDITOR_ITALIC'] = "<span class=\"italic\">I</span>";
 $LANGDATA['L_NEWS_EDITOR_PARAGRAPH'] = "P";
-$LANGDATA['L_NEWS_EDITOR_UNDERLINE'] = "<span style='text-decoration:underline;'>U</span>";
+$LANGDATA['L_NEWS_EDITOR_UNDERLINE'] = "<span class=\"underline\">U</span>";
 $LANGDATA['L_NEWS_EDITOR_H2'] = "H2";
 $LANGDATA['L_NEWS_EDITOR_H3'] = "H3";
 $LANGDATA['L_NEWS_EDITOR_H4'] = "H4";
