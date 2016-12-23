@@ -43,7 +43,7 @@
                 <dl>
                     <dt><label>Avatar</label></dt>
                     <dd>
-                        <input class="avatar" name="avatar" type="text"  value="<?php print $data['avatar'] ?>" title="" autocomplete="off"/>
+                        <input class="avatar_field" name="avatar" type="text"  value="<?php print $data['avatar'] ?>" title="" autocomplete="off"/>
                     </dd>
                 </dl>
                 <dl>
