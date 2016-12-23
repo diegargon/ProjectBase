@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -9,20 +9,20 @@
         <input type="hidden" class="rate_rid" name="rate_rid" value="<?php print $data['nid'] ?>" />
         <input type="hidden" class="rate_lid" name="rate_lid" value="<?php print $data['lang_id'] ?>" />
         &nbsp;
-        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?>  class="btnNewsRate" title="rate 1" style="<?php print $data['rate_style'] ?>" value="1" type="button">
-            <img width="20" src="<?php print $config['NEWSVOTE_STARS_URL'] . $data['stars1'] ?>" alt="rate 1" />
+        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate 
+                <?php !empty($data['show_pointer']) ? print "show_pointer" : false ?> <?php print $data['stars1'] ?>" title="1" value="1" type="button">
         </button>
-        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate" title="rate 2" style="<?php print $data['rate_style'] ?>" value="2" type="button">
-            <img width="20" src="<?php print $config['NEWSVOTE_STARS_URL'] . $data['stars2'] ?>" alt="rate 1" />
+        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate 
+                <?php !empty($data['show_pointer']) ? print "show_pointer" : false ?> <?php print $data['stars2'] ?>" title="2" value="2" type="button">
         </button>
-        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate" title="rate 3" style="<?php print $data['rate_style'] ?>" value="3" type="button">
-            <img width="20" src="<?php print $config['NEWSVOTE_STARS_URL'] . $data['stars3'] ?>" alt="rate 1" />
+        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate 
+                <?php !empty($data['show_pointer']) ? print "show_pointer" : false ?> <?php print $data['stars3'] ?>" title="3" value="3" type="button">
         </button>
-        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate" title="rate 4" style="<?php print $data['rate_style'] ?>" value="4" type="button">
-            <img width="20" src="<?php print $config['NEWSVOTE_STARS_URL'] . $data['stars4'] ?>" alt="rate 1" />
+        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate 
+                <?php !empty($data['show_pointer']) ? print "show_pointer" : false ?> <?php print $data['stars4'] ?>" title="4" value="4" type="button">
         </button>
-        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate" title="rate 5" style="<?php print $data['rate_style'] ?>" value="5" type="button">
-            <img width="20" src="<?php print $config['NEWSVOTE_STARS_URL'] . $data['stars5'] ?>" alt="rate 1" />
+        <button <?php !empty($data['btnExtra']) ? print $data['btnExtra'] : false ?> class="btnNewsRate 
+                <?php !empty($data['show_pointer']) ? print "show_pointer" : false ?> <?php print $data['stars5'] ?>" title="5" value="5" type="button">
         </button>
     </form>
 </div>

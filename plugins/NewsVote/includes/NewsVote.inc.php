@@ -70,41 +70,41 @@ function NewsVote_Calc_Rating($rid, $lid, $section) {
     }
 }
 
-function NewsVote_GetStars($rating, $stars_ext) {
+function NewsVote_GetStars($rating) {
     if ($rating <= 0.25 || empty($rating)) {
-        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "void" . $stars_ext;
+        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "vVoid";
     } else if ($rating <= 0.75) {
-        $rate['stars1'] = "half" . $stars_ext;
-        $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "full" . $stars_ext;
+        $rate['stars1'] = "vHalf";
+        $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "vFull";
     } else if ($rating <= 1.25) {
-        $rate['stars1'] = "full" . $stars_ext;
-        $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "void" . $stars_ext;
+        $rate['stars1'] = "vFull";
+        $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "vVoid";
     } else if ($rating <= 1.75) {
-        $rate['stars1'] = "full" . $stars_ext;
-        $rate['stars2'] = "half" . $stars_ext;
-        $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "void" . $stars_ext;
+        $rate['stars1'] = "vFull";
+        $rate['stars2'] = "vHalf";
+        $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "vVoid";
     } else if ($rating <= 2.25) {
-        $rate['stars1'] = $rate['stars2'] = "full" . $stars_ext;
-        $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "void" . $stars_ext;
+        $rate['stars1'] = $rate['stars2'] = "vFull";
+        $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "vVoid";
     } else if ($rating <= 2.75) {
-        $rate['stars1'] = $rate['stars2'] = "full" . $stars_ext;
-        $rate['stars3'] = "half" . $stars_ext;
-        $rate['stars4'] = $rate['stars5'] = "void" . $stars_ext;
+        $rate['stars1'] = $rate['stars2'] = "vFull";
+        $rate['stars3'] = "vHalf";
+        $rate['stars4'] = $rate['stars5'] = "vVoid";
     } else if ($rating <= 3.25) {
-        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = "full" . $stars_ext;
-        $rate['stars4'] = $rate['stars5'] = "void" . $stars_ext;
+        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = "vFull";
+        $rate['stars4'] = $rate['stars5'] = "vVoid";
     } else if ($rating <= 3.75) {
-        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = "full" . $stars_ext;
-        $rate['stars4'] = "half" . $stars_ext;
-        $rate['stars5'] = "void" . $stars_ext;
+        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = "vFull";
+        $rate['stars4'] = "vHalf";
+        $rate['stars5'] = "vVoid";
     } else if ($rating <= 4.25) {
-        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = "full" . $stars_ext;
-        $rate['stars5'] = "void" . $stars_ext;
+        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = "vFull";
+        $rate['stars5'] = "vVoid";
     } else if ($rating <= 4.75) {
-        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = "full" . $stars_ext;
-        $rate['stars5'] = "half" . $stars_ext;
+        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = "vFull";
+        $rate['stars5'] = "vHalf";
     } else {
-        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "full" . $stars_ext;
+        $rate['stars1'] = $rate['stars2'] = $rate['stars3'] = $rate['stars4'] = $rate['stars5'] = "vFull";
     }
 
     return $rate;

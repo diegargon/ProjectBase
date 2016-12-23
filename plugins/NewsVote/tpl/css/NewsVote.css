@@ -1,0 +1,24 @@
+/*
+ Copyright @ 2016 Diego Garcia
+*/
+
+.btnNewsRate, .btnCommentRate {
+    border:0px solid black;
+    padding:10px 9px 10px 5px;
+    margin:0;
+    background-size: 20px 60px;
+}
+
+.show_pointer {
+    cursor: pointer;
+}
+
+.vFull {
+    background-position: 0px 0px !important;
+}
+.vHalf {
+    background-position: 0px -20px !important;
+}
+.vVoid {
+    background-position: 0px -40px !important;
+}

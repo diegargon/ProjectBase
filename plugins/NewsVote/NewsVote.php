@@ -12,7 +12,7 @@ function NewsVote_init() {
     includePluginFiles("NewsVote");
     if ($config['NEWSVOTE_ON_NEWS'] || $config['NEWSVOTE_ON_NEWS_COMMENTS']) {
         register_action("begin_newsshow", "newsvote_page_begin");
-        register_action("begin_newsshow", "newsvote_common_scripts");
+        register_action("begin_newsshow", "newsvote_common");
     }
     //NEWS    
     $config['NEWSVOTE_ON_NEWS'] ? register_action("news_show_page", "newsvote_news_addrate") : false;
@@ -20,10 +20,11 @@ function NewsVote_init() {
     $config['NEWSVOTE_ON_NEWS_COMMENTS'] ? register_action("Newspage_get_comments", "newsvote_comment_addrate") : false;
 }
 
-function newsvote_common_scripts() {
+function newsvote_common() {
     global $tpl;
     $tpl->AddScriptFile("standard", "jquery", "BOTTOM");
     $tpl->AddScriptFile("NewsVote", "newsvote", "BOTTOM");
+    $tpl->getCSS_filePath("NewsVote");
 }
 
 function newsvote_page_begin() {
@@ -107,15 +108,11 @@ function newsvote_rate_comment($user, $user_rate) {
 }
 
 function newsvote_comment_addrate(& $comment) {
-    global $sm, $db, $tpl;
+    global $sm, $db, $tpl, $config;
 
-    $stars_ext = "_rate.png";
     $user = $sm->getSessionUser();
-    $rate_data['rate_style'] = "border:0px solid red;"
-            . "padding:3px;margin-left:-7px;"
-            . "background-color:transparent;"
-    ;
 
+    $rate_data['btnExtra'] = " style=\"background: url({$config['NEWSVOTE_STARS_URL']}) no-repeat;\" ";
     if ($user['uid'] > 0 && $user['uid'] != $comment['author_id']) {
         $where_ary = array(
             "uid" => $user['uid'],
@@ -124,25 +121,24 @@ function newsvote_comment_addrate(& $comment) {
             "lang_id" => $comment['lang_id'],
         );
         $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
-        ($db->num_rows($query) == false ) ? $rate_data['rate_style'] .= "cursor:pointer" : $rate_data['btnExtra'] = "disabled";
+        ($db->num_rows($query) == false ) ? $rate_data['show_pointer'] = 1 : $rate_data['btnExtra'] .= "disabled";
     } else {
-        $rate_data['btnExtra'] = "disabled";
+        $rate_data['btnExtra'] .= "disabled";
     }
-    $rate_stars = NewsVote_GetStars($comment['rating'], $stars_ext);
+
+
+    $rate_stars = NewsVote_GetStars($comment['rating']);
     $rate_data = array_merge($rate_data, $comment, $rate_stars);
     $rate_content = $tpl->getTpl_file("NewsVote", "comment_rate", $rate_data);
     $comment['COMMENT_EXTRA'] = $rate_content;
 }
 
 function newsvote_news_addrate($news) {
-    global $tpl, $sm, $db;
+    global $tpl, $sm, $db, $config;
 
-    $stars_ext = "_rate.png";
     $user = $sm->getSessionUser();
-    $rate_data['rate_style'] = "border:0px solid red;"
-            . "padding:0px;margin-left:0px;margin-bottom:1px;"
-            . "background-color:transparent;"
-    ;
+
+    $rate_data['btnExtra'] = " style=\"background: url({$config['NEWSVOTE_STARS_URL']}) no-repeat;\" ";
     if ($news['rating_closed'] == 0 && $user['uid'] > 0 && $user['uid'] != $news['author_id']) {
         $where_ary = array(
             "uid" => $user['uid'],
@@ -151,11 +147,11 @@ function newsvote_news_addrate($news) {
             "lang_id" => $news['lang_id'],
         );
         $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
-        ($db->num_rows($query) == false ) ? $rate_data['rate_style'] .= "cursor:pointer" : $rate_data['btnExtra'] = "disabled";
+        ($db->num_rows($query) == false ) ? $rate_data['show_pointer'] = 1 : $rate_data['btnExtra'] .= "disabled";
     } else {
-        $rate_data['btnExtra'] = "disabled";
+        $rate_data['btnExtra'] .= "disabled";
     }
-    $rate_stars = NewsVote_GetStars($news['rating'], $stars_ext);
+    $rate_stars = NewsVote_GetStars($news['rating']);
     $rate_data = array_merge($rate_data, $news, $rate_stars);
     $rate_content = $tpl->getTpl_file("NewsVote", "news_rate", $rate_data);
     $tpl->addto_tplvar("ADD_NEWS_INFO_POST_AVATAR", $rate_content);
@@ -167,7 +163,7 @@ function newsvote_news_user_rating($nid, $lang_id, $user_rating) {
     $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => $lang_id, "page" => 1), "LIMIT 1");
     $news_data = $db->fetch($query);
     $author_xtrData = $UXtra->getById($news_data['author_id']);
-    if($author_xtrData == false) {
+    if ($author_xtrData == false) {
         $author_xtrData['uid'] = $news_data['author_id'];
         $author_xtrData['rating_user'] = 0;
         $author_xtrData['rating_times'] = 0;
@@ -191,11 +187,11 @@ function newsvote_comment_user_rating($cid, $lang_id, $user_rating) {
     $query = $db->select_all("comments", array("cid" => "$cid", "lang_id" => $lang_id), "LIMIT 1");
     $comment_data = $db->fetch($query);
     $author_xtrData = $UXtra->getById($comment_data['author_id']);
-    if($author_xtrData == false) {
-        $author_xtrData['uid'] = $news_data['author_id'];
+    if ($author_xtrData == false) {
+        $author_xtrData['uid'] = $comment_data['author_id'];
         $author_xtrData['rating_user'] = 0;
         $author_xtrData['rating_times'] = 0;
-    }    
+    }
     if ($config['NEWSVOTE_COMMENT_USER_RATING_MODE'] == 1) {
         $new_rating = ++$author_xtrData['rating_user'];
     } else if ($config['NEWSVOTE_COMMENT_USER_RATING_MODE'] == "div2") {

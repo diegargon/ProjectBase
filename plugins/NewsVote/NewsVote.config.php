@@ -9,7 +9,7 @@ define("NEWS_VOTE", true);
 
 $config['NEWSVOTE_ON_NEWS'] = 1;
 $config['NEWSVOTE_ON_NEWS_COMMENTS'] = 1;
-$config['NEWSVOTE_STARS_URL'] = "/plugins/NewsVote/tpl/images/";
+$config['NEWSVOTE_STARS_URL'] = "/plugins/NewsVote/tpl/images/stars.png";
 $config['NEWSVOTE_NEWS_USER_RATING_N'] = 1; //News author
 $config['NEWSVOTE_NEWS_USER_RATING_NT'] = 1; //News translator;
 $config['NEWSVOTE_COMMENT_USER_RATING'] = 1;
