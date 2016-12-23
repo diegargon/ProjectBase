@@ -85,7 +85,7 @@
 }
 
 #admin_content section p {
-    font-size: 14px;
+    font-size: .85em;
     line-height: 0.3em;
 }
 #admin_content section span {
@@ -96,7 +96,7 @@
     border:0px solid blue;
     width:84%;
     float:left;
-    font-size: 14px;
+    font-size: .85em;
 }
 #admin_opt_content span{             
     font-size: 12px;
