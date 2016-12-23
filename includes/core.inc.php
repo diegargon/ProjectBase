@@ -21,5 +21,5 @@ if(preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|c
     $config['IMG_SELECTOR'] = "mobile";
 }
 
-$ITS_BOT = botDetect();
+$config['ITS_BOT'] = botDetect();
 do_action("init_core");

@@ -1,36 +1,39 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
 
 function print_debug($msg, $filter = null) {
     global $debug;
-    if ( (array_search($msg, array_column($debug, 'msg')) ) != null) { //avoid duplicates
+    if ((array_search($msg, array_column($debug, 'msg')) ) != null) { //avoid duplicates
         return;
     }
     if (!empty($filter) && defined($filter) && defined('DEBUG')) {
-        $debug[] = array ("msg" => "$msg", "filter" => "$filter" );
-    } else if (empty($filter) && defined ('DEBUG')) {
-        $debug[] = array ("msg" => "$msg", "filter" => "DEBUG");
+        $debug[] = array("msg" => "$msg", "filter" => "$filter");
+    } else if (empty($filter) && defined('DEBUG')) {
+        $debug[] = array("msg" => "$msg", "filter" => "DEBUG");
     }
 }
 
 function getserverload() { // Return server load respect cpu's number 1.0 = 100% all cores
     $load = sys_getloadavg();
-    $cmd = "cat /proc/cpuinfo | grep processor | wc -l"; 
+    $cmd = "cat /proc/cpuinfo | grep processor | wc -l";
     $num_cpus = trim(shell_exec($cmd));
-    
-    if (empty($load[0]) ||empty($num_cpus)) { return false; }
+
+    if (empty($load[0]) || empty($num_cpus)) {
+        return false;
+    }
     $current_load = round($load[0] / $num_cpus, 2);
-    
+
     return $current_load;
 }
 
 function its_server_stressed() {
     global $config;
 
-    if ( ($current_load = getserverload()) != false ) {
+    if (($current_load = getserverload()) != false) {
         if ($current_load >= $config['SERVER_STRESS']) {
             return true;
         } else {
@@ -54,24 +57,23 @@ function codetovar($path, $data = null) {
 function format_date($date, $timestamp = false) {
     global $config;
     if ($timestamp) {
-       return date($config['DEFAULT_DATEFORMAT'], $date);
+        return date($config['DEFAULT_DATEFORMAT'], $date);
     } else {
-       return date($config['DEFAULT_DATEFORMAT'], strtotime($date));
+        return date($config['DEFAULT_DATEFORMAT'], strtotime($date));
     }
 }
 
 function includePluginFiles($plugin, $admin = 0) {
-    global $config, $LANGDATA; 
+    global $config, $LANGDATA;
 
-    $class_file ="";
-    $inc_file ="";
+    $class_file = "";
+    $inc_file = "";
 
     //CONFIG FILES
     $config_plugin = "plugins/$plugin/$plugin.config.php";
     $config_plugin_user = "config/$plugin.config.php";
     file_exists($config_plugin) ? require_once($config_plugin) : false;
     file_exists($config_plugin_user) ? require_once($config_plugin_user) : false;  //User Overdrive
-  
     //LANG FILES;
     $lang_file = "plugins/$plugin/lang/" . $config['WEB_LANG'] . "/$plugin.lang.php";
     file_exists($lang_file) ? include_once($lang_file) : false;
@@ -89,14 +91,14 @@ function includePluginFiles($plugin, $admin = 0) {
 
 function remote_check($url) {
 
-    if ( (strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) {
+    if ((strpos($url, 'http://') !== 0) && (strpos($url, 'https://') !== 0)) {
         $url = "http://" . $url;
     }
 
-    if ( strpos($url, 'https://') !== 0 ) {
-        stream_context_set_default(array('https' => array('method' => 'HEAD') ));
+    if (strpos($url, 'https://') !== 0) {
+        stream_context_set_default(array('https' => array('method' => 'HEAD')));
     } else {
-        stream_context_set_default(array('http' => array('method' => 'HEAD') ));
+        stream_context_set_default(array('http' => array('method' => 'HEAD')));
     }
 
     $host = parse_url($url, PHP_URL_HOST);
@@ -105,7 +107,7 @@ function remote_check($url) {
         return false;
     } else {
         defined('DEBUG') ? $headers = get_headers($url) : $headers = @get_headers($url);
-        if($headers['0'] == 'HTTP/1.1 404 Not Found') {
+        if ($headers['0'] == 'HTTP/1.1 404 Not Found') {
             return false;
         }
     }
@@ -127,7 +129,7 @@ function getLib($libname, $version) {
         $v_mayor_minor[0] = $version;
     }
 
-    $libs = glob($LIBPATH . $libname ."-". $v_mayor_minor[0]. "*" , GLOB_ONLYDIR);
+    $libs = glob($LIBPATH . $libname . "-" . $v_mayor_minor[0] . "*", GLOB_ONLYDIR);
     if (empty($libs)) {
         return false;
     }
@@ -151,10 +153,8 @@ function botDetect($match_type = 0) {
     } else {
         $botList = $config['WELCOME_BOTS'] . "|" . $config['BAD_BOTS'];
     }
-  
+
     preg_match("/$botList/i", S_SERVER_USER_AGENT(), $matches);
 
     return (empty($matches)) ? false : true;
 }
-
-?>
