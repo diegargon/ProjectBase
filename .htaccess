@@ -26,6 +26,7 @@ RewriteRule  ^([a-zA-z]{2})\/Advertise$   app.php?module=WebInfo&page=Advertise&
 RewriteRule  ^([a-zA-z]{2})\/Terms$   app.php?module=WebInfo&page=Terms&lang=$1
 
 RewriteRule ^(es|en)/$  $2?lang=$1 [QSA]
+RewriteRule  ^([a-zA-z]{2})$ $1/ [L,R=301]
 
 <ifmodule mod_expires.c>
 <Filesmatch "\.(jpg|jpeg|png|gif|js|css|swf|ico|woff|mp3)$">
