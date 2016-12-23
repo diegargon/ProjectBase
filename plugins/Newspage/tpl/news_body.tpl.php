@@ -4,6 +4,22 @@
  */
 !defined('IN_WEB') ? exit : true;
 ?>
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "headline": "<?php !empty($data['title']) ? print $data['title'] : false ?>",
+  "image": "<?php !empty($data['ITEM_MAINIMAGE']) ? print $data['ITEM_MAINIMAGE'] : false ?>",
+  "datePublished": "<?php !empty($data['ITEM_CREATED']) ? print $data['ITEM_CREATED'] : false ?>",
+  "articleSection": "entertainment",
+  "creator": "<?php print $data['author'] ?>",
+  "author": "<?php print $data['author'] ?>",
+  "articleBody": "<?php print $data['lead'] ?>",
+  "mainEntityOfPage": "True"
+}
+</script>
+
 <div id="news_container" class="newsrow">
     <div  class="clear bodysize page">
         <?php
@@ -16,9 +32,9 @@
         if (!empty($data['NEWS_BREADCRUMB'])) {
             ?>
             <div id='news_breadcrumb'>
-                <ul class='breadcrumb'>
+                <ol <?php print $data['ITEM_OL'] ?> class='breadcrumb'>
                     <?php print $data['NEWS_BREADCRUMB'] ?>
-                </ul>
+                </ol>
             </div>
             <?php
         }        
@@ -28,11 +44,11 @@
                 <?php !empty($data['title']) ? print $data['title'] : false ?>
             </h1>
             <div>                
-                <a rel="nofollow" href="https://www.facebook.com/dialog/share?app_id=1481492868545684&display=popup&href=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>&redirect_uri=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . '/plugins/Newspage/tpl/images/Facebook.png' ?>" alt="facebook" /></a>
-                <a rel="nofollow" href="https://meneame.net/submit.php?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . '/plugins/Newspage/tpl/images/Meneame.png' ?>" alt="Meneame" /></a>
-                <a rel="nofollow" href="https://twitter.com/share?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . '/plugins/Newspage/tpl/images/Twitter.png' ?>" alt="Tweeter" /></a>
-                <a rel="nofollow" href="https://plus.google.com/share?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . '/plugins/Newspage/tpl/images/Google.png' ?>" alt="Google+" /></a>
-                <a rel="nofollow" href="https://www.reddit.com/submit?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . '/plugins/Newspage/tpl/images/Reddit.png' ?>" alt="Reddit" /></a>
+                <a rel="nofollow" href="https://www.facebook.com/dialog/share?app_id=1481492868545684&display=popup&href=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>&redirect_uri=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . 'plugins/Newspage/tpl/images/Facebook.png' ?>" alt="facebook" /></a>
+                <a rel="nofollow" href="https://meneame.net/submit.php?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . 'plugins/Newspage/tpl/images/Meneame.png' ?>" alt="Meneame" /></a>
+                <a rel="nofollow" href="https://twitter.com/share?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . 'plugins/Newspage/tpl/images/Twitter.png' ?>" alt="Tweeter" /></a>
+                <a rel="nofollow" href="https://plus.google.com/share?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . 'plugins/Newspage/tpl/images/Google.png' ?>" alt="Google+" /></a>
+                <a rel="nofollow" href="https://www.reddit.com/submit?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']?>" target="_blank"><img width="19" height="19" src="<?php echo $config['STATIC_SRV_URL'] . 'plugins/Newspage/tpl/images/Reddit.png' ?>" alt="Reddit" /></a>
             </div>
             <?php if (!empty($data['news_admin_nav'])) { ?>
                 <nav id='adm_nav'>
