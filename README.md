@@ -8,9 +8,6 @@ more deeply PHP.
 This code are in very early stage, have bugs, security problems and messy code. This code can change completely and probably will change. Not use it in
 something serious.
 
-My mainly purpose and first example project its build a framework and a news cms, will use for others project too.
-
-
 EXAMPLE SITE
 ============
 Early example  http://projectbase.envigo.net (sometimes not work since its the production web)
