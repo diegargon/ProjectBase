@@ -98,6 +98,7 @@ function news_show_page() {
         preg_match("/src=\"(.*?)\"/i", $news_data['text'], $matchs);
         $news_data['ITEM_MAINIMAGE'] = $matchs[1];
         $news_data['ITEM_CREATED'] = preg_replace("/ /", "T", $news_data['created']) . "Z";
+        $news_data['ITEM_SECTIONS'] = strip_tags($news_data['NEWS_BREADCRUMB']);
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body_struct", $news_data));
     }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body", $news_data));
@@ -440,7 +441,7 @@ function getNewsCatBreadcrumb($news_data) {
         $cat = preg_replace('/\_/', ' ', $cat);
         $breadcrumb .= "<li $ITEM_LI>";
         $breadcrumb .= "<a $ITEM_HREF href='/{$config['WEB_LANG']}/section/$cat_path'>";
-        $breadcrumb .= "<span $ITEM_NAME>$cat</span></a>$ITEM_POS</li>";
+        $breadcrumb .= "<span $ITEM_NAME>$cat</span></a>$ITEM_POS</li> ";
         $cat_path .= ".";
         $list_counter++;
     }
