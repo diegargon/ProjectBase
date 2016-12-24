@@ -98,7 +98,6 @@ function news_show_page() {
         preg_match("/src=\"(.*?)\"/i", $news_data['text'], $matchs);
         $news_data['ITEM_MAINIMAGE'] = $matchs[1];
         $news_data['ITEM_CREATED'] = preg_replace("/ /", "T", $news_data['created']) . "Z";
-        $news_data['ITEM_SECTIONS'] = strip_tags($news_data['NEWS_BREADCRUMB']);
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body_struct", $news_data));
     }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body", $news_data));
