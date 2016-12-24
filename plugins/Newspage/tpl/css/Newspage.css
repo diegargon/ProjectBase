@@ -56,7 +56,7 @@
     float:left;
     margin: 0px auto;
     padding-right: 4px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 .featured_wrap a {
     text-decoration: none;
@@ -299,15 +299,16 @@
     /* border: 1px solid #000; */
 }
 .submit_buttom {
-    text-align: center;    
+    text-align: center;
 }
 .text_small {
-    font-size: 0.6em;      
+    font-size: 0.6em;
 }
 /* ADMIN NAV */
 #adm_nav {
     /* border:1px solid blue; */
-    overflow:hidden;    
+    overflow: hidden;
+    clear: both;
 }
 #adm_nav ul {
     padding: 0px;
@@ -353,7 +354,6 @@
     padding-bottom: 5px;
     margin-top: -18px;
     margin-left: 3px;
-
 }
 .related {
     font-size: 0.85em;
@@ -565,4 +565,30 @@
 .video-center-container { 
     text-align: center;
     width:60%;
+}
+.soc_facebook, .soc_google, .soc_meneame, .soc_reddit, .soc_tweeter {
+    border: 0px solid black;
+    padding: 2px 2px 2px 2px;
+    background-size: 30px 220px !important;
+    display: block;
+    width: 26px;
+    height: 25px;
+    float:left;
+    margin-right: .5%;
+}
+.soc_facebook {
+    background-position: 0px 0px !important;
+}
+.soc_google {
+    background-size: 30px 238px !important;
+    background-position: 0px -31px !important;
+}
+.soc_reddit {
+    background-position: 0px -113px !important;
+}
+.soc_meneame {
+    background-position: 0px -169px !important;
+}
+.soc_tweeter {
+    background-position: 0px -56px !important;
 }
