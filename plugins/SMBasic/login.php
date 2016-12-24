@@ -23,7 +23,7 @@ if (isset($_GET['active'])) {
         do_action("message_page", $msgbox);
         return false;
     } else {
-        $msgbox['title'] = $LANGDATA['L_SM_TITLE_OK'];
+        $msgbox['title'] = "L_SM_TITLE_OK";
         $msgbox['MSG'] = "L_SM_ACTIVATION_OK";
         $msgbox['backlink'] = $config['WEB_URL'];
         do_action("message_page", $msgbox);
@@ -37,7 +37,7 @@ if (isset($_GET['reset'])) {
         do_action("message_page", $msgbox);
         return false;
     } else {
-        $msgbox['title'] = $LANGDATA['L_SM_TITLE_OK'];
+        $msgbox['title'] = 'L_SM_TITLE_OK';
         $msgbox['MSG'] = "L_SM_RESET_OK";
         $msgbox['backlink'] = $config['WEB_URL'];
         do_action("message_page", $msgbox);
