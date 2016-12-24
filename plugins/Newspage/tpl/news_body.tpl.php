@@ -29,11 +29,11 @@
                 <?php !empty($data['title']) ? print $data['title'] : false ?>
             </h1>
             <div>                
-                <a rel="nofollow" class="soc_facebook" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://www.facebook.com/dialog/share?app_id=1481492868545684&display=popup&href=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>&redirect_uri=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank"><a/>
-                    <a rel="nofollow" class="soc_google" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://plus.google.com/share?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank"></a>
-                    <a rel="nofollow" class="soc_meneame" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://meneame.net/submit.php?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank"></a>
-                    <a rel="nofollow" class="soc_tweeter" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://twitter.com/share?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank"></a>
-                    <a rel="nofollow" class="soc_reddit" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://www.reddit.com/submit?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>" target="_blank"></a>
+                <a rel="nofollow" class="soc_facebook" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://www.facebook.com/dialog/share?app_id=1481492868545684&display=popup&href=<?php print "https://" . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI() ?>&redirect_uri=<?php print "https://" . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI() ?>" target="_blank"></a>
+                <a rel="nofollow" class="soc_google" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://plus.google.com/share?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI() ?>" target="_blank"></a>
+                <a rel="nofollow" class="soc_meneame" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://meneame.net/submit.php?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI() ?>" target="_blank"></a>
+                <a rel="nofollow" class="soc_tweeter" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://twitter.com/share?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI() ?>" target="_blank"></a>
+                <a rel="nofollow" class="soc_reddit" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://www.reddit.com/submit?url=<?php print "https://" . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI() ?>" target="_blank"></a>
             </div>
             <?php if (!empty($data['news_admin_nav'])) { ?>
                 <nav id='adm_nav'>

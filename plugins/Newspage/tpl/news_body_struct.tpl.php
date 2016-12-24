@@ -15,7 +15,7 @@ if ($config['ITS_BOT'] && $config['INCLUDE_DATA_STRUCTURE']){
   "headline": "<?php !empty($data['title']) ? print $data['title'] : false ?>",
   "image": "<?php !empty($data['ITEM_MAINIMAGE']) ? print $data['ITEM_MAINIMAGE'] : false ?>",
   "datePublished": "<?php !empty($data['ITEM_CREATED']) ? print $data['ITEM_CREATED'] : false ?>",
-  "articleSection": "<?php print $data['ITEM_SECTIONS'] ?>",
+  <?php print $data['ITEM_SECTIONS'] ?>
   "creator": "<?php print $data['author'] ?>",
   "author": "<?php print $data['author'] ?>",
   "articleBody": "<?php print $data['lead'] ?>",
