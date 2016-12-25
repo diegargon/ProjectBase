@@ -24,7 +24,7 @@ function NewsAds_ShowAds () {
     if ( S_GET_INT("nid") && ($config['newsads_sponsors'] || $config['newsads_global_sponsors']) ) {
         $sponsors = NewsAdds_Sponsors();
         $sponsors = "<aside class='sponsors center'>" . $sponsors ."</aside>";
-        !empty($sponsors) ? $tpl->addto_tplvar("ADD_TO_NEWS_SIDE", $sponsors) : false;                    
+        !empty($sponsors) ? $tpl->addto_tplvar("ADD_TO_NEWS_SIDE_PRE", $sponsors) : false;                    
     }
 }
 
