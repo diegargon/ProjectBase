@@ -61,8 +61,8 @@ function SMBasic_ProfileChange() {
             die('[{"status": "6", "msg": "' . $LANGDATA['L_SM_E_AVATAR'] . '"}]');
         } else {
             if ($config['smbasic_https_remote_avatar']) {
-                if (!strpos($avatar, "https")) {
-                    die('[{"status": "6", "msg": "' . $LANGDATA['L_SM_E_HTTPS'] . '"}]');
+                if (strpos($avatar, "https") === false) {
+                    die('[{"status": "6", "msg": "' . $LANGDATA['L_SM_E_HTTPS'] . $avatar . '"}]');
                 }
             }
             $user['avatar'] != $avatar ? $q_set_ary['avatar'] = $db->escape_strip($avatar) : false;
