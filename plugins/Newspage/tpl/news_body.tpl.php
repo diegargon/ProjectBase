@@ -82,7 +82,9 @@
             <?php !empty($tpldata['ADD_TO_NEWSSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM'] : false ?>                        
         </section>
         <div class="article_side">
-            <?php !empty($tpldata['ADD_TO_NEWS_SIDE']) ? print $tpldata['ADD_TO_NEWS_SIDE'] : false ?>
+            <?php !empty($tpldata['ADD_TO_NEWS_SIDE_PRE']) ? print $tpldata['ADD_TO_NEWS_SIDE_PRE'] : false ?>
+            <?php !empty($data['SIDE_NEWS']) ? print $data['SIDE_NEWS'] : false ?>
+            <?php !empty($tpldata['ADD_TO_NEWS_SIDE_POST']) ? print $tpldata['ADD_TO_NEWS_SIDE_POST'] : false ?>
         </div>
     </div>
 </div>

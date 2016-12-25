@@ -107,6 +107,14 @@ function news_show_page() {
         }
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body_struct", $news_data));
     }
+    if ($config['NEWS_PAGE_SIDENEWS']) {
+        require_once("news_portal.php");
+        $getnews_config['category'] = 0;
+        $getnews_config['fontpage'] = 1;
+        $getnews_config['cathead'] = 1;
+        $getnews_config['headlines'] = 1;
+        $news_data['SIDE_NEWS'] = get_news($getnews_config);
+    }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body", $news_data));
 }
 

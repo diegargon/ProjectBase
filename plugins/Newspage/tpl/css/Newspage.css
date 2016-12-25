@@ -184,15 +184,14 @@
 .article_body h1 {
     font-size: 2.0em;
     font-weight: bold;
-    /* border: 1px solid blue; */
     line-height: 1em;
     margin-bottom: 10px;
 }
 .article_side {
     float:left;
     width: 31%;
-    /* border: 1px solid #000; */
     margin: 10px 10px 0px 10px;
+    font-size: .7em;
 }
 .article_lead {
     font-style: italic; 
