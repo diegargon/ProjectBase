@@ -98,3 +98,4 @@ $LANGDATA['L_SM_ACTIVATION_OK'] = "Activación correcta, ya puede identificarse"
 $LANGDATA['L_SM_RESET_OK'] = "Reinicio de la contraseña correcto";
 $LANGDATA['L_E_NOACCESS'] = "No tienes permiso para acceder";
 $LANGDATA['L_SM_TITLE_OK'] = "Conseguido!";
+$LANGDATA['L_SM_E_HTTPS'] = "Lo siento, solo aceptamos enlaces alojadas en servidor seguro (https)";

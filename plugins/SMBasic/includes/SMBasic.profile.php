@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -32,7 +33,7 @@ function SMBasic_ViewProfile() {
 
 function SMBasic_ProfileChange() {
     global $LANGDATA, $config, $db, $sm;
-    
+
     if (empty($_POST['cur_password']) || strlen($_POST['cur_password']) < $config['sm_min_password']) {
         die('[{"status": "1", "msg": "' . $LANGDATA['L_E_PASSWORD_EMPTY_SHORT'] . '"}]');
     }
@@ -59,6 +60,11 @@ function SMBasic_ProfileChange() {
         if ($avatar < 0) {
             die('[{"status": "6", "msg": "' . $LANGDATA['L_SM_E_AVATAR'] . '"}]');
         } else {
+            if ($config['smbasic_https_remote_avatar']) {
+                if (!strpos($avatar, "https")) {
+                    die('[{"status": "6", "msg": "' . $LANGDATA['L_SM_E_HTTPS'] . '"}]');
+                }
+            }
             $user['avatar'] != $avatar ? $q_set_ary['avatar'] = $db->escape_strip($avatar) : false;
         }
     }
