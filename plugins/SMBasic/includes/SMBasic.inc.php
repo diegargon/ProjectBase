@@ -26,8 +26,12 @@ function SMBasic_sessionDebugDetails() {
     print_debug("<hr><br/><h2>Session Details</h2>", "SM_DEBUG");
     print_debug("Time Now: " . format_date(time(), true) . "", "SM_DEBUG");
     if (isset($_SESSION)) {
-        print_debug("Session VAR ID: {$_SESSION['uid']}", "SM_DEBUG");
-        print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
+        if(!empty($_SESSION['uid'])) {
+            print_debug("Session VAR ID: {$_SESSION['uid']}", "SM_DEBUG");
+        }
+        if(!empty($_SESSION['sid'])) {
+            print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
+        }
     } else {
         print_debug("Session ins't set", "SM_DEBUG");
     }
