@@ -1,5 +1,3 @@
 User-agent: *
 Disallow: /*/search$
-Disallow: /*/login
-Disallow: /*/register
 Disallow: /*/profile
