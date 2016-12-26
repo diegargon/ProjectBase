@@ -45,6 +45,7 @@ function tplBasic_message_box($box_data) {
     !empty($box_data['backlink']) ? $data['BOX_BACKLINK'] = $box_data['backlink'] : $data['BOX_BACKLINK'] = $config['BACKLINK'];
     !empty($box_data['backlink_title']) ? $data['BOX_BACKLINK_TITLE'] = $LANGDATA[$box_data['backlink_title']] : $data['BOX_BACKLINK_TITLE'] = $LANGDATA['L_BACK'];
     $data['BOX_MSG'] = $LANGDATA[$box_data['MSG']];
+    !empty($box_data['XTRA_BOX_MSG']) ? $data['BOX_MSG'] .= $box_data['XTRA_BOX_MSG']: false;
     $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "msgbox", $data));
 }
 
