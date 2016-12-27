@@ -5,6 +5,11 @@
 !defined('IN_WEB') ? exit : true;
 ?>
 <div  class="clear bodysize page">
+    <?php if (!empty($data['oAuth_data'])) { ?>
+        <div class="register_oauth_box">
+            <?php print($data['oAuth_data']) ?>
+        </div>
+    <?php } ?>
     <div class="register_box">
         <form  id="register_form" action="#" method="post">
             <h1><?php print $LANGDATA['L_REGISTER'] ?></h1>

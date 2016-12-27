@@ -1,4 +1,5 @@
 <?php
+
 /*
  *  Copyright @ 2016 Diego Garcia
  */
@@ -49,6 +50,14 @@ if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['login']
 } else if (!empty($_POST['reset_password_chk'])) {
     SMBasic_RequestResetOrActivation();
 } else {
+    if ($config['smbasic_oauth']) {
+        require_once 'includes/SMBasic-oauth.inc.php';
+        if (!empty($_GET['provider'])) {
+            SMB_oauth_DoLogin();
+        } else {
+            $login_data['oAuth_data'] = SMB_oauth_getLoginURL();
+        }
+    }
     do_action("common_web_structure");
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");

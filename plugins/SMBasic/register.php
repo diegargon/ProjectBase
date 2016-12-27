@@ -19,6 +19,14 @@ if ($user && $user['uid'] != 0) {
 
 if ((!isset($_POST['email']) || ($config['smbasic_need_username'] == 1) && !isset($_POST['username'])) &&
         !isset($_POST['password']) && !isset($_POST['register'])) {
+    if ($config['smbasic_oauth']) {
+        require_once 'includes/SMBasic-oauth.inc.php';
+        if (!empty($_GET['provider'])) {
+            SMB_oauth_DoLogin();
+        } else {
+            $login_data['oAuth_data'] = SMB_oauth_getLoginURL();
+        }
+    }
     do_action("common_web_structure");
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");

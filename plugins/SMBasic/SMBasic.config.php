@@ -33,3 +33,7 @@ $config['smbasic_can_change_username'] = 1;
 $config['smbasic_can_change_email'] = 1;
 $config['SMB_IMG_DFLT_AVATAR'] = "/plugins/SMBasic/tpl/img/avatar.png";
 $config['smbasic_https_remote_avatar'] = 1;
+$config['smbasic_oauth'] = 1;
+$config['smbasic_oauth_facebook'] = 1;
+$config['smbasic_fb_appid'] = '18312566913815977';
+$config['smbasic_fb_appSecret'] = 'edeb745fd902dbce866a84e6855b1ed06';

@@ -35,7 +35,7 @@ class SessionManager {
     function getUserByUsername($username) {
         global $db;
 
-        if  (($uid = array_search($username, array_column($this->users_cache_db, 'username')))) {
+        if (($uid = array_search($username, array_column($this->users_cache_db, 'username')))) {
             return $this->users_cache_db[$uid];
         }
 
@@ -76,16 +76,31 @@ class SessionManager {
 
         print_debug("CheckSession called", "SM_DEBUG");
 
-        if ($this->checkAnonSession()) {
+        if ($this->checkAnonSession() && empty($_SESSION['oauth_token'])) {
             print_debug("SMBasiUser: checkSession its setting to anonymous, stopping more checks", "SM_DEBUG");
             return true;
         }
 
+        if ($config['smbasic_oauth'] && !empty($_SESSION['oauth_token'])) {
+            return $this->check_oauth_session();
+        }
         if ($config['smbasic_default_session']) {
             return $this->check_phpbuildin_session();
         } else {
             return $this->check_custom_session();
         }
+    }
+
+    private function check_oauth_session() {
+
+        if (empty($this->user)) {
+            if (!S_SESSION_INT("uid")) {
+                return false;
+            } else {
+                $this->user = $this->getUserbyID(S_SESSION_INT("uid"));
+            }
+        }
+        return true;
     }
 
     function setUserSession($user, $remember = 0) {
@@ -361,21 +376,23 @@ class SessionManager {
         return $session;
     }
 
-    private function regenerate_sid() {
-        global $config, $db, $sm;
-        if ($config['smbasic_default_session'] || $config['smbasic_session_start']) {
-            session_regenerate_id();
-        }
-        if (!$config['smbasic_default_session'] || $config['smbasic_persistence']) {
-            if ((!$user = $sm->getSessionUser())) {
-                return false;
-            }
-            $new_sid = $this->createSID();
-            $next_expire = time() + $config['smbasic_session_expire'];
-            print_debug("Renereate SID and Update session expire on user {$user['username']}", "SM_DEBUG");
-            $db->update("sessions", array("session_expire" => "$next_expire", "session_id" => "$new_sid"), array("session_uid" => "{$user['uid']}"), "LIMIT 1");
-        }
-    }
+    /* regerate must change sid,  on session table and SESSION
+      private function regenerate_sid() {
+      global $config, $db, $sm;
+      if ($config['smbasic_default_session'] || $config['smbasic_session_start']) {
+      session_regenerate_id(true);
+      }
+      if (!$config['smbasic_default_session'] || $config['smbasic_persistence']) {
+      if ((!$user = $sm->getSessionUser())) {
+      return false;
+      }
+      $new_sid = $this->createSID();
+      $next_expire = time() + $config['smbasic_session_expire'];
+      print_debug("Renereate SID and Update session expire on user {$user['username']}", "SM_DEBUG");
+      $db->update("sessions", array("session_expire" => "$next_expire", "session_id" => "$new_sid"), array("session_uid" => "{$user['uid']}"), "LIMIT 1");
+      }
+      }
+     */
 
     private function check_extra($check) {
         global $config;
