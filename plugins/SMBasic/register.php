@@ -24,7 +24,7 @@ if ((!isset($_POST['email']) || ($config['smbasic_need_username'] == 1) && !isse
         if (!empty($_GET['provider'])) {
             SMB_oauth_DoLogin();
         } else {
-            $login_data['oAuth_data'] = SMB_oauth_getLoginURL();
+            $register_data['oAuth_data'] = SMB_oauth_getLoginURL();
         }
     }
     do_action("common_web_structure");
