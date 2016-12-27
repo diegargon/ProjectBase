@@ -47,7 +47,7 @@ function Multilang_init(){
         $request_uri = str_replace("/". $config['WEB_LANG'], "/".$choose_lang, $request_uri); // FIX better method than can replace something not wanted.
         $request_uri = str_replace("lang=". $config['WEB_LANG'], "lang=".$choose_lang, $request_uri);
         header('Location:' .$request_uri);
-        
+        exit;
     }
     !$config['ML_FORCEUSE_DFL_LANG'] ? register_action("header_menu_element", array($ml, "get_nav"), 6) : false;
 }
