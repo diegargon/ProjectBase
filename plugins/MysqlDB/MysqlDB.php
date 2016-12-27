@@ -14,6 +14,6 @@ function MysqlDB_Init() {
     includePluginFiles("MysqlDB");
 
     !isset($db) ? $db = new Database : false;
-
+    $db->connect();
     //register_action("finalize", array($db, "close"), "5"); we use destructor now;
 }

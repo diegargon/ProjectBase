@@ -10,11 +10,11 @@ class SessionManager {
     private $user;
     private $users_cache_db = [];
 
-    function __construct() {
-        global $config;
-        $config['smbasic_default_session'] || $config['smbasic_session_start'] ? session_start() : false;
+    function __construct() {}
+    
+    function start() {
+        session_start();
     }
-
     function getUserbyID($uid) {
         global $db;
 

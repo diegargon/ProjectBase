@@ -11,7 +11,6 @@ class Database {
     private $query_stats;
 
     function __construct() {
-        $this->connect();
         $this->query_stats = 0;
     }
 
