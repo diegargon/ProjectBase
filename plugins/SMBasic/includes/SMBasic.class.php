@@ -67,10 +67,6 @@ class SessionManager {
         return $sid;
     }
 
-    function createSID() {
-        return md5(uniqid(rand(), true));
-    }
-
     function checkSession() {
         global $config;
 
@@ -89,6 +85,50 @@ class SessionManager {
         } else {
             return $this->check_custom_session();
         }
+    }
+
+    function getAllUsersArray($order_field = "regdate", $order = "ASC", $limit = 20) {
+        global $db;
+
+        $extra = "ORDER BY " . $order_field . " " . $order . " LIMIT " . $limit;
+        $query = $db->select_all("users", null, $extra);
+        while ($user_row = $db->fetch($query)) {
+            $users_ary[] = $user_row;
+        }
+
+        return $users_ary;
+    }
+
+    function searchUser($string, $email = false, $glob = false) {
+        global $db;
+        $where_ary = [];
+
+        if (!empty($email)) {
+            if (empty($glob)) {
+                $where_ary = array("email" => array("value" => "'" . $string . "'", "operator" => "LIKE"));
+            } else {
+                $where_ary = array("email" => array("value" => "'%" . $string . "%'", "operator" => "LIKE"));
+            }
+        } else {
+            if (empty($glob)) {
+                $where_ary = array("username" => array("value" => "'" . $string . "'", "operator" => "LIKE"));
+            } else {
+                $where_ary = array("username" => array("value" => "'%" . $string . "%'", "operator" => "LIKE"));
+            }
+        }
+        $query = $db->select_all("users", $where_ary);
+        if ($db->num_rows($query) > 0) {
+            while ($user_row = $db->fetch($query)) {
+                $users_ary[] = $user_row;
+            }
+            return $users_ary;
+        }
+
+        return false;
+    }
+
+    private function createSID() {
+        return md5(uniqid(rand(), true));
     }
 
     private function check_oauth_session() {
@@ -139,16 +179,7 @@ class SessionManager {
 
         return $sid;
     }
-
-    function getCookies() {
-        global $config;
-
-        $cookies['uid'] = S_COOKIE_INT("{$config['smbasic_cookie_prefix']}uid", 11);
-        $cookies['sid'] = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefix']}sid", 32);
-
-        return $cookies;
-    }
-
+    
     function destroy() {
         global $db;
 
@@ -160,7 +191,32 @@ class SessionManager {
         $_SESSION = [];
     }
 
-    function clearCookies() {
+    function setAnonSession() {
+        global $config;
+
+        if ($config['smbasic_default_session']) {
+            print_debug("SMBasic: Setting session as anonymous ", "SM_DEBUG");
+            $this->clearCookies();
+            $_SESSION = [];
+            $_SESSION['anonymous'] = 1;
+        } else {
+            print_debug("SMBasic: Setting cookies as anonymous ", "SM_DEBUG");
+            $this->clearCookies();
+            $cookie_name_anon = $config['smbasic_cookie_prefix'] . "anonymous";
+            setcookie($cookie_name_anon, 1, 0, '/');
+        }
+    }
+
+    private function getCookies() {
+        global $config;
+
+        $cookies['uid'] = S_COOKIE_INT("{$config['smbasic_cookie_prefix']}uid", 11);
+        $cookies['sid'] = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefix']}sid", 32);
+
+        return $cookies;
+    }
+
+    private function clearCookies() {
         global $config;
 
         $cookie_name_anon = $config['smbasic_cookie_prefix'] . "anonymous";
@@ -175,7 +231,7 @@ class SessionManager {
         $config['smbasic_default_session'] || $config['smbasic_session_start'] ? setcookie('phpsessid', 0, time() - 3600) : false;
     }
 
-    function setCookies($sid, $uid, $remember) {
+    private function setCookies($sid, $uid, $remember) {
         global $config;
 
         $cookie_name_sid = $config['smbasic_cookie_prefix'] . "sid";
@@ -189,7 +245,7 @@ class SessionManager {
         setcookie($cookie_name_uid, $uid, $cookie_expire, '/');
     }
 
-    function checkCookies() {
+    private function checkCookies() {
         global $db;
 
         $cookies = $this->getCookies();
@@ -210,18 +266,18 @@ class SessionManager {
         }
     }
 
-    function check_IP($db_session_ip) {
+    private function check_IP($db_session_ip) {
         $ip = S_SERVER_REMOTE_ADDR();
         return ($ip == $db_session_ip) ? true : false;
     }
 
-    function check_user_agent($db_user_agent) {
+    private function check_user_agent($db_user_agent) {
         $user_agent = S_SERVER_USER_AGENT();
         return ($user_agent == $db_user_agent) ? true : false;
     }
 
     //TODO... do better later 
-    function checkAnonSession() {
+    private function checkAnonSession() {
         global $config;
 
         if ($config['smbasic_default_session']) {
@@ -234,23 +290,7 @@ class SessionManager {
         }
     }
 
-    function setAnonSession() {
-        global $config;
-
-        if ($config['smbasic_default_session']) {
-            print_debug("SMBasic: Setting session as anonymous ", "SM_DEBUG");
-            $this->clearCookies();
-            $_SESSION = [];
-            $_SESSION['anonymous'] = 1;
-        } else {
-            print_debug("SMBasic: Setting cookies as anonymous ", "SM_DEBUG");
-            $this->clearCookies();
-            $cookie_name_anon = $config['smbasic_cookie_prefix'] . "anonymous";
-            setcookie($cookie_name_anon, 1, 0, '/');
-        }
-    }
-
-    function unsetAnonSession() {
+    private function unsetAnonSession() {
         global $config;
 
         if ($config['smbasic_default_session']) {
@@ -262,46 +302,6 @@ class SessionManager {
             unset($_COOKIE[$cookie_name_anon]);
             setcookie($cookie_name_anon, 0, time() - 3600, '/');
         }
-    }
-
-    function getAllUsersArray($order_field = "regdate", $order = "ASC", $limit = 20) {
-        global $db;
-
-        $extra = "ORDER BY " . $order_field . " " . $order . " LIMIT " . $limit;
-        $query = $db->select_all("users", null, $extra);
-        while ($user_row = $db->fetch($query)) {
-            $users_ary[] = $user_row;
-        }
-
-        return $users_ary;
-    }
-
-    function searchUser($string, $email = false, $glob = false) {
-        global $db;
-        $where_ary = [];
-
-        if (!empty($email)) {
-            if (empty($glob)) {
-                $where_ary = array("email" => array("value" => "'" . $string . "'", "operator" => "LIKE"));
-            } else {
-                $where_ary = array("email" => array("value" => "'%" . $string . "%'", "operator" => "LIKE"));
-            }
-        } else {
-            if (empty($glob)) {
-                $where_ary = array("username" => array("value" => "'" . $string . "'", "operator" => "LIKE"));
-            } else {
-                $where_ary = array("username" => array("value" => "'%" . $string . "%'", "operator" => "LIKE"));
-            }
-        }
-        $query = $db->select_all("users", $where_ary);
-        if ($db->num_rows($query) > 0) {
-            while ($user_row = $db->fetch($query)) {
-                $users_ary[] = $user_row;
-            }
-            return $users_ary;
-        }
-
-        return false;
     }
 
     private function check_phpbuildin_session() {
