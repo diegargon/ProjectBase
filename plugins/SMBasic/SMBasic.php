@@ -16,7 +16,7 @@ function SMBasic_Init() {
 
     !isset($sm) ? $sm = new SessionManager : false;
     $config['smbasic_default_session'] || $config['smbasic_session_start'] ? $sm->start() : false;
-
+        
     if (action_isset("encrypt_password") == false) {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");
     }

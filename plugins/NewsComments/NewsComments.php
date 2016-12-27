@@ -44,13 +44,18 @@ function News_Comments($news) {
 }
 
 function News_Comment_Details(& $comment) {
-    global $sm, $config;
+    global $sm, $config, $LANGDATA;
 
     $author_data = $sm->getUserByID($comment['author_id']);
+    if(!$author_data) {
+        $author_data['uid'] = 0;
+        $author_data['username'] = $LANGDATA['L_SM_DELETED']; 
+        $author_data['avatar'] = $config['SMB_IMG_DFLT_AVATAR'];
+    } 
     if ($config['FRIENDLY_URL']) {
-        $comment['p_url'] = "/{$config['WEB_LANG']}/profile&viewprofile={$author_data['uid']}";
+            $comment['p_url'] = "/{$config['WEB_LANG']}/profile&viewprofile={$author_data['uid']}";
     } else {
-        $comment['p_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=profile&viewprofile={$author_data['uid']}&lang={$config['WEB_LANG']}";
+            $comment['p_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=profile&viewprofile={$author_data['uid']}&lang={$config['WEB_LANG']}";
     }
     $comment = array_merge($comment, $author_data);
 }
