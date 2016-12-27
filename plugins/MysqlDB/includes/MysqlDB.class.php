@@ -9,6 +9,9 @@ class Database {
 
     private $dblink;
     private $query_stats;
+    private $db_prefix;
+    private $charset;
+    private $search_min_char;
 
     function __construct() {
         $this->query_stats = 0;
@@ -18,7 +21,11 @@ class Database {
         $this->close();
     }
 
-    function connect() {
+    function connect($config) {
+        $this->db_prefix = $config['DB_PREFIX'];
+        $this->charset = $config['CHARSET'];
+        $this->search_min_char = $config['L_SEARCH_MIN_CHAR'];
+
         $this->dblink = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB);
         if ($this->dblink->connect_errno) {
             printf("Failed to connect to database: %s\n ", $this->dblink->connect_error);
@@ -44,8 +51,7 @@ class Database {
     }
 
     function escape_strip($var) {
-        $var = strip_tags($var);
-        return $this->dblink->real_escape_string($var);
+        return $this->dblink->real_escape_string(strip_tags($var));
     }
 
     function num_rows($query) {
@@ -59,7 +65,7 @@ class Database {
 
     private function dbdie($query) {
         printf("\n<b>Error: Unable to retrieve information.</b>");
-        printf("\n<br>%s" , $query);
+        printf("\n<br>%s", $query);
         printf("\n<br>reported: %s", $this->dblink->error);
         $this->close();
         exit;
@@ -80,12 +86,11 @@ class Database {
     }
 
     function get_next_num($table, $field) {
-        global $config;
 
         if (empty($table) || empty($field)) {
             return false;
         }
-        $table = $config['DB_PREFIX'] . $table;
+        $table = $this->db_prefix . $table;
         $q = "SELECT MAX( $field ) AS max FROM `$table`;";
         $query = $this->query($q);
         $row = $this->fetch($query);
@@ -93,18 +98,19 @@ class Database {
         return ++$row['max'];
     }
 
-    /* $db->select_all("users", array('uid' => 1, 'username' => "myname"), "LIMIT 1"); */
-    /* Especify operator default '=';
-      /* $query = $db->select_all("news", array ("frontpage" => array("value"=> 1, "operator" => "="), "moderation" => 0, "disabled" => 0));
-      /* extra not array */
+    /*
+     * $db->select_all("users", array('uid' => 1, 'username' => "myname"), "LIMIT 1"); 
+     * Especify operator default '=';
+     * $query = $db->select_all("news", array ("frontpage" => array("value"=> 1, "operator" => "="), "moderation" => 0, "disabled" => 0));
+     * extra not array 
+     */
 
     function select_all($table, $where = null, $extra = null, $logic = "AND") {
-        global $config;
 
         if (empty($table)) {
             return false;
         }
-        $q = "SELECT * FROM {$config['DB_PREFIX']}$table";
+        $q = "SELECT * FROM " . $this->db_prefix . $table;
 
         if (!empty($where)) {
             $q .= " WHERE ";
@@ -118,14 +124,13 @@ class Database {
     /* */
 
     function search($table, $s_fields, $searchText, $where = null, $extra = null) {
-        global $config;
 
         $s_words_ary = explode(" ", $searchText);
         $fields_ary = explode(" ", $s_fields);
 
         $where_s_fields = "";
         $where_s_tmp = "";
-        $q = "SELECT * FROM {$config['DB_PREFIX']}$table WHERE ";
+        $q = "SELECT * FROM " . $this->db_prefix . $table . " WHERE ";
 
         if (!empty($where)) {
             $q .= $this->where_process($where, $logic = "AND");
@@ -136,7 +141,7 @@ class Database {
             !empty($where_s_fields) ? $where_s_fields .= " OR " : false;
 
             foreach ($s_words_ary as $s_word) {
-                if (mb_strlen($s_word, $config['CHARSET']) > $config['L_SEARCH_MIN_CHAR']) {
+                if (mb_strlen($s_word, $this->charset) > $this->search_min_char) {
                     !empty($where_s_tmp) ? $where_s_tmp .= " AND " : false;
                     $where_s_tmp .= " $field LIKE '%$s_word%' ";
                 }
@@ -158,9 +163,8 @@ class Database {
     /*  */
 
     function update($table, $set, $where = null, $extra = null, $logic = "AND") {
-        global $config;
 
-        $q = "UPDATE {$config['DB_PREFIX']}$table SET ";
+        $q = "UPDATE " . $this->db_prefix . $table . " SET ";
 
         if (empty($set) || empty($table)) {
             return false;
@@ -178,24 +182,22 @@ class Database {
     /*  */
 
     function insert($table, $insert_data, $extra = null) {
-        global $config;
 
         if (empty($table) || empty($insert_data)) {
             return false;
         }
         $insert_ary = $this->insert_process($insert_data);
-        $q = "INSERT INTO {$config['DB_PREFIX']}$table ( {$insert_ary['fields']} ) VALUES ( {$insert_ary['values']} ) $extra";
+        $q = "INSERT INTO " . $this->db_prefix . $table . " ( {$insert_ary['fields']} ) VALUES ( {$insert_ary['values']} ) $extra";
 
         return $this->query($q);
     }
 
     function delete($table, $where, $extra = null, $logic = 'AND') {
-        global $config;
 
         if (empty($table) || empty($where)) {
             return false;
         }
-        $q = "DELETE FROM {$config['DB_PREFIX']}$table WHERE ";
+        $q = "DELETE FROM " . $this->db_prefix . $table . " WHERE ";
         $q .= $this->where_process($where, $logic);
         !empty($extra) ? $q .= " $extra" : false;
 
