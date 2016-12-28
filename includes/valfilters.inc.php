@@ -356,25 +356,6 @@ function S_VAR_CHAR_AZ_NUM ($var, $max_size = null, $min_size = null) {
     return $var;
 }
 
-//SESSION
-function S_SESSION_INT($var, $max_size = null, $min_size = null) {
-    if (!isset($_SESSION[$var]) || !is_numeric($_SESSION[$var])) { 
-        return false;
-    }
-    return S_VAR_INTEGER($_SESSION[$var], $max_size, $min_size);
-}
-function S_SESSION_CHAR_AZ($var, $max_size = null, $min_size = null) {
-    if (empty($_SESSION[$var])) { 
-        return false;
-    }    
-    return S_VAR_CHAR_AZ($_SESSION[$var], $max_size, $min_size);
-}
-function S_SESSION_CHAR_AZNUM($var, $max_size = null, $min_size = null) {
-    if (empty($_SESSION[$var])) { 
-        return false;
-    }    
-    return S_VAR_CHAR_AZ_NUM ($_SESSION[$var], $max_size, $min_size);
-}
 //COOKIE
 function S_COOKIE_INT($var, $max_size = null, $min_size = null) {
     
