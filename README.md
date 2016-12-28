@@ -49,14 +49,19 @@ Lastest add/canges? first latest
 * Support oauth (facebook only throught FB api)
 * ReCaptcha plugin
     Recaptcha
+* Microdata and Data structure support (only can view robots)
+* Webinfo, plugin for add footer menus and others features in the future
 * NewsMediaUpload
     Allow upload pictures for news
 * NewsComments
     Add support for news comments using SimpleComents plugin
 * SimpleComments 
     Comments base
+* tplbasic: Support for switch load CSS inline files or build and cache in unique file.
 * Google Analytcs
     Add news analytcs code 
+* Imblib
+    class for modify images
 * NewsVote
     Support Vote news
 * NewsUserExtra
