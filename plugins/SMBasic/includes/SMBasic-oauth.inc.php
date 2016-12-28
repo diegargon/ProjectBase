@@ -14,6 +14,8 @@ function SMB_oauth_DoLogin() {
 }
 
 function SMB_oauth_DoLoginFB() {
+    global $sm;
+
     $fb = SMB_oauth_getFB_Handle();
 
     if (!($token = SMB_getFB_Token($fb) )) {
@@ -25,14 +27,20 @@ function SMB_oauth_DoLoginFB() {
     }
 
     if (($response = SMB_oauth_checkif_register($fb, $oauth_data['id'])) != false) {
-        $_SESSION['oauth_token'] = $token;
-        $_SESSION['uid'] = $response;
+        $sm->setData("oauth_token", $token);
+        $sm->setData("uid", $response);
+        $sm->setData("session_ip", S_SERVER_REMOTE_ADDR());
+        $sm->setData("session_user_agent", S_SERVER_USER_AGENT());
+
         header('Location: /');
         exit();
     } else {
         if (($reg_resp = SMB_oauth_FB_register($fb, $oauth_data))) {
-            $_SESSION['oauth_token'] = $token;
-            $_SESSION['uid'] = $reg_resp;
+            $sm->setData("oauth_token", $token);
+            $sm->setData("uid", $reg_resp);
+            $sm->setData("session_ip", S_SERVER_REMOTE_ADDR());
+            $sm->setData("session_user_agent", S_SERVER_USER_AGENT());
+
             $msg['title'] = 'L_REGISTER_OKMSG';
             $msg['MSG'] = 'L_REGISTER_OKMSG';
             $msg['backlink'] = '/';

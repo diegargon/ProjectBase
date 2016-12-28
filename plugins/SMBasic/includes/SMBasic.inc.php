@@ -9,7 +9,7 @@ function SMBasic_encrypt_password($password) {
     global $config;
 
     if ($config['smbasic_use_salt']) {
-        return hash('sha512', md5($password . $config['smbasic_salt']));
+        return hash('sha512', md5($password . $config['smbasic_pw_salt']));
     } else {
         return hash('sha512', $password);
     }
@@ -18,26 +18,20 @@ function SMBasic_encrypt_password($password) {
 function SMBasic_sessionDebugDetails() {
     global $db, $sm;
 
-    $user = $sm->getSessionUser();
-
-    if (!$user) {
+    if (!($user = $sm->getSessionUser())) {
         return false;
     }
     print_debug("<hr><br/><h2>Session Details</h2>", "SM_DEBUG");
     print_debug("Time Now: " . format_date(time(), true) . "", "SM_DEBUG");
     if (isset($_SESSION)) {
-        if(!empty($_SESSION['uid'])) {
-            print_debug("Session VAR ID: {$_SESSION['uid']}", "SM_DEBUG");
-        }
-        if(!empty($_SESSION['sid'])) {
-            print_debug("Session VAR SID:  {$_SESSION['sid']}", "SM_DEBUG");
+        if (!empty($sm->getData("uid"))) {
+            print_debug("Session VAR ID:" . $sm->getData("uid"), "SM_DEBUG");
         }
     } else {
         print_debug("Session ins't set", "SM_DEBUG");
     }
-    $s_sid = $sm->getSessionSID();
 
-    $query = $db->select_all("sessions", array("session_uid" => "{$user['uid']}", "session_id" => "$s_sid"), "LIMIT 1");
+    $query = $db->select_all("sessions", array("session_uid" => "{$user['uid']}"), "LIMIT 1");
     $session = $db->fetch($query);
     if ($session) {
         print_debug("Session DB IP: {$session['session_ip']}", "SM_DEBUG");

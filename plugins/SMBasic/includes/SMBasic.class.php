@@ -7,44 +7,67 @@
 
 class SessionManager {
 
+    private $db = null;
     private $user;
     private $users_cache_db = [];
 
-    function __construct() {}
-    
-    function start() {
-        session_start();
+    /*
+     * 1 php default php 2 custom 
+     */
+    private $session_type;
+    private $session_start;
+    private $session_expire = 86400;
+    private $cookie_prefix;
+    private $cookie_expire = 86400;
+    private $persistence = 0;
+    private $salt;
+
+    /*
+     * Custom session data array
+     */
+    private $s_data = [];
+
+    /* */
+
+    private $check_ip;
+    private $check_user_agent;
+            
+    function __construct() {
+        
     }
+
+    function start($config, $db) {
+        $this->setConfig($config, $db);
+        $this->session_start ? session_start() : false;
+    }
+
     function getUserbyID($uid) {
-        global $db;
 
         if (isset($this->users_cache_db[$uid])) {
             return $this->users_cache_db[$uid];
         }
 
-        $query = $db->select_all("users", array("uid" => "$uid"), "LIMIT 1");
-        if ($db->num_rows($query) <= 0) {
+        $query = $this->db->select_all("users", array("uid" => $uid), "LIMIT 1");
+        if ($this->db->num_rows($query) <= 0) {
             return false;
         }
-        $user = $db->fetch($query);
+        $user = $this->db->fetch($query);
         $this->users_cache_db[$user['uid']] = $user;
 
         return $user;
     }
 
     function getUserByUsername($username) {
-        global $db;
 
         if (($uid = array_search($username, array_column($this->users_cache_db, 'username')))) {
             return $this->users_cache_db[$uid];
         }
+        $query = $this->db->select_all("users", array("username" => $username), "LIMIT 1");
 
-        $query = $db->select_all("users", array("username" => $username), "LIMIT 1");
-
-        if ($db->num_rows($query) <= 0) {
+        if ($this->db->num_rows($query) <= 0) {
             return false;
         }
-        $user = $db->fetch($query);
+        $user = $this->db->fetch($query);
         $this->users_cache_db[$user['uid']] = $user;
 
         return $user;
@@ -54,45 +77,28 @@ class SessionManager {
         return $this->user;
     }
 
-    function getSessionSID() {
-        global $config;
-
-        if ($config['smbasic_default_session']) {
-            $sid = S_SESSION_CHAR_AZNUM("sid");
-        } else {
-            $cookies = $this->getCookies();
-            $sid = $cookies['sid'];
-        }
-
-        return $sid;
-    }
-
     function checkSession() {
-        global $config;
 
         print_debug("CheckSession called", "SM_DEBUG");
 
-        if ($this->checkAnonSession() && empty($_SESSION['oauth_token'])) {
-            print_debug("SMBasiUser: checkSession its setting to anonymous, stopping more checks", "SM_DEBUG");
+        if ($this->checkAnonSession() && empty($this->getData("oauth_token"))) {
+            print_debug("SMBasic User: checkSession its setting to anonymous, stopping more checks", "SM_DEBUG");
             return true;
         }
 
-        if ($config['smbasic_oauth'] && !empty($_SESSION['oauth_token'])) {
-            return $this->check_oauth_session();
-        }
-        if ($config['smbasic_default_session']) {
+        if ($this->session_type == 1) {
             return $this->check_phpbuildin_session();
         } else {
+            die("Custom session Not work yet");
             return $this->check_custom_session();
         }
     }
 
     function getAllUsersArray($order_field = "regdate", $order = "ASC", $limit = 20) {
-        global $db;
 
         $extra = "ORDER BY " . $order_field . " " . $order . " LIMIT " . $limit;
-        $query = $db->select_all("users", null, $extra);
-        while ($user_row = $db->fetch($query)) {
+        $query = $this->db->select_all("users", null, $extra);
+        while ($user_row = $this->db->fetch($query)) {
             $users_ary[] = $user_row;
         }
 
@@ -100,7 +106,7 @@ class SessionManager {
     }
 
     function searchUser($string, $email = false, $glob = false) {
-        global $db;
+
         $where_ary = [];
 
         if (!empty($email)) {
@@ -116,9 +122,9 @@ class SessionManager {
                 $where_ary = array("username" => array("value" => "'%" . $string . "%'", "operator" => "LIKE"));
             }
         }
-        $query = $db->select_all("users", $where_ary);
-        if ($db->num_rows($query) > 0) {
-            while ($user_row = $db->fetch($query)) {
+        $query = $this->db->select_all("users", $where_ary);
+        if ($this->db->num_rows($query) > 0) {
+            while ($user_row = $this->db->fetch($query)) {
                 $users_ary[] = $user_row;
             }
             return $users_ary;
@@ -127,117 +133,202 @@ class SessionManager {
         return false;
     }
 
-    private function createSID() {
-        return md5(uniqid(rand(), true));
-    }
+    function setData($key, $value) {
 
-    private function check_oauth_session() {
+        $this->session_type == 1 ? $_SESSION[$key] = $value : false;
 
-        if (empty($this->user)) {
-            if (!S_SESSION_INT("uid")) {
-                return false;
-            } else {
-                $this->user = $this->getUserbyID(S_SESSION_INT("uid"));
-            }
+        if ($this->session_type == 2) {
+            $this->s_data[$key] = $value;
+            //TODO update session data field
         }
-        return true;
     }
 
+    function getData($key) {
+        if ($this->session_type == 1 && isset($_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+        if ($this->session_type == 2 && isset($this->s_data[$key])) {
+            return $this->s_data[$key];
+        }
+    }
+
+    function unsetData($key) {
+        if ($this->session_type == 1 && isset($_SESSION[$key])) {
+            unset($_SESSION[$key]);
+        }
+        if ($this->session_type == 2 && isset($this->s_data[$key])) {
+            unset($this->s_data[$key]);
+            //TODO update session data table field
+        }
+    }
+
+    function destroyData() {
+        $this->session_type == 1 ? $_SESSION = [] : false;
+
+        if ($this->session_type == 2) {
+            $this->s_data = [];
+            //TODO clear session table data field
+        }
+    }
+
+    private function saveData() {
+        //TODO: Save data to session table->data (serialize) only custom
+        //$custom_data = serialize($this->s_data);
+    }
+    private function loadData() {
+         //
+        //TODO: Save data to session table->data (serialize) only custom
+        //$this->s_data = unserialize($result['data']);
+    }
     function setUserSession($user, $remember = 0) {
-        global $config, $db;
 
         print_debug("SMBasic: setUserSession called ", "SM_DEBUG");
         $this->unsetAnonSession();
-        $sid = $this->createSID();
 
         //TODO PHP7 supports change session expire DOIT, <7 will destroy and use default 20m
-        $session_expire = time() + $config['smbasic_session_expire'];
+        $session_expire = time() + $this->session_expire;
 
-        if ($config['smbasic_default_session']) {
-            $_SESSION['uid'] = $user['uid'];
-            $_SESSION['sid'] = $sid;
+        if ($this->session_type == 1) {
+            $this->setData("uid", $user['uid']);
+            session_regenerate_id(true);
+            $sid = session_id();
+        } else { //Custom
+            $sid = $this->createSID();
         }
 
-        if (!$config['smbasic_default_session'] || ($config['smbasic_persistence'] && $remember)) {
-            $ip = $db->escape_strip(S_SERVER_REMOTE_ADDR());
-            $user_agent = $db->escape_strip(S_SERVER_USER_AGENT());
+        if($this->check_ip) {
+            $this->setData("session_ip", S_SERVER_REMOTE_ADDR());
+        }
 
-            $db->delete("sessions", array("session_uid" => "{$user['uid']}"), "LIMIT 1");
+        if($this->check_user_agent) {
+            $this->setData("session_user_agent", S_SERVER_USER_AGENT());
+        }
+        
+        if (!($this->session_type == 1) || ($this->persistence && $remember)) {
+            $ip = $this->db->escape_strip(S_SERVER_REMOTE_ADDR());
+            $user_agent = $this->db->escape_strip(S_SERVER_USER_AGENT());
 
-            $q_ary = array(
-                "session_id" => "$sid",
-                "session_uid" => "{$user['uid']}",
+            $this->db->delete("sessions", array("session_uid" => "{$user['uid']}"), "LIMIT 1");
+
+            $q_ary = [
+                "session_id" => $sid,
+                "session_uid" => $user['uid'],
                 "session_ip" => "$ip",
                 "session_browser" => "$user_agent",
-                "session_expire" => "$session_expire"
-            );
+                "session_expire" => $session_expire
+            ];
 
-            $db->insert("sessions", $q_ary);
+            $this->db->insert("sessions", $q_ary);
             $this->setCookies($sid, $user['uid'], $remember);
-            $db->update("users", array("last_login" => date("Y-m-d H:i:s", time())), array("uid" => $user['uid']));
+            $this->db->update("users", array("last_login" => date("Y-m-d H:i:s", time())), array("uid" => $user['uid']));
         }
-
+        
+        
         return $sid;
     }
-    
-    function destroy() {
-        global $db;
 
+    function destroy() {
         print_debug("SMBasic: Session destroy called ", "SM_DEBUG");
         $this->user = false;
-        $db->delete("sessions", array("session_uid" => $this->user['uid']));
+        $this->db->delete("sessions", array("session_uid" => $this->user['uid']));
         $this->clearCookies();
         isset($_SESSION) ? session_destroy() : false;
-        $_SESSION = [];
+        $this->destroyData();
     }
 
     function setAnonSession() {
-        global $config;
 
-        if ($config['smbasic_default_session']) {
+        if ($this->session_type == 1) {
             print_debug("SMBasic: Setting session as anonymous ", "SM_DEBUG");
             $this->clearCookies();
-            $_SESSION = [];
-            $_SESSION['anonymous'] = 1;
+            $this->destroyData();
+            $this->setData("anonymous", 1);
         } else {
             print_debug("SMBasic: Setting cookies as anonymous ", "SM_DEBUG");
             $this->clearCookies();
-            $cookie_name_anon = $config['smbasic_cookie_prefix'] . "anonymous";
+            $cookie_name_anon = $this->cookie_prefix . "anonymous";
             setcookie($cookie_name_anon, 1, 0, '/');
         }
     }
 
+    function regenerate_sid($remember) {
+
+        if ($this->session_type == 1) {
+            session_regenerate_id(true);
+            $sid = session_id();
+        } else {
+            $sid = $this->createSID();
+        }
+
+        if (!($user = $this->getSessionUser())) {
+            return false;
+        }
+        print_debug("Renereate SID ($this->session_type) and Update session expire on user {$user['username']}", "SM_DEBUG");
+
+        $expire = time() + $this->session_expire;
+
+
+        if ($this->session_type == 2 || ( $this->persistence && $remember)) {
+            $this->setCookies($sid, $user['uid'], $remember);
+            $this->db->update("sessions", array("session_expire" => $expire, "session_id" => "$sid"), array("session_uid" => $user['uid']), "LIMIT 1");
+        }
+    }
+
+    private function setConfig($config, $db) {
+        
+        $this->db = $db;
+        if ($config['smbasic_default_session']) {
+            $this->session_type = 1;
+        } else { //Custom
+            $this->session_type = 2;
+        }
+        if ($config['smbasic_session_start'] || $config['smbasic_default_session']) {
+            $this->session_start = 1;
+        }
+        $this->salt = $config['smbasic_session_salt'];
+        $this->check_ip = $config['smbasic_check_ip'];
+        $this->check_user_agent = $config['smbasic_check_user_agent'];
+        !empty($config['smbasic_session_expire']) ? $this->session_expire = $config['smbasic_session_expire'] : false;
+        !empty($config['smbasic_persistence']) ? $this->persistence = $config['smbasic_persistence'] : false;
+        !empty($config['smbasic_cookie_prefix']) ? $this->cookie_prefix = $config['smbasic_cookie_prefix'] : false;
+    }
+
+    private function createSID() {
+        $hash_string = mt_rand(0, mt_getrandmax()) .
+                md5(substr(S_SERVER_REMOTE_ADDR(), 0, 5)) .
+                $this->salt .
+                md5(microtime(true) . time());
+
+        return hash('sha256', $hash_string);
+    }
+
     private function getCookies() {
-        global $config;
+        $c['uid'] = S_COOKIE_INT($this->cookie_prefix . "uid", 11);
+        $c['sid'] = S_COOKIE_CHAR_AZNUM($this->cookie_prefix . "sid", 64);
 
-        $cookies['uid'] = S_COOKIE_INT("{$config['smbasic_cookie_prefix']}uid", 11);
-        $cookies['sid'] = S_COOKIE_CHAR_AZNUM("{$config['smbasic_cookie_prefix']}sid", 32);
-
-        return $cookies;
+        return $c;
     }
 
     private function clearCookies() {
-        global $config;
 
-        $cookie_name_anon = $config['smbasic_cookie_prefix'] . "anonymous";
-        $cookie_name_sid = $config['smbasic_cookie_prefix'] . "sid";
-        $cookie_name_uid = $config['smbasic_cookie_prefix'] . "uid";
+        $cookie_name_anon = $this->cookie_prefix . "anonymous";
+        $cookie_name_sid = $this->cookie_prefix . "sid";
+        $cookie_name_uid = $this->cookie_prefix . "uid";
         unset($_COOKIE[$cookie_name_sid]);
         unset($_COOKIE[$cookie_name_uid]);
         unset($_COOKIE[$cookie_name_anon]);
         setcookie($cookie_name_sid, 0, time() - 3600, '/');
         setcookie($cookie_name_uid, 0, time() - 3600, '/');
         setcookie($cookie_name_anon, 0, time() - 3600, '/');
-        $config['smbasic_default_session'] || $config['smbasic_session_start'] ? setcookie('phpsessid', 0, time() - 3600) : false;
+        $this->session_type == 1 ? setcookie('phpsessid', 0, time() - 3600) : false;
     }
 
     private function setCookies($sid, $uid, $remember) {
-        global $config;
 
-        $cookie_name_sid = $config['smbasic_cookie_prefix'] . "sid";
-        $cookie_name_uid = $config['smbasic_cookie_prefix'] . "uid";
+        $cookie_name_sid = $this->cookie_prefix . "sid";
+        $cookie_name_uid = $this->cookie_prefix . "uid";
         if ($remember) {
-            $cookie_expire = time() + $config['smbasic_cookie_expire'];
+            $cookie_expire = time() + $this->cookie_expire;
         } else {
             $cookie_expire = 0; //this session only
         }
@@ -245,70 +336,58 @@ class SessionManager {
         setcookie($cookie_name_uid, $uid, $cookie_expire, '/');
     }
 
-    private function checkCookies() {
-        global $db;
-
-        $cookies = $this->getCookies();
-        if (!$cookies['uid'] || !$cookies['sid']) {
-            return false;
-        }
-
-        $query = $db->select_all("sessions", array("session_id" => "{$cookies['sid']}", "session_uid" => "{$cookies['uid']}"), "LIMIT 1");
-        if ($db->num_rows($query) <= 0) {
-            $this->destroy();
-            return false;
-        }
-
-        if (($user = $this->getUserbyID($cookies['uid'])) != false) {
-            $this->setUserSession($user);
-            $this->setCookies(S_SESSION_CHAR_AZNUM("sid", 32), S_SESSION_INT("uid", 11)); //New sid by setSession -> new cookies
-            return true;
-        }
-    }
-
-    private function check_IP($db_session_ip) {
+    private function check_IP() {
+        $session_ip = $this->getData("session_ip");
         $ip = S_SERVER_REMOTE_ADDR();
-        return ($ip == $db_session_ip) ? true : false;
+        return ($ip == $session_ip) ? true : false;
     }
 
-    private function check_user_agent($db_user_agent) {
+    private function check_user_agent() {
+        $session_user_agent = $this->getData("session_user_agent");
         $user_agent = S_SERVER_USER_AGENT();
-        return ($user_agent == $db_user_agent) ? true : false;
+        return ($user_agent == $session_user_agent) ? true : false;
     }
 
     //TODO... do better later 
     private function checkAnonSession() {
-        global $config;
-
-        if ($config['smbasic_default_session']) {
+        if ($this->session_type == 1) {
             print_debug("SMBasic: Checking if anon (buildin)", "SM_DEBUG");
             return isset($_SESSION['anonymous']) ? true : false;
         } else {
             print_debug("SMBasic: Checking anon (custom/cookies) ", "SM_DEBUG");
-            $cookie_name_anon = $config['smbasic_cookie_prefix'] . "anonymous";
+            $cookie_name_anon = $this->cookie_prefix . "anonymous";
             return isset($_COOKIE[$cookie_name_anon]) ? true : false;
         }
     }
 
     private function unsetAnonSession() {
-        global $config;
 
-        if ($config['smbasic_default_session']) {
+        if ($this->session_type == 1) {
             print_debug("SMBasic: Unsetting anonymous session ", "SM_DEBUG");
-            unset($_SESSION['anonymous']);
+            $this->unsetData("anonymous");
         } else {
             print_debug("SMBasic: Unsetting anonymous cookie ", "SM_DEBUG");
-            $cookie_name_anon = $config['smbasic_cookie_prefix'] . "anonymous";
+            $cookie_name_anon = $this->cookie_prefix . "anonymous";
             unset($_COOKIE[$cookie_name_anon]);
             setcookie($cookie_name_anon, 0, time() - 3600, '/');
         }
     }
 
     private function check_phpbuildin_session() {
-        global $config;
-        $uid = S_SESSION_INT("uid");
 
-        if (empty($uid) && $config['smbasic_persistence']) {
+        $uid = $this->getData("uid");
+
+        if( $this->check_ip && ($this->check_IP() == false) ) {
+            print_debug("SMBasic:IP validated FALSE", "SM_DEBUG");
+            return false;
+        }
+  
+        if( $this->check_user_agent && ($this->check_user_agent() == false) ) {
+            print_debug("SMBasic:User agent validated FALSE", "SM_DEBUG");
+            return false;
+        }
+  
+        if (empty($uid) && $this->persistence) {
             $cookies = $this->getCookies();
             if (empty($cookies['uid']) || empty($cookies['sid'])) {
                 return false;
@@ -317,8 +396,12 @@ class SessionManager {
                 $session = $this->check_persistence($cookies);
                 if ($session) {
                     $this->user = $this->getUserbyID($session['session_uid']);
+                    $this->setData("uid", $this->user['uid']);
+                    $this->regenerate_sid(1);
                     return true;
                 } else {
+                    print_debug("SMBasic: Cookies invalidad detectadas", "SM_DEBUG");
+                    $this->clearCookies();
                     return false;
                 }
             }
@@ -329,6 +412,8 @@ class SessionManager {
     }
 
     private function check_custom_session() {
+
+        die("no implement");
 
         $cookies = $this->getCookies();
         if (empty($cookies['uid']) || empty($cookies['sid'])) {
@@ -346,67 +431,36 @@ class SessionManager {
     }
 
     private function check_persistence($cookies) {
-        global $config, $db;
         $sid = $cookies['sid'];
         $uid = $cookies['uid'];
 
-        $query = $db->select_all("sessions", array("session_id" => "$sid", "session_uid" => "$uid"), "LIMIT 1");
+        $query = $this->db->select_all("sessions", array("session_id" => "$sid", "session_uid" => "$uid"), "LIMIT 1");
 
-        if ($db->num_rows($query) <= 0) {
+        if ($this->db->num_rows($query) <= 0) {
             return false;
         }
+        $session = $this->db->fetch($query);
+        $this->db->free($query);
 
-        $session = $db->fetch($query);
-        $db->free($query);
-
-        if (!$this->check_extra($session)) {
-            return false;
-        }
-
-        $now = time();
-        $next_expire = time() + $config['smbasic_session_expire'];
-        if ($session['session_expire'] < $now) {
-            print_debug("SMBasic: db session expired at $now", "SM_DEBUG");
-            $db->delete("sessions", array("session_id" => $session['session_id']), "LIMIT 1");
-            return false;
-        }
-        print_debug("Update session expire at user {$session['session_uid']}", "SM_DEBUG");
-        $db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
-
-        return $session;
-    }
-
-    /* regerate must change sid,  on session table and SESSION
-      private function regenerate_sid() {
-      global $config, $db, $sm;
-      if ($config['smbasic_default_session'] || $config['smbasic_session_start']) {
-      session_regenerate_id(true);
-      }
-      if (!$config['smbasic_default_session'] || $config['smbasic_persistence']) {
-      if ((!$user = $sm->getSessionUser())) {
-      return false;
-      }
-      $new_sid = $this->createSID();
-      $next_expire = time() + $config['smbasic_session_expire'];
-      print_debug("Renereate SID and Update session expire on user {$user['username']}", "SM_DEBUG");
-      $db->update("sessions", array("session_expire" => "$next_expire", "session_id" => "$new_sid"), array("session_uid" => "{$user['uid']}"), "LIMIT 1");
-      }
-      }
-     */
-
-    private function check_extra($check) {
-        global $config;
-
-        if ($config['smbasic_check_ip'] == 1 && (!$this->check_IP($check['session_ip']))) {
+        if ($this->check_ip == 1 && (!$this->check_IP($session['session_ip']))) {
             print_debug("SMBasic:IP validated FALSE", "SM_DEBUG");
             return false;
         }
-        if ($config['smbasic_check_user_agent'] == 1 && (!$this->check_user_agent($check['session_browser']))) {
+        if ($this->check_user_agent == 1 && (!$this->check_user_agent())) {
             print_debug("SMBasic:UserAgent validated FALSE", "SM_DEBUG");
             return false;
         }
 
-        return true;
+        $now = time();
+        $next_expire = time() + $this->session_expire;
+        if ($session['session_expire'] < $now) {
+            print_debug("SMBasic: db session expired", "SM_DEBUG");
+            $this->db->delete("sessions", array("session_id" => $session['session_id']), "LIMIT 1");
+            return false;
+        }
+        print_debug("Update session expire at user {$session['session_uid']}", "SM_DEBUG");
+        $this->db->update("sessions", array("session_expire" => "$next_expire"), array("session_uid" => "{$session['session_uid']}"));
+        //TODO REGENERATE ID
+        return $session;
     }
-
 }

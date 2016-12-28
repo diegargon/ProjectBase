@@ -101,3 +101,4 @@ $LANGDATA['L_SM_TITLE_OK'] = "Done!";
 $LANGDATA['L_SM_E_HTTPS'] = "Sorry, we only accept remote avatars if they are in a secure server (https)";
 $LANGDATA['L_SM_LOG_FB'] = "Log in with Facebook!";
 $LANGDATA['L_SM_REG_FB'] = "Register with Facebook!";
+$LANGDATA['L_SM_DELETED'] = "Deleted";

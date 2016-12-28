@@ -111,3 +111,4 @@ $LANGDATA['L_SM_OAUTH_E_ID'] = "OAuth ID desconocido, imposible continuar";
 $LANGDATA['L_SM_OAUTH_E_EMAIL'] = "Su cuenta no dispone de email, imposible continuar";
 $LANGDATA['L_SM_OAUTH_LINKED'] = "Una cuenta con ese email ya existe, ambas quedaran enlazadas via oauth";
 $LANGDATA['L_SM_OAUTH_USERNAME'] = "Imposible crear una cuenta via oauth";
+$LANGDATA['L_SM_DELETED'] = "Eliminado";
