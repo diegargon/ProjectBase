@@ -89,7 +89,7 @@ class SessionManager {
         if ($this->session_type == 1) {
             return $this->check_phpbuildin_session();
         } else {
-            die("Custom session Not work yet");
+            die("Custom session Not work/tested yet");
             return $this->check_custom_session();
         }
     }
@@ -139,7 +139,7 @@ class SessionManager {
 
         if ($this->session_type == 2) {
             $this->s_data[$key] = $value;
-            //TODO update session data field
+            $this->saveData();
         }
     }
 
@@ -172,20 +172,26 @@ class SessionManager {
     }
 
     private function saveData() {
-        //TODO: Save data to session table->data (serialize) only custom
-        //$custom_data = serialize($this->s_data);
+        $data = serialize($this->s_data);
+        $next_expire = time() + $this->session_expire;
+        $this->db->update("sessions", array("session_data", "$data", "session_expire", $next_expire), array("uid", $this->user['uid']), "LIMIT 1");
     }
     private function loadData() {
-         //
-        //TODO: Save data to session table->data (serialize) only custom
-        //$this->s_data = unserialize($result['data']);
+        $query = $this->db->select_all("sessions", array("uid", $this->user['uid']), "LIMIT 1");
+        $session = $this->db->fetch($query);
+
+        if ($session['session_expire'] < time()) {
+            return false; //session expire
+        } else if ( !empty($session['session_data']) ){
+            $this->s_data = unserialize($session['session_data']);
+        }
     }
     function setUserSession($user, $remember = 0) {
 
         print_debug("SMBasic: setUserSession called ", "SM_DEBUG");
         $this->unsetAnonSession();
 
-        //TODO PHP7 supports change session expire DOIT, <7 will destroy and use default 20m
+        //TODO PHP7 supports change session expire? DOIT, <7 will destroy and use default 20m
         $session_expire = time() + $this->session_expire;
 
         if ($this->session_type == 1) {
@@ -253,6 +259,10 @@ class SessionManager {
 
     function regenerate_sid($remember) {
 
+        if (!($user = $this->getSessionUser())) {
+            return false;
+        }
+        
         if ($this->session_type == 1) {
             session_regenerate_id(true);
             $sid = session_id();
@@ -260,10 +270,7 @@ class SessionManager {
             $sid = $this->createSID();
         }
 
-        if (!($user = $this->getSessionUser())) {
-            return false;
-        }
-        print_debug("Renereate SID ($this->session_type) and Update session expire on user {$user['username']}", "SM_DEBUG");
+        print_debug("Regenerate SID ($this->session_type) and Update session expire on user {$user['username']}", "SM_DEBUG");
 
         $expire = time() + $this->session_expire;
 
@@ -281,6 +288,7 @@ class SessionManager {
             $this->session_type = 1;
         } else { //Custom
             $this->session_type = 2;
+            $this->loadData();
         }
         if ($config['smbasic_session_start'] || $config['smbasic_default_session']) {
             $this->session_start = 1;
@@ -413,16 +421,23 @@ class SessionManager {
 
     private function check_custom_session() {
 
-        die("no implement");
-
+        $uid = $this->getData("uid");
+        
         $cookies = $this->getCookies();
         if (empty($cookies['uid']) || empty($cookies['sid'])) {
             return false;
-        } else {
+        } 
+        
+        if($uid != $cookies['uid']) {
+            return false;
+        }
+        if($this->persitence) {
             print_debug("SMBasic: Check persistence(custom)", "SM_DEBUG");
             $session = $this->check_persistence($cookies);
             if ($session) {
                 $this->user = $this->getUserbyID($session['session_uid']);
+                $this->setData("uid", $this->user['uid']);
+                $this->regenerate_sid(1);                
                 return true;
             } else {
                 return false;
