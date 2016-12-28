@@ -16,10 +16,10 @@
                         <ul class="header-menu">
                             <li class="nav_right resp-icon"><a rel="nofollow" href="javascript:void(0);" onclick="toggleMenu()">&#9776;</a></li>
                             <?php if ($config['HEADER_MENU_HOME']) { ?>
-                                <li class='nav_left lihome'>
+                                <li class='nav_left lihome zero'>
                                     <a href='/<?php
                                     $config['FRIENDLY_URL'] ? print $config['WEB_LANG'] : print "?lang={$config['WEB_LANG']}";
-                                    ?>/'><img src='<?php print $config['IMG_HOME'] ?>' alt='<?php print $LANGDATA['L_HOME'] ?>' />
+                                    ?>/'><img width=20 height=20 src='<?php print $config['IMG_HOME'] ?>' alt='<?php print $LANGDATA['L_HOME'] ?>' />
                                     </a></li>
                             <?php } ?>
                             <?php isset($tpldata['HEADER_MENU_ELEMENT']) ? print $tpldata['HEADER_MENU_ELEMENT'] : false; ?>

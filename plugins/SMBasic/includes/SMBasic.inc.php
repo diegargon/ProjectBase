@@ -96,6 +96,7 @@ function SMBasic_navLogReg() {
     if ($user) {
         $elements .= "<li class='nav_right'><a href='$logout_url'>{$LANGDATA['L_LOGOUT']}</a></li>\n";
         $elements .= "<li class='nav_right'><a href='$profile_url'>" . $user['username'] . "</a></li>\n";
+        $elements .= "<li class='nav_right zero'><a href='$profile_url'><img src=" . $user['avatar'] . " /></a></li>";
     } else {
         $elements .= "<li class='nav_right'><a href='$login_url'>{$LANGDATA['L_LOGIN']}</a></li>\n";
         $elements .= "<li class='nav_right'><a href='$register_url'>{$LANGDATA['L_REGISTER']}</a></li>\n";
