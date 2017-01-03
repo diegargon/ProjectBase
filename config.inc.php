@@ -6,7 +6,7 @@
 
 global $config;
 $config = [];
-define("DEBUG", true);
+//define("DEBUG", true);
 //define("PLUGIN_LOAD", true);    
 
 $config['CORE_VERSION'] = "";

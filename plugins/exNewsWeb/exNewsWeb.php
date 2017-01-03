@@ -22,11 +22,12 @@ function exNewsWeb_init() {
 }
 
 function ex_common_web_structure() {
+    plugin_start("Newspage");
+    news_cat_menu();
     plugin_start("DebugWindow");
 }
 
 function ex_index_page() {
-    plugin_start("Newspage");
     its_server_stressed() ? null : plugin_start("NewsSearch");
     news_portal();
     //require_once("plugins/Newspage/portal.php");
@@ -48,7 +49,6 @@ function ex_Newspage_news() {
     its_server_stressed() ? null : plugin_start("NewsVote");
     its_server_stressed() ? null : plugin_start("NewsSearch");
     its_server_stressed() ? null : plugin_start("NewsComments");
-    plugin_start("Newspage");
 }
 
 function ex_preload_Profile() {

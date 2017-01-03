@@ -88,7 +88,6 @@ function news_show_page() {
 
     do_action("news_show_page", $news_data);
 
-    news_cat_menu();
     if ($config['ITS_BOT'] && $config['INCLUDE_MICRODATA']) {
         $news_data['ITEM_OL'] = "itemscope itemtype=\"http://schema.org/BreadcrumbList\"";
     } else {

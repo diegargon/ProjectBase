@@ -3,9 +3,6 @@
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
-plugin_start("Newspage");
-news_cat_menu();
-
 ?>
 <div class="page">
     <div class="terms-container">

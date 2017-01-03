@@ -6,7 +6,7 @@
     "function_install": "",
     "provided": "newsads1",
     "depends" : "news1 SQL1",
-    "autostart": 1,
+    "autostart": 0,
     "priority" : 4,
     "optional": "",
     "conflicts": ""

@@ -3,10 +3,7 @@
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
-plugin_start("Newspage");
-news_cat_menu();
 ?>
-
 <div class="page">
     <div class="aboutus-container">
         <h1><a class="nodecor" href="<?php print $config['WEB_URL'] ?>"><?php print $config['WEB_NAME'] ?></a></h1>

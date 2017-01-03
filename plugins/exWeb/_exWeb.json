@@ -1,0 +1,13 @@
+{
+    "plugin_name": "exWeb",
+    "enabled": 1,
+    "main_file" : "exWeb.php",
+    "function_init": "exWeb_init",
+    "function_install": "",
+    "provided": "mainweb",
+    "depends" : "SQL1 tplbasic1",
+    "autostart": 1,
+    "priority" : 5,
+    "optional": "",
+    "conflicts": "mainweb"
+}
