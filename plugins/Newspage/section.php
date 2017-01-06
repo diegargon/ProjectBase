@@ -21,6 +21,11 @@ if (defined('MULTILANG')) {
     $lang_id = $config['WEB_LANG_ID'];
 }
 
+//HEAD MOD
+$config['PAGE_TITLE'] = $config['WEB_NAME'] . ": " . $category_list;
+$config['PAGE_DESC'] = $config['WEB_NAME'] . ": " . $category_list;
+//END HEAD MOD
+
 $section_data['featured'] = get_news(array("category" => $category, "featured" => 1, "limit" => 1, "get_childs" => 1));
 $section_data['col1_articles'] = get_news(array("category" => $category, "frontpage" => 1, "limit" => 10, "excl_firstcat_featured" => 1, "get_childs" => 1));
 $section_data['col2_articles'] = get_news(array("category" => $category, "frontpage" => 0, "limit" => 10, "excl_firstcat_featured" => 1, "get_childs" => 1));

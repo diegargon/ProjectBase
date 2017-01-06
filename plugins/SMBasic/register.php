@@ -11,6 +11,11 @@ require_once("includes/SMBasic.register.php");
 
 $user = $sm->getSessionUser();
 
+//HEAD MOD
+$config['PAGE_TITLE'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_REGISTER'];
+$config['PAGE_DESC'] = $config['WEB_NAME'] . ": " .  $LANGDATA['L_REGISTER'];
+//END HEAD MOD
+
 if ($user && $user['uid'] != 0) {
     $msgbox['MSG'] = "L_E_ALREADY_LOGGED";
     do_action("message_page", $msgbox);

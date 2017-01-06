@@ -1,5 +1,6 @@
 <?php
-/* 
+
+/*
  *  Copyright @ 2016 Diego Garcia
  */
 !defined('IN_WEB') ? exit : true;
@@ -8,6 +9,11 @@ plugin_start("SMBasic");
 require_once("includes/SMBasic.profile.php");
 
 $user = $sm->getSessionUser();
+
+//HEAD MOD
+$config['PAGE_TITLE'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_PROFILE'];
+$config['PAGE_DESC'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_PROFILE'];
+//END HEAD MOD
 
 if (empty($user) || $user['uid'] == 0) {
     $msgbox['MSG'] = "L_E_NOT_LOGGED";

@@ -9,6 +9,11 @@ if ($config['WEBINFO_RECAPTCHA']) {
     plugin_start("ReCaptcha");
 }
 
+//HEAD MOD
+$config['PAGE_TITLE'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_WEBINF_CONTACT'];
+$config['PAGE_DESC'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_WEBINF_CONTACT'];
+//END HEAD MOD
+
 if (!empty($_POST)) {
     $mail['email'] = S_POST_EMAIL("email");
     empty($mail['email']) ? die('{"status": "1", "msg": "' . $LANGDATA['L_CONTACT_E_EMAIL'] . '"}') : false;
