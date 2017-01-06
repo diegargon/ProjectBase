@@ -97,6 +97,7 @@ function news_show_page() {
         preg_match("/src=\"(.*?)\"/i", $news_data['text'], $matchs);
         $news_data['ITEM_MAINIMAGE'] = $matchs[1];
         $news_data['ITEM_CREATED'] = preg_replace("/ /", "T", $news_data['created']) . "Z";
+        $news_data['ITEM_MODIFIED'] = preg_replace("/ /", "T", $news_data['last_edited']) . "Z";
         $cats = explode(" ", trim(strip_tags($news_data['NEWS_BREADCRUMB'])));
         if (!empty($cats)) {
             $news_data['ITEM_SECTIONS'] = "";
