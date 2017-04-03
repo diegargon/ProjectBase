@@ -46,38 +46,19 @@ function Multilang_AdminContent($params) {
 }
 
 function Multilang_AdminLangs() {
-    global $db, $LANGDATA;
-
+    global $db, $tpl;
+    $content = "";
     $query = $db->select_all("lang"); //change to $ml->get_site_langs(0)? but $ml class its init out of admin
-    $modify = "";
+
+    $counter = 1;
+    
+    $num_rows = $db->num_rows($query);
     while ($lang_row = $db->fetch($query)) {
-        $modify .= "<form id='form_modify' action='#' method='post'>";
-        $modify .= "<label>" . $LANGDATA['L_ML_NAME'] . ": </label><input maxlength='32' type='text' name='lang_name' id='lang_name' value='{$lang_row['lang_name']}' />";
-        $modify .= "<label>" . $LANGDATA['L_ML_ACTIVE'] . ": </label>";
-        if ($lang_row['active']) {
-            $modify .= "<input checked type='checkbox' name='active' id='active'  value='1' />";
-        } else {
-            $modify .= "<input type='checkbox' name='active' value='1'/>";
-        }
-        $modify .= "<label>" . $LANGDATA['L_ML_ISOCODE'] . ": </label><input maxlength='2' type='text' max name='iso_code' id='iso_code' value='{$lang_row['iso_code']}'/>";
-        $modify .= "<input type='hidden' name='lang_id' value='{$lang_row['lang_id']}' />";
-        $modify .= "<input type='submit' id='btnModifyLang' name='btnModifyLang' value='{$LANGDATA['L_ML_MODIFY']}' />";
-        $modify .= "<input type='submit' id='btnDeleteLang' name='btnDeleteLang' value='{$LANGDATA['L_ML_DELETE']}' onclick=\"return confirm('{$LANGDATA['L_ML_SURE']}')\" />";
-        $modify .= "</form>";
+        ($counter == $num_rows) ? $lang_row['ROW_CTR'] = 0 : $lang_row['ROW_CTR'] = $counter++;
+        $content .= $tpl->getTPL_file("Multilang", "ml_admin_modify_mng", $lang_row);
     }
-
-    $create = "<form id='form_create' action='#' method='post'>";
-    $create .= "<label>" . $LANGDATA['L_ML_NAME'] . ":</label><input required maxlength='32' type='text' name='lang_name' id='lang_name' value='' />";
-    $create .= "<label>" . $LANGDATA['L_ML_ACTIVE'] . ": </label><input checked type='checkbox' name='active' id='active' value='1' />";
-    $create .= "<label>" . $LANGDATA['L_ML_ISOCODE'] . ": </label><input required maxlength='2' type='text' name='iso_code' id='iso_code' value=''/>";
-    $create .= "<input type='submit' id='btnCreateLang' name='btnCreateLang' value='{$LANGDATA['L_ML_CREATE']}' />";
-    $create .= "</form>";
-
-    $content = "<div id='admin_ml_content'><hr/>";
-    isset($GLOBALS['tpldata']['ml_msg']) ? $content .= "<p class='p_error'>{$GLOBALS['tpldata']['ml_msg']}</p>" : false;
-    $content .= "<section><h3>" . $LANGDATA['L_ML_MODIFY_LANGS'] . "</h3>$modify</section>";
-    $content .= "<section><h3>" . $LANGDATA['L_ML_CREATE_LANG'] . "</h3>$create</section>";
-    $content .= "</div>";
+    $content .= $tpl->getTPL_file("Multilang", "ml_admin_create_mng");
+    
     return $content;
 }
 
