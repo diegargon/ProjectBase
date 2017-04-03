@@ -1,12 +1,11 @@
 
 ProjectBase 
 ===========
-Hello and excuse my english.
-I started this project for learn how to build something like a CMS and framework from scratch, with plugins support, and other things for learning
+
+I started this project for learn how to build something like a CMS from scratch, with plugins support, and other things for learning
 more deeply PHP.
 
-This code are in very early stage, have bugs, security problems and messy code. This code can change completely and probably will change. Not use it in
-something serious.
+This code are in very early stage, have bugs, security problems and messy code. This code can change completely and probably will change. 
 
 EXAMPLE SITE
 ============
