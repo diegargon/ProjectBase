@@ -49,16 +49,9 @@ function SimpleACL_AdminContent($params) {
 }
 
 function SimpleACL_ShowRoles($msg) {
-    global $db, $tpl, $LANGDATA;
+    global $db, $tpl;
 
     !empty($msg) ? $table['ACL_MSG'] = $msg : false;
-
-    $table['ADM_TABLE_TH'] = "<th>" . $LANGDATA['L_ACL_LEVEL'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA['L_ACL_ROLE_GROUP'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_ACL_ROLE_TYPE'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_ACL_ROLE_NAME'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_ACL_ROLE_DESC'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_ACL_ROLE_ACTIONS'] . "</th>";
 
     $all_roles = $db->select_all("acl_roles", null, "ORDER BY role_group, level");
 
@@ -66,22 +59,12 @@ function SimpleACL_ShowRoles($msg) {
     $group = "";
     foreach ($all_roles as $role) {
         if (!empty($group) && $role['role_group'] != $group) {
-            $table['ADM_TABLE_ROW'] .= "<tr class='acl_table_sep'><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
+            $role['ACL_SPLIT'] = 1;
             $group = $role['role_group'];
         } else if (empty($group)) {
             $group = $role['role_group'];
         }
-        $table['ADM_TABLE_ROW'] .= "<tr>";
-        $table['ADM_TABLE_ROW'] .= "<td>" . $role['level'] . "</td>";
-        $table['ADM_TABLE_ROW'] .= "<td>" . $role['role_group'] . "</td>";
-        $table['ADM_TABLE_ROW'] .= "<td>" . $role['role_type'] . "</td>";
-        $table['ADM_TABLE_ROW'] .= "<td>" . $role['role_name'] . "</td>";
-        $table['ADM_TABLE_ROW'] .= "<td>" . $role['role_description'] . "</td>";
-        $table['ADM_TABLE_ROW'] .= "<td>";
-        $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnRoleDelete' value='{$LANGDATA['L_ACL_DELETE']}' />";
-        $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='role_id' value='{$role['role_id']}' />";
-        $table['ADM_TABLE_ROW'] .= "</td>";
-        $table['ADM_TABLE_ROW'] .= "</tr>";
+        $table['ADM_TABLE_ROW'] .= $tpl->getTPL_file("SimpleACL", "acl_admin_roles_row", $role);
     }
     return $tpl->getTPL_file("SimpleACL", "acl_admin_roles", $table);
 }
