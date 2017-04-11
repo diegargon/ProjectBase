@@ -21,17 +21,17 @@ if ($config['ITS_BOT'] && $config['INCLUDE_DATA_STRUCTURE']){
     },
   "datePublished": "<?php !empty($data['ITEM_CREATED']) ? print $data['ITEM_CREATED'] : false ?>",
   "dateModified": "<?php !empty($data['ITEM_MODIFIED']) ? print $data['ITEM_MODIFIED'] : false ?>",
-  <?php print $data['ITEM_SECTIONS'] ?>
-  "creator": "<?php print $data['author'] ?>",
-  "author": "<?php print $data['author'] ?>",
-  "articleBody": "<?php print $data['lead'] ?>",
+  <?= $data['ITEM_SECTIONS'] ?>
+  "creator": "<?= $data['author'] ?>",
+  "author": "<?= $data['author'] ?>",
+  "articleBody": "<?= $data['lead'] ?>",
   "publisher": {
     "@type": "Organization",
     "logo": {
       "@type": "ImageObject",
-      "url": "<?php print $config['WEB_LOGO'] ?>"
+      "url": "<?= $config['WEB_LOGO'] ?>"
     },
-    "name": "<?php print $config['WEB_NAME'] ?>"
+    "name": "<?= $config['WEB_NAME'] ?>"
     },
   "mainEntityOfPage": "True"
 }

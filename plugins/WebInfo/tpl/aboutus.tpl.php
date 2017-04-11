@@ -6,20 +6,20 @@
 ?>
 <div class="page">
     <div class="aboutus-container">
-        <h1><a class="nodecor" href="<?php print $config['WEB_URL'] ?>"><?php print $config['WEB_NAME'] ?></a></h1>
+        <h1><a class="nodecor" href="<?= $config['WEB_URL'] ?>"><?= $config['WEB_NAME'] ?></a></h1>
         <p>
             Somos una pagina web independiente de noticias, opinión y artículos entre otros de ámbito social.<br> 
             Todo lector puede publicar artículos o noticias y participar en discusiones libremente siempre que cumpla las normas básicas de esta web.
         </p>
         <div class="vcard">
             <address>        
-                <p><?php print $LANGDATA['L_WEBINF_BY'] . ":" . $config['WEB_NAME'] ?></p>
-                <p><?php print $LANGDATA['L_WEBINF_VISITUS'] ?><a href="<?php print $config['WEB_URL'] ?>"><?php print $config['WEB_URL'] ?></a><br></p>
-                <p><?php print $config['WEB_NAME'] ?></p>
-                <p><?php print $LANGDATA['L_WEBINF_COUNTRY'] ?></p>
+                <p><?= $LANGDATA['L_WEBINF_BY'] . ":" . $config['WEB_NAME'] ?></p>
+                <p><?= $LANGDATA['L_WEBINF_VISITUS'] ?><a href="<?= $config['WEB_URL'] ?>"><?= $config['WEB_URL'] ?></a><br></p>
+                <p><?= $config['WEB_NAME'] ?></p>
+                <p><?= $LANGDATA['L_WEBINF_COUNTRY'] ?></p>
                 <p><?php !empty($data['CONTACT']) ? print $data['CONTACT'] : false ?></p>
             </address>
-            <time datetime="<?php print $config['CONTACT_TIME_DATATIME'] ?>"><?php print $config['CONTACT_TIME_HUMAN'] ?></time>
+            <time datetime="<?= $config['CONTACT_TIME_DATATIME'] ?>"><?= $config['CONTACT_TIME_HUMAN'] ?></time>
         </div>
     </div>
 </div>

@@ -11,14 +11,14 @@ if (!empty($data['TPL_FIRST'])) {
             <section>
                 <table class="searchTable">
                     <tr>
-                        <td ><h2><?php print $LANGDATA['L_NS_SEARCH_RESULT'] ?></h2></td>
+                        <td ><h2><?= $LANGDATA['L_NS_SEARCH_RESULT'] ?></h2></td>
                     </tr>
 <?php } ?>
                 <tr>
                     <td>
-                        <a href="<?php print $data['url'] ?>">
-                            <div class="s_news_title"><?php print $data['title'] ?></div>
-                            <div class="s_news_lead"><?php print $data['lead'] ?></div>
+                        <a href="<?= $data['url'] ?>">
+                            <div class="s_news_title"><?= $data['title'] ?></div>
+                            <div class="s_news_lead"><?= $data['lead'] ?></div>
                         </a>
                     </td>
                 </tr>

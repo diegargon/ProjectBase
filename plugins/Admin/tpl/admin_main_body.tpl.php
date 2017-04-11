@@ -12,9 +12,9 @@
                 <?php
                 if ($tpldata['ADMIN_TAB_ACTIVE'] == 1) {
                     ?>
-                    <li class="tab_active"><a href="admin&admtab=1" ><?php print $LANGDATA['L_GENERAL'] ?></a></li>
+                    <li class="tab_active"><a href="admin&admtab=1" ><?= $LANGDATA['L_GENERAL'] ?></a></li>
                 <?php } else { ?>
-                    <li class=""><a href="admin&admtab=1" ><?php print $LANGDATA['L_GENERAL'] ?></a></li>
+                    <li class=""><a href="admin&admtab=1" ><?= $LANGDATA['L_GENERAL'] ?></a></li>
                 <?php } ?>
 
                 <?php !empty($tpldata['ADD_ADMIN_MENU']) ? print $tpldata['ADD_ADMIN_MENU'] : false ?>		

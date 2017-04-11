@@ -6,7 +6,7 @@
 ?>
 <aside>
     <ul>
-        <?php print $data['ADM_ASIDE_OPTION'] ?>
+        <?= $data['ADM_ASIDE_OPTION'] ?>
     </ul>    
 </aside>
 <div id="admin_opt_content">

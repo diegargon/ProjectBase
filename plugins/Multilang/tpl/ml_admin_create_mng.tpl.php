@@ -5,11 +5,11 @@
 !defined('IN_WEB') ? exit : true;
 ?>
 
-<section><h3><?php print $LANGDATA['L_ML_CREATE_LANG'] ?></h3>
+<section><h3><?= $LANGDATA['L_ML_CREATE_LANG'] ?></h3>
     <form id='form_create' action='#' method='post'>
-        <label><?php print $LANGDATA['L_ML_NAME'] ?>:</label><input required maxlength='32' type='text' name='lang_name' id='lang_name' value='' />
-        <label><?php print $LANGDATA['L_ML_ACTIVE'] ?>: </label><input checked type='checkbox' name='active' id='active' value='1' />
-        <label><?php print $LANGDATA['L_ML_ISOCODE'] ?>: </label><input required maxlength='2' type='text' name='iso_code' id='iso_code' value=''/>
-        <input type='submit' id='btnCreateLang' name='btnCreateLang' value='<?php print $LANGDATA['L_ML_CREATE'] ?>' />
+        <label><?= $LANGDATA['L_ML_NAME'] ?>:</label><input required maxlength='32' type='text' name='lang_name' id='lang_name' value='' />
+        <label><?= $LANGDATA['L_ML_ACTIVE'] ?>: </label><input checked type='checkbox' name='active' id='active' value='1' />
+        <label><?= $LANGDATA['L_ML_ISOCODE'] ?>: </label><input required maxlength='2' type='text' name='iso_code' id='iso_code' value=''/>
+        <input type='submit' id='btnCreateLang' name='btnCreateLang' value='<?= $LANGDATA['L_ML_CREATE'] ?>' />
     </form>
 </section>

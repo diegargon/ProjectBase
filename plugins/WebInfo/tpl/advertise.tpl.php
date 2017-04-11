@@ -6,7 +6,7 @@
 ?>
 <div class="page">
     <div class="advertise-container">
-        <h1><a class="nodecor" href="<?php print $config['WEB_URL'] ?>"><?php print $config['WEB_NAME'] ?></a></h1>
+        <h1><a class="nodecor" href="<?= $config['WEB_URL'] ?>"><?= $config['WEB_NAME'] ?></a></h1>
         <h1>Disponemos de estos tipos de banners de precios variables:</h1>
         <ol>
             <li><h2>Banner superior central</h2>
@@ -22,6 +22,6 @@
                 <span>El banner se muestra en  una noticia y/o articulo en particular por debajo del preferente</span>
             </li>
         </ol>
-        <p>Para más información contacte con: <a href="mailto:<?php print $config['ADS_CONTACT'] ?>"><?php print $config['ADS_CONTACT'] ?></a>
+        <p>Para más información contacte con: <a href="mailto:<?= $config['ADS_CONTACT'] ?>"><?= $config['ADS_CONTACT'] ?></a>
     </div>
 </div>

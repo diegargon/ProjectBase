@@ -4,7 +4,7 @@
  */
 !defined('IN_WEB') ? exit : true;
 ?>
-<a href="<?php echo $data['url']?>">
+<a href="<?= $data['url']?>">
 <article class="newsbox">
     <?php
     if (empty($data['headlines'])) {

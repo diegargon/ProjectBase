@@ -9,9 +9,9 @@
 {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  "name": "<?php print $config['WEB_NAME'] ?>",
-  "alternateName": "<?php print $config['WEB_DESC'] ?>",
-  "url": "<?php print $config['WEB_URL'] ?>"
+  "name": "<?= $config['WEB_NAME'] ?>",
+  "alternateName": "<?= $config['WEB_DESC'] ?>",
+  "url": "<?= $config['WEB_URL'] ?>"
 }
 </script>
 <?php
@@ -21,8 +21,8 @@ if (!empty($config['WEB_LOGO'])) {
 {
   "@context": "http://schema.org",
   "@type": "Organization",
-  "url": "<?php print $config['WEB_URL'] ?>",
-  "logo": "<?php print $config['WEB_LOGO'] ?>" 
+  "url": "<?= $config['WEB_URL'] ?>",
+  "logo": "<?= $config['WEB_LOGO'] ?>" 
 }
 </script>
 <?php } ?>
@@ -30,10 +30,10 @@ if (!empty($config['WEB_LOGO'])) {
 {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  "url": "<?php print $config['WEB_URL'] ?>",
+  "url": "<?= $config['WEB_URL'] ?>",
   "potentialAction": {
   "@type": "SearchAction",
-  "target": "<?php print $config['WEB_URL'] ?>search/?q={search_term_string}",
+  "target": "<?= $config['WEB_URL'] ?>search/?q={search_term_string}",
   "query-input": "required name=search_term_string"
   }
 }
