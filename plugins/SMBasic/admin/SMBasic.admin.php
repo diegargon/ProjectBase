@@ -59,49 +59,23 @@ function SMBasic_UserSearch() {
         SMBasic_DisableUser($member_id, $disable_state);
     }
 
-    $content = "<form action='' method='post'>";
-    $content .= "<label for='glob'>{$LANGDATA['L_SM_GLOB']}: </label><input type='checkbox' name='posted_glob' id='glob' value='1' />";
-    $content .= "<label for='email'>{$LANGDATA['L_EMAIL']}: </label><input type='checkbox' name='posted_email' id='email' value='1' />";
-    $content .= "<input type='text' maxlength='32' minlength='3' name='search_user' id='search_user' required />";
-    $content .= "<input type='submit' name='btnSearchUser' id='btnSearchUser' />";
-    $content .= "</form><br/>";
+    $content = $tpl->getTPL_file("SMBasic", "sm_adm_usersearch_form");
+
     isset($_POST['posted_glob']) ? $glob = 1 : $glob = 0;
     isset($_POST['posted_email']) ? $email = 1 : $email = 0;
     $s_string = S_POST_STRICT_CHARS("search_user", 32, 1);
 
     if (!empty($_POST['btnSearchUser']) && !empty($s_string)) {
         if (($users_ary = $sm->searchUser($s_string, $email, $glob))) {
-            $table['ADM_TABLE_TH'] = "<th>" . $LANGDATA ['L_SM_USERNAME'] . "</th>";
-            $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_EMAIL'] . "</th>";
-            $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_REGISTERED'] . "</th>";
-            $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_LASTLOGIN'] . "</th>";
-            $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_ACTIONS'] . "</th>";
+
             $table['ADM_TABLE_ROW'] = "";
             foreach ($users_ary as $user_match) {
-                if($config['FRIENDLY_URL']) {
-                    $url = "/{$config['WEB_LANG']}/profile?viewprofile={$user_match['uid']}";
+                if ($config['FRIENDLY_URL']) {
+                    $user_match['profile_url'] = "/{$config['WEB_LANG']}/profile?viewprofile={$user_match['uid']}";
                 } else {
-                    $url = "/{$config['CON_FILE']}?module=SMBasic&page=profile?lang={$config['WEB_LANG']}&viewprofile={$user_match['uid']}";
+                    $user_match['profile_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=profile?lang={$config['WEB_LANG']}&viewprofile={$user_match['uid']}";
                 }
-                $table['ADM_TABLE_ROW'] .= "<tr>";
-                $table['ADM_TABLE_ROW'] .= "<td><a href='$url'>" . $user_match['username'] . "</a></td>";
-                $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['email'] . "</td>";
-                $table['ADM_TABLE_ROW'] .= "<td>" . format_date($user_match['regdate']) . "</td>";
-                $table['ADM_TABLE_ROW'] .= "<td>" . $user_match['last_login'] . "</td>";
-                $table['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
-                $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid' class='member_uid' value='{$user_match['uid']}' />";
-                $table['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user_match['disable']}' />";
-                $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
-                if ($user_match['active'] > 0) {
-                    $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
-                }
-                if ($user_match['disable']) {
-                    $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ENABLE']}' />";
-                } else {
-                    $table['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
-                }
-                $table['ADM_TABLE_ROW'] .= "</form></td>";
-                $table['ADM_TABLE_ROW'] .= "</tr>";
+                $table['ADM_TABLE_ROW'] .= $tpl->getTPL_file("SMBasic", "sm_adm_userlist", $user_match);
             }
             $content .= $tpl->getTPL_file("SMBasic", "memberlist", $table);
         }
@@ -125,73 +99,31 @@ function SMBasic_UserList() {
 
     $users_list = $sm->getAllUsersArray();
 
-    $table['ADM_TABLE_TH'] = "<th>" . $LANGDATA ['L_SM_USERNAME'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_EMAIL'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_REGISTERED'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_LASTLOGIN'] . "</th>";
-    $table['ADM_TABLE_TH'] .= "<th>" . $LANGDATA ['L_SM_ACTIONS'] . "</th>";
-
     $active['ADM_TABLE_ROW'] = $inactive['ADM_TABLE_ROW'] = $disable['ADM_TABLE_ROW'] = "";
 
     foreach ($users_list as $user) {
+        if ($config['FRIENDLY_URL']) {
+            $user['profile_url'] = "/{$config['WEB_LANG']}/profile?viewprofile={$user['uid']}";
+        } else {
+            $user['profile_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=profile?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}";
+        }
         if ($user['active'] == 0 && !$user['disable']) {
-            if ($config['FRIENDLY_URL']) {
-                $url = "/{$config['WEB_LANG']}/profile?viewprofile={$user['uid']}";
-            } else {
-                $url = "/{$config['CON_FILE']}?module=SMBasic&page=profile?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}";
-            }
-            $active['ADM_TABLE_ROW'] .= "<tr>";
-            $active['ADM_TABLE_ROW'] .= "<td><a href='$url'>" . $user['username'] . "</a></td>";
-            $active['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
-            $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
-            $active['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
-            $active['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
-            $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid'  value='{$user['uid']}' />";
-            $active['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user['disable']}' />";
-            $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
-            $active['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
-            $active['ADM_TABLE_ROW'] .= "</form></td>";
-            $active['ADM_TABLE_ROW'] .= "</tr>";
+
+            $active['ADM_TABLE_ROW'] .= $tpl->getTPL_file("SMBasic", "sm_adm_userlist", $user);
         } else if ($user['active'] > 0 && !$user['disable']) {
-            $inactive['ADM_TABLE_ROW'] .= "<tr>";
-            $inactive['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
-            $inactive['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
-            $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
-            $inactive['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
-            $inactive['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
-            $inactive['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid'  value='{$user['uid']}' />";
-            $inactive['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user['disable']}' />";
-            $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
-            $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
-            $inactive['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit'class='btnSubmit' value='{$LANGDATA['L_SM_DISABLE']}' />";
-            $inactive['ADM_TABLE_ROW'] .= "</form></td>";
-            $inactive['ADM_TABLE_ROW'] .= "</tr>";
+            $inactive['ADM_TABLE_ROW'] .= $tpl->getTPL_file("SMBasic", "sm_adm_userlist", $user);
         } else if ($user['disable']) {
-            $disable['ADM_TABLE_ROW'] .= "<tr>";
-            $disable['ADM_TABLE_ROW'] .= "<td><a href='/profile.php?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}'>" . $user['username'] . "</a></td>";
-            $disable['ADM_TABLE_ROW'] .= "<td>" . $user['email'] . "</td>";
-            $disable['ADM_TABLE_ROW'] .= "<td>" . format_date($user['regdate']) . "</td>";
-            $disable['ADM_TABLE_ROW'] .= "<td>" . format_date($user['last_login']) . "</td>";
-            $disable['ADM_TABLE_ROW'] .= "<td><form action='' method='post'>";
-            $disable['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_uid'  value='{$user['uid']}' />";
-            $disable['ADM_TABLE_ROW'] .= "<input type='hidden' name='member_disable' value='{$user['disable']}' />";
-            $disable['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDeleteSubmit' id='btnDeleteSubmit' value='{$LANGDATA['L_SM_DELETE']}' />";
-            if ($user['active'] > 0) {
-                $disable['ADM_TABLE_ROW'] .= "<input type='submit' name='btnActivateSubmit' class='btnSubmit' value='{$LANGDATA['L_SM_ACTIVATE']}' />";
-            }
-            $disable['ADM_TABLE_ROW'] .= "<input type='submit' name='btnDisableSubmit'class='btnSubmit' value='{$LANGDATA['L_SM_ENABLE']}' />";
-            $disable['ADM_TABLE_ROW'] .= "</form></td>";
-            $disable['ADM_TABLE_ROW'] .= "</tr>";
+            $disable['ADM_TABLE_ROW'] .= $tpl->getTPL_file("SMBasic", "sm_adm_userlist", $user);
         }
     }
 
-    $active['ADM_TABLE_TITLE'] = "<h3>" . $LANGDATA['L_SM_USERS_ACTIVE'] . "</h3>";
-    $inactive['ADM_TABLE_TITLE'] = "<h3>" . $LANGDATA['L_SM_USERS_INACTIVE'] . "</h3>";
-    $disable['ADM_TABLE_TITLE'] = "<h3>" . $LANGDATA['L_SM_USERS_DISABLE'] . "</h3>";
+    $active['ADM_TABLE_TITLE'] = $LANGDATA['L_SM_USERS_ACTIVE'];
+    $inactive['ADM_TABLE_TITLE'] = $LANGDATA['L_SM_USERS_INACTIVE'];
+    $disable['ADM_TABLE_TITLE'] = $LANGDATA['L_SM_USERS_DISABLE'];
 
-    $content = $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $active));
-    $content .= $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $inactive));
-    $content .= $tpl->getTPL_file("SMBasic", "memberlist", array_merge($table, $disable));
+    $content = $tpl->getTPL_file("SMBasic", "memberlist", $active);
+    $content .= $tpl->getTPL_file("SMBasic", "memberlist", $inactive);
+    $content .= $tpl->getTPL_file("SMBasic", "memberlist", $disable);
 
     return $content;
 }
@@ -199,11 +131,6 @@ function SMBasic_UserList() {
 function SMBasic_DeleteUser($uid) {
     global $db;
     $db->delete("users", array("uid" => $uid), "LIMIT 1");
-}
-
-function SMBasic_ActivateUser($uid) {
-    global $db;
-    $db->update("users", array("active" => 0), array("uid" => $uid), "LIMIT 1");
 }
 
 function SMBasic_DisableUser($uid, $state) {

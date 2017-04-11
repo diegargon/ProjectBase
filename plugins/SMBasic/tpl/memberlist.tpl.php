@@ -5,12 +5,17 @@
 !defined('IN_WEB') ? exit : true;
 ?>
 <br/>
-        <?php isset($data['ADM_TABLE_TITLE']) ? print $data['ADM_TABLE_TITLE'] : false; ?>        
+<h3><?= isset($data['ADM_TABLE_TITLE']) ? $data['ADM_TABLE_TITLE'] : false ?></h3>
 <table class='memberlist_table'>
     <tr>
-    <?php isset($data['ADM_TABLE_TH']) ? print $data['ADM_TABLE_TH'] : false; ?>        
+        <th><?= $LANGDATA ['L_SM_USERNAME'] ?></th>
+        <th><?= $LANGDATA ['L_EMAIL'] ?></th>
+        <th><?= $LANGDATA ['L_SM_REGISTERED'] ?></th>
+        <th><?= $LANGDATA ['L_SM_LASTLOGIN'] ?></th>
+        <th><?= $LANGDATA ['L_SM_ACTIONS'] ?></th>
+        <?= isset($data['ADM_TABLE_TH']) ? $data['ADM_TABLE_TH'] : false ?>        
     </tr>
-<?php isset($data['ADM_TABLE_ROW']) ? print $data['ADM_TABLE_ROW'] : false; ?>
+    <?= isset($data['ADM_TABLE_ROW']) ? $data['ADM_TABLE_ROW'] : false ?>
 
 </table>
 <br/>
