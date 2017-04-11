@@ -6,10 +6,10 @@
 !defined('IN_WEB') ? exit : true;
 
 function Newspage_AdminCategories() {
-    global $config, $LANGDATA, $ml, $db;
+    global $config, $tpl, $LANGDATA, $ml, $db;
 
-    $content = "";
-    $catfather = "";
+    $catdata['catrow_new'] = "";
+    $catdata['catlist'] = "";
 
     if (defined('MULTILANG')) {
         $langs = $ml->get_site_langs();
@@ -17,28 +17,11 @@ function Newspage_AdminCategories() {
         $langs['lang_id'] = $config['WEB_LANG_ID'];
         $langs['lang_name'] = $config['WEB_LANG'];
     }
-    //NEW CAT
-    $content .= "<div class='catlist'>";
-    $content .= "<p>{$LANGDATA['L_NEWS_CREATE_CAT']}</p>";
-    $content .= "<form id='cat_new' method='post' action=''>";
-    $content .= "<div>";
 
     foreach ($langs as $lang) {
-        $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";
+        $catdata['catrow_new'] .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";
     }
-    $content .= "<label>{$LANGDATA['L_NEWS_FATHER']}</label>";
-    $content .= "<input class='news_adm_father' type='text' maxlength='3' name='father' value='0' />";
-    $content .= "<label>{$LANGDATA['L_NEWS_ORDER']}</label>";
-    $content .= "<input class='news_adm_order' type='text' maxlength='3' name='weight' value='0' />";
-    $content .= "<input type='submit' name='NewCatSubmit' value='{$LANGDATA['L_NEWS_CREATE']}' />";
-    $content .= "</div>";
 
-    $content .= "</form>";
-    $content .= "</div>";
-
-    //CATLIST
-    $content .= "<div class='catlist'>";
-    $content .= "<p>{$LANGDATA['L_NEWS_MODIFIED_CATS']}</p>";
     $query = $db->select_all("categories", array("plugin" => "Newspage"), "ORDER BY father, cid");
 
     $cats = $catsids = [];
@@ -50,35 +33,36 @@ function Newspage_AdminCategories() {
     $catsids = array_unique($catsids);
     $foundit = 0;
     foreach ($catsids as $catid) {
-        $content .= "<form id='cat_mod' method='post' action=''>";
-        $content .= "<div>";
-        $content .= "<label>Id</label>";
-        $content .= "<input type='text' disable name='cid' class='news_adm_id' value='$catid' />";        
+        $catdata['catlist'] .= "<form id='cat_mod' method='post' action=''>";
+        $catdata['catlist'] .= "<div>";
+        $catdata['catlist'] .= "<label>Id</label>";
+        $catdata['catlist'] .= "<input type='text' disabled name='cid' class='news_adm_id' value='$catid' />";
+
         foreach ($langs as $lang) {
             foreach ($cats as $cat) {
                 if (($catid == $cat['cid']) && ($cat['lang_id'] == $lang['lang_id'])) {
-                    $content .= "<label>{$lang['lang_name']}</label>";
-                    $content .= "<input type='text' name='{$lang['lang_id']}' class='news_adm_name' value='{$cat['name']}' />";
+                    $catdata['catlist'] .= "<label>{$lang['lang_name']}</label>";
+                    $catdata['catlist'] .= "<input type='text' name='{$lang['lang_id']}' class='news_adm_name' value='{$cat['name']}' />";
                     $foundit = 1;
                     $catFather = $cat['father'];
                     $catWeight = $cat['weight'];
                 }
             }
             if ($foundit == 0) {
-                $content .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";
+                $catdata['catlist'] .= "<label>{$lang['lang_name']}</label> <input type='text' name='{$lang['lang_id']}' value='' />";
             }
             $foundit = 0;
         }
-        $content .= "<label>{$LANGDATA['L_NEWS_FATHER']}</label>";
-        $content .= "<input class='news_adm_father' type='text' maxlength='3' name='father' value='$catFather' />";
-        $content .= "<label>{$LANGDATA['L_NEWS_ORDER']}</label>";
-        $content .= "<input class='news_adm_order' type='text' maxlength='3' name='weight' value='$catWeight' />";
 
-        $content .= "<input type='submit' name='ModCatSubmit' value='{$LANGDATA['L_NEWS_MODIFY']}' />";
-        $content .= "</div></form>";
+        $catdata['catlist'] .= "<label>{$LANGDATA['L_NEWS_FATHER']}</label>";
+        $catdata['catlist'] .= "<input class='news_adm_father' type='text' maxlength='3' name='father' value='$catFather' />";
+        $catdata['catlist'] .= "<label>{$LANGDATA['L_NEWS_ORDER']}</label>";
+        $catdata['catlist'] .= "<input class='news_adm_order' type='text' maxlength='3' name='weight' value='$catWeight' />";
+        $catdata['catlist'] .= "<input type='submit' name='ModCatSubmit' value='{$LANGDATA['L_NEWS_MODIFY']}' />";
+        $catdata['catlist'] .= "</div></form>";
     }
     
-    return $content;
+    return $tpl->getTPL_file("Newspage", "news_adm_cat", $catdata);
 }
 
 function Newspage_ModCategories() {
@@ -126,14 +110,14 @@ function Newspage_NewCategory() {
         $lang_id = $lang['lang_id'];
         $posted_name = S_POST_CHARNUM_MIDDLE_UNDERSCORE_UNICODE("$lang_id"); //POST['1'] 2... id return text value
         $posted_father = S_POST_INT("father", 3, 1);
-        $posted_weight = S_POST_INT("weight", 3, 1);        
+        $posted_weight = S_POST_INT("weight", 3, 1);
         if (!empty($posted_name)) {
             $new_cat_ary = array(
-                "cid" => "$new_cid", 
+                "cid" => "$new_cid",
                 "lang_id" => "{$lang['lang_id']}",
-                "plugin" => "Newspage", 
-                "name" => "$posted_name", 
-                "father" => "$posted_father", 
+                "plugin" => "Newspage",
+                "name" => "$posted_name",
+                "father" => "$posted_father",
                 "weight" => "$posted_weight"
             );
             $db->insert("categories", $new_cat_ary);
