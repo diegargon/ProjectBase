@@ -7,13 +7,13 @@
 
 $user = $sm->getSessionUser();
 
-if ($user && defined('ACL') && !$acl_auth->acl_ask("admin_read")) {
+if (!$user || ( !defined('ACL') && !$acl_auth->acl_ask("admin_read")) ) {
     $msgbox['MSG'] = "L_E_NOACCESS";
     do_action("message_page", $msgbox);
     return false;
 } 
 
-if (!$user && !defined('ACL') && $user['isAdmin'] != 1) {
+if (!defined('ACL') && $user['isAdmin'] != 1) {
     $msgbox['MSG'] = "L_E_NOACCESS";
     do_action("message_page", $msgbox);
     return false;
