@@ -13,7 +13,7 @@
             <div class="news_msg"><p><?= $data['news_msg'] ?></p></div>
             <?php
         }
-        !empty($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP'] : false;
+        !empty($tpldata['ADD_TO_NEWSSHOW_TOP']) ? print $tpldata['ADD_TO_NEWSSHOW_TOP'] : null;
         if (!empty($data['NEWS_BREADCRUMB'])) {
             ?>
             <div id='news_breadcrumb'>
@@ -26,7 +26,7 @@
         ?>
         <section class="article_body">
             <h1>
-                <?php !empty($data['title']) ? print $data['title'] : false ?>
+                <?= !empty($data['title']) ? $data['title'] : null ?>
             </h1>
             <div>                
                 <a rel="nofollow" class="soc_facebook" style="background: url(/plugins/Newspage/tpl/images/social.png) no-repeat;" href="https://www.facebook.com/dialog/share?app_id=1481492868545684&display=popup&href=<?= "https://" . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI() ?>&redirect_uri=<?= "https://" . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI() ?>" target="_blank"></a>
@@ -46,18 +46,16 @@
                 <?php if (!empty($data['author_avatar'])) { ?> 
                     <div class='avatar'><img width='50' src='<?= $data['author_avatar']; ?>' alt='' /></div>                        
                 <?php } ?>
-                <?php !empty($tpldata['ADD_NEWS_INFO_POST_AVATAR']) ? print $tpldata['ADD_NEWS_INFO_POST_AVATAR'] : false ?>
+                <?= !empty($tpldata['ADD_NEWS_INFO_POST_AVATAR']) ? $tpldata['ADD_NEWS_INFO_POST_AVATAR'] : null ?>
                 <div class="extra-small">
                     <?= $data['date'] ?> <br/>
                     <a href='/<?= $config['WEB_LANG'] ?>/profile&viewprofile=<?= $data['author_uid'] ?>'><?= $data['author'] ?></a>
-                    <?php
-                    !empty($data['translator']) ? print " | " . $LANGDATA['L_NEWS_TRANSLATE_BY'] . $data['translator'] : false;
-                    ?>
+                    <?= !empty($data['translator']) ? " | " . $LANGDATA['L_NEWS_TRANSLATE_BY'] . $data['translator'] : null ?>
                     <?php if (!empty($data['news_sources'])) { ?>
                         | <span><?= $LANGDATA['L_NEWS_SOURCE'] . ": " . $data['news_sources'] ?> </span>
                     <?php } ?>
                 </div>
-                <?php !empty($tpldata['ADD_NEWS_INFO_BOTTOM']) ? print $tpldata['ADD_NEWS_INFO_BOTTOM'] : false ?>
+                <?= !empty($tpldata['ADD_NEWS_INFO_BOTTOM']) ? $tpldata['ADD_NEWS_INFO_BOTTOM'] : null ?>
             </div>
             <?php if (!empty($data['lead'])) { ?>
                 <p class="article_lead">
@@ -65,11 +63,11 @@
                 </p>
             <?php } ?>
             <hr/>
-            <?php !empty($tpldata['NEWS_MAIN_PRE_TEXT']) ? print $tpldata['NEWS_MAIN_PRE_TEXT'] : false; ?>
+            <?= !empty($tpldata['NEWS_MAIN_PRE_TEXT']) ? $tpldata['NEWS_MAIN_PRE_TEXT'] : null ?>
             <div class="article_text">
-                <?php !empty($data['text']) ? print $data['text'] : false ?>
+                <?= !empty($data['text']) ? $data['text'] : null ?>
             </div>
-            <?php !empty($tpldata['NEWS_MAIN_AFTER_TEXT']) ? print $tpldata['news_main__pre_text'] : false; ?>
+            <?= !empty($tpldata['NEWS_MAIN_AFTER_TEXT']) ? $tpldata['news_main__pre_text'] : null ?>
             <?php if (!empty($data['news_related'])) {
                 ?>
                 <div class="related">
@@ -77,14 +75,17 @@
                         <?= $data['news_related'] ?>
                     </ol>
                 </div>
-            <?php } ?>
-            <?php !empty($data['pager']) ? print $data['pager'] : false ?>
-            <?php !empty($tpldata['ADD_TO_NEWSSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM'] : false ?>                        
+            <?php } 
+            !empty($data['pager']) ? print $data['pager'] : null; 
+            !empty($tpldata['ADD_TO_NEWSSHOW_BOTTOM']) ? print $tpldata['ADD_TO_NEWSSHOW_BOTTOM'] : null;
+            ?>                        
         </section>
         <div class="article_side">
-            <?php !empty($tpldata['ADD_TO_NEWS_SIDE_PRE']) ? print $tpldata['ADD_TO_NEWS_SIDE_PRE'] : false ?>
-            <?php !empty($data['SIDE_NEWS']) ? print $data['SIDE_NEWS'] : false ?>
-            <?php !empty($tpldata['ADD_TO_NEWS_SIDE_POST']) ? print $tpldata['ADD_TO_NEWS_SIDE_POST'] : false ?>
+            <?php 
+                !empty($tpldata['ADD_TO_NEWS_SIDE_PRE']) ? print $tpldata['ADD_TO_NEWS_SIDE_PRE'] : null; 
+                !empty($data['SIDE_NEWS']) ? print $data['SIDE_NEWS'] : null;
+                !empty($tpldata['ADD_TO_NEWS_SIDE_POST']) ? print $tpldata['ADD_TO_NEWS_SIDE_POST'] : null;
+            ?>
         </div>
     </div>
 </div>

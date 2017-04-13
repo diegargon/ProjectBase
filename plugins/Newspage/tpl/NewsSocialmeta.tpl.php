@@ -3,7 +3,7 @@
  *  Copyright @ 2016 Diego Garcia
  */
 ?>
-<meta name="news_keywords" content="<?php !empty($data['tags']) ? print $data['tags'] : false ?> " />
+<meta name="news_keywords" content="<?= !empty($data['tags']) ? $data['tags'] : null ?> " />
 <meta property="og:title" content="<?= $data['title'] ?>"/>
 <meta property="og:url" content="<?= $data['url'] ?>"/>
 <meta property="og:site_name" content="<?= $data['web_title'] ?>"/>

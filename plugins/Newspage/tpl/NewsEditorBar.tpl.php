@@ -4,7 +4,7 @@
  */
 ?>
 <div class="editorBar">
-    <?php !empty($tpldata['NEWS_EDITOR_BAR_PRE']) ? print $tpldata['NEWS_EDITOR_BAR_PRE'] : false ?>
+    <?= !empty($tpldata['NEWS_EDITOR_BAR_PRE']) ? $tpldata['NEWS_EDITOR_BAR_PRE'] : null ?>
     <button class="btnEditor" type="button" value="[b]$1[/b]"><?= $LANGDATA['L_NEWS_EDITOR_BOLD'] ?></button>
     <button class="btnEditor" type="button" value="[i]$1[/i]"><?= $LANGDATA['L_NEWS_EDITOR_ITALIC'] ?></button>
     <button class="btnEditor" type="button" value="[u]$1[/u]"><?= $LANGDATA['L_NEWS_EDITOR_UNDERLINE'] ?></button>
@@ -25,5 +25,5 @@
     <button class="btnEditor" type="button" value="[blockquote]$1[/blockquote]"><?= $LANGDATA['L_NEWS_EDITOR_QUOTE'] ?></button>
     <button class="btnEditor" type="button" value="[code]$1[/code]"><?= $LANGDATA['L_NEWS_EDITOR_CODE'] ?></button>
     <button class="btnEditor" type="button" value="[div_class=?]$1[/div_class]"><?= $LANGDATA['L_NEWS_EDITOR_DIVCLASS'] ?></button>
-    <?php !empty($tpldata['NEWS_EDITOR_BAR_POST']) ? print $tpldata['NEWS_EDITOR_BAR_POST'] : false ?>
+    <?= !empty($tpldata['NEWS_EDITOR_BAR_POST']) ? $tpldata['NEWS_EDITOR_BAR_POST'] : null ?>
 </div>

@@ -9,7 +9,7 @@
     <p><?= $LANGDATA['L_NEWS_CREATE_CAT'] ?></p>
     <form id='cat_new' method='post' action=''>
         <div>
-            <?= isset($data['catrow_new']) ? $data['catrow_new'] : false ?>
+            <?= isset($data['catrow_new']) ? $data['catrow_new'] : null ?>
             <label><?= $LANGDATA['L_NEWS_FATHER'] ?></label>
             <input class='news_adm_father' type='text' maxlength='3' name='father' value='0' />
             <label><?= $LANGDATA['L_NEWS_ORDER'] ?></label>
@@ -20,5 +20,5 @@
 </div>
 <div class='catlist'>
     <p><?= $LANGDATA['L_NEWS_MODIFIED_CATS'] ?></p>
-    <?= isset($data['catlist']) ? $data['catlist'] : false ?>
+    <?= isset($data['catlist']) ? $data['catlist'] : null ?>
 </div>

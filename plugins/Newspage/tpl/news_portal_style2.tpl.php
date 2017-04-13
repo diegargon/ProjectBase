@@ -6,7 +6,7 @@
 ?>
 <div  class="clear bodysize page">
     <?php
-    isset($tpldata['ADD_TOP_NEWS']) ? print $tpldata['ADD_TOP_NEWS'] : false;
+    isset($tpldata['ADD_TOP_NEWS']) ? print $tpldata['ADD_TOP_NEWS'] : null;
     if ($config['NEWS_PORTAL_COLS'] >= 1) {
         ?>
         <section class="col col<?= $config['NEWS_PORTAL_COLS'] ?>">
@@ -20,7 +20,7 @@
                 </div>
             <?php
             }
-            isset($data['col1_articles']) ? print $data['col1_articles'] : false;
+            isset($data['col1_articles']) ? print $data['col1_articles'] : null;
             ?>
         </section>
         <?php
@@ -28,24 +28,24 @@
     if ($config['NEWS_PORTAL_COLS'] >= 2) {
         ?>
         <section class="col col<?= $config['NEWS_PORTAL_COLS'] ?>">
-        <?php isset($data['col2_articles']) ? print $data['col2_articles'] : false ?>
+        <?= isset($data['col2_articles']) ? $data['col2_articles'] : null?>
         </section>
         <?php
     }
     if ($config['NEWS_PORTAL_COLS'] >= 3) {
         ?>
         <section class="col col<?= $config['NEWS_PORTAL_COLS'] ?>">
-        <?php isset($data['col3_articles']) ? print $data['col3_articles'] : false ?>
+        <?= isset($data['col3_articles']) ? $data['col3_articles'] : null ?>
         </section>
         <?php
     }
     if ($config['NEWS_PORTAL_COLS'] >= 4) {
         ?>
         <section class="col col<?= $config['NEWS_PORTAL_COLS']; ?>">
-            <?php isset($data['col3_articles']) ? print $data['col3_articles'] : false; ?>
+            <?= isset($data['col3_articles']) ? $data['col3_articles'] : null ?>
         </section>
         <?php
     }        
-    isset($tpldata['ADD_BOTTOM_NEWS']) ? print $tpldata['ADD_BOTTOM_NEWS'] : false
+    isset($tpldata['ADD_BOTTOM_NEWS']) ? print $tpldata['ADD_BOTTOM_NEWS'] : null;
     ?>
 </div>

@@ -14,13 +14,11 @@
         echo "<p class='p-extra-small'>{$data['date']}</p>";
         echo "<h4>{$data['title']} </h4>";
     }
-    ?>
-    <?php
     if (!isset($data['headlines'])) {
-        !empty($tpldata['news_preview_lead_pre']) ? print $tpldata['news_preview_lead_pre'] : false;
-        (!empty($data['mainimage'])) ? print $data['mainimage'] : false;
+        !empty($tpldata['news_preview_lead_pre']) ? print $tpldata['news_preview_lead_pre'] : null;
+        (!empty($data['mainimage'])) ? print $data['mainimage'] : null;
         echo "<p>{$data['lead']}</p>";
-        !empty($tpldata['news_preview_lead_after']) ? print $tpldata['news_preview_lead_after'] : false;
+        !empty($tpldata['news_preview_lead_after']) ? print $tpldata['news_preview_lead_after'] : null;
     }
     ?>
 </article>

@@ -10,7 +10,7 @@
     <a id="uploadfiles" href="javascript:;"><?= $LANGDATA['L_NMU_UPLOAD_FILES'] ?></a>
 </div>
 <pre id="console"></pre>
-<div id="filelist"><?php  print $LANGDATA['L_NMU_E_BROWSER_UPLOAD'] ?></div>
+<div id="filelist"><?= $LANGDATA['L_NMU_E_BROWSER_UPLOAD'] ?></div>
 
 <?php if(!empty($data['UPLOAD_EXTRA'])) { ?>
 <div id="uploaded_user_list"><?= $data['UPLOAD_EXTRA'] ?></div>

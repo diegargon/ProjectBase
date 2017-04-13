@@ -8,7 +8,7 @@
 <div class="footer_menu">
     <div class="footer_menu_inner">
         <ul>
-            <?php isset($data['footer_menu']) ? print $data['footer_menu'] : false; ?>
+            <?= isset($data['footer_menu']) ? $data['footer_menu'] : null ?>
         </ul>
     </div>
 </div>

@@ -17,7 +17,7 @@
                 <p><?= $LANGDATA['L_WEBINF_VISITUS'] ?><a href="<?= $config['WEB_URL'] ?>"><?= $config['WEB_URL'] ?></a><br></p>
                 <p><?= $config['WEB_NAME'] ?></p>
                 <p><?= $LANGDATA['L_WEBINF_COUNTRY'] ?></p>
-                <p><?php !empty($data['CONTACT']) ? print $data['CONTACT'] : false ?></p>
+                <p><?= !empty($data['CONTACT']) ? $data['CONTACT'] : null ?></p>
             </address>
             <time datetime="<?= $config['CONTACT_TIME_DATATIME'] ?>"><?= $config['CONTACT_TIME_HUMAN'] ?></time>
         </div>
