@@ -21,7 +21,6 @@
         <meta name="resource-type" content="document"  />
         <meta name="organization" content="<?= $config['WEB_NAME'] ?> "/> 
         <meta name="theme-color" content="#ffffff" />
-
         <?php
         isset($tpldata['HEAD']) ? print $tpldata['HEAD'] : false;
         isset($tpldata['META']) ? print $tpldata['META'] : false;
