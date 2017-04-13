@@ -62,17 +62,14 @@ function Admin_generalContent($params) {
     $page_data['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_GENERAL_OPT");
 
     if ((!$opt = S_GET_INT("opt")) || $opt == 1) {
-        $page_data['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_PL_STATE'];
-        $page_data['ADM_CONTENT'] = Admin_GetPluginState("Admin");
+        $page_data['ADM_CONTENT'] .= Admin_GetPluginState("Admin");
         $page_data['ADM_CONTENT'] .= "<hr/><p><pre>" . htmlentities(Admin_GetPluginConfigFiles("Admin")) . "</pre></p>";
     } else if ($opt == 2) {
-        $page_data['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] . ": PHP INFO";
-        $page_data['ADM_CONTENT'] = "<div style='width:100%'>" . get_phpinfo() . "</div>";
+        $page_data['ADM_CONTENT'] .= "<div style='width:100%'>" . get_phpinfo() . "</div>";
     } else {
-        $page_data['ADM_CONTENT_DESC'] = $LANGDATA['L_GENERAL'] . ": Other opt";
-        $page_data['ADM_CONTENT'] = "Content from other opt";
+        $page_data['ADM_CONTENT'] = $LANGDATA['L_GENERAL'] . ": Other opt";
+        $page_data['ADM_CONTENT'] .= "Content from other opt";
     }
-    $tpl->addtpl_array($page_data);
 
     return $tpl->getTPL_file("Admin", "admin_std_content", $page_data);
 }

@@ -5,7 +5,7 @@
 !defined('IN_WEB') ? exit : true;
 ?>
 <div  class="clear bodysize page">   
-    <?php !empty($tpldata['ADD_TOP_ADMIN']) ? print $tpldata['ADD_TOP_ADMIN'] : false ?>		
+    <?= !empty($tpldata['ADD_TOP_ADMIN']) ? $tpldata['ADD_TOP_ADMIN'] : false ?>		
     <div id="admin_container">
         <div id="admin_tabs">
             <ul>
@@ -17,12 +17,12 @@
                     <li class=""><a href="admin&admtab=1" ><?= $LANGDATA['L_GENERAL'] ?></a></li>
                 <?php } ?>
 
-                <?php !empty($tpldata['ADD_ADMIN_MENU']) ? print $tpldata['ADD_ADMIN_MENU'] : false ?>		
+                <?= !empty($tpldata['ADD_ADMIN_MENU']) ? $tpldata['ADD_ADMIN_MENU'] : false ?>		
             </ul>
         </div>
         <div id="admin_content">
-            <?php !empty($tpldata['ADD_ADMIN_CONTENT']) ? print $tpldata['ADD_ADMIN_CONTENT'] : false ?>
+            <?= !empty($tpldata['ADD_ADMIN_CONTENT']) ? $tpldata['ADD_ADMIN_CONTENT'] : false ?>
         </div>
     </div>
-    <?php !empty($tpldata['ADD_BOTTOM_ADMIN']) ? print $tpldata['ADD_BOTTOM_ADMIN'] : false ?>            
+    <?= !empty($tpldata['ADD_BOTTOM_ADMIN']) ? $tpldata['ADD_BOTTOM_ADMIN'] : false ?>            
 </div>

@@ -9,7 +9,6 @@ function Admin_init() {
     global $sm;
     print_debug("Admin Inititated", "PLUGIN_LOAD");
 
-    //includePluginFiles("Admin");
     $user = $sm->getSessionUser();
     if ($user) {
         global $acl_auth;
@@ -17,7 +16,6 @@ function Admin_init() {
             register_action("header_menu_element", "action_menu_opt");
         }
     }
-    //register_action("common_web_structure", "adm_menu_opt");
 }
 
 function action_menu_opt() {
