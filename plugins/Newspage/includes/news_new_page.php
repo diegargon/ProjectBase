@@ -84,14 +84,14 @@ function news_newpage_form_process() {
 function news_newpage_submit_new($news_data) {
     global $db, $config;
 
-    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"), "ORDER BY page");
+    $query = $db->select_all("news", ["nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"], "ORDER BY page");
 
     if (($num_pages = $db->num_rows($query)) <= 0) {
         return news_error_msg("L_NEWS_NOT_EXIST");
     }
     $news_father = $db->fetch($query);
 
-    $insert_ary = array(
+    $insert_ary = [
         "nid" => $news_father['nid'],
         "lang_id" => $news_father['lang_id'],
         "title" => $news_data['title'],
@@ -104,7 +104,7 @@ function news_newpage_submit_new($news_data) {
         "acl" => $news_father['acl'],
         "moderation" => $config['NEWS_MODERATION'],
         "page" => ++$num_pages
-    );
+    ];
     !empty($news_data['lead']) ? $insert_ary['lead'] = $news_data['lead'] : false;
     $db->insert("news", $insert_ary);
 

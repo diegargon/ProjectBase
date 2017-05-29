@@ -78,7 +78,7 @@ function news_translate($news_data) {
     if (empty($news_data['nid']) || empty($lang_id)) {
         return false;
     }
-    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "$lang_id", "page" => "{$news_data['page']}"));
+    $query = $db->select_all("news", ["nid" => "{$news_data['nid']}", "lang_id" => "$lang_id", "page" => "{$news_data['page']}"]);
     if ($db->num_rows($query) > 0) { //already exist
         return false;
     }
@@ -87,11 +87,11 @@ function news_translate($news_data) {
     $orig_news_lang = S_GET_CHAR_AZ("lang", 2, 2);
     $orig_news_lang_id = $ml->iso_to_id($orig_news_lang);
 
-    $query = $db->select_all("news", array("nid" => "$orig_news_nid", "lang_id" => "$orig_news_lang_id", "page" => 1), "LIMIT 1");
+    $query = $db->select_all("news", ["nid" => "$orig_news_nid", "lang_id" => "$orig_news_lang_id", "page" => 1], "LIMIT 1");
     $orig_news = $db->fetch($query);
     $moderation = $config['NEWS_MODERATION'];
 
-    $insert_ary = array(
+    $insert_ary = [
         "nid" => $news_data['nid'],
         "lang_id" => $lang_id,
         "page" => $news_data['page'],
@@ -106,7 +106,7 @@ function news_translate($news_data) {
         "lang" => $news_data['lang'],
         "acl" => $orig_news['acl'],
         "moderation" => $moderation
-    );
+    ];
     $db->insert("news", $insert_ary);
 
     return true;

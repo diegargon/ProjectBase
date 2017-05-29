@@ -23,7 +23,7 @@ class Database {
 
     function connect($config) {
         $this->db_prefix = $config['DB_PREFIX'];
-        $this->charset = $config['CHARSET'];
+        $this->charset = DB_CHARSET;
         $this->search_min_char = $config['L_SEARCH_MIN_CHAR'];
 
         $this->dblink = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB);

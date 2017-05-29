@@ -126,7 +126,7 @@ function news_full_update($news_data) {
         $lang_id = $config['WEB_LANG_ID'];
     }
 
-    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"));
+    $query = $db->select_all("news", [ "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}" ]);
     if (($num_pages = $db->num_rows($query)) <= 0) {
         return false;
     }
@@ -135,27 +135,27 @@ function news_full_update($news_data) {
     !isset($news_data['news_translator']) ? $news_data['news_translator'] = "" : false;
 
 
-    $set_ary = array(
+    $set_ary = [
         "lang_id" => $lang_id, "title" => $news_data['title'], "lead" => $news_data['lead'], "text" => $news_data['text'],
         "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'], "category" => $news_data['category'],
         "lang" => $news_data['lang'], "acl" => $acl, "translator" => $news_data['news_translator']
-    );
+    ];
 
     do_action("news_fulledit_mod_set", $set_ary);
 
-    $where_ary = array(
+    $where_ary = [
         "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}", "page" => "{$news_data['page']}"
-    );
+    ];
     $db->update("news", $set_ary, $where_ary);
     //UPDATE ACL/CATEGORY/LANG/FEATURE on pages;
     if ($num_pages > 1) {
-        $page_set_ary = array(
+        $page_set_ary = [
             "featured" => $news_data['featured'], "author" => $news_data['author'], "author_id" => $news_data['author_id'],
             "category" => $news_data['category'], "lang" => $news_data['lang']
-        );
-        $page_where_ary = array(
-            "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}", "page" => array("operator" => "!=", "value" => "{$news_data['page']}")
-        );
+        ];
+        $page_where_ary = [
+            "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}", "page" => ["operator" => "!=", "value" => "{$news_data['page']}"]
+        ];
         $db->update("news", $page_set_ary, $page_where_ary);
     }
 
@@ -166,31 +166,31 @@ function news_full_update($news_data) {
         $plugin = "Newspage";
         $type = "source";
 
-        $query = $db->select_all("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin), "LIMIT 1");
+        $query = $db->select_all("links", [ "source_id" => $source_id, "type" => $type, "plugin" => $plugin ], "LIMIT 1");
         if ($db->num_rows($query) > 0) {
-            $db->update("links", array("link" => $news_data['news_source']), array("source_id" => $source_id, "type" => $type, "plugin" => $plugin));
+            $db->update("links", ["link" => $news_data['news_source']], [ "source_id" => $source_id, "type" => $type, "plugin" => $plugin]);
         } else {
-            $insert_ary = array(
+            $insert_ary = [
                 "source_id" => $source_id, "plugin" => $plugin,
                 "type" => $type, "link" => $news_data['news_source'],
-            );
+            ];
             $db->insert("links", $insert_ary);
         }
     } else {
         $source_id = $news_data['nid'];
         $plugin = "Newspage";
         $type = "source";
-        $db->delete("links", array("source_id" => $source_id, "type" => $type, "plugin" => $plugin), "LIMIT 1");
+        $db->delete("links", [ "source_id" => $source_id, "type" => $type, "plugin" => $plugin], "LIMIT 1");
     }
     //NEW RELATED
     if (!empty($news_data['news_new_related'])) {
         $source_id = $news_data['nid'];
         $plugin = "Newspage";
         $type = "related";
-        $insert_ary = array(
+        $insert_ary = [
             "source_id" => $source_id, "plugin" => $plugin,
             "type" => $type, "link" => $news_data['news_new_related'],
-        );
+        ];
         $db->insert("links", $insert_ary);
     }
     //OLD RELATED
@@ -198,9 +198,9 @@ function news_full_update($news_data) {
         foreach ($news_data['news_related'] as $link_id => $value) {
             if (S_VAR_INTEGER($link_id)) { //value its checked on post $link_id no 
                 if (empty($value)) {
-                    $db->delete("links", array("link_id" => $link_id), "LIMIT 1");
+                    $db->delete("links", [ "link_id" => $link_id] , "LIMIT 1");
                 } else {
-                    $db->update("links", array("link" => $value), array("link_id" => $link_id), "LIMIT 1");
+                    $db->update("links", ["link" => $value], ["link_id" => $link_id], "LIMIT 1");
                 }
             }
         }
@@ -217,19 +217,19 @@ function news_limited_update($news_data) {
         $lang_id = $config['WEB_LANG_ID'];
     }
 
-    $query = $db->select_all("news", array("nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"));
+    $query = $db->select_all("news", ["nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"]);
     if (($num_pages = $db->num_rows($query)) <= 0) {
         return false;
     }
 
-    $set_ary = array(
+    $set_ary = [
         "lang_id" => $lang_id, "title" => $news_data['title'], "lead" => $news_data['lead'], "text" => $news_data['text'],
         "lang" => $news_data['lang']
-    );
+    ];
     do_action("news_limitededit_mod_set", $set_ary);
-    $where_ary = array(
+    $where_ary = [
         "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}", "page" => "{$news_data['page']}"
-    );
+    ];
     $db->update("news", $set_ary, $where_ary);
 
     return true;

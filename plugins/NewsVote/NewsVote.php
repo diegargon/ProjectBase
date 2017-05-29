@@ -59,14 +59,14 @@ function newsvote_rate_news($user, $user_rate) {
         die('[{"status": "2", "msg": "' . $LANGDATA['L_VOTE_CANT_VOTE'] . '"}]');
     } else {
         $ip = S_SERVER_REMOTE_ADDR();
-        $insert_ary = array(
+        $insert_ary = [
             "uid" => "{$user['uid']}",
             "ip" => "$ip",
             "section" => "news_rate",
             "resource_id" => "{$news['nid']}",
             "lang_id" => "{$news['lang_id']}",
             "vote_value" => "$user_rate",
-        );
+        ];
         $db->insert("rating_track", $insert_ary);
         NewsVote_Calc_Rating($news['nid'], $news['lang_id'], "news_rate"); //TODO: LIMIT USE THIS
         if ($config['NEWSVOTE_NEWS_USER_RATING_N']) {
@@ -90,14 +90,14 @@ function newsvote_rate_comment($user, $user_rate) {
         die('[{"status": "5", "msg": "' . $LANGDATA['L_VOTE_CANT_VOTE'] . '"}]');
     } else {
         $ip = S_SERVER_REMOTE_ADDR();
-        $insert_ary = array(
+        $insert_ary = [
             "uid" => "{$user['uid']}",
             "ip" => "$ip",
             "section" => "news_comments_rate",
             "resource_id" => "{$comment['cid']}",
             "lang_id" => "{$comment['lang_id']}",
             "vote_value" => "$user_rate",
-        );
+        ];
         $db->insert("rating_track", $insert_ary);
         NewsVote_Calc_Rating($comment['cid'], $comment['lang_id'], "news_comments_rate"); //TODO: LIMIT THIS
         if ($config['NEWSVOTE_COMMENT_USER_RATING']) {
@@ -114,12 +114,12 @@ function newsvote_comment_addrate(& $comment) {
 
     $rate_data['btnExtra'] = " style=\"background: url({$config['NEWSVOTE_STARS_URL']}) no-repeat;\" ";
     if ($user['uid'] > 0 && $user['uid'] != $comment['author_id']) {
-        $where_ary = array(
+        $where_ary = [
             "uid" => $user['uid'],
             "section" => "news_comments_rate",
             "resource_id" => $comment['cid'],
             "lang_id" => $comment['lang_id'],
-        );
+        ];
         $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
         ($db->num_rows($query) == false ) ? $rate_data['show_pointer'] = 1 : $rate_data['btnExtra'] .= "disabled";
     } else {
@@ -140,12 +140,12 @@ function newsvote_news_addrate($news) {
 
     $rate_data['btnExtra'] = " style=\"background: url({$config['NEWSVOTE_STARS_URL']}) no-repeat;\" ";
     if ($news['rating_closed'] == 0 && $user['uid'] > 0 && $user['uid'] != $news['author_id']) {
-        $where_ary = array(
+        $where_ary = [
             "uid" => $user['uid'],
             "section" => "news_rate",
             "resource_id" => $news['nid'],
             "lang_id" => $news['lang_id'],
-        );
+        ];
         $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
         ($db->num_rows($query) == false ) ? $rate_data['show_pointer'] = 1 : $rate_data['btnExtra'] .= "disabled";
     } else {
@@ -160,7 +160,7 @@ function newsvote_news_addrate($news) {
 function newsvote_news_user_rating($nid, $lang_id, $user_rating) {
     global $db, $config, $UXtra;
 
-    $query = $db->select_all("news", array("nid" => "$nid", "lang_id" => $lang_id, "page" => 1), "LIMIT 1");
+    $query = $db->select_all("news", [ "nid" => "$nid", "lang_id" => $lang_id, "page" => 1], "LIMIT 1");
     $news_data = $db->fetch($query);
     $author_xtrData = $UXtra->getById($news_data['author_id']);
     if ($author_xtrData == false) {
@@ -171,20 +171,20 @@ function newsvote_news_user_rating($nid, $lang_id, $user_rating) {
     $new_rating = $author_xtrData['rating_user'] + $user_rating;
     $new_rating_times = ++$author_xtrData['rating_times'];
 
-    $UXtra->upsert(array("rating_user" => "$new_rating", "rating_times" => "$new_rating_times"), array("uid" => $author_xtrData['uid']));
+    $UXtra->upsert(["rating_user" => "$new_rating", "rating_times" => "$new_rating_times"], ["uid" => $author_xtrData['uid']]);
 
     if (!empty($news_data['translator_id']) && $config['NEWSVOTE_NEWS_USER_RATING_NT'] && $news_data['moderation'] == 0) {
         $translator_xtrData = $UXtra->getById($news_data['translator_id']);
         $t_new_rating = $translator_xtrData['rating_user'] + $user_rating;
         $t_new_rating_times = ++$translator_xtrData['rating_times'];
-        $UXtra->upsert(array("rating_user" => "$t_new_rating", "rating_times" => "$t_new_rating_times"), array("uid" => $translator_xtrData['uid']));
+        $UXtra->upsert(["rating_user" => "$t_new_rating", "rating_times" => "$t_new_rating_times"], ["uid" => $translator_xtrData['uid']]);
     }
 }
 
 function newsvote_comment_user_rating($cid, $lang_id, $user_rating) {
     global $db, $config, $UXtra;
 
-    $query = $db->select_all("comments", array("cid" => "$cid", "lang_id" => $lang_id), "LIMIT 1");
+    $query = $db->select_all("comments", ["cid" => "$cid", "lang_id" => $lang_id], "LIMIT 1");
     $comment_data = $db->fetch($query);
     $author_xtrData = $UXtra->getById($comment_data['author_id']);
     if ($author_xtrData == false) {
@@ -202,5 +202,5 @@ function newsvote_comment_user_rating($cid, $lang_id, $user_rating) {
     }
     $new_rating_times = ++$author_xtrData['rating_times'];
 
-    $UXtra->upsert(array("rating_user" => "$new_rating", "rating_times" => "$new_rating_times"), array("uid" => $author_xtrData['uid']));
+    $UXtra->upsert(["rating_user" => "$new_rating", "rating_times" => "$new_rating_times"], ["uid" => $author_xtrData['uid']]);
 }

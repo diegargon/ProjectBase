@@ -66,7 +66,7 @@ class Multilang {
         global $db;
 
         if (!empty($active)) {
-            $query = $db->select_all("lang", array("active" => "$active"));
+            $query = $db->select_all("lang", [ "active" => "$active"]);
         } else{
             $query = $db->select_all("lang");
         }

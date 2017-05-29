@@ -31,7 +31,7 @@ function NewsAds_ShowAds () {
 function NewsAds_GetMainAd() {
     global $db;
     
-    $query = $db->select_all("news_ads", array ("itsmain" => 1), "LIMIT 1");
+    $query = $db->select_all("news_ads", [ "itsmain" => 1 ], "LIMIT 1" );
     $news_ad = $db->fetch($query);
     
     return $news_ad['ad_code'];
@@ -45,10 +45,10 @@ function NewsAdds_Sponsors() {
     if ($config['newsads_sponsors']) {
         $nid = S_GET_INT("nid", 11, 1);
         if (!empty($nid)) {
-            $where_ary = array(
+            $where_ary = [
                 "itsmain" => 0,
                 "resource_id" => "$nid"            
-            );
+            ];
             $query = $db->select_all("news_ads", $where_ary);
             if( ($db->num_rows($query)) > 0 ) {
                 while ($sponsor_row = $db->fetch($query)) {
@@ -59,10 +59,10 @@ function NewsAdds_Sponsors() {
     }    
     
     if ($config['newsads_global_sponsors']) {
-        $where_ary = array(
+        $where_ary = [
             "itsmain" => 0,
             "resource_id" => 0
-            );        
+            ];        
         $query = $db->select_all("news_ads", $where_ary);
         if( ($db->num_rows($query)) > 0 ) {        
             while ($sponsor_row = $db->fetch($query)) {

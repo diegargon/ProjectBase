@@ -63,7 +63,7 @@ function news_create_new($news_data) {
         $moderation = 0;
     }
 
-    $insert_ary = array(
+    $insert_ary = [
         "nid" => $news_data['nid'],
         "lang_id" => $lang_id,
         "page" => 1,
@@ -77,7 +77,7 @@ function news_create_new($news_data) {
         "lang" => $news_data['lang'],
         "acl" => $acl,
         "moderation" => $moderation
-    );
+    ];
 
     do_action("news_mod_submit_insert", $insert_ary);
     $db->insert("news", $insert_ary);
@@ -90,21 +90,21 @@ function news_create_new($news_data) {
     //SOURCE LINK
     if (!empty($news_data['news_source'])) {
         $type = "source";
-        $insert_ary = array(
+        $insert_ary = [
             "source_id" => $news_data['nid'],
             "plugin" => $plugin,
             "type" => $type,
             "link" => $news_data['news_source']
-        );
+        ];
         $db->insert("links", $insert_ary);
     }
     //NEW RELATED
     if (!empty($news_data['news_new_related'])) {
         $type = "related";
-        $insert_ary = array(
+        $insert_ary = [
             "source_id" => $news_data['nid'], "plugin" => $plugin,
             "type" => $type, "link" => $news_data['news_new_related'],
-        );
+        ];
         $db->insert("links", $insert_ary);
     }
     return true;

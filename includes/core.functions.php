@@ -11,9 +11,9 @@ function print_debug($msg, $filter = null) {
         return;
     }
     if (!empty($filter) && defined($filter) && defined('DEBUG')) {
-        $debug[] = array("msg" => "$msg", "filter" => "$filter");
+        $debug = [ "msg" => "$msg", "filter" => "$filter" ];
     } else if (empty($filter) && defined('DEBUG')) {
-        $debug[] = array("msg" => "$msg", "filter" => "DEBUG");
+        $debug = [ "msg" => "$msg", "filter" => "DEBUG" ];
     }
 }
 
@@ -96,9 +96,9 @@ function remote_check($url) {
     }
 
     if (strpos($url, 'https://') !== 0) {
-        stream_context_set_default(array('https' => array('method' => 'HEAD')));
+        stream_context_set_default( ['https' => [ 'method' => 'HEAD' ] ]);
     } else {
-        stream_context_set_default(array('http' => array('method' => 'HEAD')));
+        stream_context_set_default( ['http' => [ 'method' => 'HEAD' ] ]);
     }
 
     $host = parse_url($url, PHP_URL_HOST);

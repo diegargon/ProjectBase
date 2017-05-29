@@ -52,10 +52,10 @@ function NMU_upload_list($user) {
     global $db, $config;
 
     $content = "<div id='photobanner'>";
-    $select_ary = array(
+    $select_ary = [
         "plugin" => "news_img_upload", 
         "source_id" => $user['uid'],
-    );
+    ];
     
     $query = $db->select_all("links", $select_ary, "ORDER BY `date` DESC LIMIT {$config['NMU_USER_IMG_LIST_MAX']}");
     while ($link = $db->fetch($query)) {        

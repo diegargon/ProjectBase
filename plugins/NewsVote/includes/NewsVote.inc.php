@@ -10,24 +10,24 @@ function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
 
     if ($config['NEWSVOTE_CHECK_VOTE_IP']) {
         $ip = S_SERVER_REMOTE_ADDR();
-        $where_ary = array(
+        $where_ary = [
             "ip" => $ip,
             "section" => $section,
             "resource_id" => $rid,
             "lang_id" => $lid,
-        );
+        ];
         $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
         if ($db->num_rows($query) > 0) {
             return false;
         }
     }
 
-    $where_ary = array(
+    $where_ary = [
         "uid" => $uid,
         "section" => $section,
         "resource_id" => $rid,
         "lang_id" => $lid,
-    );
+    ];
     $query = $db->select_all("rating_track", $where_ary, "LIMIT 1");
 
     if ($db->num_rows($query) > 0) {
@@ -35,11 +35,11 @@ function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
     } else {
         //check if its the author
         if ($section == "news_rate") {
-            $query = $db->select_all("news", array("nid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");
+            $query = $db->select_all("news", ["nid" => "$rid", "lang_id" => "$lid"], "LIMIT 1");
         } else if ($section == "news_comments_rate") {
-            $query = $db->select_all("comments", array("cid" => "$rid", "lang_id" => "$lid"), "LIMIT 1");
+            $query = $db->select_all("comments", [ "cid" => "$rid", "lang_id" => "$lid"], "LIMIT 1");
         }
-        if ($rid_row = $db->fetch($query)) {
+        if ( ($rid_row = $db->fetch($query)) ) {
             if ($rid_row['author_id'] == $uid) {
                 return false;
             }
@@ -50,11 +50,11 @@ function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
 
 function NewsVote_Calc_Rating($rid, $lid, $section) {
     global $db;
-    $where_ary = array(
+    $where_ary = [
         "section" => $section,
         "resource_id" => $rid,
         "lang_id" => $lid,
-    );
+    ];
     $query = $db->select_all("rating_track", $where_ary);
     $vote_sum = 0;
     if (($num_votes = $db->num_rows($query)) > 0) {
@@ -63,9 +63,9 @@ function NewsVote_Calc_Rating($rid, $lid, $section) {
         }
         $new_rate = $vote_sum / $num_votes;
         if ($section == "news_comments_rate") {
-            $db->update("comments", array("rating" => "$new_rate"), array("cid" => "$rid", "lang_id" => "$lid"));
+            $db->update("comments", ["rating" => "$new_rate"], ["cid" => "$rid", "lang_id" => "$lid"]);
         } else if ($section == "news_rate") {
-            $db->update("news", array("rating" => "$new_rate"), array("nid" => "$rid", "lang_id" => "$lid"));
+            $db->update("news", ["rating" => "$new_rate"], ["nid" => "$rid", "lang_id" => "$lid"]);
         }
     }
 }

@@ -214,7 +214,7 @@ function news_nav_options($news) { //TODO Use Template
 function news_pager($news_page) {
     global $db, $config;
 
-    $query = $db->select_all("news", array("nid" => $news_page['nid'], "lang_id" => $news_page['lang_id']));
+    $query = $db->select_all("news", ["nid" => $news_page['nid'], "lang_id" => $news_page['lang_id']]);
     if (($num_pages = $db->num_rows($query)) <= 1) {
         return false;
     }
@@ -284,10 +284,10 @@ function page_pager($max_pages, $num_pages, $actual_page) {
 function news_delete($nid, $lang_id) {
     global $db;
 
-    $db->delete("news", array("nid" => $nid, "lang_id" => $lang_id));
-    $query = $db->select_all("news", array("nid" => $nid), "LIMIT 1"); //check if other lang
+    $db->delete("news", ["nid" => $nid, "lang_id" => $lang_id]);
+    $query = $db->select_all("news", ["nid" => $nid], "LIMIT 1"); //check if other lang
     if ($db->num_rows($query) <= 0) {
-        $db->delete("links", array("plugin" => "Newspage", "source_id" => $nid));
+        $db->delete("links", ["plugin" => "Newspage", "source_id" => $nid]);
         //ATM by default this fuction delete all "links" if no exists the same news in other lang, mod like 
         do_action("news_delete_mod", $nid);
     }
@@ -300,7 +300,7 @@ function news_approved($nid, $lang_id) {
     if (empty($nid) || empty($lang_id)) {
         return false;
     }
-    $db->update("news", array("moderation" => 0), array("nid" => $nid, "lang_id" => $lang_id));
+    $db->update("news", array("moderation" => 0), ["nid" => $nid, "lang_id" => $lang_id]);
 
     return true;
 }
@@ -314,9 +314,9 @@ function news_featured($nid, $featured, $lang_id) {
     if (empty($nid) || empty($lang_id)) {
         return false;
     }
-    $update_ary = array("featured" => "$featured");
+    $update_ary = ["featured" => "$featured"];
     $featured == 1 ? $update_ary['featured_date'] = $time : false;
-    $db->update("news", $update_ary, array("nid" => $nid, "lang_id" => $lang_id));
+    $db->update("news", $update_ary, [ "nid" => $nid, "lang_id" => $lang_id]);
 
     return true;
 }
@@ -327,14 +327,14 @@ function news_frontpage($nid, $lang_id, $frontpage_state = 0) {
     if (empty($nid) || empty($lang_id) || $nid <= 0 && $lang_id <= 0) {
         return false;
     }
-    $db->update("news", array("frontpage" => $frontpage_state), array("nid" => $nid, "lang_id" => $lang_id));
+    $db->update("news", ["frontpage" => $frontpage_state], ["nid" => $nid, "lang_id" => $lang_id]);
 
     return true;
 }
 
 function news_stats($nid, $lang, $page, $visits) {
     global $db, $config;
-    $db->update("news", array("visits" => ++$visits), array("nid" => "$nid", "lang" => "$lang", "page" => "$page"), "LIMIT 1");
+    $db->update("news", ["visits" => ++$visits], ["nid" => "$nid", "lang" => "$lang", "page" => "$page"], "LIMIT 1");
     $config['NEWS_ADVANCED_STATS'] ? news_adv_stats($nid, $lang) : false;
 }
 
@@ -347,13 +347,13 @@ function news_adv_stats($nid, $lang) {
     empty($user) ? $user['uid'] = 0 : false; //Anon        
     $ip = S_SERVER_REMOTE_ADDR();
     $hostname = gethostbyaddr($ip);
-    $where_ary = array(
+    $where_ary = [
         "type" => "user_visits_page",
         "plugin" => "$plugin",
         "lang" => "$lang",
         "rid" => "$nid",
         "uid" => $user['uid']
-    );
+    ];
     $user['uid'] == 0 ? $where_ary['ip'] = $ip : false;
 
     $query = $db->select_all("adv_stats", $where_ary, "LIMIT 1");
@@ -364,9 +364,9 @@ function news_adv_stats($nid, $lang) {
     if ($db->num_rows($query) > 0) {
         $user_adv_stats = $db->fetch($query);
         $counter = ++$user_adv_stats['counter'];
-        $db->update("adv_stats", array("counter" => "$counter", "user_agent" => "$user_agent", "referer" => "$referer"), array("advstatid" => $user_adv_stats['advstatid']));
+        $db->update("adv_stats", ["counter" => "$counter", "user_agent" => "$user_agent", "referer" => "$referer"], ["advstatid" => $user_adv_stats['advstatid']]);
     } else {
-        $insert_ary = array(
+        $insert_ary = [
             "plugin" => "$plugin",
             "type" => "user_visits_page",
             "rid" => "$nid",
@@ -377,23 +377,23 @@ function news_adv_stats($nid, $lang) {
             "user_agent" => "$user_agent",
             "referer" => "$referer",
             "counter" => 1
-        );
+        ];
         $db->insert("adv_stats", $insert_ary);
     }
 
     if ((!empty($referer)) && ( (strpos($referer, "://" . $_SERVER['SERVER_NAME']) ) === false)) {
-        $query = $db->select_all("adv_stats", array("type" => "referers_only", "referer" => "$referer"), "LIMIT 1");
+        $query = $db->select_all("adv_stats", ["type" => "referers_only", "referer" => "$referer"], "LIMIT 1");
         if ($db->num_rows($query) > 0) {
             $allreferers = $db->fetch($query);
             $counter = ++$allreferers['counter'];
-            $db->update("adv_stats", array("counter" => "$counter"), array("advstatid" => $allreferers['advstatid']));
+            $db->update("adv_stats", ["counter" => "$counter"], ["advstatid" => $allreferers['advstatid']]);
         } else {
-            $insert_ary = array(
+            $insert_ary = [
                 "plugin" => "$plugin",
                 "type" => "referers_only",
                 "referer" => $referer,
                 "counter" => 1,
-            );
+            ];
             $db->insert("adv_stats", $insert_ary);
         }
     }
@@ -419,7 +419,7 @@ function getNewsCatBreadcrumb($news_data) {
     global $db, $config;
     $content = "";
 
-    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => $news_data['lang_id']));
+    $query = $db->select_all("categories", ["plugin" => "Newspage", "lang_id" => $news_data['lang_id']]);
     while ($cat_row = $db->fetch($query)) {
         $categories[$cat_row['cid']] = $cat_row;
     }

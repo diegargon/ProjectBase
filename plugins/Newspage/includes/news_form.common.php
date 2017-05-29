@@ -52,7 +52,7 @@ function news_get_categories() {
     } else {
         $lang_id = $config['WEB_LANG_ID'];
     }
-    $query = $db->select_all("categories", array("plugin" => "Newspage", "lang_id" => "$lang_id"), "ORDER by father");
+    $query = $db->select_all("categories", ["plugin" => "Newspage", "lang_id" => "$lang_id"], "ORDER by father");
 
     return $query;
 }
@@ -220,7 +220,7 @@ function news_get_available_langs($news_data) {
         if ($site_lang['iso_code'] == $match_lang) {
             $select .= "<option selected value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
         } else {
-            $query = $db->select_all("news", array("nid" => $news_data['nid'], "lang_id" => $site_lang['lang_id']), "LIMIT 1");
+            $query = $db->select_all("news", ["nid" => $news_data['nid'], "lang_id" => $site_lang['lang_id']], "LIMIT 1");
             if ($db->num_rows($query) <= 0) {
                 $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
             }
@@ -244,7 +244,7 @@ function news_get_missed_langs($nid, $page) {
 
     $select = "<select name='news_lang' id='news_lang'>";
     foreach ($site_langs as $site_lang) {
-        $query = $db->select_all("news", array("nid" => $nid, "lang_id" => $site_lang['lang_id'], "page" => "$page"), "LIMIT 1");
+        $query = $db->select_all("news", ["nid" => $nid, "lang_id" => $site_lang['lang_id'], "page" => "$page"], "LIMIT 1");
         if ($db->num_rows($query) <= 0) {
             $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
             $nolang = 0;

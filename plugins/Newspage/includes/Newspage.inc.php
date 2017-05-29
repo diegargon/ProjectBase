@@ -21,12 +21,12 @@ function get_news_byId($nid, $lang_id, $page = null) {
     global $config, $acl_auth, $db;
     empty($page) ? $page = 1 : false;
 
-    $where_ary = array("nid" => "$nid", "lang_id" => "$lang_id", "page" => "$page");
+    $where_ary = ["nid" => "$nid", "lang_id" => "$lang_id", "page" => "$page"];
 
     $query = $db->select_all("news", $where_ary, "LIMIT 1");
 
     if ($db->num_rows($query) <= 0) {
-        $query = $db->select_all("news", array("nid" => $nid, "page" => $page), "LIMIT 1");
+        $query = $db->select_all("news", ["nid" => $nid, "page" => $page], "LIMIT 1");
         return $db->num_rows($query) > 0 ? news_error_msg("L_NEWS_WARN_NOLANG") : news_error_msg("L_NEWS_DELETE_NOEXISTS");
     }
     $news_row = $db->fetch($query);
@@ -46,7 +46,7 @@ function get_news_byId($nid, $lang_id, $page = null) {
 function get_news_source_byID($nid) {
     global $db;
 
-    $query = $db->select_all("links", array("source_id" => "$nid", "type" => "source"), "LIMIT 1");
+    $query = $db->select_all("links", ["source_id" => "$nid", "type" => "source"], "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
         return false;
     } else {
@@ -106,7 +106,7 @@ function news_get_related($nid) {
 
 function news_friendly_title($title) {
     //FIX: better way for clean all those character?
-    $friendly_filter = array('"', '\'', '?', '$', ',', '.', '‘', '’', ':', ';', '[', ']', '{', '}', '*', '!', '¡', '¿', '+', '<', '>', '#', '@', '|', '~', '%', '&', '(', ')', '=', '`', '´', '/', 'º', 'ª', '\\');
+    $friendly_filter = ['"', '\'', '?', '$', ',', '.', '‘', '’', ':', ';', '[', ']', '{', '}', '*', '!', '¡', '¿', '+', '<', '>', '#', '@', '|', '~', '%', '&', '(', ')', '=', '`', '´', '/', 'º', 'ª', '\\'];
     $friendly = str_replace(' ', "-", $title);
     $friendly = str_replace($friendly_filter, "", $friendly);
 

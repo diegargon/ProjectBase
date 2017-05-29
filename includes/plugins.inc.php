@@ -11,7 +11,7 @@
 function register_action($event, $func, $priority = 5) {
     global $actions;
 
-    $actions[$event][] = array("function_name" => $func, "priority" => $priority);
+    $actions[$event][] = ["function_name" => $func, "priority" => $priority ];
 }
 
 function register_uniq_action($event, $func, $priority = 5) {
@@ -19,11 +19,11 @@ function register_uniq_action($event, $func, $priority = 5) {
 
     foreach ($actions as $key => $value) {
         if ($key == $event) {
-            $actions[$key][0] = array("function_name" => $func, "priority" => $priority);
+            $actions[$key][0] = [ "function_name" => $func, "priority" => $priority ];
             return;
         }
     }
-    $actions[$event][] = array("function_name" => $func, "priority" => $priority);
+    $actions[$event][] =  [ "function_name" => $func, "priority" => $priority ];
 }
 
 function do_action($event, &$params = null) {
@@ -38,17 +38,17 @@ function do_action($event, &$params = null) {
             if (is_array($func['function_name'])) {
                 if (method_exists($func['function_name'][0], $func['function_name'][1])) {
                     if (isset($return)) {
-                        $return .= call_user_func_array($func['function_name'], array(&$params));
+                        $return .= call_user_func_array($func['function_name'], [ &$params ]);
                     } else {
-                        $return = call_user_func_array($func['function_name'], array(&$params));
+                        $return = call_user_func_array($func['function_name'], [ &$params ]);
                     }
                 }
             } else {
                 if (function_exists($func['function_name'])) {
                     if (isset($return)) {
-                        $return .= call_user_func_array($func['function_name'], array(&$params));
+                        $return .= call_user_func_array($func['function_name'], [ &$params ]);
                     } else {
-                        $return = call_user_func_array($func['function_name'], array(&$params));
+                        $return = call_user_func_array($func['function_name'], [ &$params ]);
                     }
                 }
             }

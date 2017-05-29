@@ -75,11 +75,11 @@ function Multilang_ModifyLang() {
     $modify_ary["active"] = $active;
 
     if ($lang_name != false && $iso_code != false && $lang_id != false) {
-        $query2 = $db->select_all("lang", array("lang_id" => "$lang_id"), "LIMIT 1");
+        $query2 = $db->select_all("lang", [ "lang_id" => "$lang_id" ], "LIMIT 1");
         if ($db->num_rows($query2) > 0) {
             $lang_data = $db->fetch($query2);
             if ($lang_data['lang_name'] != $lang_name) {
-                $query3 = $db->select_all("lang", array("lang_name" => "$lang_name"), "LIMIT 1");
+                $query3 = $db->select_all("lang", ["lang_name" => "$lang_name" ], "LIMIT 1");
                 if ($db->num_rows($query3) > 0) {
                     $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_WARN_FIELD_IGNORE']);
                 } else {
@@ -87,14 +87,14 @@ function Multilang_ModifyLang() {
                 }
             }
             if ($lang_data['iso_code'] != $iso_code) {
-                $query3 = $db->select_all("lang", array("iso_code" => "$iso_code"), "LIMIT 1");
+                $query3 = $db->select_all("lang", [ "iso_code" => "$iso_code" ], "LIMIT 1");
                 if ($db->num_rows($query3) > 0) {
                     $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_WARN_FIELD_IGNORE']);
                 } else {
                     $modify_ary["iso_code"] = $iso_code;
                 }
             }
-            $db->update("lang", $modify_ary, array("lang_id" => "$lang_id"));
+            $db->update("lang", $modify_ary, [ "lang_id" => "$lang_id" ]);
         } else {
             $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_E_INTERNAL_ID']);
         }
@@ -114,14 +114,14 @@ function Multilang_CreateLang() {
     if ($lang_name != false && $iso_code != false) {
 
         //Lang/ISo collation its utf8_general_ci (case insensitve), anyway we use LIKE operator instead '=' 
-        $where_ary = array(
-            "lang_name" => array("value" => "$lang_name", "operator" => "LIKE"),
-            "iso_code" => array("value" => "$iso_code", "operator" => "LIKE")
-        );
+        $where_ary = [
+            "lang_name" => [ "value" => "$lang_name", "operator" => "LIKE"],
+            "iso_code" => [ "value" => "$iso_code", "operator" => "LIKE"]
+        ];
         $query = $db->select_all("lang", $where_ary, "LIMIT 1", "OR");
 
         if ($db->num_rows($query) == 0) {
-            $db->insert("lang", array("lang_name" => "$lang_name", "active" => "$active", "iso_code" => "$iso_code"));
+            $db->insert("lang", ["lang_name" => "$lang_name", "active" => "$active", "iso_code" => "$iso_code"]);
             $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_CREATE_SUCCESFUL']);
         } else {
             $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_E_FIELDS_EXISTS']);
@@ -136,7 +136,7 @@ function Multilang_DeleteLang() {
 
     $lid = S_POST_INT("lang_id", 11);
     if ($lid != false) {
-        $db->delete("lang", array("lang_id" => "$lid"));
+        $db->delete("lang", [ "lang_id" => "$lid" ]);
         $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_DELETE_SUCCESS']);
     } else {
         $tpl->addto_tplvar("ml_msg", $LANGDATA['L_ML_E_INTERNAL_ID']);

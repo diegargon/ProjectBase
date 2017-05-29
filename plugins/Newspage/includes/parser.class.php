@@ -7,7 +7,7 @@
 
 class parse_text {
     
-    private $bbcode = array(
+    private $bbcode = [
         '~\[p\](.*?)\[/p\]~si'                                              => '<p>$1</p>',
         '~\[b\](.*?)\[/b\]~si'                                              => '<span class="bold">$1</span>',
 	'~\[i\](.*?)\[/i\]~si'                                              => '<span class="italic">$1</span>',
@@ -30,7 +30,7 @@ class parse_text {
         '~\[br\]~si'                                                        => '<br/>',
         '~\[youtube\]https:\/\/www.youtube.com\/watch\?v=(.*?)\[\/youtube\]~si' => '<div><iframe src="https://www.youtube.com/embed/$1" allowfullscreen></iframe></div>',
         '~\[youtube w=((?:[1-9][0-9]?[0-9]?)) h=((?:[1-9][0-9]?[0-9]?))\]https:\/\/www.youtube.com\/watch\?v=(.*?)\[\/youtube\]~si' => '<div><iframe width="$1" height="$2" src="https:\/\/www.youtube.com\/embed\/$3" frameborder="0" allowfullscreen></iframe></div>',
-    );
+    ];
 
     function __construct() {
         global $config;

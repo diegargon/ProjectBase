@@ -49,11 +49,11 @@ function get_news($news_select, $xtr_data = null) {
     $excluded_news = [];
 
     if ($news_select['excl_portal_featured']) {
-        $featured_ary = array(
+        $featured_ary = [
             "featured" => 1,
             "page" => 1,
             "lang_id" => "$lang_id",
-        );
+        ];
         $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT {$config['NEWS_PORTAL_FEATURED_LIMIT']}");
         while ($featured_news = $db->fetch($featured_query)) {
             $excluded_news[] = $featured_news['nid'];
@@ -64,16 +64,16 @@ function get_news($news_select, $xtr_data = null) {
         $childs_id = $ctgs->getCatChildsID("Newspage", $news_select['category']);
     }
     if ($news_select['excl_firstcat_featured'] && !empty($news_select['category'])) {
-        $featured_ary = array(
+        $featured_ary = [
             "featured" => 1,
             "page" => 1,
             "lang_id" => "$lang_id",
-        );
-        $featured_ary['category'] = array("value" => "({$news_select['category']}$childs_id)", "operator" => "IN");
+        ];
+        $featured_ary['category'] = [ "value" => "({$news_select['category']}$childs_id)", "operator" => "IN" ];
         $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT 1");
         $featured_news = $db->fetch($featured_query);
 
-        !empty($featured_news) ? $where_ary['nid'] = array("value" => $featured_news['nid'], "operator" => "<>") : null;
+        !empty($featured_news) ? $where_ary['nid'] = [ "value" => $featured_news['nid'], "operator" => "<>"] : null;
     }
 
     $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : null;
@@ -84,7 +84,7 @@ function get_news($news_select, $xtr_data = null) {
     $news_select['limit'] > 0 ? $q_extra .= " LIMIT {$news_select['limit']}" : null;
 
     if (!empty($news_select['category']) && !empty($news_select['get_childs'])) {
-        $where_ary['category'] = array("value" => "({$news_select['category']}$childs_id)", "operator" => "IN");
+        $where_ary['category'] = [ "value" => "({$news_select['category']}$childs_id)", "operator" => "IN" ];
     } else if (!empty($news_select['category'])) {
         $where_ary['category'] = $news_select['category'];
     }
@@ -195,11 +195,11 @@ function news_portal_content() {
 
     $portal_content = [];
 
-    $featured_ary = array(
+    $featured_ary = [
         "featured" => 1,
         "limit" => $config['NEWS_PORTAL_FEATURED_LIMIT'],
         "cathead" => 1
-    );
+    ];
     $config['NEWS_PORTAL_FEATURED'] ? $portal_content['featured'] = get_news($featured_ary) : null;
 
     if ($config['NEWS_PORTAL_COLS'] >= 1) {
@@ -228,9 +228,9 @@ function news_getPortalColLayout($columnConfigs) {
 }
 
 function news_func_allowed($func) {
-    $func_allow = array(
+    $func_allow = [
         "get_news" => 1,
-    );
+    ];
     do_action("news_func_allow", $func_allow);
 
     if (array_key_exists($func, $func_allow) && $func_allow[$func] == 1) {

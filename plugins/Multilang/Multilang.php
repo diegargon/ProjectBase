@@ -49,5 +49,5 @@ function Multilang_init(){
         header('Location:' .$request_uri);
         exit;
     }
-    !$config['ML_FORCEUSE_DFL_LANG'] ? register_action("header_menu_element", array($ml, "get_nav"), 6) : false;
+    !$config['ML_FORCEUSE_DFL_LANG'] ? register_action("header_menu_element", [ $ml, "get_nav" ], 6) : false;
 }
