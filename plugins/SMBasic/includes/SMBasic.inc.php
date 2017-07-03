@@ -87,10 +87,10 @@ function SMBasic_navLogReg() {
         $profile_url = "/{$config['WEB_LANG']}/profile";
         $logout_url = "/{$config['WEB_LANG']}/logout";
     } else {
-        $login_url = "/app.php?module=SMBasic&page=login&lang={$config['WEB_LANG']}";
-        $register_url = "/app.php?module=SMBasic&page=register&lang={$config['WEB_LANG']}";
-        $profile_url = "/app.php?module=SMBasic&page=profile&lang={$config['WEB_LANG']}'";
-        $logout_url = "/app.php?module=SMBasic&page=logout&lang={$config['WEB_LANG']}";
+        $login_url = "/{$config['CON_FILE']}?module=SMBasic&page=login&lang={$config['WEB_LANG']}";
+        $register_url = "/{$config['CON_FILE']}?module=SMBasic&page=register&lang={$config['WEB_LANG']}";
+        $profile_url = "/{$config['CON_FILE']}?module=SMBasic&page=profile&lang={$config['WEB_LANG']}'";
+        $logout_url = "/{$config['CON_FILE']}?module=SMBasic&page=logout&lang={$config['WEB_LANG']}";
     }
 
     if ($user) {

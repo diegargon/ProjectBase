@@ -38,7 +38,7 @@ function WebInfo_footer() {
         }
         $footer_data['footer_menu'] .= '<li><a href="/' . $config['WEB_LANG'] . '/Terms">' . $LANGDATA['L_WEBINF_TOS'] . '</a></li>';
     } else {
-        $footer_data['footer_menu'] = '<li><a href="app.php?module=WebInfo&page=AboutUs&lang=' . $config['WEB_LANG'] . '>AboutUs</a></li>';
+        $footer_data['footer_menu'] = '<li><a href="'. $config['CON_FILE'] .' ?module=WebInfo&page=AboutUs&lang=' . $config['WEB_LANG'] . '>AboutUs</a></li>';
     }
     $tpl->addto_tplvar("ADD_TO_FOOTER", $tpl->getTPL_file("WebInfo", "footer_nav", $footer_data));
 }

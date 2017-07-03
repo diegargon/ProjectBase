@@ -70,7 +70,7 @@ if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['login']
     if ($config['FRIENDLY_URL']) {
         $login_data['register_url'] = "/{$config['WEB_LANG']}/register";
     } else {
-        $login_data['register_url'] = "/app.php?module=SMBasic&page=register&lang={$config['WEB_LANG']}";
+        $login_data['register_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=register&lang={$config['WEB_LANG']}";
     }
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "login", $login_data));
 }

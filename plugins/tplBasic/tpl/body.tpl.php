@@ -17,7 +17,7 @@
                             <li class="nav_right resp-icon"><a rel="nofollow" href="javascript:void(0);" onclick="toggleMenu()">&#9776;</a></li>
                             <?php if ($config['HEADER_MENU_HOME']) { ?>
                                 <li class='nav_left lihome zero'>
-                                    <a href='/<?= $config['FRIENDLY_URL'] ? $config['WEB_LANG'] : "?lang={$config['WEB_LANG']}";?> /'>
+                                    <a href='/<?= $config['FRIENDLY_URL'] ? $config['WEB_LANG'] : "?lang={$config['WEB_LANG']}";?>/'>
                                         <img width=20 height=20 src='<?= $config['IMG_HOME'] ?>' alt='<?= $LANGDATA['L_HOME'] ?>' />
                                     </a></li>
                             <?php } ?>
