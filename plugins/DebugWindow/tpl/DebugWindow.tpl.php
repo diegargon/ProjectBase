@@ -12,7 +12,7 @@
             <?php
             foreach ($data as $element) {
                 echo  $element['filter'] . ": " . $element['msg'] ."<br/>";
-            }            
+            }         
             ?>
         </ul>
     </div>

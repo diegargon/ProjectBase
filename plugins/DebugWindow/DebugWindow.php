@@ -16,6 +16,6 @@ function DebugWindow_init() {
 }
 
 function get_dw_tpl() {
-    global $tpl;
-    return $tpl->getTPL_file("DebugWindow", null, $GLOBALS['debug']);
+    global $tpl, $debug;
+    return $tpl->getTPL_file("DebugWindow", null, $debug);
 }
