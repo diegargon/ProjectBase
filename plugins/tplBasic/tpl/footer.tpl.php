@@ -10,5 +10,6 @@
 </div>
 </div> <!-- Container -->
 <?= isset($tpldata['SCRIPTS_BOTTOM']) ? $tpldata['SCRIPTS_BOTTOM'] : null ?>
+<br/><br/>
 </body>
 </html>
