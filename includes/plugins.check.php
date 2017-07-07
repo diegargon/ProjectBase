@@ -76,6 +76,9 @@ function plugin_start($pluginname) {
            if(checker_plugin($plugin)) {
                 init_plugin($plugin);
                 return true;
+           } else {
+               //exist but already starter
+               return false;
            }
         }
     }
