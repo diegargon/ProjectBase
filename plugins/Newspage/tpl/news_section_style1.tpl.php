@@ -7,31 +7,31 @@
 <div  class="clear bodysize page">
     <?php
     isset($tpldata['ADD_TOP_SECTION']) ? print $tpldata['ADD_TOP_SECTION'] : false;
-    if ($config['NEWS_SECTION_COLS'] >= 1) {
+    if ($cfg['NEWS_SECTION_COLS'] >= 1) {
         ?>
-        <section class="col col<?= $config['NEWS_SECTION_COLS']; ?>">
+        <section class="col col<?= $cfg['NEWS_SECTION_COLS']; ?>">
             <div class='featured_container_section'> <?= isset($data['featured']) ? $data['featured'] : null ?> </div>
             <?= isset($data['col1_articles']) ? $data['col1_articles'] : null ?>
         </section>
         <?php
     }
-    if ($config['NEWS_SECTION_COLS'] >= 2) {
+    if ($cfg['NEWS_SECTION_COLS'] >= 2) {
         ?>
-        <section class="col col<?= $config['NEWS_SECTION_COLS']; ?>">
+        <section class="col col<?= $cfg['NEWS_SECTION_COLS']; ?>">
             <?= isset($data['col2_articles']) ? $data['col2_articles'] : null ?>
         </section>
         <?php
     }
-    if ($config['NEWS_SECTION_COLS'] >= 3) {
+    if ($cfg['NEWS_SECTION_COLS'] >= 3) {
         ?>
-        <section class="col col<?= $config['NEWS_SECTION_COLS']; ?>">
+        <section class="col col<?= $cfg['NEWS_SECTION_COLS']; ?>">
             <?= isset($data['col3_articles']) ? $data['col3_articles'] : null ?>
         </section>
         <?php
     }
-    if ($config['NEWS_SECTION_COLS'] >= 4) {
+    if ($cfg['NEWS_SECTION_COLS'] >= 4) {
         ?>
-        <section class="col col<?= $config['NEWS_SECTION_COLS']; ?>">
+        <section class="col col<?= $cfg['NEWS_SECTION_COLS']; ?>">
             <?= isset($data['col4_articles']) ? $data['col4_articles'] : nill ?>
         </section>
     <?php

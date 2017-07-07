@@ -56,7 +56,7 @@ function SC_NewComment($plugin, $resource_id, $lang_id = null) {
 }
 
 function SC_AddComment($plugin, $comment, $resource_id, $lang_id = null) {
-    global $sm, $db, $LANGDATA;
+    global $sm, $db, $LNG;
 
     $user = $sm->getSessionUser();
     if (empty($user)) {

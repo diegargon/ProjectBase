@@ -16,17 +16,17 @@ function NewsXtra_ProfileChange(& $set_ary) {
 }
 
 function NewsXtra_Modify_N_DisplayName(& $news_data) {
-    global $config, $UXtra;
+    global $cfg, $UXtra;
     $authorEx_data = $UXtra->getById($news_data['author_id']);
     if ($authorEx_data['realname_display']) {
         $news_data['author'] = $authorEx_data['realname'];
-        $config['PAGE_AUTHOR'] = $authorEx_data['realname'];
+        $cfg['PAGE_AUTHOR'] = $authorEx_data['realname'];
     }
 
     if (!empty($news_data['translator_id'])) {
         $transEx_data = $UXtra->getById($news_data['translator_id']);
         if ($transEx_data['realname_display']) {
-            $news_data['translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$transEx_data['uid']}'>{$transEx_data['realname']}</a>";
+            $news_data['translator'] = "<a rel='nofollow' href='/{$cfg['WEB_LANG']}/profile&viewprofile={$transEx_data['uid']}'>{$transEx_data['realname']}</a>";
         }
     }
 }

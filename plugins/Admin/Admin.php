@@ -23,14 +23,14 @@ function action_menu_opt() {
 }
 
 function adm_menu_opt() {
-    global $config, $tpl;
+    global $cfg, $tpl;
 
     $data = "<li class='nav_left'>";
     $data .= "<a rel='nofollow' href='/";
-    if ($config['FRIENDLY_URL']) {
-        $data .= "{$config['WEB_LANG']}/admin";
+    if ($cfg['FRIENDLY_URL']) {
+        $data .= "{$cfg['WEB_LANG']}/admin";
     } else {
-        $data .= "{$config['CON_FILE']}?module=Newspage&page=adm&lang={$config['WEB_LANG']}";
+        $data .= "{$cfg['CON_FILE']}?module=Newspage&page=adm&lang={$cfg['WEB_LANG']}";
     }
     $data .= "'>" . "Admin" . "</a>";
     $data .= "</li>";

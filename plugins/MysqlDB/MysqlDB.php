@@ -8,12 +8,12 @@
 global $dblink;
 
 function MysqlDB_Init() {
-    global $db, $config;
+    global $db, $cfg;
 
     print_debug("MysqlDB Initialice", "PLUGIN_LOAD");
     includePluginFiles("MysqlDB");
 
     !isset($db) ? $db = new Database : false;
-    $db->connect($config);
+    $db->connect($cfg);
     //register_action("finalize", array($db, "close"), "5"); we use destructor now;
 }

@@ -5,18 +5,18 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-$LANGDATA['L_ERROR'] = "Error";
-$LANGDATA['L_BACKHOME'] = "Back to home";
-$LANGDATA['L_GENERAL'] = "General";
-$LANGDATA['L_SEP'] = ": ";
+$LNG['L_ERROR'] = "Error";
+$LNG['L_BACKHOME'] = "Back to home";
+$LNG['L_GENERAL'] = "General";
+$LNG['L_SEP'] = ": ";
 //PLUGIN_STATE
-$LANGDATA['L_PL_STATE'] = "Plugin state";
-$LANGDATA['L_PL_NAME'] = "Name";
-$LANGDATA['L_PL_ENABLE'] = "Enabled";
-$LANGDATA['L_PL_PROVIDE'] = "Provided";
-$LANGDATA['L_PL_DEPEND'] = "Dependences";
-$LANGDATA['L_PL_PRIORITY'] = "Priority";
-$LANGDATA['L_PL_AUTOSTART'] = "Autostart";
-$LANGDATA['L_PL_YES'] = "Yes";
-$LANGDATA['L_PL_NO'] = "No";
-$LANGDATA['L_PL_OPTIONAL'] = "Optional";   
+$LNG['L_PL_STATE'] = "Plugin state";
+$LNG['L_PL_NAME'] = "Name";
+$LNG['L_PL_ENABLE'] = "Enabled";
+$LNG['L_PL_PROVIDE'] = "Provided";
+$LNG['L_PL_DEPEND'] = "Dependences";
+$LNG['L_PL_PRIORITY'] = "Priority";
+$LNG['L_PL_AUTOSTART'] = "Autostart";
+$LNG['L_PL_YES'] = "Yes";
+$LNG['L_PL_NO'] = "No";
+$LNG['L_PL_OPTIONAL'] = "Optional";   

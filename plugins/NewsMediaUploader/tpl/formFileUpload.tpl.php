@@ -4,13 +4,13 @@
  */
 !defined('IN_WEB') ? exit : true;
 ?>
-<label><?= $LANGDATA['L_NMU_UPLOAD_FILES'] ?><span class='text_small'><?= $LANGDATA['L_NMU_MAX'] . $config['NMU_MAX_FILESIZE'] ?></span></label>
+<label><?= $LNG['L_NMU_UPLOAD_FILES'] ?><span class='text_small'><?= $LNG['L_NMU_MAX'] . $cfg['NMU_MAX_FILESIZE'] ?></span></label>
 <div id="upload_container">
-    <a id="pickfiles" href="javascript:;"><?= $LANGDATA['L_NMU_SELECT_FILES'] ?></a>
-    <a id="uploadfiles" href="javascript:;"><?= $LANGDATA['L_NMU_UPLOAD_FILES'] ?></a>
+    <a id="pickfiles" href="javascript:;"><?= $LNG['L_NMU_SELECT_FILES'] ?></a>
+    <a id="uploadfiles" href="javascript:;"><?= $LNG['L_NMU_UPLOAD_FILES'] ?></a>
 </div>
 <pre id="console"></pre>
-<div id="filelist"><?= $LANGDATA['L_NMU_E_BROWSER_UPLOAD'] ?></div>
+<div id="filelist"><?= $LNG['L_NMU_E_BROWSER_UPLOAD'] ?></div>
 
 <?php if(!empty($data['UPLOAD_EXTRA'])) { ?>
 <div id="uploaded_user_list"><?= $data['UPLOAD_EXTRA'] ?></div>
@@ -21,13 +21,13 @@ var uploader = new plupload.Uploader({
     runtimes : 'html5, html4',
     browse_button : 'pickfiles', // you can pass an id...
     container: document.getElementById('upload_container'), // ... or DOM Element itself
-    url : '<?= $config['CON_FILE'] ?>?module=NewsMediaUploader&page=upload',
+    url : '<?= $cfg['CON_FILE'] ?>?module=NewsMediaUploader&page=upload',
     unique_names: false,
 
     filters : {
-	max_file_size : '<?= $config['NMU_MAX_FILESIZE'] ?>',
+	max_file_size : '<?= $cfg['NMU_MAX_FILESIZE'] ?>',
         mime_types: [
-            {title : "Image files", extensions : "<?= $config['NMU_ACCEPTED_FILES']?>"}
+            {title : "Image files", extensions : "<?= $cfg['NMU_ACCEPTED_FILES']?>"}
 	]
     },
 

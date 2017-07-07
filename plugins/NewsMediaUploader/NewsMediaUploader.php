@@ -5,7 +5,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function NewsMediaUploader_init() { 
-    global $config, $tpl, $sm;
+    global $cfg, $tpl, $sm;
     print_debug("NewsMediaUploader initiated", "PLUGIN_LOAD");
 
     includePluginFiles("NewsMediaUploader");    
@@ -14,14 +14,14 @@ function NewsMediaUploader_init() {
     
     $user = $sm->getSessionUser();
     
-    if ($config['NMU_ALLOW_ANON'] == 0 && empty($user['uid'])) {     
+    if ($cfg['NMU_ALLOW_ANON'] == 0 && empty($user['uid'])) {     
         $tpl->addto_tplvar("NEWS_FORM_TOP_OPTION", NMU_disable_warn());
         return false;
     }
     
-    if ($user && defined('ACL') && $config['NMU_ACL_CHECK']) {
+    if ($user && defined('ACL') && $cfg['NMU_ACL_CHECK']) {
         global $acl_auth;
-        if ( !$acl_auth->acl_ask($config['NMU_ACL_LIST'])) {
+        if ( !$acl_auth->acl_ask($cfg['NMU_ACL_LIST'])) {
             $tpl->addto_tplvar("NEWS_FORM_TOP_OPTION", NMU_disable_warn());
             return false;
         }
@@ -33,7 +33,7 @@ function NewsMediaUploader_init() {
 }
 
 function NMU_form_add($news) {
-    global $tpl, $sm, $config;
+    global $tpl, $sm, $cfg;
 
     if (!empty($news['news_auth']) && $news['news_auth'] == "translator") { //translator can upload new files
         return false;
@@ -42,14 +42,14 @@ function NMU_form_add($news) {
 
     $tpl->AddScriptFile("standard", "jquery", "TOP", null);
     $tpl->AddScriptFile("NewsMediaUploader", "plupload.full.min", "TOP", null);
-    if ($config['NMU_REMOTE_FILE_UPLOAD']) {
+    if ($cfg['NMU_REMOTE_FILE_UPLOAD']) {
         $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "remoteFileUpload", $extra_content));
     }
     $tpl->addto_tplvar("NEWS_FORM_MIDDLE_OPTION", $tpl->getTPL_file("NewsMediaUploader", "formFileUpload", $extra_content));
 }
 
 function NMU_upload_list($user) {
-    global $db, $config;
+    global $db, $cfg;
 
     $content = "<div id='photobanner'>";
     $select_ary = [
@@ -57,7 +57,7 @@ function NMU_upload_list($user) {
         "source_id" => $user['uid'],
     ];
     
-    $query = $db->select_all("links", $select_ary, "ORDER BY `date` DESC LIMIT {$config['NMU_USER_IMG_LIST_MAX']}");
+    $query = $db->select_all("links", $select_ary, "ORDER BY `date` DESC LIMIT {$cfg['NMU_USER_IMG_LIST_MAX']}");
     while ($link = $db->fetch($query)) {        
         $link_thumb = str_replace("[S]", "/thumbs/", $link['link']);
         $textToadd = "[localimg]" . $link['link']  . "[/localimg]";
@@ -68,7 +68,7 @@ function NMU_upload_list($user) {
 }
 
 function NMU_disable_warn() {
-    global $LANGDATA;
-    $content = "<p class='warn_disable'>{$LANGDATA['L_NMU_W_DISABLE']}</p>";
+    global $LNG;
+    $content = "<p class='warn_disable'>{$LNG['L_NMU_W_DISABLE']}</p>";
     return $content;
 }

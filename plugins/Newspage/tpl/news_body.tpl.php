@@ -49,10 +49,10 @@
                 <?= !empty($tpldata['ADD_NEWS_INFO_POST_AVATAR']) ? $tpldata['ADD_NEWS_INFO_POST_AVATAR'] : null ?>
                 <div class="extra-small">
                     <?= $data['date'] ?> <br/>
-                    <a href='/<?= $config['WEB_LANG'] ?>/profile&viewprofile=<?= $data['author_uid'] ?>'><?= $data['author'] ?></a>
-                    <?= !empty($data['translator']) ? " | " . $LANGDATA['L_NEWS_TRANSLATE_BY'] . $data['translator'] : null ?>
+                    <a href='/<?= $cfg['WEB_LANG'] ?>/profile&viewprofile=<?= $data['author_uid'] ?>'><?= $data['author'] ?></a>
+                    <?= !empty($data['translator']) ? " | " . $LNG['L_NEWS_TRANSLATE_BY'] . $data['translator'] : null ?>
                     <?php if (!empty($data['news_sources'])) { ?>
-                        | <span><?= $LANGDATA['L_NEWS_SOURCE'] . ": " . $data['news_sources'] ?> </span>
+                        | <span><?= $LNG['L_NEWS_SOURCE'] . ": " . $data['news_sources'] ?> </span>
                     <?php } ?>
                 </div>
                 <?= !empty($tpldata['ADD_NEWS_INFO_BOTTOM']) ? $tpldata['ADD_NEWS_INFO_BOTTOM'] : null ?>

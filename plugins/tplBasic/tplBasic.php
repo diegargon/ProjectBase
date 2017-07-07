@@ -6,12 +6,12 @@
 !defined('IN_WEB') ? exit : true;
 
 function tplBasic_init() {
-    global $tpl, $config;
+    global $tpl, $cfg;
     print_debug("tplBasic initialized", "PLUGIN_LOAD");
 
     includePluginFiles("tplBasic");
 
-    $custom_lang = "tpl/lang/" . $config['WEB_LANG'] . "/custom.lang.php";
+    $custom_lang = "tpl/lang/" . $cfg['WEB_LANG'] . "/custom.lang.php";
     file_exists($custom_lang) ? require_once($custom_lang) : false;
 
     $tpl = new TPL;
@@ -40,12 +40,12 @@ function tplBasic_message_page($box_data) {
 }
 
 function tplBasic_message_box($box_data) {
-    global $config, $tpl, $LANGDATA;
+    global $cfg, $tpl, $LNG;
 
-    !empty($box_data['title']) ? $data['BOX_TITLE'] = $LANGDATA[$box_data['title']] : $data['BOX_TITLE'] = $LANGDATA['L_E_ERROR'];
-    !empty($box_data['backlink']) ? $data['BOX_BACKLINK'] = $box_data['backlink'] : $data['BOX_BACKLINK'] = $config['BACKLINK'];
-    !empty($box_data['backlink_title']) ? $data['BOX_BACKLINK_TITLE'] = $LANGDATA[$box_data['backlink_title']] : $data['BOX_BACKLINK_TITLE'] = $LANGDATA['L_BACK'];
-    $data['BOX_MSG'] = $LANGDATA[$box_data['MSG']];
+    !empty($box_data['title']) ? $data['BOX_TITLE'] = $LNG[$box_data['title']] : $data['BOX_TITLE'] = $LNG['L_E_ERROR'];
+    !empty($box_data['backlink']) ? $data['BOX_BACKLINK'] = $box_data['backlink'] : $data['BOX_BACKLINK'] = $cfg['BACKLINK'];
+    !empty($box_data['backlink_title']) ? $data['BOX_BACKLINK_TITLE'] = $LNG[$box_data['backlink_title']] : $data['BOX_BACKLINK_TITLE'] = $LNG['L_BACK'];
+    $data['BOX_MSG'] = $LNG[$box_data['MSG']];
     !empty($box_data['XTRA_BOX_MSG']) ? $data['BOX_MSG'] .= $box_data['XTRA_BOX_MSG'] : false;
     $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("tplBasic", "msgbox", $data));
 }

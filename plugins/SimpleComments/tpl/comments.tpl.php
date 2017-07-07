@@ -8,7 +8,7 @@ if (!empty($data['TPL_FIRST'])) {
     ?>
         <div id="comments">
             <section>
-                <h2><?= $LANGDATA['L_SC_COMMENTS'] ?></h2>
+                <h2><?= $LNG['L_SC_COMMENTS'] ?></h2>
             <?php } ?>
             <div class="comment">
                 <span class="avatar">

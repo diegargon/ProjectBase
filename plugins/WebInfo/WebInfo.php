@@ -6,17 +6,17 @@
 !defined('IN_WEB') ? exit : true;
 
 function WebInfo_init() {
-    global $config;
+    global $cfg;
     print_debug("WebInfo initiated", "PLUGIN_LOAD");
     includePluginFiles("WebInfo");
     WebInfo_footer();
-    $config['WEBINFO_SHOWDATE'] ? register_action("add_to_body", "WebInfoDate", 8) : false;
+    $cfg['WEBINFO_SHOWDATE'] ? register_action("add_to_body", "WebInfoDate", 8) : false;
 }
 
 function WebInfoDate() {
-    global $tpl, $config;
+    global $tpl, $cfg;
 
-    $locale = $config['WEB_LANG'] . "_" . strtoupper($config['WEB_LANG'] . "." . strtolower($config['CHARSET']));
+    $locale = $cfg['WEB_LANG'] . "_" . strtoupper($cfg['WEB_LANG'] . "." . strtolower($cfg['CHARSET']));
     $oldLocale = setlocale(LC_TIME, $locale);
     $today = "<li class=\"nav_left date\">" . utf8_encode(strftime("%A %d %B %Y", time())) . "</li>";
     $tpl->addto_tplvar("HEADER_MENU_ELEMENT", $today);
@@ -24,21 +24,21 @@ function WebInfoDate() {
 }
 
 function WebInfo_footer() {
-    global $tpl, $config, $LANGDATA;
+    global $tpl, $cfg, $LNG;
 
     $tpl->getCSS_filePath("WebInfo");
 
-    if ($config['FRIENDLY_URL']) {
-        $footer_data['footer_menu'] = '<li><a href="/' . $config['WEB_LANG'] . '/AboutUs">' . $LANGDATA['L_WEBINF_ABOUTUS'] . '</a></li>';
-        if ($config['WEBINFO_CONTACT_FORM']) {
-            $footer_data['footer_menu'] .= '<li><a href="/' . $config['WEB_LANG'] . '/Contact">' . $LANGDATA['L_WEBINF_CONTACT'] . '</a></li>';
+    if ($cfg['FRIENDLY_URL']) {
+        $footer_data['footer_menu'] = '<li><a href="/' . $cfg['WEB_LANG'] . '/AboutUs">' . $LNG['L_WEBINF_ABOUTUS'] . '</a></li>';
+        if ($cfg['WEBINFO_CONTACT_FORM']) {
+            $footer_data['footer_menu'] .= '<li><a href="/' . $cfg['WEB_LANG'] . '/Contact">' . $LNG['L_WEBINF_CONTACT'] . '</a></li>';
         }
         if (defined('NEWSADS')) {
-            $footer_data['footer_menu'] .= '<li><a href="/' . $config['WEB_LANG'] . '/Advertise">' . $LANGDATA['L_WEBINF_ADVERTISE'] . '</a></li>';
+            $footer_data['footer_menu'] .= '<li><a href="/' . $cfg['WEB_LANG'] . '/Advertise">' . $LNG['L_WEBINF_ADVERTISE'] . '</a></li>';
         }
-        $footer_data['footer_menu'] .= '<li><a href="/' . $config['WEB_LANG'] . '/Terms">' . $LANGDATA['L_WEBINF_TOS'] . '</a></li>';
+        $footer_data['footer_menu'] .= '<li><a href="/' . $cfg['WEB_LANG'] . '/Terms">' . $LNG['L_WEBINF_TOS'] . '</a></li>';
     } else {
-        $footer_data['footer_menu'] = '<li><a href="'. $config['CON_FILE'] .' ?module=WebInfo&page=AboutUs&lang=' . $config['WEB_LANG'] . '>AboutUs</a></li>';
+        $footer_data['footer_menu'] = '<li><a href="'. $cfg['CON_FILE'] .' ?module=WebInfo&page=AboutUs&lang=' . $cfg['WEB_LANG'] . '>AboutUs</a></li>';
     }
     $tpl->addto_tplvar("ADD_TO_FOOTER", $tpl->getTPL_file("WebInfo", "footer_nav", $footer_data));
 }

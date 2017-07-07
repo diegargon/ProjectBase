@@ -11,7 +11,7 @@ function NewsComments_init() {
 }
 
 function News_Comments($news) {
-    global $config, $tpl, $sm;
+    global $cfg, $tpl, $sm;
 
     includePluginFiles("NewsComments");
 
@@ -24,17 +24,17 @@ function News_Comments($news) {
         return false;
     }
 
-    if (!empty($_POST['btnSendNewComment']) && $config['NC_ALLOW_NEW_COMMENTS']) {
-        if (!empty($user) || $config['NC_ALLOW_ANON_COMMENTS']) {
+    if (!empty($_POST['btnSendNewComment']) && $cfg['NC_ALLOW_NEW_COMMENTS']) {
+        if (!empty($user) || $cfg['NC_ALLOW_ANON_COMMENTS']) {
             $comment = S_POST_TEXT_UTF8("news_comment");
             $comment ? SC_AddComment("Newspage", $comment, $nid, $lang_id) : false;
         }
     }
 
-    $content = SC_GetComments("Newspage", $nid, $lang_id, $config['NC_MAX_COMMENTS_PERPAGE']);
+    $content = SC_GetComments("Newspage", $nid, $lang_id, $cfg['NC_MAX_COMMENTS_PERPAGE']);
 
-    if ($config['NC_ALLOW_NEW_COMMENTS']) {
-        if ($user || $config['NC_ALLOW_ANON_COMMENTS']) {
+    if ($cfg['NC_ALLOW_NEW_COMMENTS']) {
+        if ($user || $cfg['NC_ALLOW_ANON_COMMENTS']) {
             $content .= SC_NewComment("Newspage", $nid, $lang_id);
         }
     }
@@ -44,18 +44,18 @@ function News_Comments($news) {
 }
 
 function News_Comment_Details(& $comment) {
-    global $sm, $config, $LANGDATA;
+    global $sm, $cfg, $LNG;
 
     $author_data = $sm->getUserByID($comment['author_id']);
     if(!$author_data) {
         $author_data['uid'] = 0;
-        $author_data['username'] = $LANGDATA['L_SM_DELETED']; 
-        $author_data['avatar'] = $config['SMB_IMG_DFLT_AVATAR'];
+        $author_data['username'] = $LNG['L_SM_DELETED']; 
+        $author_data['avatar'] = $cfg['SMB_IMG_DFLT_AVATAR'];
     } 
-    if ($config['FRIENDLY_URL']) {
-            $comment['p_url'] = "/{$config['WEB_LANG']}/profile&viewprofile={$author_data['uid']}";
+    if ($cfg['FRIENDLY_URL']) {
+            $comment['p_url'] = "/{$cfg['WEB_LANG']}/profile&viewprofile={$author_data['uid']}";
     } else {
-            $comment['p_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=profile&viewprofile={$author_data['uid']}&lang={$config['WEB_LANG']}";
+            $comment['p_url'] = "/{$cfg['CON_FILE']}?module=SMBasic&page=profile&viewprofile={$author_data['uid']}&lang={$cfg['WEB_LANG']}";
     }
     $comment = array_merge($comment, $author_data);
 }

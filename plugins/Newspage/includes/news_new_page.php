@@ -6,7 +6,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function news_new_page() {
-    global $config, $acl_auth, $sm, $tpl, $LANGDATA;
+    global $cfg, $acl_auth, $sm, $tpl, $LNG;
 
     $nid = S_GET_INT("nid", 11, 1);
     $lang_id = S_GET_INT("lang_id", 4, 1);
@@ -31,11 +31,11 @@ function news_new_page() {
         return news_error_msg("L_E_NOACCESS");
     }
 
-    $form_data['news_form_title'] = $LANGDATA['L_NEWS_CREATE_NEW_PAGE'];
+    $form_data['news_form_title'] = $LNG['L_NEWS_CREATE_NEW_PAGE'];
     $form_data['can_change_author'] = "disabled";
     $form_data['author'] = $user['username'];
     $form_data['news_text_bar'] = news_editor_getBar();
-    $form_data['terms_url'] = $config['TERMS_URL'];
+    $form_data['terms_url'] = $cfg['TERMS_URL'];
     
     do_action("news_newpage_form_add");
 
@@ -43,7 +43,7 @@ function news_new_page() {
 }
 
 function news_newpage_form_process() {
-    global $LANGDATA, $config, $sm;
+    global $LNG, $cfg, $sm;
 
     if (!($user = $sm->getSessionUser())) {
         return false;
@@ -51,38 +51,38 @@ function news_newpage_form_process() {
     $news_data = news_form_getPost();
 
     if ($news_data['title'] == false) {
-        die('[{"status": "3", "msg": "' . $LANGDATA['L_NEWS_TITLE_ERROR'] . '"}]');
+        die('[{"status": "3", "msg": "' . $LNG['L_NEWS_TITLE_ERROR'] . '"}]');
     }
-    if ((strlen($news_data['title']) > $config['NEWS_TITLE_MAX_LENGHT']) ||
-            (strlen($news_data['title']) < $config['NEWS_TITLE_MIN_LENGHT'])
+    if ((strlen($news_data['title']) > $cfg['NEWS_TITLE_MAX_LENGHT']) ||
+            (strlen($news_data['title']) < $cfg['NEWS_TITLE_MIN_LENGHT'])
     ) {
-        die('[{"status": "3", "msg": "' . $LANGDATA['L_NEWS_TITLE_MINMAX_ERROR'] . '"}]');
+        die('[{"status": "3", "msg": "' . $LNG['L_NEWS_TITLE_MINMAX_ERROR'] . '"}]');
     }
-    if (!empty($news_data['lead']) && (strlen($news_data['lead']) > $config['NEWS_LEAD_MAX_LENGHT'])) {
-        die('[{"status": "4", "msg": "' . $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR'] . '"}]');
+    if (!empty($news_data['lead']) && (strlen($news_data['lead']) > $cfg['NEWS_LEAD_MAX_LENGHT'])) {
+        die('[{"status": "4", "msg": "' . $LNG['L_NEWS_LEAD_MINMAX_ERROR'] . '"}]');
     }
     if ($news_data['text'] == false) {
-        die('[{"status": "5", "msg": "' . $LANGDATA['L_NEWS_TEXT_ERROR'] . '"}]');
+        die('[{"status": "5", "msg": "' . $LNG['L_NEWS_TEXT_ERROR'] . '"}]');
     }
-    if ((strlen($news_data['text']) > $config['NEWS_TEXT_MAX_LENGHT']) ||
-            (strlen($news_data['text']) < $config['NEWS_TEXT_MIN_LENGHT'])
+    if ((strlen($news_data['text']) > $cfg['NEWS_TEXT_MAX_LENGHT']) ||
+            (strlen($news_data['text']) < $cfg['NEWS_TEXT_MIN_LENGHT'])
     ) {
-        die('[{"status": "5", "msg": "' . $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR'] . '"}]');
+        die('[{"status": "5", "msg": "' . $LNG['L_NEWS_TEXT_MINMAX_ERROR'] . '"}]');
     }
     if (empty($news_data['lang_id']) || empty($news_data['nid'])) {
-        die('[{"status": "8", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
+        die('[{"status": "8", "msg": "' . $LNG['L_NEWS_INTERNAL_ERROR'] . '"}]');
     }
     if (news_newpage_submit_new($news_data)) {
-        die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+        die('[{"status": "ok", "msg": "' . $LNG['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $cfg['WEB_URL'] . '"}]');
     } else {
-        die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
+        die('[{"status": "1", "msg": "' . $LNG['L_NEWS_INTERNAL_ERROR'] . '"}]');
     }
 
     return true;
 }
 
 function news_newpage_submit_new($news_data) {
-    global $db, $config;
+    global $db, $cfg;
 
     $query = $db->select_all("news", ["nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"], "ORDER BY page");
 
@@ -102,7 +102,7 @@ function news_newpage_submit_new($news_data) {
         "category" => $news_father['category'],
         "lang" => $news_father['lang'],
         "acl" => $news_father['acl'],
-        "moderation" => $config['NEWS_MODERATION'],
+        "moderation" => $cfg['NEWS_MODERATION'],
         "page" => ++$num_pages
     ];
     !empty($news_data['lead']) ? $insert_ary['lead'] = $news_data['lead'] : false;

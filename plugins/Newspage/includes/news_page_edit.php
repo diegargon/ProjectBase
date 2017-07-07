@@ -6,7 +6,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function news_edit() {
-    global $config, $LANGDATA, $acl_auth, $tpl;
+    global $cfg, $LNG, $acl_auth, $tpl;
 
     $nid = S_GET_INT("nid", 11, 1);
     $lang_id = S_GET_INT("lang_id", 4, 1);
@@ -21,7 +21,7 @@ function news_edit() {
     if (!news_check_edit_authorized($news_data)) {
         return false; // error already setting in news_check....
     }
-    $news_data['news_form_title'] = $LANGDATA['L_NEWS_EDIT_NEWS'];
+    $news_data['news_form_title'] = $LNG['L_NEWS_EDIT_NEWS'];
 
     if ($news_data['news_auth'] == "admin") {
         defined('ACL') ? $news_data['select_acl'] = $acl_auth->get_roles_select("news", $news_data['acl']) : false;
@@ -34,7 +34,7 @@ function news_edit() {
         if (($news_source = get_news_source_byID($news_data['nid'])) != false) {
             $news_data['news_source'] = $news_source['link'];
         }
-        if ($config['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid']))) {
+        if ($cfg['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid']))) {
             $news_data['news_related'] = "";
             foreach ($news_related as $related) {
                 $news_data['news_related'] .= "<input type='text' class='news_link' name='news_related[{$related['link_id']}]' value='{$related['link']}' />\n";
@@ -46,14 +46,14 @@ function news_edit() {
     }
 
     $news_data['news_text_bar'] = news_editor_getBar();
-    $news_data['terms_url'] = $config['TERMS_URL'];
+    $news_data['terms_url'] = $cfg['TERMS_URL'];
     do_action("news_edit_form_add", $news_data);
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));
 }
 
 function news_check_edit_authorized(& $news_data) {
-    global $config, $sm, $acl_auth;
+    global $cfg, $sm, $acl_auth;
 
     if (!($user = $sm->getSessionUser())) {
         return news_error_msg("L_E_NOACCESS");
@@ -64,11 +64,11 @@ function news_check_edit_authorized(& $news_data) {
         $news_data['news_auth'] = "admin";
         return $news_data;
     }
-    if ((($news_data['author'] == $user['username']) && $config['NEWS_AUTHOR_CAN_EDIT'])) {
+    if ((($news_data['author'] == $user['username']) && $cfg['NEWS_AUTHOR_CAN_EDIT'])) {
         $news_data['news_auth'] = "author";
         return $news_data;
     }
-    if ((($news_data['translator'] == $user['username']) && $config['NEWS_TRANSLATOR_CAN_EDIT'])) {
+    if ((($news_data['translator'] == $user['username']) && $cfg['NEWS_TRANSLATOR_CAN_EDIT'])) {
         $news_data['news_auth'] = "translator";
         return $news_data;
     }
@@ -77,7 +77,7 @@ function news_check_edit_authorized(& $news_data) {
 }
 
 function news_form_edit_process() {
-    global $LANGDATA, $config;
+    global $LNG, $cfg;
 
     $news_data = news_form_getPost();
 
@@ -102,15 +102,15 @@ function news_form_edit_process() {
     //UPDATE or translate
     if ($news_orig['news_auth'] == "admin" || $news_orig['news_auth'] == "author") {
         if (news_full_update($news_data)) {
-            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+            die('[{"status": "ok", "msg": "' . $LNG['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $cfg['WEB_URL'] . '"}]');
         } else {
-            die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
+            die('[{"status": "1", "msg": "' . $LNG['L_NEWS_INTERNAL_ERROR'] . '"}]');
         }
     } else if ($news_orig['news_auth'] == "translator") {
         if (news_limited_update($news_data)) {
-            die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+            die('[{"status": "ok", "msg": "' . $LNG['L_NEWS_UPDATE_SUCCESSFUL'] . '", "url": "' . $cfg['WEB_URL'] . '"}]');
         } else {
-            die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
+            die('[{"status": "1", "msg": "' . $LNG['L_NEWS_INTERNAL_ERROR'] . '"}]');
         }
     }
 
@@ -118,12 +118,12 @@ function news_form_edit_process() {
 }
 
 function news_full_update($news_data) {
-    global $config, $db, $ml;
+    global $cfg, $db, $ml;
 
     if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($news_data['lang']);
     } else {
-        $lang_id = $config['WEB_LANG_ID'];
+        $lang_id = $cfg['WEB_LANG_ID'];
     }
 
     $query = $db->select_all("news", [ "nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}" ]);
@@ -209,12 +209,12 @@ function news_full_update($news_data) {
 }
 
 function news_limited_update($news_data) {
-    global $config, $db, $ml;
+    global $cfg, $db, $ml;
 
     if (defined('MULTILANG')) {
         $lang_id = $ml->iso_to_id($news_data['lang']);
     } else {
-        $lang_id = $config['WEB_LANG_ID'];
+        $lang_id = $cfg['WEB_LANG_ID'];
     }
 
     $query = $db->select_all("news", ["nid" => "{$news_data['nid']}", "lang_id" => "{$news_data['lang_id']}"]);

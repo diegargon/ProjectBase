@@ -13,7 +13,7 @@
     <td><?= $data['role_name'] ?></td>
     <td><?= $data['role_description'] ?></td>
     <td>
-        <input type='submit' name='btnRoleDelete' value='<?= $LANGDATA['L_ACL_DELETE'] ?>' />
+        <input type='submit' name='btnRoleDelete' value='<?= $LNG['L_ACL_DELETE'] ?>' />
         <input type='hidden' name='role_id' value='<?= $data['role_id'] ?>' />
     </td>
 </tr>

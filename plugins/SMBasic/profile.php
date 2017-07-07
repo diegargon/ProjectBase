@@ -11,8 +11,8 @@ require_once("includes/SMBasic.profile.php");
 $user = $sm->getSessionUser();
 
 //HEAD MOD
-$config['PAGE_TITLE'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_PROFILE'];
-$config['PAGE_DESC'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_PROFILE'];
+$cfg['PAGE_TITLE'] = $cfg['WEB_NAME'] . ": " . $LNG['L_PROFILE'];
+$cfg['PAGE_DESC'] = $cfg['WEB_NAME'] . ": " . $LNG['L_PROFILE'];
 //END HEAD MOD
 
 if (empty($user) || $user['uid'] == 0) {

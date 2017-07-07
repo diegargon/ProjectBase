@@ -45,12 +45,12 @@ function news_get_categories_select($news_data = null) {
 }
 
 function news_get_categories() {
-    global $config, $ml, $db;
+    global $cfg, $ml, $db;
 
     if (defined('MULTILANG')) {
         $lang_id = $ml->getSessionLangId();
     } else {
-        $lang_id = $config['WEB_LANG_ID'];
+        $lang_id = $cfg['WEB_LANG_ID'];
     }
     $query = $db->select_all("categories", ["plugin" => "Newspage", "lang_id" => "$lang_id"], "ORDER by father");
 
@@ -58,7 +58,7 @@ function news_get_categories() {
 }
 
 function news_form_getPost() {
-    global $acl_auth, $sm, $LANGDATA, $db;
+    global $acl_auth, $sm, $LNG, $db;
 
     $user = $sm->getSessionUser();
     //Admin can change author (if the author not exists use admin one.
@@ -77,7 +77,7 @@ function news_form_getPost() {
             $form_data['author'] = $user['username'];
             $form_data['author_id'] = $user['uid'];
         } else {
-            $form_data['author'] = $LANGDATA['L_NEWS_ANONYMOUS'];
+            $form_data['author'] = $LNG['L_NEWS_ANONYMOUS'];
             $form_data['author_id'] = 0;
         }
     }
@@ -102,66 +102,66 @@ function news_form_getPost() {
 }
 
 function news_form_common_field_check($news_data) {
-    global $config, $LANGDATA;
+    global $cfg, $LNG;
 
     //USERNAME/AUTHOR
     if ($news_data['author'] == false) {
-        die('[{"status": "2", "msg": "' . $LANGDATA['L_NEWS_ERROR_INCORRECT_AUTHOR'] . '"}]');
+        die('[{"status": "2", "msg": "' . $LNG['L_NEWS_ERROR_INCORRECT_AUTHOR'] . '"}]');
     }
     //TITLE
     if ($news_data['title'] == false) {
-        die('[{"status": "3", "msg": "' . $LANGDATA['L_NEWS_TITLE_ERROR'] . '"}]');
+        die('[{"status": "3", "msg": "' . $LNG['L_NEWS_TITLE_ERROR'] . '"}]');
     }
-    if ((mb_strlen($news_data['title'], $config['CHARSET']) > $config['NEWS_TITLE_MAX_LENGHT']) ||
-            (mb_strlen($news_data['title'], $config['CHARSET']) < $config['NEWS_TITLE_MIN_LENGHT'])
+    if ((mb_strlen($news_data['title'], $cfg['CHARSET']) > $cfg['NEWS_TITLE_MAX_LENGHT']) ||
+            (mb_strlen($news_data['title'], $cfg['CHARSET']) < $cfg['NEWS_TITLE_MIN_LENGHT'])
     ) {
-        die('[{"status": "3", "msg": "' . $LANGDATA['L_NEWS_TITLE_MINMAX_ERROR'] . '"}]');
+        die('[{"status": "3", "msg": "' . $LNG['L_NEWS_TITLE_MINMAX_ERROR'] . '"}]');
     }
     //LEAD
     if (isset($_GET['npage']) && $_GET['npage'] > 1) {
-        if ((mb_strlen($news_data['lead'], $config['CHARSET']) > $config['NEWS_LEAD_MAX_LENGHT'])) {
-            die('[{"status": "4", "msg": "' . $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR'] . '"}]');
+        if ((mb_strlen($news_data['lead'], $cfg['CHARSET']) > $cfg['NEWS_LEAD_MAX_LENGHT'])) {
+            die('[{"status": "4", "msg": "' . $LNG['L_NEWS_LEAD_MINMAX_ERROR'] . '"}]');
         }
     } else {
         if ($news_data['lead'] == false) {
-            die('[{"status": "4", "msg": "' . $LANGDATA['L_NEWS_LEAD_ERROR'] . '"}]');
+            die('[{"status": "4", "msg": "' . $LNG['L_NEWS_LEAD_ERROR'] . '"}]');
         }
-        if ((mb_strlen($news_data['lead'], $config['CHARSET']) > $config['NEWS_LEAD_MAX_LENGHT']) ||
-                (mb_strlen($news_data['lead'], $config['CHARSET']) < $config['NEWS_LEAD_MIN_LENGHT'])
+        if ((mb_strlen($news_data['lead'], $cfg['CHARSET']) > $cfg['NEWS_LEAD_MAX_LENGHT']) ||
+                (mb_strlen($news_data['lead'], $cfg['CHARSET']) < $cfg['NEWS_LEAD_MIN_LENGHT'])
         ) {
-            die('[{"status": "4", "msg": "' . $LANGDATA['L_NEWS_LEAD_MINMAX_ERROR'] . '"}]');
+            die('[{"status": "4", "msg": "' . $LNG['L_NEWS_LEAD_MINMAX_ERROR'] . '"}]');
         }
     }
     //TEXT
     if ($news_data['text'] == false) {
-        die('[{"status": "5", "msg": "' . $LANGDATA['L_NEWS_TEXT_ERROR'] . '"}]');
+        die('[{"status": "5", "msg": "' . $LNG['L_NEWS_TEXT_ERROR'] . '"}]');
     }
-    if ((mb_strlen($news_data['text'], $config['CHARSET']) > $config['NEWS_TEXT_MAX_LENGHT']) ||
-            (mb_strlen($news_data['text'], $config['CHARSET']) < $config['NEWS_TEXT_MIN_LENGHT'])
+    if ((mb_strlen($news_data['text'], $cfg['CHARSET']) > $cfg['NEWS_TEXT_MAX_LENGHT']) ||
+            (mb_strlen($news_data['text'], $cfg['CHARSET']) < $cfg['NEWS_TEXT_MIN_LENGHT'])
     ) {
-        die('[{"status": "5", "msg": "' . $LANGDATA['L_NEWS_TEXT_MINMAX_ERROR'] . '"}]');
+        die('[{"status": "5", "msg": "' . $LNG['L_NEWS_TEXT_MINMAX_ERROR'] . '"}]');
     }
 
     return true;
 }
 
 function news_form_extra_check(&$news_data) {
-    global $config, $LANGDATA;
+    global $cfg, $LNG;
     //CATEGORY
     if ($news_data['category'] == false) {
-        die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
+        die('[{"status": "1", "msg": "' . $LNG['L_NEWS_INTERNAL_ERROR'] . '"}]');
     }
     //Source check valid if input
-    if (!empty($_POST['news_source']) && $news_data['news_source'] == false && $config['NEWS_SOURCE']) {
-        die('[{"status": "7", "msg": "' . $LANGDATA['L_NEWS_E_SOURCE'] . '"}]');
+    if (!empty($_POST['news_source']) && $news_data['news_source'] == false && $cfg['NEWS_SOURCE']) {
+        die('[{"status": "7", "msg": "' . $LNG['L_NEWS_E_SOURCE'] . '"}]');
     }
     //New related   check valid if input 
-    if (!empty($_POST['news_new_related']) && $news_data['news_new_related'] == false && $config['NEWS_RELATED']) {
-        die('[{"status": "7", "msg": "' . $LANGDATA['L_NEWS_E_RELATED'] . '"}]');
+    if (!empty($_POST['news_new_related']) && $news_data['news_new_related'] == false && $cfg['NEWS_RELATED']) {
+        die('[{"status": "7", "msg": "' . $LNG['L_NEWS_E_RELATED'] . '"}]');
     }
     //Old related  if input
-    if (!empty($_POST['news_related']) && $news_data['news_related'] == false && $config['NEWS_RELATED']) {
-        die('[{"status": "8", "msg": "' . $LANGDATA['L_NEWS_E_RELATED'] . '"}]');
+    if (!empty($_POST['news_related']) && $news_data['news_related'] == false && $cfg['NEWS_RELATED']) {
+        die('[{"status": "8", "msg": "' . $LNG['L_NEWS_E_RELATED'] . '"}]');
     }
     /* Custom /Mod Validators */
     if (($return = do_action("news_form_add_check", $news_data)) && !empty($return)) {
@@ -183,7 +183,7 @@ function Newspage_FormScript() {
 
 //Used when submit new news, get all site available langs and selected the default/user lang
 function news_get_all_sitelangs() {
-    global $config, $ml;
+    global $cfg, $ml;
 
     $site_langs = $ml->get_site_langs();
 
@@ -193,7 +193,7 @@ function news_get_all_sitelangs() {
 
     $select = "<select name='news_lang' id='news_lang'>";
     foreach ($site_langs as $site_lang) {
-        if ($site_lang['iso_code'] == $config['WEB_LANG']) {
+        if ($site_lang['iso_code'] == $cfg['WEB_LANG']) {
             $select .= "<option selected value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
         } else {
             $select .= "<option value='{$site_lang['iso_code']}'>{$site_lang['lang_name']}</option>";
@@ -206,14 +206,14 @@ function news_get_all_sitelangs() {
 
 //used when edit news, omit langs that already have this news translate
 function news_get_available_langs($news_data) {
-    global $config, $ml, $db;
+    global $cfg, $ml, $db;
 
     $site_langs = $ml->get_site_langs();
     if (empty($site_langs)) {
         return false;
     }
 
-    empty($news_data['lang']) ? $match_lang = $news_data['lang'] : $match_lang = $config['WEB_LANG'];
+    empty($news_data['lang']) ? $match_lang = $news_data['lang'] : $match_lang = $cfg['WEB_LANG'];
 
     $select = "<select name='news_lang' id='news_lang'>";
     foreach ($site_langs as $site_lang) {

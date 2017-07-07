@@ -6,6 +6,6 @@
 ?>
 
 <dl>
-    <dt><label><?= $LANGDATA[$data['profile_title']] ?> </label></dt>
+    <dt><label><?= $LNG[$data['profile_title']] ?> </label></dt>
     <dd class="<?php !empty($data['profile_class']) ? print $data['profile_class'] : false; ?>"><span><?= $data['profile_content'] ?> </span></dd>
 </dl>

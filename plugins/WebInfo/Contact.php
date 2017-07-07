@@ -5,36 +5,36 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-if ($config['WEBINFO_RECAPTCHA']) {
+if ($cfg['WEBINFO_RECAPTCHA']) {
     plugin_start("ReCaptcha");
 }
 
 //HEAD MOD
-$config['PAGE_TITLE'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_WEBINF_CONTACT'];
-$config['PAGE_DESC'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_WEBINF_CONTACT'];
+$cfg['PAGE_TITLE'] = $cfg['WEB_NAME'] . ": " . $LNG['L_WEBINF_CONTACT'];
+$cfg['PAGE_DESC'] = $cfg['WEB_NAME'] . ": " . $LNG['L_WEBINF_CONTACT'];
 //END HEAD MOD
 
 if (!empty($_POST)) {
     $mail['email'] = S_POST_EMAIL("email");
-    empty($mail['email']) ? die('{"status": "1", "msg": "' . $LANGDATA['L_CONTACT_E_EMAIL'] . '"}') : false;
+    empty($mail['email']) ? die('{"status": "1", "msg": "' . $LNG['L_CONTACT_E_EMAIL'] . '"}') : false;
     $mail['name'] = S_POST_CHAR_AZ("name", 32);
-    empty($mail['name']) ? die('{"status": "2", "msg": "' . $LANGDATA['L_CONTACT_E_NAME'] . '"}') : false;
+    empty($mail['name']) ? die('{"status": "2", "msg": "' . $LNG['L_CONTACT_E_NAME'] . '"}') : false;
     $mail['subject'] = S_POST_TEXT_UTF8("subject", 256);
-    empty($mail['subject']) ? die('{"status": "3", "msg": "' . $LANGDATA['L_CONTACT_E_SUBJECT'] . '"}') : false;
+    empty($mail['subject']) ? die('{"status": "3", "msg": "' . $LNG['L_CONTACT_E_SUBJECT'] . '"}') : false;
     $mail['message'] = S_POST_TEXT_UTF8("message", 500);
-    empty($mail['message']) ? die('{"status": "4", "msg": "' . $LANGDATA['L_CONTACT_E_MESSAGE'] . '"}') : false;
-    if ($config['WEBINFO_RECAPTCHA']) {
+    empty($mail['message']) ? die('{"status": "4", "msg": "' . $LNG['L_CONTACT_E_MESSAGE'] . '"}') : false;
+    if ($cfg['WEBINFO_RECAPTCHA']) {
 
         $captcha = S_POST_TEXT_UTF8("g-recaptcha-response");
-        empty($captcha) ? die('{"status": "6", "msg": "' . $LANGDATA['L_CONTACT_E_CAPTCHA'] . '"}') : false;
+        empty($captcha) ? die('{"status": "6", "msg": "' . $LNG['L_CONTACT_E_CAPTCHA'] . '"}') : false;
         if (($captcha_resp = captcha_validator($captcha)) == false) {
-            empty($captcha) ? die('{"status": "6", "msg": "' . $LANGDATA['L_CONTACT_E_CAPTCHA_NOPASS'] . '"}') : false;
+            empty($captcha) ? die('{"status": "6", "msg": "' . $LNG['L_CONTACT_E_CAPTCHA_NOPASS'] . '"}') : false;
         }
     }
-    $mail['to'] = $config['CONTACT_EMAIL'];
+    $mail['to'] = $cfg['CONTACT_EMAIL'];
 
     if (ContactSendMail($mail) == 0) {
-        die('{"status": "ok", "msg": "' . $LANGDATA['L_CONTACT_MAIL_SUCCESS'] . '"}');
+        die('{"status": "ok", "msg": "' . $LNG['L_CONTACT_MAIL_SUCCESS'] . '"}');
     }
 } else {
     do_action("common_web_structure");

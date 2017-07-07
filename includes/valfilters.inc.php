@@ -158,10 +158,10 @@ function S_SERVER_URL($var) {
 }
 //VAR
 function S_VAR_PASSWORD($var, $max_size = null, $min_size = null) {
-    global $config;
+    global $cfg;
     if(defined('SM') && empty ($max_size) && empty($min_size)) {
-        $max_size = $config['sm_max_password'];
-        $min_size = $config['sm_min_password'];
+        $max_size = $cfg['sm_max_password'];
+        $min_size = $cfg['sm_min_password'];
     }
 
     if ( (!empty($max_size) && (strlen($var) > $max_size) )
@@ -222,7 +222,7 @@ function S_VAR_FILENAME ($file, $max_size = null, $min_size = null) {
 
 }
 function S_VAR_URL($var, $max_size = null, $min_size = null, $force_no_remote_check = null) {
-    global $config;
+    global $cfg;
     
     if(empty($var)) {
        return false;        
@@ -241,7 +241,7 @@ function S_VAR_URL($var, $max_size = null, $min_size = null, $force_no_remote_ch
     if (empty($url)) {
         return false;
     }
-    if ($config['REMOTE_CHECKS'] && (!remote_check($url)) ) {
+    if ($cfg['REMOTE_CHECKS'] && (!remote_check($url)) ) {
         return false;
     }    
     return $url;
@@ -371,9 +371,9 @@ function S_COOKIE_CHAR_AZNUM($var, $max_size = null, $min_size = null) {
     return S_VAR_CHAR_AZ_NUM ($_COOKIE[$var], $max_size, $min_size);
 }
 function S_VALIDATE_MEDIA($url, $max_size = null, $min_size = null, $force_no_remote_check = null) {
-    global $config;
+    global $cfg;
 
-    $regex = '/\.('. $config['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
+    $regex = '/\.('. $cfg['ACCEPTED_MEDIA_REGEX'] .')(?:[\?\#].*)?$/';
 
     if( ($url = S_VAR_URL($url, $max_size, $min_size, $force_no_remote_check)) == false ) {
         return -1;

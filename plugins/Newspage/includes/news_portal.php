@@ -6,9 +6,9 @@
 !defined('IN_WEB') ? exit : true;
 
 function news_layout_select() {
-    global $config;
+    global $cfg;
 
-    if (empty($_POST['news_switch']) || $_POST['news_switch'] > $config['NEWS_PORTAL_STYLES']) {
+    if (empty($_POST['news_switch']) || $_POST['news_switch'] > $cfg['NEWS_PORTAL_STYLES']) {
         $news_switch = 1;
     } else {
         $news_switch = S_POST_INT("news_switch", 1);
@@ -29,7 +29,7 @@ function news_layout_switcher() {
 }
 
 function get_news($news_select, $xtr_data = null) {
-    global $config, $db, $tpl, $ml, $LANGDATA, $ctgs;
+    global $cfg, $db, $tpl, $ml, $LNG, $ctgs;
     $content = "";
 
     !isset($news_select['limit']) ? $news_select['limit'] = 0 : null;
@@ -43,7 +43,7 @@ function get_news($news_select, $xtr_data = null) {
     if (defined('MULTILANG')) {
         $lang_id = $where_ary['lang_id'] = $ml->getSessionLangId();
     } else {
-        $lang_id = $config['WEB_LANG_ID'];
+        $lang_id = $cfg['WEB_LANG_ID'];
     }
 
     $excluded_news = [];
@@ -54,7 +54,7 @@ function get_news($news_select, $xtr_data = null) {
             "page" => 1,
             "lang_id" => "$lang_id",
         ];
-        $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT {$config['NEWS_PORTAL_FEATURED_LIMIT']}");
+        $featured_query = $db->select_all("news", $featured_ary, "ORDER BY featured_date DESC LIMIT {$cfg['NEWS_PORTAL_FEATURED_LIMIT']}");
         while ($featured_news = $db->fetch($featured_query)) {
             $excluded_news[] = $featured_news['nid'];
         }
@@ -76,7 +76,7 @@ function get_news($news_select, $xtr_data = null) {
         !empty($featured_news) ? $where_ary['nid'] = [ "value" => $featured_news['nid'], "operator" => "<>"] : null;
     }
 
-    $config['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : null;
+    $cfg['NEWS_MODERATION'] == 1 ? $where_ary['moderation'] = 0 : null;
 
     isset($news_select['featured']) ? $where_ary['featured'] = $news_select['featured'] : null;
     isset($news_select['frontpage']) ? $where_ary['frontpage'] = $news_select['frontpage'] : null;
@@ -98,32 +98,32 @@ function get_news($news_select, $xtr_data = null) {
         $catname = null;
         if (defined('MULTILANG') && !empty($news_select['category'])) {
             $catname = "<h2>";
-            !empty($news_select['featured']) ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : null;
+            !empty($news_select['featured']) ? $catname .= $LNG['L_NEWS_FEATURED'] . ": " : null;
             $catname .= get_category_name($news_select['category'], $lang_id) . "</h2>";
         } else if (!empty($news_select['category'])) {
             $catname = "<h2>";
-            $news_select['featured'] ? $catname .= $LANGDATA['L_NEWS_FEATURED'] . ": " : null;
+            $news_select['featured'] ? $catname .= $LNG['L_NEWS_FEATURED'] . ": " : null;
             $catname .= get_category_name($news_select['category']) . "</h2>";
         }
 
         if (empty($news_select['category']) && ( isset($news_select['frontpage']) && $news_select['frontpage'] == 0) && empty($news_select['featured'])) {
-            $catname = "<h2>" . $LANGDATA['L_NEWS_BACKPAGE'] . "</h2>";
+            $catname = "<h2>" . $LNG['L_NEWS_BACKPAGE'] . "</h2>";
         } else if (empty($news_select['category']) && !isset($news_select['frontpage']) && empty($news_select['featured'])) {
-            $catname = "<h2>" . $LANGDATA['L_NEWS_FRONTPAGE'] . "</h2>";
+            $catname = "<h2>" . $LNG['L_NEWS_FRONTPAGE'] . "</h2>";
         } else if (empty($news_select['category']) && !empty($news_select['featured'])) {
-            $catname = "<h2 class='featured_category'>{$LANGDATA['L_NEWS_FEATURED']}</h2>";
+            $catname = "<h2 class='featured_category'>{$LNG['L_NEWS_FEATURED']}</h2>";
         }
         $content .= $catname;
     }
 
-    $save_img_selector = $config['IMG_SELECTOR'];
-    empty($news_select['featured']) ? $config['IMG_SELECTOR'] = "thumbs" : null; //no thumb for featured image
+    $save_img_selector = $cfg['IMG_SELECTOR'];
+    empty($news_select['featured']) ? $cfg['IMG_SELECTOR'] = "thumbs" : null; //no thumb for featured image
     while ($news_row = $db->fetch($query)) {
         if (($news_data = fetch_news_data($news_row)) != false) {
             $news_select['headlines'] ? $news_data['headlines'] = 1 : null;
             if (!empty($news_select['featured'])) {
                 do_action("news_featured_mod", $news_data);
-                $news_data['numcols_class_extra'] = "featured_col" . $config['NEWS_PORTAL_FEATURED_LIMIT'];
+                $news_data['numcols_class_extra'] = "featured_col" . $cfg['NEWS_PORTAL_FEATURED_LIMIT'];
                 $content .= $tpl->getTPL_file("Newspage", "news_featured", $news_data);
             } else {
                 if (!in_array($news_data['nid'], $excluded_news)) {
@@ -134,7 +134,7 @@ function get_news($news_select, $xtr_data = null) {
         }
     }
     $db->free($query);
-    $config['IMG_SELECTOR'] = $save_img_selector;
+    $cfg['IMG_SELECTOR'] = $save_img_selector;
 
     return $content;
 }
@@ -149,9 +149,9 @@ function news_determine_main_image($news) {
 }
 
 function fetch_news_data($row) {
-    global $config, $acl_auth;
+    global $cfg, $acl_auth;
 
-    if ($config['NEWS_ACL_PREVIEW_CHECK'] && defined('ACL') &&
+    if ($cfg['NEWS_ACL_PREVIEW_CHECK'] && defined('ACL') &&
             !empty($acl_auth) && !empty($row['acl']) && !$acl_auth->acl_ask($row['acl'])) {
         return false;
     }
@@ -161,11 +161,11 @@ function fetch_news_data($row) {
     $news['date'] = format_date($row['date']);
     $news['alt_title'] = htmlspecialchars($row['title']);
 
-    if ($config['FRIENDLY_URL']) {
+    if ($cfg['FRIENDLY_URL']) {
         $friendly_title = news_friendly_title($row['title']);
-        $news['url'] = "/" . $config['WEB_LANG'] . "/news/{$row['nid']}/{$row['page']}/$friendly_title";
+        $news['url'] = "/" . $cfg['WEB_LANG'] . "/news/{$row['nid']}/{$row['page']}/$friendly_title";
     } else {
-        $news['url'] = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$row['nid']}&lang=" . $config['WEB_LANG'] . "&npage={$row['page']}";
+        $news['url'] = "/{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$row['nid']}&lang=" . $cfg['WEB_LANG'] . "&npage={$row['page']}";
     }
     $mainimage = news_determine_main_image($row);
     if (!empty($mainimage)) {
@@ -191,25 +191,25 @@ function get_category_name($cid, $lang_id = null) {
 }
 
 function news_portal_content() {
-    global $config;
+    global $cfg;
 
     $portal_content = [];
 
     $featured_ary = [
         "featured" => 1,
-        "limit" => $config['NEWS_PORTAL_FEATURED_LIMIT'],
+        "limit" => $cfg['NEWS_PORTAL_FEATURED_LIMIT'],
         "cathead" => 1
     ];
-    $config['NEWS_PORTAL_FEATURED'] ? $portal_content['featured'] = get_news($featured_ary) : null;
+    $cfg['NEWS_PORTAL_FEATURED'] ? $portal_content['featured'] = get_news($featured_ary) : null;
 
-    if ($config['NEWS_PORTAL_COLS'] >= 1) {
-        $portal_content['col1_articles'] = news_getPortalColLayout($config['NEWS_PORTAL_COL1_CONTENT']);
+    if ($cfg['NEWS_PORTAL_COLS'] >= 1) {
+        $portal_content['col1_articles'] = news_getPortalColLayout($cfg['NEWS_PORTAL_COL1_CONTENT']);
     }
-    if ($config['NEWS_PORTAL_COLS'] >= 2) {
-        $portal_content['col2_articles'] = news_getPortalColLayout($config['NEWS_PORTAL_COL2_CONTENT']);
+    if ($cfg['NEWS_PORTAL_COLS'] >= 2) {
+        $portal_content['col2_articles'] = news_getPortalColLayout($cfg['NEWS_PORTAL_COL2_CONTENT']);
     }
-    if ($config['NEWS_PORTAL_COLS'] >= 3) {
-        $portal_content['col3_articles'] = news_getPortalColLayout($config['NEWS_PORTAL_COL3_CONTENT']);
+    if ($cfg['NEWS_PORTAL_COLS'] >= 3) {
+        $portal_content['col3_articles'] = news_getPortalColLayout($cfg['NEWS_PORTAL_COL3_CONTENT']);
     }
 
     return $portal_content;

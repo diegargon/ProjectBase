@@ -20,26 +20,26 @@ function Newspage_AdminMenu($params) {
 }
 
 function Newspage_AdminContent($params) {
-    global $LANGDATA, $config, $tpl;
+    global $LNG, $cfg, $tpl;
 
     includePluginFiles("Newspage", 1);
     $tpl->getCSS_filePath("Newspage");
     $tpl->getCSS_filePath("Newspage", "Newspage-mobile");
 
-    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_NEWS_MODERATION'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_NEWS_CATEGORY'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=4'>" . $LANGDATA['L_NEWS_INFRONTPAGE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LNG['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LNG['L_NEWS_MODERATION'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LNG['L_NEWS_CATEGORY'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=4'>" . $LNG['L_NEWS_INFRONTPAGE'] . "</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_NEWSPAGE_OPT");
 
     $page_data['ADM_CONTENT_H1'] = "Newspage";
     $opt = S_GET_INT("opt");
     if ($opt == 1 || $opt == false) {
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_PL_STATE'];
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_GENERAL'] . ": " . $LNG['L_PL_STATE'];
         $page_data['ADM_CONTENT'] = Admin_GetPluginState("Newspage");
     } else if ($opt == 2) {
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_NEWS_MODERATION'];
-        $page_data['ADM_CONTENT'] = $LANGDATA['L_NEWS_MODERATION_DESC'] . Newspage_AdminModeration();
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_NEWS_MODERATION'];
+        $page_data['ADM_CONTENT'] = $LNG['L_NEWS_MODERATION_DESC'] . Newspage_AdminModeration();
     } else if ($opt == 3) {
         if (isset($_POST['ModCatSubmit'])) {
             Newspage_ModCategories(); //Intercept modifify categories form
@@ -47,11 +47,11 @@ function Newspage_AdminContent($params) {
         if (isset($_POST['NewCatSubmit'])) {
             Newspage_NewCategory(); //Intercept new categories form
         }
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_NEWS_CATEGORIES'];
-        $page_data['ADM_CONTENT'] = $LANGDATA['L_NEWS_CATEGORY_DESC'] . Newspage_AdminCategories();
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_NEWS_CATEGORIES'];
+        $page_data['ADM_CONTENT'] = $LNG['L_NEWS_CATEGORY_DESC'] . Newspage_AdminCategories();
     } else if ($opt == 4) {
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_NEWS_INFRONTPAGE'];
-        $page_data['ADM_CONTENT'] = $LANGDATA['L_NEWS_INFRONTPAGE_DESC'] . Newspage_InFrontpage();
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_NEWS_INFRONTPAGE'];
+        $page_data['ADM_CONTENT'] = $LNG['L_NEWS_INFRONTPAGE_DESC'] . Newspage_InFrontpage();
     } else {
         do_action("ADM_NEWSPAGE_OPT", $opt);
     }

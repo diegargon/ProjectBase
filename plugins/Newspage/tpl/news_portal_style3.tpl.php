@@ -14,14 +14,14 @@
         </div>
         <?php
     }
-    if ($config['NEWS_PORTAL_COLS'] >= 1) {
+    if ($cfg['NEWS_PORTAL_COLS'] >= 1) {
         ?>
         <section class="col col2">
             <?= isset($data['col1_articles']) ? $data['col1_articles'] : null ?>
         </section>
         <?php
     }
-    if ($config['NEWS_PORTAL_COLS'] >= 2) {
+    if ($cfg['NEWS_PORTAL_COLS'] >= 2) {
         ?>
         <section class="col col2">            
             <?= isset($data['col2_articles']) ? $data['col2_articles'] : null ?>

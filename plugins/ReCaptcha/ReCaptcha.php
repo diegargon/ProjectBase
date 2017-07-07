@@ -21,9 +21,9 @@ function ReCaptcha_init() {
 }
 
 function captcha_validator($response) {
-    global $config;
-    $url = $config['RC_VERIFY_URL'];
-    $data['secret'] = $config['RC_PRIVATE_KEY'];
+    global $cfg;
+    $url = $cfg['RC_VERIFY_URL'];
+    $data['secret'] = $cfg['RC_PRIVATE_KEY'];
     $data['response'] = $response;
 
     $options = array(

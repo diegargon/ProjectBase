@@ -5,6 +5,6 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-$LANGDATA['L_HOME'] = "Inicio";
-$LANGDATA['L_E_ERROR'] = "Error";
-$LANGDATA['L_BACK'] = "Volver";
+$LNG['L_HOME'] = "Inicio";
+$LNG['L_E_ERROR'] = "Error";
+$LNG['L_BACK'] = "Volver";

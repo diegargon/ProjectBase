@@ -33,24 +33,24 @@ class parse_text {
     ];
 
     function __construct() {
-        global $config;
-        if ($config['NEWS_PARSER_ALLOW_IMG']) {
+        global $cfg;
+        if ($cfg['NEWS_PARSER_ALLOW_IMG']) {
             $this->bbcode['~\[img\](https?://.*?\.(?:jpg|jpeg|gif|png|bmp))\[/img\]~si'] = '<p><img class="user_image_link" src="$1" alt="" /></p>';
             $this->bbcode['~\[img w=((?:[1-9][0-9]?[0-9]?))\](.*?)\[\/img\]~si'] = '<p><img class="user_image_link" width="$1" src="$2" alt="" /></p>';
         }
-        if ($config['NEWS_PARSER_ALLOW_URL']) {
+        if ($cfg['NEWS_PARSER_ALLOW_URL']) {
             $this->bbcode['~\[url\]((?:ftps|https?)://.*?)\[/url\]~si'] = '<a rel="nofollow" target="_blank" href="$1">$1</a>';
             $this->bbcode['~\[url=((?:ftps?|https?)://.*?)\](.*?)\[/url\]~si'] = '<a rel="nofollow" target="_blank" href="$1">$2</a>';
         }
     }
 
     function parse($text) {
-        global $config;
+        global $cfg;
         $text = preg_replace(array_keys($this->bbcode), array_values($this->bbcode), $text);
         $text = nl2br($text);
         $text = preg_replace("/><br \/>(\s*)(<br \/>)?/si", ">", $text);
-        $text = preg_replace('/{STATIC_SRV_URL}/si', $config['STATIC_SRV_URL'], $text);
-        $text = preg_replace('/\[S\]/si', DIRECTORY_SEPARATOR . $config['IMG_SELECTOR'] . DIRECTORY_SEPARATOR, $text);
+        $text = preg_replace('/{STATIC_SRV_URL}/si', $cfg['STATIC_SRV_URL'], $text);
+        $text = preg_replace('/\[S\]/si', DIRECTORY_SEPARATOR . $cfg['IMG_SELECTOR'] . DIRECTORY_SEPARATOR, $text);
         return $text;
     }
 }

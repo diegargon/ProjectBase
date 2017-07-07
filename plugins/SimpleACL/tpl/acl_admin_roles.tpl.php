@@ -11,12 +11,12 @@
 <form method="post" action="" id="roles_mng">  
     <table class='acl_table'>
         <tr>
-            <th><?= $LANGDATA['L_ACL_LEVEL'] ?></th>
-            <th><?= $LANGDATA['L_ACL_ROLE_GROUP'] ?></th>
-            <th><?= $LANGDATA ['L_ACL_ROLE_TYPE'] ?></th>
-            <th><?= $LANGDATA ['L_ACL_ROLE_NAME'] ?></th>
-            <th><?= $LANGDATA ['L_ACL_ROLE_DESC'] ?></th>
-            <th><?= $LANGDATA ['L_ACL_ROLE_ACTIONS'] ?></th>
+            <th><?= $LNG['L_ACL_LEVEL'] ?></th>
+            <th><?= $LNG['L_ACL_ROLE_GROUP'] ?></th>
+            <th><?= $LNG ['L_ACL_ROLE_TYPE'] ?></th>
+            <th><?= $LNG ['L_ACL_ROLE_NAME'] ?></th>
+            <th><?= $LNG ['L_ACL_ROLE_DESC'] ?></th>
+            <th><?= $LNG ['L_ACL_ROLE_ACTIONS'] ?></th>
         </tr>
         <?= isset($data['ADM_TABLE_ROW']) ? $data['ADM_TABLE_ROW'] : false ?>
     </table>
@@ -32,7 +32,7 @@
             <td><input name="r_type" type="text" maxlength="14" size="11" required /></td>
             <td><input name="r_name" type="text" maxlength="32" size="22" required /></td>
             <td><input name="r_description" type="text" maxlength="255" size="22" /></td>
-            <td><input name="btnNewRole" type="submit" value='<?= $LANGDATA['L_ACL_SEND'] ?>' /></td>
+            <td><input name="btnNewRole" type="submit" value='<?= $LNG['L_ACL_SEND'] ?>' /></td>
         </tr>
     </table>
 </form>

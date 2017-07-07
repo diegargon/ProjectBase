@@ -44,20 +44,20 @@ function Admin_GetPluginState($plugin) {
 }
 
 function Admin_GetPluginConfigFiles($plugin) { //TODO BETTER CONFIG VIEW
-    $config_plugin = "plugins/$plugin/$plugin.config.php";
-    $config_plugin_user = "config/$plugin.config.php";
+    $cfg_plugin = "plugins/$plugin/$plugin.config.php";
+    $cfg_plugin_user = "config/$plugin.config.php";
     $data = "";
 
-    file_exists($config_plugin) ? $data .= file_get_contents($config_plugin) : false;
-    file_exists($config_plugin_user) ? $data .= file_get_contents($config_plugin_user) : false;  //User Overdrive                       
+    file_exists($cfg_plugin) ? $data .= file_get_contents($cfg_plugin) : false;
+    file_exists($cfg_plugin_user) ? $data .= file_get_contents($cfg_plugin_user) : false;  //User Overdrive                       
 
     return $data;
 }
 
 function Admin_generalContent($params) {
-    global $LANGDATA, $tpl;
+    global $LNG, $tpl;
 
-    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LNG['L_PL_STATE'] . "</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>Php Info</a></li>\n";
     $page_data['ADM_ASIDE_OPTION'] .= do_action("ADD_ADM_GENERAL_OPT");
 
@@ -67,7 +67,7 @@ function Admin_generalContent($params) {
     } else if ($opt == 2) {
         $page_data['ADM_CONTENT'] .= "<div style='width:100%'>" . get_phpinfo() . "</div>";
     } else {
-        $page_data['ADM_CONTENT'] = $LANGDATA['L_GENERAL'] . ": Other opt";
+        $page_data['ADM_CONTENT'] = $LNG['L_GENERAL'] . ": Other opt";
         $page_data['ADM_CONTENT'] .= "Content from other opt";
     }
 

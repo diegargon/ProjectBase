@@ -8,14 +8,14 @@
 !defined('IN_WEB') ? exit : true;
 
 function SMBasic_Init() {
-    global $sm, $config, $db;
+    global $sm, $cfg, $db;
 
     print_debug("SMBasic initialice", "PLUGIN_LOAD");
 
     includePluginFiles("SMBasic");
 
     !isset($sm) ? $sm = new SessionManager : false;
-    $sm->start($config, $db);
+    $sm->start($cfg, $db);
 
     if (action_isset("encrypt_password") == false) {
         register_uniq_action("encrypt_password", "SMBasic_encrypt_password");

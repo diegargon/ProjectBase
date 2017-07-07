@@ -12,8 +12,8 @@ require_once("includes/SMBasic.register.php");
 $user = $sm->getSessionUser();
 
 //HEAD MOD
-$config['PAGE_TITLE'] = $config['WEB_NAME'] . ": " . $LANGDATA['L_REGISTER'];
-$config['PAGE_DESC'] = $config['WEB_NAME'] . ": " .  $LANGDATA['L_REGISTER'];
+$cfg['PAGE_TITLE'] = $cfg['WEB_NAME'] . ": " . $LNG['L_REGISTER'];
+$cfg['PAGE_DESC'] = $cfg['WEB_NAME'] . ": " .  $LNG['L_REGISTER'];
 //END HEAD MOD
 
 if ($user && $user['uid'] != 0) {
@@ -22,9 +22,9 @@ if ($user && $user['uid'] != 0) {
     return false;
 }
 
-if ((!isset($_POST['email']) || ($config['smbasic_need_username'] == 1) && !isset($_POST['username'])) &&
+if ((!isset($_POST['email']) || ($cfg['smbasic_need_username'] == 1) && !isset($_POST['username'])) &&
         !isset($_POST['password']) && !isset($_POST['register'])) {
-    if ($config['smbasic_oauth']) {
+    if ($cfg['smbasic_oauth']) {
         require_once 'includes/SMBasic-oauth.inc.php';
         if (!empty($_GET['provider'])) {
             SMB_oauth_DoLogin();
@@ -36,7 +36,7 @@ if ((!isset($_POST['email']) || ($config['smbasic_need_username'] == 1) && !isse
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
     SMBasic_RegisterScript();
-    $register_data['terms_url'] = $config['TERMS_URL'] = "Terms";
+    $register_data['terms_url'] = $cfg['TERMS_URL'] = "Terms";
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "register", $register_data));
 } else {
     SMBasic_Register();

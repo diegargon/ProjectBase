@@ -11,7 +11,7 @@ if (!empty($data['TPL_FIRST'])) {
             <section>
                 <table class="searchTable">
                     <tr>
-                        <td ><h2><?= $LANGDATA['L_NS_SEARCH_RESULT'] ?></h2></td>
+                        <td ><h2><?= $LNG['L_NS_SEARCH_RESULT'] ?></h2></td>
                     </tr>
 <?php } ?>
                 <tr>

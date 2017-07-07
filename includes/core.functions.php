@@ -31,10 +31,10 @@ function getserverload() { // Return server load respect cpu's number 1.0 = 100%
 }
 
 function its_server_stressed() {
-    global $config;
+    global $cfg;
 
     if (($current_load = getserverload()) != false) {
-        if ($current_load >= $config['SERVER_STRESS']) {
+        if ($current_load >= $cfg['SERVER_STRESS']) {
             return true;
         } else {
             return false;
@@ -44,7 +44,7 @@ function its_server_stressed() {
 }
 
 function codetovar($path, $data = null) {
-    global $config, $LANGDATA, $tpl;
+    global $cfg, $LNG, $tpl;
 
     $tpldata = $tpl->get_tpldata();
     ob_start();
@@ -55,27 +55,27 @@ function codetovar($path, $data = null) {
 }
 
 function format_date($date, $timestamp = false) {
-    global $config;
+    global $cfg;
     if ($timestamp) {
-        return date($config['DEFAULT_DATEFORMAT'], $date);
+        return date($cfg['DEFAULT_DATEFORMAT'], $date);
     } else {
-        return date($config['DEFAULT_DATEFORMAT'], strtotime($date));
+        return date($cfg['DEFAULT_DATEFORMAT'], strtotime($date));
     }
 }
 
 function includePluginFiles($plugin, $admin = 0) {
-    global $config, $LANGDATA;
+    global $cfg, $LNG;
 
     $class_file = "";
     $inc_file = "";
 
     //CONFIG FILES
-    $config_plugin = "plugins/$plugin/$plugin.config.php";
-    $config_plugin_user = "config/$plugin.config.php";
-    file_exists($config_plugin) ? require_once($config_plugin) : false;
-    file_exists($config_plugin_user) ? require_once($config_plugin_user) : false;  //User Overdrive
+    $cfg_plugin = "plugins/$plugin/$plugin.config.php";
+    $cfg_plugin_user = "config/$plugin.config.php";
+    file_exists($cfg_plugin) ? require_once($cfg_plugin) : false;
+    file_exists($cfg_plugin_user) ? require_once($cfg_plugin_user) : false;  //User Overdrive
     //LANG FILES;
-    $lang_file = "plugins/$plugin/lang/" . $config['WEB_LANG'] . "/$plugin.lang.php";
+    $lang_file = "plugins/$plugin/lang/" . $cfg['WEB_LANG'] . "/$plugin.lang.php";
     file_exists($lang_file) ? include_once($lang_file) : false;
 
     //INC FILE
@@ -144,14 +144,14 @@ function getLib($libname, $version) {
 }
 
 function botDetect($match_type = 0) {
-    global $config;
+    global $cfg;
 
     if ($match_type == 1) {
-        $botList = $config['BAD_BOTS'];
+        $botList = $cfg['BAD_BOTS'];
     } else if ($match_type == 2) {
-        $botList = $config['WELCOME_BOTS'];
+        $botList = $cfg['WELCOME_BOTS'];
     } else {
-        $botList = $config['WELCOME_BOTS'] . "|" . $config['BAD_BOTS'];
+        $botList = $cfg['WELCOME_BOTS'] . "|" . $cfg['BAD_BOTS'];
     }
 
     preg_match("/$botList/i", S_SERVER_USER_AGENT(), $matches);

@@ -9,7 +9,7 @@
 <?= isset($data['ACL_MSG']) ? "<p> {$data['ACL_MSG']} </p>" : false ?>
 <form method="post" action="" id="user_search">
     <input type="text" name="username"/>
-    <input type="submit" name="btnSearchUser" value="<?= $LANGDATA['L_ACL_SEARCH'] ?>" />
+    <input type="submit" name="btnSearchUser" value="<?= $LNG['L_ACL_SEARCH'] ?>" />
 </form>
 
 <?php if (!empty($data['option_roles'])) { ?>
@@ -19,11 +19,11 @@
             <?= $data['option_roles'] ?>
         </select>
         <input type="hidden" name="username" value='<?= $data['username'] ?>' />
-        <input type='submit' name='btnDeleteRole' value='<?= $LANGDATA['L_ACL_DELETE'] ?>' />     
+        <input type='submit' name='btnDeleteRole' value='<?= $LNG['L_ACL_DELETE'] ?>' />     
     </form>    
 <?php } else if (!empty($data['username'])) { ?>
     <p><?= $data['username'] ?></p>
-    <p><?= $LANGDATA['L_ACL_NO_ROLES_FOUND'] ?></p>
+    <p><?= $LNG['L_ACL_NO_ROLES_FOUND'] ?></p>
 <?php } ?>
 <?php if (!empty($data['roles'])) { ?>
     <form method='post' action='' id='form_add_roles'>
@@ -31,7 +31,7 @@
             <?= $data['roles'] ?>
         </select>
         <input type="hidden" name="username" value='<?= $data['username'] ?>' />    
-        <input type='submit' name='btnAddRole' value='<?= $LANGDATA['L_ACL_ADD'] ?>' />     
+        <input type='submit' name='btnAddRole' value='<?= $LNG['L_ACL_ADD'] ?>' />     
     </form>
 <?php } ?>
 <br/>

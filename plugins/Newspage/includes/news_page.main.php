@@ -6,7 +6,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function news_show_page() {
-    global $config, $LANGDATA, $tpl, $sm, $ml, $acl_auth;
+    global $cfg, $LNG, $tpl, $sm, $ml, $acl_auth;
 
     $news_data = [];
 
@@ -15,7 +15,7 @@ function news_show_page() {
         return news_error_msg("L_NEWS_NOT_EXIST");
     }
 
-    if ($config['NEWS_MULTIPLE_PAGES'] && !empty($_GET['npage'])) {
+    if ($cfg['NEWS_MULTIPLE_PAGES'] && !empty($_GET['npage'])) {
         $page = S_GET_INT("npage", 11, 1);
     } else {
         $page = 1;
@@ -41,20 +41,20 @@ function news_show_page() {
             }
         }
     } else {
-        $lang_id = $config['WEB_LANG_ID'];
+        $lang_id = $cfg['WEB_LANG_ID'];
     }
     if (($news_data = get_news_byId($nid, $lang_id, $page)) == false) {
         return false;
     }
     //HEAD MOD
-    $config['NEWS_STATS'] ? news_stats($nid, $lang, $page, $news_data['visits']) : false;
-    $config['PAGE_TITLE'] = $news_data['title'] . ": " . $config['TITLE'];
-    $config['NEWS_META_OPENGRAPH'] ? news_add_social_meta($news_data) : false;
-    $config['PAGE_DESC'] = $news_data['title'] . ":" . $news_data['lead'];
+    $cfg['NEWS_STATS'] ? news_stats($nid, $lang, $page, $news_data['visits']) : false;
+    $cfg['PAGE_TITLE'] = $news_data['title'] . ": " . $cfg['TITLE'];
+    $cfg['NEWS_META_OPENGRAPH'] ? news_add_social_meta($news_data) : false;
+    $cfg['PAGE_DESC'] = $news_data['title'] . ":" . $news_data['lead'];
     //END HEAD MOD
 
     $news_data['news_admin_nav'] = news_nav_options($news_data);
-    $config['NEWS_MULTIPLE_PAGES'] ? $news_data['pager'] = news_pager($news_data) : false;
+    $cfg['NEWS_MULTIPLE_PAGES'] ? $news_data['pager'] = news_pager($news_data) : false;
 
     $news_data['title'] = str_replace('\r\n', '', $news_data['title']);
     $news_data['lead'] = str_replace('\r\n', PHP_EOL, $news_data['lead']);
@@ -68,32 +68,32 @@ function news_show_page() {
 
     if (!empty($news_data['translator_id'])) {
         $translator = $sm->getUserByID($news_data['translator_id']);
-        $news_data['translator'] = "<a rel='nofollow' href='/{$config['WEB_LANG']}/profile&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
+        $news_data['translator'] = "<a rel='nofollow' href='/{$cfg['WEB_LANG']}/profile&viewprofile={$translator['uid']}'>{$translator['username']}</a>";
     }
     $author = $sm->getUserByID($news_data['author_id']);
-    $config['PAGE_AUTHOR'] = $author['username'];
+    $cfg['PAGE_AUTHOR'] = $author['username'];
     $news_data['author_avatar'] = $author['avatar'];
 
-    if ($config['NEWS_SOURCE'] && ($news_source = get_news_source_byID($news_data['nid'])) != false) {
+    if ($cfg['NEWS_SOURCE'] && ($news_source = get_news_source_byID($news_data['nid'])) != false) {
         $news_data['news_sources'] = news_format_source($news_source);
     }
-    if ($config['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid'])) != false) {
-        $related_content = "<span>{$LANGDATA['L_NEWS_RELATED']}:</span>";
+    if ($cfg['NEWS_RELATED'] && ($news_related = news_get_related($news_data['nid'])) != false) {
+        $related_content = "<span>{$LNG['L_NEWS_RELATED']}:</span>";
         foreach ($news_related as $related) {
             $related_content .= "<li><a rel='nofollow' target='_blank' href='{$related['link']}'>{$related['link']}</a></li>";
         }
         $news_data['news_related'] = $related_content;
     }
-    $config['NEWS_BREADCRUMB'] ? $news_data['NEWS_BREADCRUMB'] = getNewsCatBreadcrumb($news_data) : false;
+    $cfg['NEWS_BREADCRUMB'] ? $news_data['NEWS_BREADCRUMB'] = getNewsCatBreadcrumb($news_data) : false;
 
     do_action("news_show_page", $news_data);
 
-    if ($config['ITS_BOT'] && $config['INCLUDE_MICRODATA']) {
+    if ($cfg['ITS_BOT'] && $cfg['INCLUDE_MICRODATA']) {
         $news_data['ITEM_OL'] = "itemscope itemtype=\"http://schema.org/BreadcrumbList\"";
     } else {
         $news_data['ITEM_OL'] = "";
     }
-    if ($config['ITS_BOT'] && $config['INCLUDE_DATA_STRUCTURE']) {
+    if ($cfg['ITS_BOT'] && $cfg['INCLUDE_DATA_STRUCTURE']) {
         preg_match("/src=\"(.*?)\"/i", $news_data['text'], $matchs);
         $news_data['ITEM_MAINIMAGE'] = $matchs[1];
         $news_data['ITEM_CREATED'] = preg_replace("/ /", "T", $news_data['created']) . "Z";
@@ -107,7 +107,7 @@ function news_show_page() {
         }
         $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_body_struct", $news_data));
     }
-    if ($config['NEWS_PAGE_SIDENEWS']) {
+    if ($cfg['NEWS_PAGE_SIDENEWS']) {
         require_once("news_portal.php");
         $getnews_config['category'] = 0;
         $getnews_config['fontpage'] = 1;
@@ -119,7 +119,7 @@ function news_show_page() {
 }
 
 function news_process_admin_actions() {
-    global $config, $acl_auth, $sm, $ml;
+    global $cfg, $acl_auth, $sm, $ml;
 
     //if we enter with &admin=1 already passing the admin check in news_show_page, check if not enter with admin=1 , do again and remove if?
     $user = $sm->getSessionUser();
@@ -135,9 +135,9 @@ function news_process_admin_actions() {
         $delete_nid = S_GET_INT("nid", 11, 1);
         $delete_lang = S_GET_CHAR_AZ("lang", 2, 2);
         if (!empty($delete_nid) && !empty($delete_lang)) {
-            defined('MULTILANG') ? $delete_lang_id = $ml->iso_to_id($delete_lang) : $delete_lang_id = $config['WEB_LANG_ID'];
+            defined('MULTILANG') ? $delete_lang_id = $ml->iso_to_id($delete_lang) : $delete_lang_id = $cfg['WEB_LANG_ID'];
             news_delete($delete_nid, $delete_lang_id);
-            S_GET_CHAR_AZ("backlink") == "home" ? header("Location: /{$config['WEB_LANG']}") : header("Location: " . S_SERVER_URL("HTTP_REFERER") . "");
+            S_GET_CHAR_AZ("backlink") == "home" ? header("Location: /{$cfg['WEB_LANG']}") : header("Location: " . S_SERVER_URL("HTTP_REFERER") . "");
         }
     }
     if (!empty($_GET['news_approved']) && !empty($_GET['lang_id']) &&
@@ -156,9 +156,9 @@ function news_process_admin_actions() {
 }
 
 function news_nav_options($news) { //TODO Use Template
-    global $LANGDATA, $config, $sm, $acl_auth;
+    global $LNG, $cfg, $sm, $acl_auth;
     $content = "";
-    $news_url = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&lang_id={$news['lang_id']}";
+    $news_url = "/{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$news['nid']}&lang={$news['lang']}&npage={$news['page']}&lang_id={$news['lang_id']}";
     $user = $sm->getSessionUser();
     // EDIT && NEW PAGE: ADMIN, AUTHOR or Translator
     if (( $user && defined('ACL') && $acl_auth->acl_ask("admin_all||news_admin")) || ( $user && !defined('ACL') && $user['isAdmin'] == 1)) {
@@ -168,43 +168,43 @@ function news_nav_options($news) { //TODO Use Template
     }
     //Only admin but show disabled to all
     if ($admin && $news['featured'] == 1 && $news['page'] == 1) {
-        $content .= "<li><a class='link_active' rel='nofollow' href='$news_url&news_featured=0&featured_value=0&admin=1'>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";
+        $content .= "<li><a class='link_active' rel='nofollow' href='$news_url&news_featured=0&featured_value=0&admin=1'>{$LNG['L_NEWS_FEATURED']}</a></li>";
     } else if ($admin && $news['page'] == 1) {
-        $content .= "<li><a rel='nofollow' href='$news_url&news_featured=1&featured_value=1&admin=1'>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='$news_url&news_featured=1&featured_value=1&admin=1'>{$LNG['L_NEWS_FEATURED']}</a></li>";
     } else if ($news['featured'] == 1) {
-        $content .= "<li><a class='link_active' rel='nofollow' href=''>{$LANGDATA['L_NEWS_FEATURED']}</a></li>";
+        $content .= "<li><a class='link_active' rel='nofollow' href=''>{$LNG['L_NEWS_FEATURED']}</a></li>";
     }
     if ($admin && $news['page'] == 1 && $news['frontpage'] == 1) {
-        $content .= "<li><a class='link_active' rel='nofollow' href='$news_url&news_frontpage=0'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
+        $content .= "<li><a class='link_active' rel='nofollow' href='$news_url&news_frontpage=0'>{$LNG['L_NEWS_FRONTPAGE']}</a></li>";
     } else if ($admin && $news['page'] == 1) {
-        $content .= "<li><a rel='nofollow' href='$news_url&news_frontpage=1'>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='$news_url&news_frontpage=1'>{$LNG['L_NEWS_FRONTPAGE']}</a></li>";
     } else if ($news['frontpage'] == 1) {
-        $content .= "<li><a class='link_active' rel='nofollow' href=''>{$LANGDATA['L_NEWS_FRONTPAGE']}</a></li>";
+        $content .= "<li><a class='link_active' rel='nofollow' href=''>{$LNG['L_NEWS_FRONTPAGE']}</a></li>";
     }
 
     if ($admin || $news['author'] == $user['username'] || !empty($news['translator'] && ($news['translator'] == $user['username']))) {
-        $content .= "<li><a rel='nofollow' href='$news_url&newsedit=1'>{$LANGDATA['L_NEWS_EDIT']}</a></li>";
+        $content .= "<li><a rel='nofollow' href='$news_url&newsedit=1'>{$LNG['L_NEWS_EDIT']}</a></li>";
     }
     //not translator
-    if ($config['NEWS_MULTIPLE_PAGES'] && ( $admin || $news['author'] == $user['username'])) {
-        $content .= "<li><a rel='nofollow' href='$news_url&newpage=1'>{$LANGDATA['L_NEWS_NEW_PAGE']}</a></li>";
+    if ($cfg['NEWS_MULTIPLE_PAGES'] && ( $admin || $news['author'] == $user['username'])) {
+        $content .= "<li><a rel='nofollow' href='$news_url&newpage=1'>{$LNG['L_NEWS_NEW_PAGE']}</a></li>";
     }
 
     // TRANSLATE ADMIN, ANON IF, REGISTERED IF
     if (defined('MULTILANG')) {
-        if ($config['NEWS_ANON_TRANSLATE'] || $admin || ($user && defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'] && $acl_auth->acl_ask("registered_all")) || ($user && !defined('ACL') && $config['NEWS_TRANSLATE_REGISTERED'])
+        if ($cfg['NEWS_ANON_TRANSLATE'] || $admin || ($user && defined('ACL') && $cfg['NEWS_TRANSLATE_REGISTERED'] && $acl_auth->acl_ask("registered_all")) || ($user && !defined('ACL') && $cfg['NEWS_TRANSLATE_REGISTERED'])
         ) {
-            $content .= "<li><a rel='nofollow' href='$news_url&news_new_lang=1'>{$LANGDATA['L_NEWS_NEWLANG']}</a></li>";
+            $content .= "<li><a rel='nofollow' href='$news_url&news_new_lang=1'>{$LNG['L_NEWS_NEWLANG']}</a></li>";
         }
     }
     if ($admin) {
         if ($news['moderation'] && $news['page'] == 1) {
-            $content .= "<li><a rel='nofollow' href='/$news_url&news_approved={$news['nid']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a></li>";
+            $content .= "<li><a rel='nofollow' href='/$news_url&news_approved={$news['nid']}&admin=1'>{$LNG['L_NEWS_APPROVED']}</a></li>";
         }
         //TODO  Add a menu for enable/disable news
-        //    //$content .= "<li><a href=''>{$LANGDATA['L_NEWS_DISABLE']}</a></li>";
+        //    //$content .= "<li><a href=''>{$LNG['L_NEWS_DISABLE']}</a></li>";
         if ($news['page'] == 1) {
-            $content .= "<li><a rel='nofollow' href='$news_url&news_delete=1&admin=1&backlink=home' onclick=\"return confirm('{$LANGDATA['L_NEWS_CONFIRM_DEL']}')\">{$LANGDATA['L_NEWS_DELETE']}</a></li>";
+            $content .= "<li><a rel='nofollow' href='$news_url&news_delete=1&admin=1&backlink=home' onclick=\"return confirm('{$LNG['L_NEWS_CONFIRM_DEL']}')\">{$LNG['L_NEWS_DELETE']}</a></li>";
         }
     }
 
@@ -212,7 +212,7 @@ function news_nav_options($news) { //TODO Use Template
 }
 
 function news_pager($news_page) {
-    global $db, $config;
+    global $db, $cfg;
 
     $query = $db->select_all("news", ["nid" => $news_page['nid'], "lang_id" => $news_page['lang_id']]);
     if (($num_pages = $db->num_rows($query)) <= 1) {
@@ -221,30 +221,30 @@ function news_pager($news_page) {
     $content = "<div id='pager'><ul>";
 
     $news_page['page'] == 1 ? $a_class = "class='active'" : $a_class = '';
-    if ($config['FRIENDLY_URL']) {
+    if ($cfg['FRIENDLY_URL']) {
         $friendly_title = news_friendly_title($news_page['title']);
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/1/$friendly_title'>1</a></li>";
     } else {
-        $content .= "<li><a $a_class href='{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=1'>1</a></li>";
+        $content .= "<li><a $a_class href='{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=1'>1</a></li>";
     }
 
-    $pager = page_pager($config['NEWS_PAGER_MAX'], $num_pages, $news_page['page']);
+    $pager = page_pager($cfg['NEWS_PAGER_MAX'], $num_pages, $news_page['page']);
 
     for ($i = $pager['start_page']; $i < $pager['limit_page']; $i++) {
         $news_page['page'] == $i ? $a_class = "class='active'" : $a_class = '';
-        if ($config['FRIENDLY_URL']) {
+        if ($cfg['FRIENDLY_URL']) {
             $friendly_title = news_friendly_title($news_page['title']);
             $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$i/$friendly_title'>$i</a></li>";
         } else {
-            $content .= "<li><a $a_class href='{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=$i'>$i</a></li>";
+            $content .= "<li><a $a_class href='{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=$i'>$i</a></li>";
         }
     }
     $news_page['page'] == $num_pages ? $a_class = "class='active'" : $a_class = '';
-    if ($config['FRIENDLY_URL']) {
+    if ($cfg['FRIENDLY_URL']) {
         $friendly_title = news_friendly_title($news_page['title']);
         $content .= "<li><a $a_class href='/{$news_page['lang']}/news/{$news_page['nid']}/$num_pages/$friendly_title'>$num_pages</a></li>";
     } else {
-        $content .= "<li><a $a_class href='{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=$num_pages'>$num_pages</a></li>";
+        $content .= "<li><a $a_class href='{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$news_page['nid']}&lang={$news_page['lang']}&npage=$num_pages'>$num_pages</a></li>";
     }
     $content .= "</ul></div>";
 
@@ -333,9 +333,9 @@ function news_frontpage($nid, $lang_id, $frontpage_state = 0) {
 }
 
 function news_stats($nid, $lang, $page, $visits) {
-    global $db, $config;
+    global $db, $cfg;
     $db->update("news", ["visits" => ++$visits], ["nid" => "$nid", "lang" => "$lang", "page" => "$page"], "LIMIT 1");
-    $config['NEWS_ADVANCED_STATS'] ? news_adv_stats($nid, $lang) : false;
+    $cfg['NEWS_ADVANCED_STATS'] ? news_adv_stats($nid, $lang) : false;
 }
 
 function news_adv_stats($nid, $lang) {
@@ -400,23 +400,23 @@ function news_adv_stats($nid, $lang) {
 }
 
 function news_add_social_meta($news) { // TODO: Move to plugin NewsSocialExtra
-    global $tpl, $config;
+    global $tpl, $cfg;
     $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === true ? 'https://' : 'http://';
     $news['url'] = $protocol . $_SERVER['HTTP_HOST'] . S_SERVER_REQUEST_URI();
-    $news['web_title'] = $config['TITLE'];
+    $news['web_title'] = $cfg['TITLE'];
     $match_regex = "/\[.*img(.*)\[\/.*img\]/";
     $match = "";
     preg_match($match_regex, $news['text'], $match);
     if (!empty($match[1])) {
-        $url = preg_replace('/\[S\]/si', $config['IMG_SELECTOR'] . "/", $match[1]);
-        $news['mainimage'] = $config['STATIC_SRV_URL'] . $config['IMG_UPLOAD_DIR'] . "/" . $url;
+        $url = preg_replace('/\[S\]/si', $cfg['IMG_SELECTOR'] . "/", $match[1]);
+        $news['mainimage'] = $cfg['STATIC_SRV_URL'] . $cfg['IMG_UPLOAD_DIR'] . "/" . $url;
     }
     $content = $tpl->getTPL_file("Newspage", "NewsSocialmeta", $news);
     $tpl->addto_tplvar("META", $content);
 }
 
 function getNewsCatBreadcrumb($news_data) {
-    global $db, $config;
+    global $db, $cfg;
     $content = "";
 
     $query = $db->select_all("categories", ["plugin" => "Newspage", "lang_id" => $news_data['lang_id']]);
@@ -439,7 +439,7 @@ function getNewsCatBreadcrumb($news_data) {
     $cat_path = "";
     $list_counter = 1;
     foreach ($cat_ary as $cat) {
-        if ($config['ITS_BOT'] && $config['INCLUDE_MICRODATA']) {
+        if ($cfg['ITS_BOT'] && $cfg['INCLUDE_MICRODATA']) {
             $ITEM_LI = "itemprop=\"itemListElement\" itemscope itemtype=\"http://schema.org/ListItem\"";
             $ITEM_HREF = "itemscope itemtype=\"http://schema.org/Thing\" itemprop=\"item\"";
             $ITEM_NAME = "itemprop=\"name\"";
@@ -451,10 +451,10 @@ function getNewsCatBreadcrumb($news_data) {
             $ITEM_POS = "";
         }
         $cat_path .= $cat;
-        !empty($breadcrumb) ? $breadcrumb .= $config['NEWS_BREADCRUMB_SEPARATOR'] : null;
+        !empty($breadcrumb) ? $breadcrumb .= $cfg['NEWS_BREADCRUMB_SEPARATOR'] : null;
         $cat = preg_replace('/\_/', ' ', $cat);
         $breadcrumb .= "<li $ITEM_LI>";
-        $breadcrumb .= "<a $ITEM_HREF href='/{$config['WEB_LANG']}/section/$cat_path'>";
+        $breadcrumb .= "<a $ITEM_HREF href='/{$cfg['WEB_LANG']}/section/$cat_path'>";
         $breadcrumb .= "<span $ITEM_NAME>$cat</span></a>$ITEM_POS</li> ";
         $cat_path .= ".";
         $list_counter++;

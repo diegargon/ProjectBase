@@ -13,5 +13,5 @@ define('DB_PASSWORD','');
 define('DB_TYPE','mysql');
 define('DB_CHARSET','utf8');
 
-$config['DB_PREFIX'] = "pb_";
-$config['L_SEARCH_MIN_CHAR'] = 2;
+$cfg['DB_PREFIX'] = "pb_";
+$cfg['L_SEARCH_MIN_CHAR'] = 2;

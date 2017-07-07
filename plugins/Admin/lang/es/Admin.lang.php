@@ -5,18 +5,18 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-$LANGDATA['L_ERROR'] = "Error";
-$LANGDATA['L_BACKHOME'] = "Volver al inicio";
-$LANGDATA['L_GENERAL'] = "General";
-$LANGDATA['L_SEP'] = ": ";
+$LNG['L_ERROR'] = "Error";
+$LNG['L_BACKHOME'] = "Volver al inicio";
+$LNG['L_GENERAL'] = "General";
+$LNG['L_SEP'] = ": ";
 //PLUGIN_STATE
-$LANGDATA['L_PL_STATE'] = "Estado del plugin";
-$LANGDATA['L_PL_NAME'] = "Nombre";
-$LANGDATA['L_PL_ENABLE'] = "Habilitado";
-$LANGDATA['L_PL_PROVIDE'] = "Provee";
-$LANGDATA['L_PL_DEPEND'] = "Dependencias";
-$LANGDATA['L_PL_PRIORITY'] = "Prioridad";
-$LANGDATA['L_PL_AUTOSTART'] = "Inicio automatico";
-$LANGDATA['L_PL_YES'] = "Si";
-$LANGDATA['L_PL_NO'] = "No";
-$LANGDATA['L_PL_OPTIONAL'] = "Opcional";   
+$LNG['L_PL_STATE'] = "Estado del plugin";
+$LNG['L_PL_NAME'] = "Nombre";
+$LNG['L_PL_ENABLE'] = "Habilitado";
+$LNG['L_PL_PROVIDE'] = "Provee";
+$LNG['L_PL_DEPEND'] = "Dependencias";
+$LNG['L_PL_PRIORITY'] = "Prioridad";
+$LNG['L_PL_AUTOSTART'] = "Inicio automatico";
+$LNG['L_PL_YES'] = "Si";
+$LNG['L_PL_NO'] = "No";
+$LNG['L_PL_OPTIONAL'] = "Opcional";   

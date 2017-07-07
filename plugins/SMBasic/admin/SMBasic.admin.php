@@ -20,33 +20,33 @@ function SMBasic_AdminMenu($params) {
 }
 
 function SMBasic_AdminContent($params) {
-    global $LANGDATA, $tpl;
+    global $LNG, $tpl;
 
     includePluginFiles("SMBasic", 1);
 
     $tpl->getCSS_filePath("SMBasic");
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
-    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_SM_SEARCH_USER'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_SM_USERS_LIST'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LNG['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LNG['L_SM_SEARCH_USER'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LNG['L_SM_USERS_LIST'] . "</a></li>\n";
 
     $opt = S_GET_INT("opt");
     if ($opt == 1 || $opt == false) {
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_PL_STATE'];
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_GENERAL'] . ": " . $LNG['L_PL_STATE'];
         $page_data['ADM_CONTENT'] = Admin_GetPluginState("SMBasic");
     } else if ($opt == 2) {
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_SM_SEARCH_USER'];
-        $page_data['ADM_CONTENT'] = $LANGDATA['L_SM_USERS_DESC'] . SMBasic_UserSearch();
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_SM_SEARCH_USER'];
+        $page_data['ADM_CONTENT'] = $LNG['L_SM_USERS_DESC'] . SMBasic_UserSearch();
     } else if ($opt == 3) {
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_SM_USERS_LIST'];
-        $page_data['ADM_CONTENT'] = $LANGDATA['L_SM_USERS_LIST_DESC'] . SMBasic_UserList();
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_SM_USERS_LIST'];
+        $page_data['ADM_CONTENT'] = $LNG['L_SM_USERS_LIST_DESC'] . SMBasic_UserList();
     }
 
     return $tpl->getTPL_file("Admin", "admin_std_content", $page_data);
 }
 
 function SMBasic_UserSearch() {
-    global $config, $LANGDATA, $tpl, $sm;
+    global $cfg, $LNG, $tpl, $sm;
 
     if (isset($_POST['btnDeleteSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0) {
         SMBasic_DeleteUser($member_id);
@@ -70,10 +70,10 @@ function SMBasic_UserSearch() {
 
             $table['ADM_TABLE_ROW'] = "";
             foreach ($users_ary as $user_match) {
-                if ($config['FRIENDLY_URL']) {
-                    $user_match['profile_url'] = "/{$config['WEB_LANG']}/profile?viewprofile={$user_match['uid']}";
+                if ($cfg['FRIENDLY_URL']) {
+                    $user_match['profile_url'] = "/{$cfg['WEB_LANG']}/profile?viewprofile={$user_match['uid']}";
                 } else {
-                    $user_match['profile_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=profile?lang={$config['WEB_LANG']}&viewprofile={$user_match['uid']}";
+                    $user_match['profile_url'] = "/{$cfg['CON_FILE']}?module=SMBasic&page=profile?lang={$cfg['WEB_LANG']}&viewprofile={$user_match['uid']}";
                 }
                 $table['ADM_TABLE_ROW'] .= $tpl->getTPL_file("SMBasic", "sm_adm_userlist", $user_match);
             }
@@ -84,7 +84,7 @@ function SMBasic_UserSearch() {
 }
 
 function SMBasic_UserList() {
-    global $config, $LANGDATA, $tpl, $sm;
+    global $cfg, $LNG, $tpl, $sm;
 
     if (isset($_POST['btnDeleteSubmit']) && ( ($member_id = S_POST_INT("member_uid") )) > 0) {
         SMBasic_DeleteUser($member_id);
@@ -102,10 +102,10 @@ function SMBasic_UserList() {
     $active['ADM_TABLE_ROW'] = $inactive['ADM_TABLE_ROW'] = $disable['ADM_TABLE_ROW'] = "";
 
     foreach ($users_list as $user) {
-        if ($config['FRIENDLY_URL']) {
-            $user['profile_url'] = "/{$config['WEB_LANG']}/profile?viewprofile={$user['uid']}";
+        if ($cfg['FRIENDLY_URL']) {
+            $user['profile_url'] = "/{$cfg['WEB_LANG']}/profile?viewprofile={$user['uid']}";
         } else {
-            $user['profile_url'] = "/{$config['CON_FILE']}?module=SMBasic&page=profile?lang={$config['WEB_LANG']}&viewprofile={$user['uid']}";
+            $user['profile_url'] = "/{$cfg['CON_FILE']}?module=SMBasic&page=profile?lang={$cfg['WEB_LANG']}&viewprofile={$user['uid']}";
         }
         if ($user['active'] == 0 && !$user['disable']) {
 
@@ -117,9 +117,9 @@ function SMBasic_UserList() {
         }
     }
 
-    $active['ADM_TABLE_TITLE'] = $LANGDATA['L_SM_USERS_ACTIVE'];
-    $inactive['ADM_TABLE_TITLE'] = $LANGDATA['L_SM_USERS_INACTIVE'];
-    $disable['ADM_TABLE_TITLE'] = $LANGDATA['L_SM_USERS_DISABLE'];
+    $active['ADM_TABLE_TITLE'] = $LNG['L_SM_USERS_ACTIVE'];
+    $inactive['ADM_TABLE_TITLE'] = $LNG['L_SM_USERS_INACTIVE'];
+    $disable['ADM_TABLE_TITLE'] = $LNG['L_SM_USERS_DISABLE'];
 
     $content = $tpl->getTPL_file("SMBasic", "memberlist", $active);
     $content .= $tpl->getTPL_file("SMBasic", "memberlist", $inactive);

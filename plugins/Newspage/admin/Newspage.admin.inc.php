@@ -6,7 +6,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function Newspage_AdminCategories() {
-    global $config, $tpl, $LANGDATA, $ml, $db;
+    global $cfg, $tpl, $LNG, $ml, $db;
 
     $catdata['catrow_new'] = "";
     $catdata['catlist'] = "";
@@ -14,8 +14,8 @@ function Newspage_AdminCategories() {
     if (defined('MULTILANG')) {
         $langs = $ml->get_site_langs();
     } else {
-        $langs['lang_id'] = $config['WEB_LANG_ID'];
-        $langs['lang_name'] = $config['WEB_LANG'];
+        $langs['lang_id'] = $cfg['WEB_LANG_ID'];
+        $langs['lang_name'] = $cfg['WEB_LANG'];
     }
 
     foreach ($langs as $lang) {
@@ -54,11 +54,11 @@ function Newspage_AdminCategories() {
             $foundit = 0;
         }
 
-        $catdata['catlist'] .= "<label>{$LANGDATA['L_NEWS_FATHER']}</label>";
+        $catdata['catlist'] .= "<label>{$LNG['L_NEWS_FATHER']}</label>";
         $catdata['catlist'] .= "<input class='news_adm_father' type='text' maxlength='3' name='father' value='$catFather' />";
-        $catdata['catlist'] .= "<label>{$LANGDATA['L_NEWS_ORDER']}</label>";
+        $catdata['catlist'] .= "<label>{$LNG['L_NEWS_ORDER']}</label>";
         $catdata['catlist'] .= "<input class='news_adm_order' type='text' maxlength='3' name='weight' value='$catWeight' />";
-        $catdata['catlist'] .= "<input type='submit' name='ModCatSubmit' value='{$LANGDATA['L_NEWS_MODIFY']}' />";
+        $catdata['catlist'] .= "<input type='submit' name='ModCatSubmit' value='{$LNG['L_NEWS_MODIFY']}' />";
         $catdata['catlist'] .= "</div></form>";
     }
     
@@ -66,12 +66,12 @@ function Newspage_AdminCategories() {
 }
 
 function Newspage_ModCategories() {
-    global $config, $ml, $db;
+    global $cfg, $ml, $db;
 
     if (defined('MULTILANG')) {
         $langs = $ml->get_site_langs();
     } else {
-        $langs['lang_id'] = $config['WEB_LANG_ID'];
+        $langs['lang_id'] = $cfg['WEB_LANG_ID'];
     }
 
     foreach ($langs as $lang) {
@@ -96,14 +96,14 @@ function Newspage_ModCategories() {
 }
 
 function Newspage_NewCategory() {
-    global $config, $ml, $db;
+    global $cfg, $ml, $db;
 
     $new_cid = $db->get_next_num("categories", "cid");
 
     if (defined('MULTILANG')) {
         $langs = $ml->get_site_langs();
     } else {
-        $langs['lang_id'] = $config['WEB_LANG_ID'];
+        $langs['lang_id'] = $cfg['WEB_LANG_ID'];
     }
 
     foreach ($langs as $lang) {
@@ -126,19 +126,19 @@ function Newspage_NewCategory() {
 }
 
 function Newspage_AdminModeration() {
-    global $config, $LANGDATA, $db;
+    global $cfg, $LNG, $db;
 
     $content = "<div>";
-    $query = $db->select_all("news", array("moderation" => "1"), "LIMIT {$config['NEWS_NUM_LIST_MOD']}");
+    $query = $db->select_all("news", array("moderation" => "1"), "LIMIT {$cfg['NEWS_NUM_LIST_MOD']}");
 
     if ($db->num_rows($query) <= 0) {
         return false;
     }
     while ($news_row = $db->fetch($query)) {
         $content .= "<p>"
-                . "[<a href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete=1&npage={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_DELETE']}</a>]"
-                . "[<a href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&news_approved={$news_row['nid']}&lang_id={$news_row['lang_id']}&npage={$news_row['page']}&admin=1'>{$LANGDATA['L_NEWS_APPROVED']}</a>]"
-                . "<a href='/{$config['CON_FILE']}?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&npage={$news_row['page']}&admin=1' target='_blank'>{$news_row['title']}</a>"
+                . "[<a href='/{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&news_delete=1&npage={$news_row['page']}&admin=1'>{$LNG['L_NEWS_DELETE']}</a>]"
+                . "[<a href='/{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&news_approved={$news_row['nid']}&lang_id={$news_row['lang_id']}&npage={$news_row['page']}&admin=1'>{$LNG['L_NEWS_APPROVED']}</a>]"
+                . "<a href='/{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$news_row['nid']}&lang={$news_row['lang']}&npage={$news_row['page']}&admin=1' target='_blank'>{$news_row['title']}</a>"
                 . "</p>";
     }
     $content .= "</div>";
@@ -147,16 +147,16 @@ function Newspage_AdminModeration() {
 }
 
 function Newspage_InFrontpage() {
-    global $LANGDATA, $db, $config;
+    global $LNG, $db, $cfg;
 
-    $frontpage = "<h3>{$LANGDATA['L_NEWS_INFRONTPAGE']}</h3>";
-    $backpage = "<h3>{$LANGDATA['L_NEWS_BACKPAGE']}</h3>";
+    $frontpage = "<h3>{$LNG['L_NEWS_INFRONTPAGE']}</h3>";
+    $backpage = "<h3>{$LNG['L_NEWS_BACKPAGE']}</h3>";
     $query = $db->select_all("news", array("moderation" => 0, "disabled" => 0), "ORDER BY date DESC");
     while ($news_row = $db->fetch($query)) {
         if ($news_row['frontpage'] == 1) {
-            $frontpage .= "<li><span> [" . format_date($news_row['date']) . "] [{$news_row['lang']}] </span><a href='/{$config['CON_FILE']}?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}&npage=1'>{$news_row['title']}</a></li>";
+            $frontpage .= "<li><span> [" . format_date($news_row['date']) . "] [{$news_row['lang']}] </span><a href='/{$cfg['CON_FILE']}?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}&npage=1'>{$news_row['title']}</a></li>";
         } else {
-            $backpage .= "<li><span> [" . format_date($news_row['date']) . "]  [{$news_row['lang']}] </span><a href='/{$config['CON_FILE']}?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}&npage=1'>{$news_row['title']}</a> </li>";
+            $backpage .= "<li><span> [" . format_date($news_row['date']) . "]  [{$news_row['lang']}] </span><a href='/{$cfg['CON_FILE']}?module=Newspage&page=news&lang={$news_row['lang']}&nid={$news_row['nid']}&npage=1'>{$news_row['title']}</a> </li>";
         }
     }
     $content = "<div>";

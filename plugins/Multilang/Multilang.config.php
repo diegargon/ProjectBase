@@ -6,4 +6,4 @@
 
 define("MULTILANG", true);
 
-$config['ML_FORCEUSE_DFL_LANG'] = 1;
+$cfg['ML_FORCEUSE_DFL_LANG'] = 1;

@@ -122,18 +122,18 @@ class Facebook
     /**
      * Instantiates a new Facebook super-class object.
      *
-     * @param array $config
+     * @param array $cfg
      *
      * @throws FacebookSDKException
      */
-    public function __construct(array $config = [])
+    public function __construct(array $cfg = [])
     {
-        $appId = isset($config['app_id']) ? $config['app_id'] : getenv(static::APP_ID_ENV_NAME);
+        $appId = isset($cfg['app_id']) ? $cfg['app_id'] : getenv(static::APP_ID_ENV_NAME);
         if (!$appId) {
             throw new FacebookSDKException('Required "app_id" key not supplied in config and could not find fallback environment variable "' . static::APP_ID_ENV_NAME . '"');
         }
 
-        $appSecret = isset($config['app_secret']) ? $config['app_secret'] : getenv(static::APP_SECRET_ENV_NAME);
+        $appSecret = isset($cfg['app_secret']) ? $cfg['app_secret'] : getenv(static::APP_SECRET_ENV_NAME);
         if (!$appSecret) {
             throw new FacebookSDKException('Required "app_secret" key not supplied in config and could not find fallback environment variable "' . static::APP_SECRET_ENV_NAME . '"');
         }
@@ -141,63 +141,63 @@ class Facebook
         $this->app = new FacebookApp($appId, $appSecret);
 
         $httpClientHandler = null;
-        if (isset($config['http_client_handler'])) {
-            if ($config['http_client_handler'] instanceof FacebookHttpClientInterface) {
-                $httpClientHandler = $config['http_client_handler'];
-            } elseif ($config['http_client_handler'] === 'curl') {
+        if (isset($cfg['http_client_handler'])) {
+            if ($cfg['http_client_handler'] instanceof FacebookHttpClientInterface) {
+                $httpClientHandler = $cfg['http_client_handler'];
+            } elseif ($cfg['http_client_handler'] === 'curl') {
                 $httpClientHandler = new FacebookCurlHttpClient();
-            } elseif ($config['http_client_handler'] === 'stream') {
+            } elseif ($cfg['http_client_handler'] === 'stream') {
                 $httpClientHandler = new FacebookStreamHttpClient();
-            } elseif ($config['http_client_handler'] === 'guzzle') {
+            } elseif ($cfg['http_client_handler'] === 'guzzle') {
                 $httpClientHandler = new FacebookGuzzleHttpClient();
             } else {
                 throw new \InvalidArgumentException('The http_client_handler must be set to "curl", "stream", "guzzle", or be an instance of Facebook\HttpClients\FacebookHttpClientInterface');
             }
         }
 
-        $enableBeta = isset($config['enable_beta_mode']) && $config['enable_beta_mode'] === true;
+        $enableBeta = isset($cfg['enable_beta_mode']) && $cfg['enable_beta_mode'] === true;
         $this->client = new FacebookClient($httpClientHandler, $enableBeta);
 
-        if (isset($config['url_detection_handler'])) {
-            if ($config['url_detection_handler'] instanceof UrlDetectionInterface) {
-                $this->urlDetectionHandler = $config['url_detection_handler'];
+        if (isset($cfg['url_detection_handler'])) {
+            if ($cfg['url_detection_handler'] instanceof UrlDetectionInterface) {
+                $this->urlDetectionHandler = $cfg['url_detection_handler'];
             } else {
                 throw new \InvalidArgumentException('The url_detection_handler must be an instance of Facebook\Url\UrlDetectionInterface');
             }
         }
 
-        if (isset($config['pseudo_random_string_generator'])) {
-            if ($config['pseudo_random_string_generator'] instanceof PseudoRandomStringGeneratorInterface) {
-                $this->pseudoRandomStringGenerator = $config['pseudo_random_string_generator'];
-            } elseif ($config['pseudo_random_string_generator'] === 'mcrypt') {
+        if (isset($cfg['pseudo_random_string_generator'])) {
+            if ($cfg['pseudo_random_string_generator'] instanceof PseudoRandomStringGeneratorInterface) {
+                $this->pseudoRandomStringGenerator = $cfg['pseudo_random_string_generator'];
+            } elseif ($cfg['pseudo_random_string_generator'] === 'mcrypt') {
                 $this->pseudoRandomStringGenerator = new McryptPseudoRandomStringGenerator();
-            } elseif ($config['pseudo_random_string_generator'] === 'openssl') {
+            } elseif ($cfg['pseudo_random_string_generator'] === 'openssl') {
                 $this->pseudoRandomStringGenerator = new OpenSslPseudoRandomStringGenerator();
-            } elseif ($config['pseudo_random_string_generator'] === 'urandom') {
+            } elseif ($cfg['pseudo_random_string_generator'] === 'urandom') {
                 $this->pseudoRandomStringGenerator = new UrandomPseudoRandomStringGenerator();
             } else {
                 throw new \InvalidArgumentException('The pseudo_random_string_generator must be set to "mcrypt", "openssl", or "urandom", or be an instance of Facebook\PseudoRandomString\PseudoRandomStringGeneratorInterface');
             }
         }
 
-        if (isset($config['persistent_data_handler'])) {
-            if ($config['persistent_data_handler'] instanceof PersistentDataInterface) {
-                $this->persistentDataHandler = $config['persistent_data_handler'];
-            } elseif ($config['persistent_data_handler'] === 'session') {
+        if (isset($cfg['persistent_data_handler'])) {
+            if ($cfg['persistent_data_handler'] instanceof PersistentDataInterface) {
+                $this->persistentDataHandler = $cfg['persistent_data_handler'];
+            } elseif ($cfg['persistent_data_handler'] === 'session') {
                 $this->persistentDataHandler = new FacebookSessionPersistentDataHandler();
-            } elseif ($config['persistent_data_handler'] === 'memory') {
+            } elseif ($cfg['persistent_data_handler'] === 'memory') {
                 $this->persistentDataHandler = new FacebookMemoryPersistentDataHandler();
             } else {
                 throw new \InvalidArgumentException('The persistent_data_handler must be set to "session", "memory", or be an instance of Facebook\PersistentData\PersistentDataInterface');
             }
         }
 
-        if (isset($config['default_access_token'])) {
-            $this->setDefaultAccessToken($config['default_access_token']);
+        if (isset($cfg['default_access_token'])) {
+            $this->setDefaultAccessToken($cfg['default_access_token']);
         }
 
-        if (isset($config['default_graph_version'])) {
-            $this->defaultGraphVersion = $config['default_graph_version'];
+        if (isset($cfg['default_graph_version'])) {
+            $this->defaultGraphVersion = $cfg['default_graph_version'];
         } else {
             // @todo v6: Throw an InvalidArgumentException if "default_graph_version" is not set
             $this->defaultGraphVersion = static::DEFAULT_GRAPH_VERSION;

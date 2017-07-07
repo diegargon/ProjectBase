@@ -6,9 +6,9 @@
 !defined('IN_WEB') ? exit : true;
 
 function NewsVote_check_if_can_vote($uid, $rid, $lid, $section) {
-    global $db, $config;
+    global $db, $cfg;
 
-    if ($config['NEWSVOTE_CHECK_VOTE_IP']) {
+    if ($cfg['NEWSVOTE_CHECK_VOTE_IP']) {
         $ip = S_SERVER_REMOTE_ADDR();
         $where_ary = [
             "ip" => $ip,

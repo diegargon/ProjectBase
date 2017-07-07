@@ -4,5 +4,5 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-$config['NEWXTRA_ALLOW_DISPLAY_REALNAME'] = 1;
-//$config[''] = ;
+$cfg['NEWXTRA_ALLOW_DISPLAY_REALNAME'] = 1;
+//$cfg[''] = ;

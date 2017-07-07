@@ -6,9 +6,9 @@
 !defined('IN_WEB') ? exit : true;
 
 function SMB_oauth_DoLogin() {
-    global $config;
+    global $cfg;
 
-    if ($config['smbasic_oauth_facebook'] && $_GET['provider'] == "facebook") {
+    if ($cfg['smbasic_oauth_facebook'] && $_GET['provider'] == "facebook") {
         SMB_oauth_DoLoginFB();
     }
 }
@@ -241,10 +241,10 @@ function SMB_getFB_token($fb) {
 }
 
 function SMB_oauth_getLoginURL() {
-    global $config;
+    global $cfg;
 
     $login_url = "";
-    if ($config['smbasic_oauth_facebook']) {
+    if ($cfg['smbasic_oauth_facebook']) {
         $login_url .= SMB_oauth_FB_LoginURL();
     }
 
@@ -252,25 +252,25 @@ function SMB_oauth_getLoginURL() {
 }
 
 function SMB_oauth_FB_LoginURL() {
-    global $config, $LANGDATA;
+    global $cfg, $LNG;
 
     $fb = SMB_oauth_getFB_Handle();
-    $reg_url = $config['WEB_URL'] . "login?provider=facebook";
+    $reg_url = $cfg['WEB_URL'] . "login?provider=facebook";
     $helper = $fb->getRedirectLoginHelper();
     $permissions = ['email'];
     $loginUrl = $helper->getLoginUrl($reg_url, $permissions);
 
-    return '<a class="fblog" href="' . htmlspecialchars($loginUrl) . '">' . $LANGDATA['L_SM_LOG_FB'] . '</a>';
+    return '<a class="fblog" href="' . htmlspecialchars($loginUrl) . '">' . $LNG['L_SM_LOG_FB'] . '</a>';
 }
 
 function SMB_oauth_getFB_Handle() {
-    global $config;
+    global $cfg;
 
     require_once 'Facebook/autoload.php';
 
     $fb = new Facebook\Facebook([
-        'app_id' => $config['smbasic_fb_appid'],
-        'app_secret' => $config['smbasic_fb_appSecret'],
+        'app_id' => $cfg['smbasic_fb_appid'],
+        'app_secret' => $cfg['smbasic_fb_appSecret'],
         'default_graph_version' => 'v2.8',
     ]);
 

@@ -18,12 +18,12 @@ if (!$category = $ctgs->getCatIDbyName_path("Newspage", $category_list)) {
 if (defined('MULTILANG')) {
     $lang_id = $ml->getSessionLangId();
 } else {
-    $lang_id = $config['WEB_LANG_ID'];
+    $lang_id = $cfg['WEB_LANG_ID'];
 }
 
 //HEAD MOD
-$config['PAGE_TITLE'] = $config['WEB_NAME'] . ": " . $category_list;
-$config['PAGE_DESC'] = $config['WEB_NAME'] . ": " . $category_list;
+$cfg['PAGE_TITLE'] = $cfg['WEB_NAME'] . ": " . $category_list;
+$cfg['PAGE_DESC'] = $cfg['WEB_NAME'] . ": " . $category_list;
 //END HEAD MOD
 
 $section_data['featured'] = get_news( [ "category" => $category, "featured" => 1, "limit" => 1, "get_childs" => 1]);

@@ -12,34 +12,34 @@
     <?php } ?>
     <div class="register_box">
         <form  id="register_form" action="#" method="post">
-            <h1><?= $LANGDATA['L_REGISTER'] ?></h1>
+            <h1><?= $LNG['L_REGISTER'] ?></h1>
             <?php
-            if ($config['smbasic_need_username']) {
+            if ($cfg['smbasic_need_username']) {
                 ?>
                 <p>
-                    <label for="username"><?= $LANGDATA['L_USERNAME'] ?> </label>
+                    <label for="username"><?= $LNG['L_USERNAME'] ?> </label>
                     <input id="username" name="username"  type="text" placeholder=""/>
                 </p>
                 <?php
             }
             ?>
             <p>
-                <label for="email"><?= $LANGDATA['L_EMAIL'] ?> </label>
-                <input id="email" name="email" required="required" type="text" placeholder="<?= $LANGDATA['L_EMAIL_EXAMPLE'] ?>"/>
+                <label for="email"><?= $LNG['L_EMAIL'] ?> </label>
+                <input id="email" name="email" required="required" type="text" placeholder="<?= $LNG['L_EMAIL_EXAMPLE'] ?>"/>
             </p>
             <p>
-                <label for="password"><?= $LANGDATA['L_PASSWORD'] ?> </label>
+                <label for="password"><?= $LNG['L_PASSWORD'] ?> </label>
                 <input id="password" name="password" required="required" type="password" placeholder=""/>
             </p>
             <p>
-                <label for="rpassword"><?= $LANGDATA['L_RPASSWORD'] ?> </label>
+                <label for="rpassword"><?= $LNG['L_RPASSWORD'] ?> </label>
                 <input id="rpassword" name="rpassword" required="required" type="password" placeholder=""/>
             </p>
             <p>
-                <a href="<?= $data['terms_url'] ?>" target="_blank"><?= $LANGDATA['L_TOS'] ?></a><input id="tos" name="tos" required="required" type="checkbox"/>
+                <a href="<?= $data['terms_url'] ?>" target="_blank"><?= $LNG['L_TOS'] ?></a><input id="tos" name="tos" required="required" type="checkbox"/>
             </p>
             <p class="register button">
-                <input type="submit" id="register" name="register" class="btnRegister" value="<?= $LANGDATA['L_REGISTER'] ?>" />
+                <input type="submit" id="register" name="register" class="btnRegister" value="<?= $LNG['L_REGISTER'] ?>" />
             </p>
         </form>
     </div>

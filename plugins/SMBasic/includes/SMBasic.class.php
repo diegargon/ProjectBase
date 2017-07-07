@@ -36,8 +36,8 @@ class SessionManager {
         
     }
 
-    function start($config, $db) {
-        $this->setConfig($config, $db);
+    function start($cfg, $db) {
+        $this->setConfig($cfg, $db);
         $this->session_start ? session_start() : false;
     }
 
@@ -281,24 +281,24 @@ class SessionManager {
         }
     }
 
-    private function setConfig($config, $db) {
+    private function setConfig($cfg, $db) {
         
         $this->db = $db;
-        if ($config['smbasic_default_session']) {
+        if ($cfg['smbasic_default_session']) {
             $this->session_type = 1;
         } else { //Custom
             $this->session_type = 2;
             $this->loadData();
         }
-        if ($config['smbasic_session_start'] || $config['smbasic_default_session']) {
+        if ($cfg['smbasic_session_start'] || $cfg['smbasic_default_session']) {
             $this->session_start = 1;
         }
-        $this->salt = $config['smbasic_session_salt'];
-        $this->check_ip = $config['smbasic_check_ip'];
-        $this->check_user_agent = $config['smbasic_check_user_agent'];
-        !empty($config['smbasic_session_expire']) ? $this->session_expire = $config['smbasic_session_expire'] : false;
-        !empty($config['smbasic_persistence']) ? $this->persistence = $config['smbasic_persistence'] : false;
-        !empty($config['smbasic_cookie_prefix']) ? $this->cookie_prefix = $config['smbasic_cookie_prefix'] : false;
+        $this->salt = $cfg['smbasic_session_salt'];
+        $this->check_ip = $cfg['smbasic_check_ip'];
+        $this->check_user_agent = $cfg['smbasic_check_user_agent'];
+        !empty($cfg['smbasic_session_expire']) ? $this->session_expire = $cfg['smbasic_session_expire'] : false;
+        !empty($cfg['smbasic_persistence']) ? $this->persistence = $cfg['smbasic_persistence'] : false;
+        !empty($cfg['smbasic_cookie_prefix']) ? $this->cookie_prefix = $cfg['smbasic_cookie_prefix'] : false;
     }
 
     private function createSID() {

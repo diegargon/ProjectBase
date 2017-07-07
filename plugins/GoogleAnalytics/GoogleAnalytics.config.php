@@ -4,4 +4,4 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-$config['GOOGLE_ANALYTICS_CODE'] = "UA-XXXXXX-X";
+$cfg['GOOGLE_ANALYTICS_CODE'] = "UA-XXXXXX-X";

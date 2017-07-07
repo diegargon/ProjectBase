@@ -16,7 +16,7 @@
             $('#btnRemoteUpload').show();
             return false;
         } else {
-            $.post("<?= $config['CON_FILE'] ?>?module=NewsMediaUploader&page=remote_upload", { url: remote_url },
+            $.post("<?= $cfg['CON_FILE'] ?>?module=NewsMediaUploader&page=remote_upload", { url: remote_url },
             function(data) {
                 console.log(data);
                 var json = $.parseJSON(data);
@@ -37,10 +37,10 @@
 </script>
         <div class="submit_items">
             <p>
-                <label for="news_remote_media"><?= $LANGDATA['L_NMU_REMOTE_MEDIA'] ?> </label>
+                <label for="news_remote_media"><?= $LNG['L_NMU_REMOTE_MEDIA'] ?> </label>
                 <input value=""
-                    minlength="<?= $config['NEWS_LINK_MIN_LENGHT']?>"
-                    maxlength="<?= $config['NEWS_LINK_MAX_LENGHT']?>"
+                    minlength="<?= $cfg['NEWS_LINK_MIN_LENGHT']?>"
+                    maxlength="<?= $cfg['NEWS_LINK_MAX_LENGHT']?>"
                     id="news_remote_media" class="news_remote_link" name="news_remote_media" 
                     type="text" placeholder="http://site.com/image.jpg"/>
                 <button id="btnRemoteUpload" type="button" value="" name="btnRemoteUpload">Enviar</button>

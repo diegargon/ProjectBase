@@ -6,7 +6,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function news_new_lang() {
-    global $config, $LANGDATA, $acl_auth, $tpl, $sm;
+    global $cfg, $LNG, $acl_auth, $tpl, $sm;
 
     $nid = S_GET_INT("nid", 11, 1);
     $lang_id = S_GET_INT("lang_id", 4, 1);
@@ -19,12 +19,12 @@ function news_new_lang() {
         return false; // error already setting in get_news
     }
 
-    $news_data['news_form_title'] = $LANGDATA['L_NEWS_NEWLANG'];
+    $news_data['news_form_title'] = $LNG['L_NEWS_NEWLANG'];
 
     $translator = $sm->getSessionUser();
 
-    if (empty($translator) && $config['NEWS_ANON_TRANSLATE']) {
-        $translator['username'] = $LANGDATA['L_NEWS_ANONYMOUS'];
+    if (empty($translator) && $cfg['NEWS_ANON_TRANSLATE']) {
+        $translator['username'] = $LNG['L_NEWS_ANONYMOUS'];
         $translator['uid'] = 0;
     } else if (empty($translator)) {
         return news_error_msg("L_NEWS_NO_EDIT_PERMISS");
@@ -43,17 +43,17 @@ function news_new_lang() {
         return news_error_msg("L_NEWS_E_ALREADY_TRANSLATE_ALL");
     }
     $news_data['news_text_bar'] = news_editor_getBar();
-    $news_data['terms_url'] = $config['TERMS_URL'];
+    $news_data['terms_url'] = $cfg['TERMS_URL'];
     do_action("news_newlang_form_add", $news_data);
 
     $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("Newspage", "news_form", $news_data));
 }
 
 function news_form_newlang_process() {
-    global $LANGDATA, $config, $sm;
+    global $LNG, $cfg, $sm;
 
     $user = $sm->getSessionUser();
-    if (!$user && !$config['NEWS_ANON_TRANSLATE']) {
+    if (!$user && !$cfg['NEWS_ANON_TRANSLATE']) {
         return false;
     }
 
@@ -64,14 +64,14 @@ function news_form_newlang_process() {
     }
 
     if (news_translate($news_data)) {
-        die('[{"status": "ok", "msg": "' . $LANGDATA['L_NEWS_TRANSLATE_SUCCESSFUL'] . '", "url": "' . $config['WEB_URL'] . '"}]');
+        die('[{"status": "ok", "msg": "' . $LNG['L_NEWS_TRANSLATE_SUCCESSFUL'] . '", "url": "' . $cfg['WEB_URL'] . '"}]');
     } else {
-        die('[{"status": "1", "msg": "' . $LANGDATA['L_NEWS_INTERNAL_ERROR'] . '"}]');
+        die('[{"status": "1", "msg": "' . $LNG['L_NEWS_INTERNAL_ERROR'] . '"}]');
     }
 }
 
 function news_translate($news_data) {
-    global $config, $db, $ml;
+    global $cfg, $db, $ml;
 
     $lang_id = $ml->iso_to_id($news_data['lang']);
 
@@ -89,7 +89,7 @@ function news_translate($news_data) {
 
     $query = $db->select_all("news", ["nid" => "$orig_news_nid", "lang_id" => "$orig_news_lang_id", "page" => 1], "LIMIT 1");
     $orig_news = $db->fetch($query);
-    $moderation = $config['NEWS_MODERATION'];
+    $moderation = $cfg['NEWS_MODERATION'];
 
     $insert_ary = [
         "nid" => $news_data['nid'],

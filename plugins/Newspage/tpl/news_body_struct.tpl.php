@@ -5,7 +5,7 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-if ($config['ITS_BOT'] && $config['INCLUDE_DATA_STRUCTURE']){
+if ($cfg['ITS_BOT'] && $cfg['INCLUDE_DATA_STRUCTURE']){
 ?>
 
 <script type="application/ld+json">
@@ -29,9 +29,9 @@ if ($config['ITS_BOT'] && $config['INCLUDE_DATA_STRUCTURE']){
     "@type": "Organization",
     "logo": {
       "@type": "ImageObject",
-      "url": "<?= $config['WEB_LOGO'] ?>"
+      "url": "<?= $cfg['WEB_LOGO'] ?>"
     },
-    "name": "<?= $config['WEB_NAME'] ?>"
+    "name": "<?= $cfg['WEB_NAME'] ?>"
     },
   "mainEntityOfPage": "True"
 }

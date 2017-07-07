@@ -4,6 +4,6 @@
  * ES
  */
 !defined('IN_WEB') ? exit : true;
-$LANGDATA['L_SC_COMMENTS'] = "Comentarios";
-$LANGDATA['L_SC_NEW_COMMENT'] = "Nuevo comentario";
-$LANGDATA['L_SC_ANONYMOUS'] = "Anonimo";
+$LNG['L_SC_COMMENTS'] = "Comentarios";
+$LNG['L_SC_NEW_COMMENT'] = "Nuevo comentario";
+$LNG['L_SC_ANONYMOUS'] = "Anonimo";

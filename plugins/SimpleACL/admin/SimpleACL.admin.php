@@ -21,27 +21,27 @@ function SimpleACL_AdminMenu($params) {
 }
 
 function SimpleACL_AdminContent($params) {
-    global $tpl, $LANGDATA;
+    global $tpl, $LNG;
 
     $msg = "";
 
     $tpl->getCSS_filePath("SimpleACL");
 
-    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LANGDATA['L_PL_STATE'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LANGDATA['L_ACL_ROLES'] . "</a></li>\n";
-    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LANGDATA['L_ACL_USER_ROLES'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] = "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=1'>" . $LNG['L_PL_STATE'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=2'>" . $LNG['L_ACL_ROLES'] . "</a></li>\n";
+    $page_data['ADM_ASIDE_OPTION'] .= "<li><a href='admin&admtab=" . $params['admtab'] . "&opt=3'>" . $LNG['L_ACL_USER_ROLES'] . "</a></li>\n";
 
     $opt = S_GET_INT("opt");
     if ($opt == 1 || $opt == false) {
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_PL_STATE'];
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_GENERAL'] . ": " . $LNG['L_PL_STATE'];
         $page_data['ADM_CONTENT'] = Admin_GetPluginState("SimpleACL");
     } else if ($opt == 2) {
         isset($_POST['btnNewRole']) ? $msg = SimpleACL_NewRole() : false;
         isset($_POST['btnRoleDelete']) ? $msg = SimpleACL_DeleteRole() : false;
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_ACL_ROLES'];
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_GENERAL'] . ": " . $LNG['L_ACL_ROLES'];
         $page_data['ADM_CONTENT'] = SimpleACL_ShowRoles($msg);
     } else if ($opt == 3) {
-        $page_data['ADM_CONTENT_H2'] = $LANGDATA['L_GENERAL'] . ": " . $LANGDATA['L_ACL_USER_ROLES'];
+        $page_data['ADM_CONTENT_H2'] = $LNG['L_GENERAL'] . ": " . $LNG['L_ACL_USER_ROLES'];
         $page_data['ADM_CONTENT'] = SimpleACL_UserRoles($msg);
     }
 
@@ -70,7 +70,7 @@ function SimpleACL_ShowRoles($msg) {
 }
 
 function SimpleACL_NewRole() {
-    global $LANGDATA, $db;
+    global $LNG, $db;
     $r_level = S_POST_INT("r_level", 2, 1);
     $r_group = S_POST_CHAR_AZ("r_group", 18, 1);
     $r_type = S_POST_CHAR_AZ("r_type", 14, 1);
@@ -78,7 +78,7 @@ function SimpleACL_NewRole() {
     $r_description = S_POST_TEXT_UTF8("r_description", 255);
 
     if (empty($r_level) || empty($r_group) || empty($r_type) || empty($r_name)) {
-        return $msg = $LANGDATA['L_ACL_E_EMPTY_NEWROLE'];
+        return $msg = $LNG['L_ACL_E_EMPTY_NEWROLE'];
     }
 
     $insert_ary = array(
@@ -90,7 +90,7 @@ function SimpleACL_NewRole() {
     );
 
     $db->insert("acl_roles", $insert_ary);
-    return $msg = $LANGDATA['L_ACL_ROLE_SUBMIT_SUCCESFUL'];
+    return $msg = $LNG['L_ACL_ROLE_SUBMIT_SUCCESFUL'];
 }
 
 function SimpleACL_DeleteRole() {
@@ -100,7 +100,7 @@ function SimpleACL_DeleteRole() {
 }
 
 function SimpleACL_UserRoles($msg) {
-    global $tpl, $LANGDATA, $sm, $acl_auth;
+    global $tpl, $LNG, $sm, $acl_auth;
 
     $content = [];
 
@@ -121,30 +121,30 @@ function SimpleACL_UserRoles($msg) {
                 $content['option_roles'] .= "<option value='{$role_data['role_id']}'>{$role_data['role_group']}_{$role_data['role_type']}</option>";
             }
         } else {
-            $msg = $LANGDATA['L_ACL_USER_NOROLES'];
+            $msg = $LNG['L_ACL_USER_NOROLES'];
         }
         $roles = $acl_auth->retrieveRoles();
         if (!empty($roles)) {
             $content['roles'] = "";
             foreach ($roles as $role) {
                 if (preg_match("/L_/", $role['role_name'])) {
-                    $content['roles'] .= "<option value='{$role['role_id']}'>{$LANGDATA[$role['role_name']]}</option>";
+                    $content['roles'] .= "<option value='{$role['role_id']}'>{$LNG[$role['role_name']]}</option>";
                 } else {
                     $content['roles'] .= "<option value='{$role['role_id']}'>{$role['role_name']}</option>";
                 }
             }
         } else {
-            $msg = $LANGDATA['L_ACL_INTERNAL_E_NOROLES'];
+            $msg = $LNG['L_ACL_INTERNAL_E_NOROLES'];
         }
     } else {
-        $msg = $LANGDATA['L_ACL_USER_NOTFOUND'];
+        $msg = $LNG['L_ACL_USER_NOTFOUND'];
     }
     !empty($msg) ? $content['ACL_MSG'] = $msg : false;
     return $tpl->getTPL_file("SimpleACL", "acl_user_roles", $content);
 }
 
 function SimpleACL_AddRole($user) {
-    global $db, $LANGDATA;
+    global $db, $LNG;
 
     $role = S_POST_INT("add_role_id");
 
@@ -155,23 +155,23 @@ function SimpleACL_AddRole($user) {
         );
         $query = $db->select_all("acl_users", $role_ary, "LIMIT 1");
         if ($db->num_rows($query) > 0) {
-            return $LANGDATA['L_ACL_USER_ALREADY_ROLE'];
+            return $LNG['L_ACL_USER_ALREADY_ROLE'];
         } else {
             $db->insert("acl_users", $role_ary);
-            return $LANGDATA['L_ACL_ADD_SUCCESSFUL'];
+            return $LNG['L_ACL_ADD_SUCCESSFUL'];
         }
     }
-    return $LANGDATA['L_ACL_E_ID'];
+    return $LNG['L_ACL_E_ID'];
 }
 
 function SimpleACL_DelRole($user) {
-    global $db, $LANGDATA;
+    global $db, $LNG;
 
     $role = S_POST_INT("del_role_id");
     if (!empty($role)) {
         $db->delete("acl_users", array("uid" => "{$user['uid']}", "role_id" => "$role"));
-        return $LANGDATA['L_ACL_DEL_SUCCESSFUL'];
+        return $LNG['L_ACL_DEL_SUCCESSFUL'];
     }
 
-    return $LANGDATA['L_ACL_E_ID'];
+    return $LNG['L_ACL_E_ID'];
 }

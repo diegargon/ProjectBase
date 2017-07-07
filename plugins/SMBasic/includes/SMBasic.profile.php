@@ -32,25 +32,25 @@ function SMBasic_ViewProfile() {
 }
 
 function SMBasic_ProfileChange() {
-    global $LANGDATA, $config, $db, $sm;
+    global $LNG, $cfg, $db, $sm;
 
-    if (empty($_POST['cur_password']) || strlen($_POST['cur_password']) < $config['sm_min_password']) {
-        die('[{"status": "1", "msg": "' . $LANGDATA['L_E_PASSWORD_EMPTY_SHORT'] . '"}]');
+    if (empty($_POST['cur_password']) || strlen($_POST['cur_password']) < $cfg['sm_min_password']) {
+        die('[{"status": "1", "msg": "' . $LNG['L_E_PASSWORD_EMPTY_SHORT'] . '"}]');
     }
     if (!$password = S_POST_PASSWORD("cur_password")) {
-        die('[{"status": "2", "msg": "' . $LANGDATA['L_E_PASSWORD'] . '"}]');
+        die('[{"status": "2", "msg": "' . $LNG['L_E_PASSWORD'] . '"}]');
     }
 
     $password_encrypted = do_action("encrypt_password", $password);
 
     $user = $sm->getSessionUser();
     if (empty($user)) {
-        die('[{"status": "0", "msg": "' . $LANGDATA['L_E_INTERNAL'] . '"}]');
+        die('[{"status": "0", "msg": "' . $LNG['L_E_INTERNAL'] . '"}]');
     }
     //Check USER password
     $query = $db->select_all("users", array("uid" => $user['uid'], "password" => "$password_encrypted"), "LIMIT 1");
     if ($db->num_rows($query) <= 0) {
-        die('[{"status": "2", "msg": "' . $LANGDATA['L_WRONG_PASSWORD'] . '"}]');
+        die('[{"status": "2", "msg": "' . $LNG['L_WRONG_PASSWORD'] . '"}]');
     }
 
     $q_set_ary = [];
@@ -58,11 +58,11 @@ function SMBasic_ProfileChange() {
     if (!empty($_POST['avatar'])) {
         $avatar = S_VALIDATE_MEDIA($_POST['avatar'], 256);
         if ($avatar < 0) {
-            die('[{"status": "6", "msg": "' . $LANGDATA['L_SM_E_AVATAR'] . '"}]');
+            die('[{"status": "6", "msg": "' . $LNG['L_SM_E_AVATAR'] . '"}]');
         } else {
-            if ($config['smbasic_https_remote_avatar']) {
+            if ($cfg['smbasic_https_remote_avatar']) {
                 if (strpos($avatar, "https") === false) {
-                    die('[{"status": "6", "msg": "' . $LANGDATA['L_SM_E_HTTPS'] . $avatar . '"}]');
+                    die('[{"status": "6", "msg": "' . $LNG['L_SM_E_HTTPS'] . $avatar . '"}]');
                 }
             }
             $user['avatar'] != $avatar ? $q_set_ary['avatar'] = $db->escape_strip($avatar) : false;
@@ -72,15 +72,15 @@ function SMBasic_ProfileChange() {
     if ((!empty($_POST['new_password']) && empty($_POST['r_password']) ) ||
             (!empty($_POST['r_password']) && empty($_POST['new_password']) )
     ) {
-        die('[{"status": "3", "msg": "' . $LANGDATA['L_E_NEW_BOTH_PASSWORD'] . '"}]');
+        die('[{"status": "3", "msg": "' . $LNG['L_E_NEW_BOTH_PASSWORD'] . '"}]');
     }
 
     if (!empty($_POST['new_password']) && !empty($_POST['r_password'])) {
         if ($_POST['new_password'] != $_POST['r_password']) {
-            die('[{"status": "3", "msg": "' . $LANGDATA['L_E_NEW_PASSWORD_NOTMATCH'] . '"}]');
+            die('[{"status": "3", "msg": "' . $LNG['L_E_NEW_PASSWORD_NOTMATCH'] . '"}]');
         }
-        if ((strlen($_POST['new_password']) < $config['sm_min_password'])) {
-            die('[{"status": "3", "msg": "' . $LANGDATA['L_E_NEWPASS_TOOSHORT'] . '"}]');
+        if ((strlen($_POST['new_password']) < $cfg['sm_min_password'])) {
+            die('[{"status": "3", "msg": "' . $LNG['L_E_NEWPASS_TOOSHORT'] . '"}]');
         }
         if (($new_password = S_POST_PASSWORD("new_password")) != false) {
             $new_password_encrypt = do_action("encrypt_password", $new_password);
@@ -88,25 +88,25 @@ function SMBasic_ProfileChange() {
         }
     }
 
-    if (( $config['smbasic_can_change_username'] == 1)) {
-        if (empty($_POST['username']) && $config['smbasic_need_username'] == 1) {
-            die('[{"status": "4", "msg": "' . $LANGDATA['L_USERNAME_EMPTY'] . '"}]');
-        } else if (empty($_POST['username']) && $config['smbasic_need_username'] == 0) {
+    if (( $cfg['smbasic_can_change_username'] == 1)) {
+        if (empty($_POST['username']) && $cfg['smbasic_need_username'] == 1) {
+            die('[{"status": "4", "msg": "' . $LNG['L_USERNAME_EMPTY'] . '"}]');
+        } else if (empty($_POST['username']) && $cfg['smbasic_need_username'] == 0) {
             $q_set_ary['username'] = '';
         } else {
-            if (strlen($_POST['username']) < $config['smbasic_min_username']) {
-                die('[{"status": "4", "msg": "' . $LANGDATA['L_USERNAME_SHORT'] . '"}]');
+            if (strlen($_POST['username']) < $cfg['smbasic_min_username']) {
+                die('[{"status": "4", "msg": "' . $LNG['L_USERNAME_SHORT'] . '"}]');
             }
-            if (strlen($_POST['username']) > $config['smbasic_max_username']) {
-                die('[{"status": "4", "msg": "' . $LANGDATA['L_USERNAME_LONG'] . '"}]');
+            if (strlen($_POST['username']) > $cfg['smbasic_max_username']) {
+                die('[{"status": "4", "msg": "' . $LNG['L_USERNAME_LONG'] . '"}]');
             }
-            if (($username = S_POST_STRICT_CHARS("username", $config['smbasic_max_username'], $config['smbasic_min_username'])) == false) {
-                die('[{"status": "4", "msg": "' . $LANGDATA['L_USERNAME_CHARS'] . '"}]');
+            if (($username = S_POST_STRICT_CHARS("username", $cfg['smbasic_max_username'], $cfg['smbasic_min_username'])) == false) {
+                die('[{"status": "4", "msg": "' . $LNG['L_USERNAME_CHARS'] . '"}]');
             }
             if ($user['username'] != $username && !empty($username)) {
                 $query = $db->select_all("users", array("username" => "$username"), "LIMIT 1");
                 if ($db->num_rows($query) > 0) {
-                    die('[{"status": "4", "msg": "' . $LANGDATA['L_E_USERNAME_EXISTS'] . '"}]');
+                    die('[{"status": "4", "msg": "' . $LNG['L_E_USERNAME_EXISTS'] . '"}]');
                 } else {
                     $q_set_ary['username'] = $username;
                 }
@@ -114,17 +114,17 @@ function SMBasic_ProfileChange() {
         }
     }
 
-    if (( $config['smbasic_can_change_email'] == 1)) {
+    if (( $cfg['smbasic_can_change_email'] == 1)) {
         if (($email = S_POST_EMAIL("email")) == false) {
-            die('[{"status": "4", "msg": "' . $LANGDATA['L_E_EMAIL'] . '"}]');
+            die('[{"status": "4", "msg": "' . $LNG['L_E_EMAIL'] . '"}]');
         }
-        if (strlen($email) > $config['smbasic_max_email']) {
-            die('[{"status": "4", "msg": "' . $LANGDATA['L_EMAIL_LONG'] . '"}]');
+        if (strlen($email) > $cfg['smbasic_max_email']) {
+            die('[{"status": "4", "msg": "' . $LNG['L_EMAIL_LONG'] . '"}]');
         }
         if ($email != $user['email']) {
             $query = $db->select_all("users", array("email" => "$email"), "LIMIT 1");
             if ($db->num_rows($query) > 0) {
-                die('[{"status": "5", "msg": "' . $LANGDATA['L_E_EMAIL_EXISTS'] . '"}]');
+                die('[{"status": "5", "msg": "' . $LNG['L_E_EMAIL_EXISTS'] . '"}]');
             } else {
                 $q_set_ary["email"] = $email;
             }
@@ -135,5 +135,5 @@ function SMBasic_ProfileChange() {
 
     !empty($q_set_ary) ? $db->update("users", $q_set_ary, array("uid" => $user['uid']), "LIMIT 1") : false;
 
-    die('[{"status": "ok", "msg": "' . $LANGDATA['L_UPDATE_SUCCESSFUL'] . '", "url": "' . S_SERVER_REQUEST_URI() . '"}]');
+    die('[{"status": "ok", "msg": "' . $LNG['L_UPDATE_SUCCESSFUL'] . '", "url": "' . S_SERVER_REQUEST_URI() . '"}]');
 }

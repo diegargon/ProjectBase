@@ -97,7 +97,7 @@ class Categories {
     }
 
     function root_cats($plugin, $formated = 1) { // get_fathers_cat_list
-        global $config, $LANGDATA;
+        global $cfg, $LNG;
 
         if (empty($plugin)) {
             return false;
@@ -109,7 +109,7 @@ class Categories {
             if ($category['plugin'] == $plugin && $category['father'] == 0) {
                 if ($formated) {
                     $cat_display_name = preg_replace('/\_/', ' ', $category['name']);
-                    $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/{$category['name']}'>$cat_display_name</a></li>";
+                    $cat_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/{$category['name']}'>$cat_display_name</a></li>";
                 } else {
                     $cat_data[$category['cid']] = $category;
                 }
@@ -120,7 +120,7 @@ class Categories {
     }
 
     function childs_of_cat($plugin, $cat_path, $formated = 1, $separator = ".") { //FORREMOVE
-        global $config, $LANGDATA;
+        global $cfg, $LNG;
 
         if (empty($plugin) && empty($cat_path)) {
             return false;
@@ -133,13 +133,13 @@ class Categories {
         if ($formated && count($cats_explode) > 1) {
             array_pop($cats_explode);
             $f_cats = implode($separator, $cats_explode);
-            $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/$f_cats'>{$config['CATS_BACK_SYMBOL']}</a></li>";
+            $cat_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/$f_cats'>{$cfg['CATS_BACK_SYMBOL']}</a></li>";
         }
         foreach ($this->categories as $category) {
             if ($category['plugin'] == $plugin && $category['father'] == $cat_id) {
                 if ($formated) {
                     $cat_display_name = preg_replace('/\_/', ' ', $category['name']);
-                    $cat_data .= "<li><a href='/{$config['WEB_LANG']}/{$LANGDATA['L_NEWS_SECTION']}/$cat_path.{$category['name']}'>$cat_display_name</a></li>";
+                    $cat_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/$cat_path.{$category['name']}'>$cat_display_name</a></li>";
                 } else {
                     $cat_data = $category;
                 }
@@ -162,17 +162,17 @@ class Categories {
     }
 
     private function loadCategories($plugin = null) {
-        global $db, $ml, $config;
+        global $db, $ml, $cfg;
         $where_ary = [];
 
-        $plugin = $config['CATS_DEFAULT_LOAD_PLUGIN'];
+        $plugin = $cfg['CATS_DEFAULT_LOAD_PLUGIN'];
 
-        defined('MULTILANG') ? $lang_id = $ml->getSessionLangId() : $lang_id = $config['WEB_LANG_ID'];
+        defined('MULTILANG') ? $lang_id = $ml->getSessionLangId() : $lang_id = $cfg['WEB_LANG_ID'];
 
         if (!empty($lang_id) && is_numeric($lang_id)) {
             $where_ary['lang_id'] = $lang_id;
         }
-        $config['CATS_BY_VIEWS'] ? $order = "views DESC" : $order = "weight ASC";
+        $cfg['CATS_BY_VIEWS'] ? $order = "views DESC" : $order = "weight ASC";
 
         $plugin ? $where_ary['plugin'] = $plugin : null;
         $query = $db->select_all("categories", $where_ary, "ORDER BY $order");

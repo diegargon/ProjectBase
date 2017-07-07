@@ -11,9 +11,9 @@ function NewsAds_init() {
 }
 
 function NewsAds_ShowAds () {
-    global $config, $tpl;
+    global $cfg, $tpl;
     
-    if ($config['newsads_main_ad']) {
+    if ($cfg['newsads_main_ad']) {
         $ad_code = NewsAds_GetMainAd();
         $main_banner = "<aside class='center' id='main_banner'>" . $ad_code ."</aside>";
         $tpl->addto_tplvar("ADD_TO_NEWSSHOW_TOP", $main_banner);
@@ -21,7 +21,7 @@ function NewsAds_ShowAds () {
         $tpl->addto_tplvar("ADD_TOP_SECTION", $main_banner );
     }
     
-    if ( S_GET_INT("nid") && ($config['newsads_sponsors'] || $config['newsads_global_sponsors']) ) {
+    if ( S_GET_INT("nid") && ($cfg['newsads_sponsors'] || $cfg['newsads_global_sponsors']) ) {
         $sponsors = NewsAdds_Sponsors();
         $sponsors = "<aside class='sponsors center'>" . $sponsors ."</aside>";
         !empty($sponsors) ? $tpl->addto_tplvar("ADD_TO_NEWS_SIDE_PRE", $sponsors) : false;                    
@@ -38,11 +38,11 @@ function NewsAds_GetMainAd() {
 }
 
 function NewsAdds_Sponsors() {
-    global $db, $config;
+    global $db, $cfg;
     
     $sponsors = "";
     
-    if ($config['newsads_sponsors']) {
+    if ($cfg['newsads_sponsors']) {
         $nid = S_GET_INT("nid", 11, 1);
         if (!empty($nid)) {
             $where_ary = [
@@ -58,7 +58,7 @@ function NewsAdds_Sponsors() {
         }
     }    
     
-    if ($config['newsads_global_sponsors']) {
+    if ($cfg['newsads_global_sponsors']) {
         $where_ary = [
             "itsmain" => 0,
             "resource_id" => 0

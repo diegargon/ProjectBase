@@ -18,7 +18,7 @@ function news_format_source($link) {
 }
 
 function get_news_byId($nid, $lang_id, $page = null) {
-    global $config, $acl_auth, $db;
+    global $cfg, $acl_auth, $db;
     empty($page) ? $page = 1 : false;
 
     $where_ary = ["nid" => "$nid", "lang_id" => "$lang_id", "page" => "$page"];
@@ -36,7 +36,7 @@ function get_news_byId($nid, $lang_id, $page = null) {
     }
     $db->free($query);
 
-    if ($config['NEWS_MODERATION'] && $news_row['moderation'] && !S_GET_INT("admin")) {
+    if ($cfg['NEWS_MODERATION'] && $news_row['moderation'] && !S_GET_INT("admin")) {
         return news_error_msg("L_NEWS_ERROR_WAITINGMOD");
     }
 
@@ -58,26 +58,26 @@ function get_news_source_byID($nid) {
 }
 
 function news_menu_submit_news() {
-    global $LANGDATA, $config;
+    global $LNG, $cfg;
 
     $data = "<li class='nav_left'>";
     $data .= "<a rel='nofollow' href='/";
-    if ($config['FRIENDLY_URL']) {
-        $data .= "{$config['WEB_LANG']}/submitnews";
+    if ($cfg['FRIENDLY_URL']) {
+        $data .= "{$cfg['WEB_LANG']}/submitnews";
     } else {
-        $data .= "{$config['CON_FILE']}?module=Newspage&page=submitnews&lang={$config['WEB_LANG']}";
+        $data .= "{$cfg['CON_FILE']}?module=Newspage&page=submitnews&lang={$cfg['WEB_LANG']}";
     }
-    $data .= "'>" . $LANGDATA['L_CREATE_NEWS'] . "</a>";
+    $data .= "'>" . $LNG['L_CREATE_NEWS'] . "</a>";
     $data .= "</li>";
 
     return $data;
 }
 
 function news_check_display_submit() {
-    global $config, $acl_auth, $sm;
+    global $cfg, $acl_auth, $sm;
     $user = $sm->getSessionUser();
 
-    if ((!empty($user) && $config['NEWS_SUBMIT_REGISTERED']) || (empty($user) && $config['NEWS_SUBMIT_ANON'] )) {
+    if ((!empty($user) && $cfg['NEWS_SUBMIT_REGISTERED']) || (empty($user) && $cfg['NEWS_SUBMIT_ANON'] )) {
         return true;
     }
     if ($user && defined('ACL') && ( $acl_auth->acl_ask("news_submit||admin_all") )) {
@@ -123,17 +123,17 @@ function news_error_msg($error) {
 }
 
 function news_cat_menu() {
-    global $tpl, $ctgs, $config, $LANGDATA;
+    global $tpl, $ctgs, $cfg, $LNG;
     $cat_path = S_GET_TEXT_UTF8("section");
 
     $menu_data = $ctgs->root_cats("Newspage");
-    if ($config['NEWS_BACKPAGE_SECTION']) {
-        if ($config['FRIENDLY_URL']) {
-            $url = "/{$config['WEB_LANG']}";
+    if ($cfg['NEWS_BACKPAGE_SECTION']) {
+        if ($cfg['FRIENDLY_URL']) {
+            $url = "/{$cfg['WEB_LANG']}";
         } else {
             $url = "";
         }
-        $menu_data .= "<li><a href='$url'>" . $LANGDATA['L_NEWS_BACKPAGE'] . "</a></li>";
+        $menu_data .= "<li><a href='$url'>" . $LNG['L_NEWS_BACKPAGE'] . "</a></li>";
     }
     !empty($cat_path) ? $submenu_data = $ctgs->childs_of_cat("Newspage", $cat_path) : null;
 

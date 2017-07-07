@@ -13,23 +13,23 @@ class Multilang {
     }
 
     function getSessionLang() {
-        global $config;
-        $lid = $this->iso_to_id($config['WEB_LANG']);        
+        global $cfg;
+        $lid = $this->iso_to_id($cfg['WEB_LANG']);        
         return $this->active_site_langs[$lid];
     }
     function getSessionLangId() {
-        global $config;
-        return $this->iso_to_id($config['WEB_LANG']);
+        global $cfg;
+        return $this->iso_to_id($cfg['WEB_LANG']);
     }    
     function get_nav() { 
-        global $config;
+        global $cfg;
 
         $mlnav = "<li class='nav_right'>"
             . "<form action='#' method='post'>"            
             . "<select name='choose_lang' id='choose_lang' onchange=\"this.form.submit()\" >";
         
         foreach ($this->get_site_langs() as $lang) {
-            if($lang['iso_code'] == $config['WEB_LANG']) {
+            if($lang['iso_code'] == $cfg['WEB_LANG']) {
                 $mlnav .= "<option selected value='{$lang['iso_code']}'>{$lang['lang_name']}</option>";
             } else {
                 $mlnav .= "<option value='{$lang['iso_code']}'>{$lang['lang_name']}</option>";

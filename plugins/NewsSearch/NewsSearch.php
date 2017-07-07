@@ -5,19 +5,19 @@
 !defined('IN_WEB') ? exit : true;
 
 function NewsSearch_init() { 
-    global $tpl, $config;
+    global $tpl, $cfg;
     print_debug("NewsSearch initiated", "PLUGIN_LOAD");
 
     includePluginFiles("NewsSearch");
 
-    if ($config['NS_ALLOW_ANON'] == 0) {
+    if ($cfg['NS_ALLOW_ANON'] == 0) {
         return false;
     }
     $tpl->getCSS_filePath("NewsSearch");
     register_action("header_menu_element", "NS_basicSearchbox", 5);
 
     /* TAGS */
-    if ($config['NS_TAGS_SUPPORT']) {
+    if ($cfg['NS_TAGS_SUPPORT']) {
         register_action("news_new_form_add", "NS_tag_add_form");
         register_action("news_mod_submit_insert", "NS_news_mod_insert");
         register_action("news_show_page", "NS_news_tag_show_page");

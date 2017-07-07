@@ -4,4 +4,4 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-//$config[''] = ;
+//$cfg[''] = ;

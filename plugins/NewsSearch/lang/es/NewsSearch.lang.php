@@ -5,9 +5,9 @@
  */
 !defined('IN_WEB') ? exit : true;
 
-$LANGDATA['L_NS_NORESULT'] = "Ninguna coincidencia";
-$LANGDATA['L_NS_SEARCH'] = "Busqueda";
-$LANGDATA['L_NS_SEARCH_RESULT'] = "Resultados de la busqueda";
-$LANGDATA['L_NS_SEARCH_ERROR'] = "Busqueda invalida";
-$LANGDATA['L_NS_TAGS'] = "Tags";
-$LANGDATA['L_NS_TAGS_PLACEHOLDER'] = "Tags, separado por comas";
+$LNG['L_NS_NORESULT'] = "Ninguna coincidencia";
+$LNG['L_NS_SEARCH'] = "Busqueda";
+$LNG['L_NS_SEARCH_RESULT'] = "Resultados de la busqueda";
+$LNG['L_NS_SEARCH_ERROR'] = "Busqueda invalida";
+$LNG['L_NS_TAGS'] = "Tags";
+$LNG['L_NS_TAGS_PLACEHOLDER'] = "Tags, separado por comas";

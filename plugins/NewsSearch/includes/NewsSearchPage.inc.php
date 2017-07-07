@@ -6,7 +6,7 @@
 !defined('IN_WEB') ? exit : true;
 
 function NS_build_result_page(& $query) {
-    global $db, $config, $tpl;
+    global $db, $cfg, $tpl;
     $content = "";
 
     if ($query && ($num_rows = $db->num_rows($query)) > 0) {
@@ -16,11 +16,11 @@ function NS_build_result_page(& $query) {
             $counter == 0 ? $result['TPL_FIRST'] = 1 : false;
             $counter == ($num_rows - 1 ) ? $result['TPL_LAST'] = 1 : false;
             $counter++;
-            if ($config['FRIENDLY_URL']) {
+            if ($cfg['FRIENDLY_URL']) {
                 $friendly_title = news_friendly_title($result['title']);
                 $result['url'] = "/{$result['lang']}/news/{$result['nid']}/{$result['page']}/$friendly_title";
             } else {
-                $result['url'] = "/{$config['CON_FILE']}?module=Newspage&page=news&nid={$result['nid']}&lang={$result['lang']}&npage={$result['page']}";
+                $result['url'] = "/{$cfg['CON_FILE']}?module=Newspage&page=news&nid={$result['nid']}&lang={$result['lang']}&npage={$result['page']}";
             }
             $content .= $tpl->getTPL_file("NewsSearch", "NewsSearch-results", $result);
         }

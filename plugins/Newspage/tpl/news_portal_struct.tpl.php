@@ -9,20 +9,20 @@
 {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  "name": "<?= $config['WEB_NAME'] ?>",
-  "alternateName": "<?= $config['WEB_DESC'] ?>",
-  "url": "<?= $config['WEB_URL'] ?>"
+  "name": "<?= $cfg['WEB_NAME'] ?>",
+  "alternateName": "<?= $cfg['WEB_DESC'] ?>",
+  "url": "<?= $cfg['WEB_URL'] ?>"
 }
 </script>
 <?php
-if (!empty($config['WEB_LOGO'])) {
+if (!empty($cfg['WEB_LOGO'])) {
 ?>
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "Organization",
-  "url": "<?= $config['WEB_URL'] ?>",
-  "logo": "<?= $config['WEB_LOGO'] ?>" 
+  "url": "<?= $cfg['WEB_URL'] ?>",
+  "logo": "<?= $cfg['WEB_LOGO'] ?>" 
 }
 </script>
 <?php } ?>
@@ -30,10 +30,10 @@ if (!empty($config['WEB_LOGO'])) {
 {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  "url": "<?= $config['WEB_URL'] ?>",
+  "url": "<?= $cfg['WEB_URL'] ?>",
   "potentialAction": {
   "@type": "SearchAction",
-  "target": "<?= $config['WEB_URL'] ?>search/?q={search_term_string}",
+  "target": "<?= $cfg['WEB_URL'] ?>search/?q={search_term_string}",
   "query-input": "required name=search_term_string"
   }
 }

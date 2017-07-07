@@ -36,7 +36,7 @@ function ex_index_page() {
     its_server_stressed() ? null : plugin_start("NewsSearch");
     news_portal();
     //require_once("plugins/Newspage/portal.php");
-    //$startpage =  $config['CON_FILE'] . "?module=Newspage&page=portal";
+    //$startpage =  $cfg['CON_FILE'] . "?module=Newspage&page=portal";
     //header('Location: '.$startpage);
 }
 
