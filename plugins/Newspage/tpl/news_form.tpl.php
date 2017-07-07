@@ -98,7 +98,7 @@
                     </div>
                     <div class="submit_buttom">
                         <p>
-                            <input type="submit" id="newsFormSubmit" name="newsFormSubmit" class="btnSubmitForm" value="<?= $LANGDATA['L_SEND_NEWS'] ?>" />
+                            <input type="submit" id="newsFormSubmit" name="newsFormSubmit" class="btnSubmitForm" value="<?= $LANGDATA['L_CREATE_NEWS'] ?>" />
                         </p>
                     </div>
                 </div>

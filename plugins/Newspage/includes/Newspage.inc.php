@@ -67,7 +67,7 @@ function news_menu_submit_news() {
     } else {
         $data .= "{$config['CON_FILE']}?module=Newspage&page=submitnews&lang={$config['WEB_LANG']}";
     }
-    $data .= "'>" . $LANGDATA['L_SEND_NEWS'] . "</a>";
+    $data .= "'>" . $LANGDATA['L_CREATE_NEWS'] . "</a>";
     $data .= "</li>";
 
     return $data;
@@ -87,6 +87,9 @@ function news_check_display_submit() {
     }
 
     return false;
+}
+function news_display_submit() {
+    news_check_display_submit() ? register_action("header_menu_element", "news_menu_submit_news") : null;
 }
 
 function news_get_related($nid) {

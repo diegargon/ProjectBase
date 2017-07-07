@@ -8,7 +8,7 @@
 function news_new_form() {
     global $LANGDATA, $config, $acl_auth, $tpl, $sm;
 
-    $form_data['news_form_title'] = $LANGDATA['L_SEND_NEWS'];
+    $form_data['news_form_title'] = $LANGDATA['L_CREATE_NEWS'];
 
     $user = $sm->getSessionUser();
     if (empty($user) && $config['NEWS_SUBMIT_ANON']) {
