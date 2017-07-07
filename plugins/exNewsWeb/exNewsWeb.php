@@ -12,7 +12,7 @@ function exNewsWeb_init() {
     includePluginFiles("exNewsWeb");
 
     register_uniq_action("index_page", "ex_index_page");
-    register_action("common_web_structure", "ex_common_web_structure");
+    register_action("common_web_structure", "ex_common_web_structure");   
     register_action("preload_Newspage_submitnews", "ex_Newspage_submitnews");
     register_action("begin_newsedit", "ex_Newspage_submitnews");
     //register_action("begin_newspage", "ex_Newspage_submitnews");
@@ -25,7 +25,7 @@ function exNewsWeb_init() {
 
 function ex_common_web_structure() {
     plugin_start("Newspage");
-    plugin_start("NewsSearch");
+    its_server_stressed() ? null : plugin_start("NewsSearch");
     news_display_submit();
     news_cat_menu();    
     
@@ -33,7 +33,8 @@ function ex_common_web_structure() {
 }
 
 function ex_index_page() {
-    its_server_stressed() ? null : plugin_start("NewsSearch");
+    plugin_start("Newspage");
+    
     news_portal();
     //require_once("plugins/Newspage/portal.php");
     //$startpage =  $cfg['CON_FILE'] . "?module=Newspage&page=portal";
@@ -46,7 +47,7 @@ function ex_Newspage_submitnews() {
 }
 
 function ex_Newspage_section() {
-//    plugin_start("NewsSearch");
+
 }
 
 function ex_Newspage_news() {
