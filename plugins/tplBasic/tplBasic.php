@@ -14,7 +14,12 @@ function tplBasic_init() {
     $custom_lang = "tpl/lang/" . $cfg['WEB_LANG'] . "/custom.lang.php";
     file_exists($custom_lang) ? require_once($custom_lang) : false;
 
-    $tpl = new TPL;
+    if (defined('SQL')) {
+        global $db;
+        $tpl = new TPL($cfg, $db);
+    } else {
+        $tpl = new TPL($cfg);
+    }
 
     $tpl->getCSS_filePath("tplBasic", "basic");
     $tpl->getCSS_filePath("tplBasic", "basic-mobile");

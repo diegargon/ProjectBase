@@ -7,6 +7,8 @@
 
 class TPL {
 
+    private $cfg;
+    private $db;
     private $tpldata;
     private $scripts = [];
     private $std_remote_scripts = array(//TODO LOAD LIST
@@ -28,8 +30,12 @@ class TPL {
     private $css_cache_filepaths;
     private $css_cache_onefile;
 
+    function __construct($cfg, $db = null) {
+        $this->cfg = $cfg;
+        $this->db = $db;
+    }
+
     function build_page() {
-        global $cfg;
 
         !isset($this->tpldata['ADD_TO_FOOTER']) ? $this->tpldata['ADD_TO_FOOTER'] = "" : null;
         !isset($this->tpldata['ADD_TO_BODY']) ? $this->tpldata['ADD_TO_BODY'] = "" : null;
@@ -39,7 +45,7 @@ class TPL {
         $web_head = do_action("get_head");
         //END HEAD
         //BEGIN BODY
-        if ($cfg['NAV_MENU']) { //we use do_action for select order
+        if ($this->cfg['NAV_MENU']) { //we use do_action for select order
             !isset($this->tpldata['HEADER_MENU_ELEMENT']) ? $this->tpldata['HEADER_MENU_ELEMENT'] = "" : null;
             $this->tpldata['HEADER_MENU_ELEMENT'] .= do_action("header_menu_element");
         }
@@ -48,9 +54,8 @@ class TPL {
         $web_body = do_action("get_body");
         //END BODY
         //BEGIN FOOTER
-        if (defined('SQL') && $cfg['STATS_QUERYS']) {
-            global $db;
-            $this->tpldata['ADD_TO_FOOTER'] .= "<p class='center zero'>Querys(" . $db->num_querys() . ")</p>";
+        if (defined('SQL') && $this->db != null && $this->cfg['STATS_QUERYS']) {
+            $this->tpldata['ADD_TO_FOOTER'] .= "<p class='center zero'>Querys(" . $this->db->num_querys() . ")</p>";
         }
         $this->tpldata['ADD_TO_FOOTER'] .= do_action("add_to_footer");
 
@@ -61,14 +66,13 @@ class TPL {
     }
 
     function getTPL_file($plugin, $filename = null, $data = null) {
-        global $cfg;
 
         empty($filename) ? $filename = $plugin : null;
 
         print_debug("getTPL_file called by-> $plugin for get a $filename", "TPL_DEBUG");
 
-        $USER_PATH_LANG = "tpl/{$cfg['THEME']}/$filename.{$cfg['WEB_LANG']}.tpl.php";
-        $USER_PATH = "tpl/{$cfg['THEME']}/$filename.tpl.php";
+        $USER_PATH_LANG = "tpl/{$this->cfg['THEME']}/$filename.{$this->cfg['WEB_LANG']}.tpl.php";
+        $USER_PATH = "tpl/{$this->cfg['THEME']}/$filename.tpl.php";
         $DEFAULT_PATH = "plugins/$plugin/tpl/$filename.tpl.php";
         if (file_exists($USER_PATH_LANG)) {
             $tpl_file_content = codetovar($USER_PATH_LANG, $data);
@@ -85,13 +89,12 @@ class TPL {
     }
 
     function getCSS_filePath($plugin, $filename = null) {
-        global $cfg;
 
         empty($filename) ? $filename = $plugin : null;
 
         print_debug("Get CSS called by-> $plugin for get a $filename", "TPL_DEBUG");
 
-        $USER_PATH = "tpl/{$cfg['THEME']}/css/$filename.css";
+        $USER_PATH = "tpl/{$this->cfg['THEME']}/css/$filename.css";
         $DEFAULT_PATH = "plugins/$plugin/tpl/css/$filename.css";
         if ($this->css_cache_check() == true) {
             if (file_exists($USER_PATH)) {
@@ -105,7 +108,7 @@ class TPL {
                 $this->css_cache_onefile .= "-" . $filename;
             }
         } else {
-            if ($cfg['CSS_INLINE'] == 0) {
+            if ($this->cfg['CSS_INLINE'] == 0) {
                 if (file_exists($USER_PATH)) {
                     $css = "<link rel='stylesheet' href='/$USER_PATH'>\n";
                 } else if (file_exists($DEFAULT_PATH)) {
@@ -128,7 +131,7 @@ class TPL {
     }
 
     function AddScriptFile($plugin, $filename = null, $place = "TOP", $async = "async") {
-        global $cfg;
+
         print_debug("AddScriptFile request -> $plugin for get a $filename", "TPL_DEBUG");
 
         if (!empty($plugin) && ($plugin == "standard")) {
@@ -159,9 +162,9 @@ class TPL {
 
         empty($filename) ? $filename = $plugin : null;
 
-        $USER_LANG_PATH = "tpl/{$cfg['THEME']}/js/$filename.{$cfg['WEB_LANG']}.js";
-        $DEFAULT_LANG_PATH = "plugins/$plugin/js/$filename.{$cfg['WEB_LANG']}.js";
-        $USER_PATH = "tpl/{$cfg['THEME']}/js/$filename.js";
+        $USER_LANG_PATH = "tpl/{$this->cfg['THEME']}/js/$filename.{$this->cfg['WEB_LANG']}.js";
+        $DEFAULT_LANG_PATH = "plugins/$plugin/js/$filename.{$this->cfg['WEB_LANG']}.js";
+        $USER_PATH = "tpl/{$this->cfg['THEME']}/js/$filename.js";
         $DEFAULT_PATH = "plugins/$plugin/js/$filename.js";
 
         if (file_exists($USER_LANG_PATH)) { //TODO Recheck priority later
@@ -174,7 +177,7 @@ class TPL {
             $SCRIPT_PATH = $DEFAULT_PATH;
         }
         if (!empty($SCRIPT_PATH)) {
-            $script = "<script type='text/javascript' src='{$cfg['STATIC_SRV_URL']}$SCRIPT_PATH' charset='UTF-8' $async></script>\n";
+            $script = "<script type='text/javascript' src='{$this->cfg['STATIC_SRV_URL']}$SCRIPT_PATH' charset='UTF-8' $async></script>\n";
         } else {
             print_debug("AddScriptFile called by-> $plugin for get a $filename but NOT FOUND IT", "TPL_DEBUG");
             return false;
@@ -228,9 +231,7 @@ class TPL {
     }
 
     private function css_cache_check() {
-        global $cfg;
-
-        if ($cfg['CSS_OPTIMIZE'] == 0 || !is_writable("cache")) {
+        if ($this->cfg['CSS_OPTIMIZE'] == 0 || !is_writable("cache")) {
             return false;
         }
 
@@ -243,7 +244,6 @@ class TPL {
     }
 
     private function css_cache() {
-        global $cfg;
         $css_code = "";
 
         $cssfile = $this->css_cache_onefile . ".css";
@@ -256,7 +256,7 @@ class TPL {
             $css_code = $this->css_strip($css_code);
             file_put_contents("cache/css/$cssfile", $css_code);
         }
-        if ($cfg['CSS_INLINE'] == 0) {
+        if ($this->cfg['CSS_INLINE'] == 0) {
             $this->addto_tplvar("LINK", "<link rel='stylesheet' href='/cache/css/$cssfile'>\n");
         } else {
             $css_code = codetovar("cache/css/$cssfile");
