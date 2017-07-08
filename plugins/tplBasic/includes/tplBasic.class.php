@@ -31,16 +31,16 @@ class TPL {
     function build_page() {
         global $cfg;
 
-        !isset($this->tpldata['ADD_TO_FOOTER']) ? $this->tpldata['ADD_TO_FOOTER'] = "" : false;
-        !isset($this->tpldata['ADD_TO_BODY']) ? $this->tpldata['ADD_TO_BODY'] = "" : false;
+        !isset($this->tpldata['ADD_TO_FOOTER']) ? $this->tpldata['ADD_TO_FOOTER'] = "" : null;
+        !isset($this->tpldata['ADD_TO_BODY']) ? $this->tpldata['ADD_TO_BODY'] = "" : null;
 
         // BEGIN HEAD
-        $this->css_cache_check() && !empty($this->css_cache_onefile) ? $this->css_cache() : false;
+        $this->css_cache_check() && !empty($this->css_cache_onefile) ? $this->css_cache() : null;
         $web_head = do_action("get_head");
         //END HEAD
         //BEGIN BODY
         if ($cfg['NAV_MENU']) { //we use do_action for select order
-            !isset($this->tpldata['HEADER_MENU_ELEMENT']) ? $this->tpldata['HEADER_MENU_ELEMENT'] = "" : false;
+            !isset($this->tpldata['HEADER_MENU_ELEMENT']) ? $this->tpldata['HEADER_MENU_ELEMENT'] = "" : null;
             $this->tpldata['HEADER_MENU_ELEMENT'] .= do_action("header_menu_element");
         }
 
@@ -63,7 +63,7 @@ class TPL {
     function getTPL_file($plugin, $filename = null, $data = null) {
         global $cfg;
 
-        empty($filename) ? $filename = $plugin : false;
+        empty($filename) ? $filename = $plugin : null;
 
         print_debug("getTPL_file called by-> $plugin for get a $filename", "TPL_DEBUG");
 
@@ -87,7 +87,7 @@ class TPL {
     function getCSS_filePath($plugin, $filename = null) {
         global $cfg;
 
-        empty($filename) ? $filename = $plugin : false;
+        empty($filename) ? $filename = $plugin : null;
 
         print_debug("Get CSS called by-> $plugin for get a $filename", "TPL_DEBUG");
 
@@ -157,7 +157,7 @@ class TPL {
             return true;
         }
 
-        empty($filename) ? $filename = $plugin : false;
+        empty($filename) ? $filename = $plugin : null;
 
         $USER_LANG_PATH = "tpl/{$cfg['THEME']}/js/$filename.{$cfg['WEB_LANG']}.js";
         $DEFAULT_LANG_PATH = "plugins/$plugin/js/$filename.{$cfg['WEB_LANG']}.js";
@@ -191,7 +191,7 @@ class TPL {
     }
 
     function add_if_empty($tplvar, $data) {
-        empty($this->tpldata[$tplvar]) ? $this->tpldata[$tplvar] = $data : false;
+        empty($this->tpldata[$tplvar]) ? $this->tpldata[$tplvar] = $data : null;
     }
 
     function addtpl_array($tpl_ary) {
