@@ -17,7 +17,7 @@
                             <li class="nav_right resp-icon"><a rel="nofollow" href="javascript:void(0);" onclick="toggleMenu()">&#9776;</a></li>
                             <?php if ($cfg['HEADER_MENU_HOME']) { ?>
                                 <li class='nav_left lihome zero'>
-                                    <a href='/<?= $cfg['FRIENDLY_URL'] ? $cfg['WEB_LANG'] : "?lang={$cfg['WEB_LANG']}";?>/'>
+                                    <a href='/<?= $cfg['FRIENDLY_URL'] ? $cfg['WEB_LANG'] : "?lang={$cfg['WEB_LANG']}"; ?>/'>
                                         <img width=20 height=20 src='<?= $cfg['IMG_HOME'] ?>' alt='<?= $LNG['L_HOME'] ?>' />
                                     </a></li>
                             <?php } ?>
@@ -36,19 +36,21 @@
                             <?= !empty($tpldata['SECTIONS_NAV']) ? print $tpldata['SECTIONS_NAV'] : null ?>
                         </ul>
                     </nav>
-                <?php }
+                <?php
+                }
                 if (!empty($tpldata['SECTIONS_SUBMENU'])) {
-                ?>
+                    ?>
                     <nav id="sections_submenu">
                         <ul>
-                            <?= !empty($tpldata['SECTIONS_SUBMENU']) ? $tpldata['SECTIONS_SUBMENU'] : null ?>
+    <?= !empty($tpldata['SECTIONS_SUBMENU']) ? $tpldata['SECTIONS_SUBMENU'] : null ?>
                         </ul>
                     </nav>
                 <?php } ?>
-                <?= isset($tpldata['ADD_HEADER_END']) ? $tpldata['ADD_HEADER_END'] : null ?>
+<?= isset($tpldata['ADD_HEADER_END']) ? $tpldata['ADD_HEADER_END'] : null ?>
             </header>
         </div>
         <?php
-        isset($tpldata['PRE_ACTION_ADD_TO_BODY']) ? print $tpldata['PRE_ACTION_ADD_TO_BODY'] : null;
-        !isset($tpldata['ADD_TO_BODY']) ? print "<p>Hello World</p>" : print $tpldata['ADD_TO_BODY'];
-        isset($tpldata['POST_ACTION_ADD_TO_BODY']) ? print $tpldata['POST_ACTION_ADD_TO_BODY'] : null;
+        !empty($tpldata['PRE_ACTION_ADD_TO_BODY']) ? print $tpldata['PRE_ACTION_ADD_TO_BODY'] : null;
+        !empty($tpldata['ADD_TO_BODY']) ? print $tpldata['ADD_TO_BODY'] : print "<p>Hello World</p>";
+        !empty($tpldata['POST_ACTION_ADD_TO_BODY']) ? print $tpldata['POST_ACTION_ADD_TO_BODY'] : null;
+        
