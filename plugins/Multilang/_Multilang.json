@@ -6,7 +6,7 @@
     "function_admin_init": "Multilang_AdminInit",         
     "function_install": "",
     "provided": "multilang1",
-    "depends" : "tplbasic1 SQL1",
+    "depends" : "SQL1 tplbasic1",
     "autostart": 1,
     "priority" : 2,
     "optional": "",
