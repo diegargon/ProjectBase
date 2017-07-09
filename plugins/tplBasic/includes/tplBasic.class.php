@@ -9,7 +9,7 @@ class TPL {
 
     private $cfg;
     private $db;
-    private $tpldata;
+    private $tpldata = null;
     private $scripts = [];
     private $std_remote_scripts = array(//TODO LOAD LIST
         "jquery" => "https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js",
