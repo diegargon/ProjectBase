@@ -37,7 +37,7 @@ if ((!isset($_POST['email']) || ($cfg['smbasic_need_username'] == 1) && !isset($
     $tpl->getCSS_filePath("SMBasic", "SMBasic-mobile");
     SMBasic_RegisterScript();
     $register_data['terms_url'] = $cfg['TERMS_URL'] = "Terms";
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "register", $register_data));
+    $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "register", $register_data));
 } else {
     SMBasic_Register();
 }

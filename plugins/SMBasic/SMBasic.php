@@ -14,7 +14,7 @@ function SMBasic_Init() {
 
     includePluginFiles("SMBasic");
 
-    !isset($sm) ? $sm = new SessionManager : false;
+    !isset($sm) ? $sm = new SessionManager : null;
     $sm->start($cfg, $db);
 
     if (action_isset("encrypt_password") == false) {

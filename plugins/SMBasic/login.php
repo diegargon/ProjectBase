@@ -12,7 +12,7 @@ $user = $sm->getSessionUser();
 
 //HEAD MOD
 $cfg['PAGE_TITLE'] = $cfg['WEB_NAME'] . ": " . $LNG['L_LOGIN'];
-$cfg['PAGE_DESC'] = $cfg['WEB_NAME'] . ": " .  $LNG['L_LOGIN'];
+$cfg['PAGE_DESC'] = $cfg['WEB_NAME'] . ": " . $LNG['L_LOGIN'];
 //END HEAD MOD
 
 if ($user && $user['uid'] != 0) {
@@ -25,30 +25,25 @@ if (isset($_GET['active'])) {
     if (!SMBasic_user_activate_account()) {
         $msgbox['title'] = "L_SM_REGISTERED";
         $msgbox['MSG'] = "L_SM_E_ACTIVATION";
-        $msgbox['backlink'] = $cfg['WEB_URL'];
-        do_action("message_page", $msgbox);
-        return false;
     } else {
         $msgbox['title'] = "L_SM_TITLE_OK";
         $msgbox['MSG'] = "L_SM_ACTIVATION_OK";
-        $msgbox['backlink'] = $cfg['WEB_URL'];
-        do_action("message_page", $msgbox);
-        return false;
     }
+    $msgbox['backlink'] = $cfg['WEB_URL'];    
+    do_action("message_page", $msgbox);
+    return false;
 }
+
 if (isset($_GET['reset'])) {
     if (!SMBasic_user_reset_password()) {
         $msgbox['MSG'] = "L_SM_E_ACTIVATION";
-        $msgbox['backlink'] = $cfg['WEB_URL'];
-        do_action("message_page", $msgbox);
-        return false;
     } else {
         $msgbox['title'] = 'L_SM_TITLE_OK';
         $msgbox['MSG'] = "L_SM_RESET_OK";
-        $msgbox['backlink'] = $cfg['WEB_URL'];
-        do_action("message_page", $msgbox);
-        return false;
     }
+    $msgbox['backlink'] = $cfg['WEB_URL'];    
+    do_action("message_page", $msgbox);
+    return false;
 }
 if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['login'])) {
     SMBasic_Login();
@@ -72,5 +67,5 @@ if (isset($_POST['email']) && isset($_POST['password']) && isset($_POST['login']
     } else {
         $login_data['register_url'] = "/{$cfg['CON_FILE']}?module=SMBasic&page=register&lang={$cfg['WEB_LANG']}";
     }
-    $tpl->addto_tplvar("POST_ACTION_ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "login", $login_data));
+    $tpl->addto_tplvar("ADD_TO_BODY", $tpl->getTPL_file("SMBasic", "login", $login_data));
 }
