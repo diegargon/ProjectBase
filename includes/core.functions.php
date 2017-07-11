@@ -54,15 +54,6 @@ function codetovar($path, $data = null) {
     return $content;
 }
 
-function format_date($date, $timestamp = false) {
-    global $cfg;
-    if ($timestamp) {
-        return date($cfg['DEFAULT_DATEFORMAT'], $date);
-    } else {
-        return date($cfg['DEFAULT_DATEFORMAT'], strtotime($date));
-    }
-}
-
 function includePluginFiles($plugin, $admin = 0) {
     global $cfg, $LNG;
 
