@@ -16,13 +16,13 @@ function SMBasic_encrypt_password($password) {
 }
 
 function SMBasic_sessionDebugDetails() {
-    global $db, $sm;
+    global $db, $sm, $tUtils;
 
     if (!($user = $sm->getSessionUser())) {
         return false;
     }
     print_debug("<hr><br/><h2>Session Details</h2>", "SM_DEBUG");
-    print_debug("Time Now: " . format_date(time(), true) . "", "SM_DEBUG");
+    print_debug("Time Now: " . $tUtil->format_date(time(), true) . "", "SM_DEBUG");
     if (isset($_SESSION)) {
         if (!empty($sm->getData("uid"))) {
             print_debug("Session VAR ID:" . $sm->getData("uid"), "SM_DEBUG");
@@ -37,7 +37,7 @@ function SMBasic_sessionDebugDetails() {
         print_debug("Session DB IP: {$session['session_ip']}", "SM_DEBUG");
         print_debug("Session DB Browser: {$session['session_browser']}", "SM_DEBUG");
         print_debug("Session DB Create: {$session['session_created']}", "SM_DEBUG");
-        print_debug("Session DB Expire:" . format_date("{$session['session_expire']}", true) . "", "SM_DEBUG");
+        print_debug("Session DB Expire:" . $tUtil->format_date("{$session['session_expire']}", true) . "", "SM_DEBUG");
         print_debug("Session DB Admin: {$session['session_admin']} ", "SM_DEBUG");
     }
     print_debug("PHP Session expire: " . ini_get('session.gc_maxlifetime'), "SM_DEBUG");
