@@ -16,7 +16,7 @@ function SMBasic_encrypt_password($password) {
 }
 
 function SMBasic_sessionDebugDetails() {
-    global $db, $sm, $tUtils;
+    global $db, $sm, $tUtil;
 
     if (!($user = $sm->getSessionUser())) {
         return false;

@@ -8,12 +8,14 @@
 !defined('IN_WEB') ? exit : true;
 
 function SMBasic_Init() {
-    global $sm, $cfg, $db;
+    global $sm, $cfg, $db, $tUtil;
 
     print_debug("SMBasic initialice", "PLUGIN_LOAD");
 
     includePluginFiles("SMBasic");
 
+    !isset($tUtil) ? $tUtil = new TimeUtils($cfg, $db) : null;
+    
     !isset($sm) ? $sm = new SessionManager : null;
     $sm->start($cfg, $db);
 
