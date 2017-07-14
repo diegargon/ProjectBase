@@ -51,6 +51,6 @@
         </div>
         <?php
         !empty($tpldata['PRE_ACTION_ADD_TO_BODY']) ? print $tpldata['PRE_ACTION_ADD_TO_BODY'] : null;
-        !empty($tpldata['ADD_TO_BODY']) ? print $tpldata['ADD_TO_BODY'] : print "<p>Hello World</p>";
-        !empty($tpldata['POST_ACTION_ADD_TO_BODY']) ? print $tpldata['POST_ACTION_ADD_TO_BODY'] : null;
+        !empty($tpldata['ADD_TO_BODY']) ? print $tpldata['ADD_TO_BODY'] : null;
+        !empty($tpldata['POST_ACTION_ADD_TO_BODY']) ? print $tpldata['POST_ACTION_ADD_TO_BODY'] : print "<p>Hello World</p>";
         
