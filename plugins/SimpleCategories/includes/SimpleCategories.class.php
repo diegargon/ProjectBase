@@ -3,24 +3,34 @@
 /*
  *  Copyright @ 2016 Diego Garcia
  * 
- *  Class for determine name with "name" check parent for avoid error with same name in
- *  diferent subcategories, not fully tested and going to have problems if we have 
+ *  Actually, on start load all cats all plug
+ * 
+ *  not fully tested and going to have problems if we have 
  *  something like...
  *  /News/Sports/Football and /Other/Sports/Football  ( That going to fail, first match return)
  *  /News/Sports/Football and /News/Videos/Football (its ok)
- * 
+ *  
  */
 !defined('IN_WEB') ? exit : true;
 
 class Categories {
 
+    private $cfg;
+    private $LNG;
+    private $ml;
+    private $db;
     private $categories = [];
 
-    public function __construct() {
+    public function __construct($cfg, $LNG, $db, $ml = null) {
+        $this->cfg = $cfg;
+        $this->LNG = $LNG;
+        $this->db = $db;
+        $this->ml = $ml;
+
         $this->loadCategories();
     }
 
-    function DebugCats() {
+    function debugCats() {
         print_r($this->categories);
     }
 
@@ -97,8 +107,6 @@ class Categories {
     }
 
     function root_cats($plugin, $formated = 1) { // get_fathers_cat_list
-        global $cfg, $LNG;
-
         if (empty($plugin)) {
             return false;
         }
@@ -109,7 +117,7 @@ class Categories {
             if ($category['plugin'] == $plugin && $category['father'] == 0) {
                 if ($formated) {
                     $cat_display_name = preg_replace('/\_/', ' ', $category['name']);
-                    $cat_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/{$category['name']}'>$cat_display_name</a></li>";
+                    $cat_data .= "<li><a href='/{$this->cfg['WEB_LANG']}/{$this->LNG['L_NEWS_SECTION']}/{$category['name']}'>$cat_display_name</a></li>";
                 } else {
                     $cat_data[$category['cid']] = $category;
                 }
@@ -120,8 +128,6 @@ class Categories {
     }
 
     function childs_of_cat($plugin, $cat_path, $formated = 1, $separator = ".") { //FORREMOVE
-        global $cfg, $LNG;
-
         if (empty($plugin) && empty($cat_path)) {
             return false;
         }
@@ -133,13 +139,13 @@ class Categories {
         if ($formated && count($cats_explode) > 1) {
             array_pop($cats_explode);
             $f_cats = implode($separator, $cats_explode);
-            $cat_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/$f_cats'>{$cfg['CATS_BACK_SYMBOL']}</a></li>";
+            $cat_data .= "<li><a href='/{$this->cfg['WEB_LANG']}/{$this->LNG['L_NEWS_SECTION']}/$f_cats'>{$this->cfg['CATS_BACK_SYMBOL']}</a></li>";
         }
         foreach ($this->categories as $category) {
             if ($category['plugin'] == $plugin && $category['father'] == $cat_id) {
                 if ($formated) {
                     $cat_display_name = preg_replace('/\_/', ' ', $category['name']);
-                    $cat_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/$cat_path.{$category['name']}'>$cat_display_name</a></li>";
+                    $cat_data .= "<li><a href='/{$this->cfg['WEB_LANG']}/{$this->LNG['L_NEWS_SECTION']}/$cat_path.{$category['name']}'>$cat_display_name</a></li>";
                 } else {
                     $cat_data = $category;
                 }
@@ -162,21 +168,18 @@ class Categories {
     }
 
     private function loadCategories($plugin = null) {
-        global $db, $ml, $cfg;
+
         $where_ary = [];
 
-        $plugin = $cfg['CATS_DEFAULT_LOAD_PLUGIN'];
+        defined('MULTILANG') && ($this->ml != null) ? $lang_id = $this->ml->getSessionLangId() : $lang_id = $this->cfg['WEB_LANG_ID'];
 
-        defined('MULTILANG') ? $lang_id = $ml->getSessionLangId() : $lang_id = $cfg['WEB_LANG_ID'];
+        !empty($lang_id) && is_numeric($lang_id) ? $where_ary['lang_id'] = $lang_id : null;
 
-        if (!empty($lang_id) && is_numeric($lang_id)) {
-            $where_ary['lang_id'] = $lang_id;
-        }
-        $cfg['CATS_BY_VIEWS'] ? $order = "views DESC" : $order = "weight ASC";
+        $this->cfg['CATS_BY_VIEWS'] ? $order = "views DESC" : $order = "weight ASC";
 
-        $plugin ? $where_ary['plugin'] = $plugin : null;
-        $query = $db->select_all("categories", $where_ary, "ORDER BY $order");
-        while ($c_row = $db->fetch($query)) {
+        //$plugin ? $where_ary['plugin'] = $plugin : null;
+        $query = $this->db->select_all("categories", $where_ary, "ORDER BY $order");
+        while ($c_row = $this->db->fetch($query)) {
             $this->categories[$c_row['cid']] = $c_row;
         }
     }
