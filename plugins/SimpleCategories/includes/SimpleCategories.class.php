@@ -106,7 +106,7 @@ class Categories {
         return $cat_ids;
     }
 
-    function root_cats($plugin, $formated = 1) { // get_fathers_cat_list
+    function root_cats($plugin, $formated = "list") { // get_fathers_cat_list
         if (empty($plugin)) {
             return false;
         }
@@ -115,7 +115,7 @@ class Categories {
 
         foreach ($this->categories as $category) {
             if ($category['plugin'] == $plugin && $category['father'] == 0) {
-                if ($formated) {
+                if ($formated == "list") {
                     $cat_display_name = preg_replace('/\_/', ' ', $category['name']);
                     $cat_data .= "<li><a href='/{$this->cfg['WEB_LANG']}/{$this->LNG['L_NEWS_SECTION']}/{$category['name']}'>$cat_display_name</a></li>";
                 } else {
