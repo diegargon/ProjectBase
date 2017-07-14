@@ -46,6 +46,16 @@ class Database {
         return $row = $query->fetch_assoc();
     }
 
+    function fetch_all($query) {
+        $return_ary = [];
+        if ($this->num_rows($query) > 0) {
+            while ($row = $this->fetch($query)) {
+                $return_ary[] = $row;
+            }
+        }
+        return $return_ary;
+    }
+
     function escape($var) {
         return $this->dblink->real_escape_string($var);
     }
