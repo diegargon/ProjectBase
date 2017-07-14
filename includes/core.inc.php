@@ -16,8 +16,6 @@ require_once "includes/valfilters.inc.php";
 require_once "includes/core.functions.php";
 require_once "includes/plugins.php";
 
-$tUtil = new TimeUtils($cfg, $db);
-
 mobileDetect() ? $cfg['IMG_SELECTOR'] = "mobile" : null;
 $cfg['ITS_BOT'] = botDetect();
 do_action("init_core");
