@@ -30,6 +30,7 @@ $cfg['PAGE_AUTHOR'] = "ProjectBase";
 $cfg['FRIENDLY_URL'] = 1;
 $cfg['DEFAULT_TIMEZONE'] = "UTC";
 $cfg['DEFAULT_DATEFORMAT'] = "d/m/y H:i";
+$cfg['DB_DATEFORMAT'] = "Y-m-d H:i:s";
 $cfg['BACKLINK'] = "javascript:history.go(-1)";
 $cfg['REMOTE_CHECKS'] = 1;
 $cfg['ACCEPTED_MEDIA_REGEX'] = "jpe?g|bmp|png|JPE?G|BMP|PNG|gif";
