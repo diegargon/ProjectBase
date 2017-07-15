@@ -41,7 +41,7 @@ class SessionManager {
         $this->session_start ? session_start() : false;
     }
 
-    function getUserbyID($uid) {
+    function getUserByID($uid) {
 
         if (isset($this->users_cache_db[$uid])) {
             return $this->users_cache_db[$uid];
@@ -57,6 +57,11 @@ class SessionManager {
         return $user;
     }
 
+    function getUsernameByID($uid) {
+        $user = $this->getUserByID($uid);
+        return $user['username'];
+    }
+    
     function getUserByUsername($username) {
 
         if (($uid = array_search($username, array_column($this->users_cache_db, 'username')))) {
@@ -403,7 +408,7 @@ class SessionManager {
                 print_debug("SMBasic: Checking persintence (buildin) ", "SM_DEBUG");
                 $session = $this->check_persistence($cookies);
                 if ($session) {
-                    $this->user = $this->getUserbyID($session['session_uid']);
+                    $this->user = $this->getUserByID($session['session_uid']);
                     $this->setData("uid", $this->user['uid']);
                     $this->regenerate_sid(1);
                     return true;
@@ -414,7 +419,7 @@ class SessionManager {
                 }
             }
         }
-        $this->user = $this->getUserbyID($uid);
+        $this->user = $this->getUserByID($uid);
 
         return true;
     }
@@ -435,7 +440,7 @@ class SessionManager {
             print_debug("SMBasic: Check persistence(custom)", "SM_DEBUG");
             $session = $this->check_persistence($cookies);
             if ($session) {
-                $this->user = $this->getUserbyID($session['session_uid']);
+                $this->user = $this->getUserByID($session['session_uid']);
                 $this->setData("uid", $this->user['uid']);
                 $this->regenerate_sid(1);                
                 return true;

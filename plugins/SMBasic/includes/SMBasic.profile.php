@@ -19,7 +19,7 @@ function SMBasic_ViewProfile() {
         $msgbox['MSG'] = "L_SM_E_USER_NOT_EXISTS";
         do_action("message_page", $msgbox);
     }
-    $v_user = $sm->getUserbyID($uid);
+    $v_user = $sm->getUserByID($uid);
     if ($v_user) {
         do_action("common_web_structure");
         $tpl->getCSS_filePath("SMBasic");
