@@ -13,7 +13,7 @@ class TimeUtils {
     private $db;
     private $timezone;
     private $server_timezone;
-    private $ftime_now;
+    private $db_dateformat;
     private $dateformat;
 
     public function __construct($cfg, $db) {
@@ -22,7 +22,11 @@ class TimeUtils {
         $this->server_timezone = date_default_timezone_get();
         $this->setTimezone();
         $this->setDateformat();
-        $this->ftime_now = new DateTime(date($this->dateformat, time()));
+        $this->db_dateformat = $cfg['DB_DATEFORMAT'];
+    }
+
+    public function getTimeNow() {
+        return new DateTime(date($this->dateformat, time()));
     }
 
     public function format_date($date, $timestamp = false) {
@@ -32,6 +36,23 @@ class TimeUtils {
         } else {
             return date($this->dateformat, strtotime($date));
         }
+    }
+
+    public function timeNowDiff($time) {
+        $_time = new DateTime($time);
+        $_time->setTimezone(new DateTimeZone($this->timezone));
+
+        $time_now = new DateTime(date($this->db_dateformat, time()));
+        $time_now->setTimezone(new DateTimeZone($this->timezone));
+
+        $time_diff = $_time->diff($time_now);
+
+        $result_time['days'] = $time_diff->format("%d");
+        $result_time['hours'] = $time_diff->format("%H");
+        $result_time['minutes'] = $time_diff->format("%i");
+        $result_time['seconds'] = $time_diff->format("%s");
+
+        return $result_time;
     }
 
     private function setTimezone() {
