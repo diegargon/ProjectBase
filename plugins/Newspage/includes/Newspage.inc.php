@@ -88,6 +88,7 @@ function news_check_display_submit() {
 
     return false;
 }
+
 function news_display_submit() {
     news_check_display_submit() ? register_action("header_menu_element", "news_menu_submit_news") : null;
 }
@@ -126,7 +127,16 @@ function news_cat_menu() {
     global $tpl, $ctgs, $cfg, $LNG;
     $cat_path = S_GET_TEXT_UTF8("section");
 
-    $menu_data = $ctgs->root_cats("Newspage");
+    $menu_cats = $ctgs->root_cats("Newspage");
+    $menu_data = null;
+    $submenu_data = null;
+
+    if ($menu_cats != false) {
+        foreach ($menu_cats as $menucat) {
+            $cat_display_name = preg_replace('/\_/', ' ', $menucat['name']);
+            $menu_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/{$menucat['name']}'>$cat_display_name</a></li>";
+        }
+    }
     if ($cfg['NEWS_BACKPAGE_SECTION']) {
         if ($cfg['FRIENDLY_URL']) {
             $url = "/{$cfg['WEB_LANG']}";
@@ -135,7 +145,24 @@ function news_cat_menu() {
         }
         $menu_data .= "<li><a href='$url'>" . $LNG['L_NEWS_BACKPAGE'] . "</a></li>";
     }
-    !empty($cat_path) ? $submenu_data = $ctgs->childs_of_cat("Newspage", $cat_path) : null;
+
+    $cats_explode = explode($cfg['NEWS_CAT_SEPARATOR'], $cat_path);
+    if (count($cats_explode) > 1) {
+        array_pop($cats_explode);
+        $f_cats = implode($cfg['NEWS_CAT_SEPARATOR'], $cats_explode);
+        $submenu_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/$f_cats'>{$cfg['NEWS_MENU_BACK_SYMBOL']}</a></li>";
+    }
+
+    $cat_id = $ctgs->getCatIDbyName_path("Newspage", $cat_path);
+    $childcats = $ctgs->childcats("Newspage", $cat_path);
+    if (!empty($childcats)) {
+        foreach ($childcats as $childcat) {
+            if ($childcat['father'] == $cat_id) {
+                $cat_display_name = preg_replace('/\_/', ' ', $childcat['name']);
+                $submenu_data .= "<li><a href='/{$cfg['WEB_LANG']}/{$LNG['L_NEWS_SECTION']}/$cat_path.{$childcat['name']}'>$cat_display_name</a></li>";
+            }
+        }
+    }
 
     $tpl->addto_tplvar("SECTIONS_NAV", $menu_data);
     isset($submenu_data) ? $tpl->addto_tplvar("SECTIONS_SUBMENU", $submenu_data) : null;

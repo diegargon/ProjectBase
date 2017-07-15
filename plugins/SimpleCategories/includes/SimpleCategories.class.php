@@ -106,53 +106,36 @@ class Categories {
         return $cat_ids;
     }
 
-    function root_cats($plugin, $formated = "list") { // get_fathers_cat_list
+    function root_cats($plugin) { // get_fathers_cat_list
         if (empty($plugin)) {
             return false;
         }
-
-        $cat_data = "";
+        $cat_data = [];
 
         foreach ($this->categories as $category) {
             if ($category['plugin'] == $plugin && $category['father'] == 0) {
-                if ($formated == "list") {
-                    $cat_display_name = preg_replace('/\_/', ' ', $category['name']);
-                    $cat_data .= "<li><a href='/{$this->cfg['WEB_LANG']}/{$this->LNG['L_NEWS_SECTION']}/{$category['name']}'>$cat_display_name</a></li>";
-                } else {
-                    $cat_data[$category['cid']] = $category;
-                }
+                $cat_data[$category['cid']] = $category;
             }
         }
 
         return $cat_data;
     }
 
-    function childs_of_cat($plugin, $cat_path, $formated = 1, $separator = ".") { //FORREMOVE
-        if (empty($plugin) && empty($cat_path)) {
+    function childcats($plugin, $cat_path, $separator = ".") {
+        $cats = [];
+
+        if (empty($plugin) && empty($cat_path) && empty($this->categories)) {
             return false;
         }
-        $cats_explode = explode($separator, $cat_path);
-        $cat_data = "";
-
         $cat_id = $this->getCatIDbyName_path($plugin, $cat_path);
 
-        if ($formated && count($cats_explode) > 1) {
-            array_pop($cats_explode);
-            $f_cats = implode($separator, $cats_explode);
-            $cat_data .= "<li><a href='/{$this->cfg['WEB_LANG']}/{$this->LNG['L_NEWS_SECTION']}/$f_cats'>{$this->cfg['CATS_BACK_SYMBOL']}</a></li>";
-        }
         foreach ($this->categories as $category) {
             if ($category['plugin'] == $plugin && $category['father'] == $cat_id) {
-                if ($formated) {
-                    $cat_display_name = preg_replace('/\_/', ' ', $category['name']);
-                    $cat_data .= "<li><a href='/{$this->cfg['WEB_LANG']}/{$this->LNG['L_NEWS_SECTION']}/$cat_path.{$category['name']}'>$cat_display_name</a></li>";
-                } else {
-                    $cat_data = $category;
-                }
+                $cats[] = $category;
             }
         }
 
-        return !empty($cat_data) ? $cat_data : false;
+        return !empty($cats) ? $cats : false;
     }
 
     function sortCatsByWeight() {
@@ -167,15 +150,14 @@ class Categories {
         });
     }
 
-    private function loadCategories($plugin = null) {
-
+    private function loadCategories($plugin = null, $orderByViews = 0) {
+        //Carga todas las categorias de todos los moduloa
         $where_ary = [];
 
         defined('MULTILANG') && ($this->ml != null) ? $lang_id = $this->ml->getSessionLangId() : $lang_id = $this->cfg['WEB_LANG_ID'];
-
         !empty($lang_id) && is_numeric($lang_id) ? $where_ary['lang_id'] = $lang_id : null;
 
-        $this->cfg['CATS_BY_VIEWS'] ? $order = "views DESC" : $order = "weight ASC";
+        $orderByViews ? $order = "views DESC" : $order = "weight ASC";
 
         //$plugin ? $where_ary['plugin'] = $plugin : null;
         $query = $this->db->select_all("categories", $where_ary, "ORDER BY $order");
