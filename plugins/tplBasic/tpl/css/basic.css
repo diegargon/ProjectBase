@@ -20,7 +20,7 @@ html, body {
 .bodysize {
     display:block;
     margin:0 auto;
-    min-height: 600px;
+    /* min-height: 600px; */
 }
 .fl_left{
     float:left;
@@ -227,7 +227,7 @@ h1,h2,h3,h4,h5,h6{
     background: linear-gradient(#55a0db, #1f6ba5);
 }
 #sections_nav {
-   border: 1px solid #000;
+    border: 1px solid #000;
 }
 #sections_nav ul, #sections_submenu ul {
     padding:0;
