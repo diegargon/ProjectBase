@@ -83,6 +83,15 @@ class Categories {
         return $cat_id;
     }
 
+    function getCatNameByID($catid) {
+        foreach ($this->categories as $category) {
+            if ($category['cid'] == $catid) {
+                return $category['name'];
+            }
+        }
+        return false;
+    }
+
     function getCatChildsId($plugin, $cats, $separator = ",") {
         $cat_ids = "";
 
@@ -151,7 +160,7 @@ class Categories {
     }
 
     private function loadCategories($plugin = null, $orderByViews = 0) {
-        //Carga todas las categorias de todos los moduloa
+        //Carga todas las categorias de todos los modulos de un solo lenguage
         $where_ary = [];
 
         defined('MULTILANG') && ($this->ml != null) ? $lang_id = $this->ml->getSessionLangId() : $lang_id = $this->cfg['WEB_LANG_ID'];
