@@ -21,7 +21,6 @@ function news_portal() {
     require_once 'includes/news_portal.php';
 
     do_action("news_portal_begin");
-    do_action("common_web_structure");
 
     if ($cfg['LAYOUT_SWITCH']) {
         $news_nLayout = news_layout_select();

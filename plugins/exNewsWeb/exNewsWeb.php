@@ -34,7 +34,7 @@ function ex_common_web_structure() {
 
 function ex_index_page() {
     plugin_start("Newspage");
-    
+    do_action("common_web_structure");
     news_portal();
     //require_once("plugins/Newspage/portal.php");
     //$startpage =  $cfg['CON_FILE'] . "?module=Newspage&page=portal";

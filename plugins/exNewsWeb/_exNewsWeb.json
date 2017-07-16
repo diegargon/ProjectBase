@@ -5,7 +5,7 @@
     "function_init": "exNewsWeb_init",
     "function_install": "",
     "provided": "mainweb",
-    "depends" : "SQL1 tplbasic1",
+    "depends" : "SQL1 tplbasic1 SCats1",
     "autostart": 1,
     "priority" : 5,
     "optional": "",
