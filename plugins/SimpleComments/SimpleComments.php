@@ -1,6 +1,7 @@
 <?php
 /* 
  *  Copyright @ 2016 Diego Garcia
+ * TODO: to class
  */
 !defined('IN_WEB') ? exit : true;
 
@@ -12,7 +13,7 @@ function SimpleComments_init() {
 }
 
 function SC_GetComments($plugin, $resource_id, $lang_id = null, $limit = null) {
-    global $tpl, $db, $sm;
+    global $tpl, $db;
     $content = "";
 
     if (empty($plugin) || empty($resource_id)) {
@@ -71,4 +72,21 @@ function SC_AddComment($plugin, $comment, $resource_id, $lang_id = null) {
     );
 
     $db->insert("comments", $new_ary);
+}
+
+function SC_GetNumComm($plugin, $resource_id, $lang_id) {
+    global $db;
+
+    if (empty($plugin) || empty($resource_id)) {
+        return false;
+    }
+
+    $select_ary = array(
+        "plugin" => "$plugin",
+        "resource_id" => "$resource_id",
+        "lang_id" => "$lang_id"
+    );
+
+    $query = $db->select_all("comments", $select_ary);
+    return $db->num_rows($query);
 }
