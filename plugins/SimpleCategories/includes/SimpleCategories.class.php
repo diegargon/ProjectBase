@@ -133,11 +133,10 @@ class Categories {
     function childcats($plugin, $cat_path, $separator = ".") {
         $cats = [];
 
-        if (empty($plugin) && empty($cat_path) && empty($this->categories)) {
+        if (empty($plugin) || empty($cat_path) || empty($this->categories)) {
             return false;
         }
         $cat_id = $this->getCatIDbyName_path($plugin, $cat_path);
-
         foreach ($this->categories as $category) {
             if ($category['plugin'] == $plugin && $category['father'] == $cat_id) {
                 $cats[] = $category;
