@@ -33,20 +33,20 @@
                 <?php if (!empty($tpldata['SECTIONS_NAV'])) { ?>
                     <nav id="sections_nav">
                         <ul>
-                            <?= !empty($tpldata['SECTIONS_NAV']) ? print $tpldata['SECTIONS_NAV'] : null ?>
+                            <?= print $tpldata['SECTIONS_NAV'] ?>
                         </ul>
                     </nav>
-                <?php
+                    <?php
                 }
                 if (!empty($tpldata['SECTIONS_SUBMENU'])) {
                     ?>
                     <nav id="sections_submenu">
                         <ul>
-    <?= !empty($tpldata['SECTIONS_SUBMENU']) ? $tpldata['SECTIONS_SUBMENU'] : null ?>
+                            <?= $tpldata['SECTIONS_SUBMENU'] ?>
                         </ul>
                     </nav>
                 <?php } ?>
-<?= isset($tpldata['ADD_HEADER_END']) ? $tpldata['ADD_HEADER_END'] : null ?>
+                <?= isset($tpldata['ADD_HEADER_END']) ? $tpldata['ADD_HEADER_END'] : null ?>
             </header>
         </div>
         <?php
