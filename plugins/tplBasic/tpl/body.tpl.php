@@ -33,7 +33,7 @@
                 <?php if (!empty($tpldata['SECTIONS_NAV'])) { ?>
                     <nav id="sections_nav">
                         <ul>
-                            <?= print $tpldata['SECTIONS_NAV'] ?>
+                            <?= $tpldata['SECTIONS_NAV'] ?>
                         </ul>
                     </nav>
                     <?php
