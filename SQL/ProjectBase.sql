@@ -381,7 +381,7 @@ CREATE TABLE `pb_users` (
 --
 
 INSERT INTO `pb_users` (`uid`, `username`, `password`, `email`, `realname`, `regdate`, `active`, `disable`, `isAdmin`, `last_login`, `reset`, `avatar`, `tos`) VALUES
-(1, 'diego', 'c1109b37e1618871bdb1ee3ff996b58fa03daeb8f001a1c947d3fcf656b9f86f5c9b18fc79747bf0cb2ac5486bebe3053cec70b5757e79e9eff043eace69c209', 'diegoo@envigo.net', 'fulanito', '2016-07-25 14:04:38', 0, 0, 0, '2016-09-07 16:01:06', 990898151, 'http://www.progarchives.com/forum/uploads/18319/Mr_Blonde_BandW_300.jpeg', 1),
+(1, 'diego', 'pass', 'diegoo@envigo.net', 'fulanito', '2016-07-25 14:04:38', 0, 0, 0, '2016-09-07 16:01:06', 990898151, 'http://www.progarchives.com/forum/uploads/18319/Mr_Blonde_BandW_300.jpeg', 1),
 --
 -- Table structure for table `pb_user_extra`
 --
