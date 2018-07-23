@@ -1,0 +1,25 @@
+Core:
+
+* plugin_start(plugin_name) 
+    Manual start plugin
+* includePluginFiles("plugin_name", admin = 0); 
+    include pluginm.config plugin.inc, lang files, pluin.admin if 1
+
+* print_debug("text) 
+    insert text to debug array
+tplbasic:
+
+* $tpl->addto_tplvar(var, value) 
+    add data to var
+
+* $tpl->addStdScript("scriptnamekey", "url")
+    add script key/url to standard scripts array
+* $tpl->AddScriptFile("plugin", "file=plugin_name", "TOP/BOTTOM=TOP", async="async");
+    add script file top the location, get from plugin or use "standard" for list of standard scripts like jquery
+* $tpl->getCSS_filePath("plugin", "filename=pluingname.css"
+    get css file path and add to LINK variable
+    if CSS_INLINE dump files (CSS INTERNAL)
+    if CSS_CACHE function add to variable for build a unique file
+* $tpl->getTPL_file("plugin", "file", ...data)
+    Load Tpl file from plugin or custom tpl if exists
+*

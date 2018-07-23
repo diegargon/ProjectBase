@@ -1,0 +1,13 @@
+{
+    "plugin_name": "SAggregator",
+    "enabled": 1,
+    "main_file": "SAggregator.php",
+    "function_init": "SAggregator_init",
+    "function_install": "",
+    "provided": "SAggre",
+    "depends": "tplbasic1 sessions1 SCats1 sc1",
+    "autostart": 0,
+    "priority": 5,
+    "optional": "multilang1",
+    "conflicts": ""
+}
